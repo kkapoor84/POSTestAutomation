@@ -55,8 +55,24 @@ namespace UnitTestNDBProject.Utils
                 return false;
             }
         }
+        public static bool IsElementDisplayed_Generic_Login(this IWebDriver driver, By bylocator)
+        {
+            try
+            {
+                bool elementPresent = false;
+                for (int i = 0; i < 10; i++)
+                {
+                    try { elementPresent = driver.FindElement(bylocator).Displayed; }
+                    catch (Exception) { }
+                    if (elementPresent) { break; }
+                    System.Threading.Thread.Sleep(1000);
+                }
+                return elementPresent;
+            }
+            catch (Exception)
+            { return false; }
+        }
 
-     
 
     }
 }
