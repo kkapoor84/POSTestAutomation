@@ -11,7 +11,8 @@ using static UnitTestNDBProject.Utils.TestConstant;
 
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Remote;
-
+using UnitTestNDBProject.TestDataAccess;
+using System.Configuration;
 
 namespace UnitTestNDBProject.Pages
 {
@@ -28,15 +29,30 @@ namespace UnitTestNDBProject.Pages
 
 
 
-        public void Login(String Usern, String pwdn)
+        //public void Login(String Usern, String pwdn)
+        //{
+        //    _logger.Trace("Attempting to login");
+        //    PropertiesCollection.driver.Navigate().Refresh();
+        //    username.EnterText(Usern);
+        //    _logger.Info($"username is {Usern}");
+        //    pwd.EnterText(pwdn);
+        //    _logger.Info("password is {0}", pwdn);
+        //    loginButton.Clickme();
+            
+
+        //}
+
+        public void Login(string sheetname,string testName)
         {
             _logger.Trace("Attempting to login");
             PropertiesCollection.driver.Navigate().Refresh();
-            username.EnterText(Usern);
-            _logger.Info($"username is {Usern}");
-            pwd.EnterText(pwdn);
-            _logger.Info("password is {0}", pwdn);
+            var userData = ExcelDataAccess.GetTestData(sheetname, testName);
+            username.EnterText(userData.Username);
+            _logger.Info($"username is {userData.Username}");
+            pwd.EnterText(userData.Password);
+            _logger.Info("password is {0}", userData.Password);
             loginButton.Clickme();
+            
             
 
         }

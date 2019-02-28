@@ -26,7 +26,9 @@ public class GlobalSetup
         extent = new ExtentReports();
         extent.AttachReporter(htmlReporter);
         Initialization();
+     
         OpenURL();
+        ScreenshotUtil.SaveScreenShot("firstfile");
     }
 
     [OneTimeTearDown]

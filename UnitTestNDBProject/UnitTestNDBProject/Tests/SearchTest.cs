@@ -15,7 +15,7 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void SetupBeforeClass()
         {
-            PropertiesCollection.LP.Login(ValidUser, Validpwd);
+            PropertiesCollection.LP.Login("LoginScreen$", "Valid"); ;
 
         }
         
