@@ -84,3 +84,6 @@ D:\Next Day Blinds\UnitTestNDBProject\UnitTestNDBProject\UnitTestNDBProject\obj\
 D:\Next Day Blinds\UnitTestNDBProject\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\NLog.config
 D:\Next Day Blinds\UnitTestNDBProject\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\NLog.dll
 D:\Next Day Blinds\UnitTestNDBProject\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\NLog.xml
+D:\Next Day Blinds\UnitTestNDBProject\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\UnitTestNDBProject.dll.config
+D:\Next Day Blinds\UnitTestNDBProject\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Dapper.dll
+D:\Next Day Blinds\UnitTestNDBProject\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Dapper.xml

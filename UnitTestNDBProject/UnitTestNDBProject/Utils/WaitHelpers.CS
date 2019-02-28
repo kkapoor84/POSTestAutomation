@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnitTestNDBProject.Utils;
 
+
 namespace UnitTestNDBProject.Utils
 {
     public static class WaitHelpers
@@ -42,10 +43,11 @@ namespace UnitTestNDBProject.Utils
             return d.FindElement(By.Id("navlist"));
         });
       }
-        //Implicit Wait
+       // Implicit Wait
         public static void ImplicitWaitMethod()
         {
-            PropertiesCollection.driver.Manage().Timeouts().imImplicitWait (new TimeSpan(0, 0, 0, 10));
+           //PropertiesCollection.driver.Manage().Timeouts().ImplicitWait(new TimeSpan(0, 0, 0, 10));
+           // PropertiesCollection.driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromMilliseconds(10000));
         }
 
 

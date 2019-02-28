@@ -24,7 +24,7 @@ public class LoginTest
         try
         {
             GlobalSetup.test = GlobalSetup.extent.CreateTest("LoginInValidCredentials");
-            PropertiesCollection.LP.Login(InvalidUser, Validpwd);
+            PropertiesCollection.LP.Login("LoginScreen$", "InValid");
             Assert.True(PropertiesCollection.LP.VerifyMessageInvalidCredentials(), "These credentials are correct");
         }
         catch(NoSuchElementException e)
@@ -41,7 +41,7 @@ public class LoginTest
         {
             //log.Info("test valid started");
             GlobalSetup.test = GlobalSetup.extent.CreateTest("LoginValidCredentials");
-            PropertiesCollection.LP.Login(ValidUser, Validpwd);
+            PropertiesCollection.LP.Login("LoginScreen$", "Valid");
             Assert.True(PropertiesCollection.LP.VerifyHomePageTitle());
          
             PropertiesCollection.LP.Signout();
