@@ -13,38 +13,45 @@ using static UnitTestNDBProject.Utils.TestConstant;
 
 
 [TestFixture]
-public class LoginTest 
+[Parallelizable]
+public class LoginTest : BaseTestClass
+{
+    ILog log = LogManager.GetLogger(typeof(LoginTest));
+    public LoginTest() : base(BrowserType.Chrome)
     {
-    //  ILog log = LogManager.GetLogger(typeof(LoginTest));
-   
+    }
 
     [Test, Order(1), Category("Regression")]
     public void VerifyLoginWithInValidCrdentails()
     {
+
         try
         {
             GlobalSetup.test = GlobalSetup.extent.CreateTest("LoginInValidCredentials");
-            PropertiesCollection.LP.Login("LoginScreen$", "InValid");
-            Assert.True(PropertiesCollection.LP.VerifyMessageInvalidCredentials(), "These credentials are correct");
+            LP.Login("LoginScreen$", "InValid");
+
+
+            Assert.True(LP.VerifyMessageInvalidCredentials(), "These credentials are correct");
         }
-        catch(NoSuchElementException e)
+        catch (Exception e)
         {
             GlobalSetup.test.Fail(e.StackTrace);
         }
-
     }
 
-          [Test, Order(2), Category("Regression"), Category("Smoke")]
-        public void VerifyLoginWithValidCrdentails()
+    [Test, Order(2), Category("Regression"), Category("Smoke")]
+    public void VerifyLoginWithValidCrdentails()
     {
+
         try
         {
             //log.Info("test valid started");
             GlobalSetup.test = GlobalSetup.extent.CreateTest("LoginValidCredentials");
-            PropertiesCollection.LP.Login("LoginScreen$", "Valid");
-            Assert.True(PropertiesCollection.LP.VerifyHomePageTitle());
-         
-            PropertiesCollection.LP.Signout();
+            LP.Login("LoginScreen$", "Valid");
+
+            Assert.True(LP.VerifyHomePageTitle());
+
+            LP.Signout();
         }
         catch (NoSuchElementException e)
         {
@@ -55,6 +62,6 @@ public class LoginTest
     }
 
 }
-    
+
 
 
