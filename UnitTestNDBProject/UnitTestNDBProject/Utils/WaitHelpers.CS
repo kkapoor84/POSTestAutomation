@@ -51,5 +51,12 @@ namespace UnitTestNDBProject.Utils
         }
 
 
+        public void waitForElementtobevisible(WebDriver driver, WebElement element, long timeout)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, timeout);
+            wait.until(ExpectedConditions.visibilityOf(element));
+            //	Log.info("element found..."+element.getText());
+        }
+
     }
 }

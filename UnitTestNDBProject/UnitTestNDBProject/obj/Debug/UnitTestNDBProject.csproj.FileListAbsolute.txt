@@ -133,3 +133,4 @@ D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\U
 D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csproj.CopyComplete
 D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.dll
 D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.pdb
+D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csprojAssemblyReference.cache
