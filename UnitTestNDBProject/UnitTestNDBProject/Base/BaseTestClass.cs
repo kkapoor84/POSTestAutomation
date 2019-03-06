@@ -7,6 +7,12 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using UnitTestNDBProject.Utils;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Firefox;
+using UnitTestNDBProject.Pages;
+using System.Configuration;
 
 [SetUpFixture]
 public class GlobalSetup
@@ -15,6 +21,7 @@ public class GlobalSetup
     public static ExtentReports report;
     public static ExtentHtmlReporter htmlReporter;
     public static ExtentTest test;
+
 
     [OneTimeSetUp]
     public void BeforeSuit()
@@ -25,14 +32,66 @@ public class GlobalSetup
         htmlReporter.Config.ReportName = "KK Test Report | Khushboo Kapoor";
         extent = new ExtentReports();
         extent.AttachReporter(htmlReporter);
-        Initialization();
-        OpenURL();
+        // Initialization();
+        // OpenURL();
+        //ScreenshotUtil.SaveScreenShot("firstfile");
     }
 
     [OneTimeTearDown]
     public void AfterSuit()
     {
-        PropertiesCollection.driver.Quit();
+        //PropertiesCollection.driver.Quit();
         extent.Flush();
+    }
+}
+
+namespace UnitTestNDBProject.Base
+{
+    public enum BrowserType
+    {
+        Chrome, Firefox, IE
+    }
+
+    [TestFixture]
+    public class BaseTestClass
+    {
+        public IWebDriver driver;
+        public BrowserType browser;
+        public LoginPage LP;
+        public SearchPage SP;
+        public BasePageClass BPC;
+
+        public BaseTestClass(BrowserType brows)
+        {
+            browser = brows;
+        }
+
+        [OneTimeSetUp]
+        public void BeforeClassInitialization()
+        {
+            if (browser == BrowserType.Chrome)
+            {
+                driver = new ChromeDriver();
+            }
+            else if (browser == BrowserType.Firefox)
+            {
+                driver = new FirefoxDriver();
+            }
+
+            LP = new LoginPage(driver);
+            SP = new SearchPage(driver);
+            BPC = new BasePageClass(driver);
+            BPC.OpenURL();
+
+        }
+
+
+        [OneTimeTearDown]
+        public void AfterClassCLoseDriver()
+        {
+            driver.Quit();
+        }
+
+
     }
 }

@@ -10,31 +10,31 @@ namespace UnitTestNDBProject.Utils
 {
     public static class ExtensionMethods
     {
-        public static void EnterText( this By bylocator,String value)
+        public static void EnterText(this By bylocator, IWebDriver driver, String value)
         {
-            PropertiesCollection.driver.FindElement(bylocator).SendKeys(value);
+            driver.FindElement(bylocator).SendKeys(value);
         }
 
 
-        public static void Clickme(this By bylocator)
+        public static void Clickme(this By bylocator, IWebDriver driver)
         {
-            PropertiesCollection.driver.FindElement(bylocator).Click();
+            driver.FindElement(bylocator).Click();
         }
 
 
-        public static void SelectDropDown(this By bylocator, String value)
+        public static void SelectDropDown(this By bylocator, IWebDriver driver, String value)
         {
-            new SelectElement(PropertiesCollection.driver.FindElement(bylocator)).SelectByText(value);
+            new SelectElement(driver.FindElement(bylocator)).SelectByText(value);
         }
 
-        public static String GetText(this By bylocator)
+        public static String GetText(this By bylocator, IWebDriver driver)
         {
-           return PropertiesCollection.driver.FindElement(bylocator).Text;
+            return driver.FindElement(bylocator).Text;
         }
 
-        public static String GetTextDD(this By bylocator)
+        public static String GetTextDD(this By bylocator, IWebDriver driver)
         {
-            return new SelectElement(PropertiesCollection.driver.FindElement(bylocator)).AllSelectedOptions.SingleOrDefault().Text;
+            return new SelectElement(driver.FindElement(bylocator)).AllSelectedOptions.SingleOrDefault().Text;
         }
     }
 

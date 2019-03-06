@@ -1,7 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,29 +12,27 @@ using UnitTestNDBProject.Utils;
 
 namespace UnitTestNDBProject.Base
 {
-   public class BasePageClass
+
+    public class BasePageClass
 
     {
-         
-    
-        public static void Initialization()
-            {
-     			PropertiesCollection.driver = new ChromeDriver();
-                PropertiesCollection.LP = new LoginPage();
+        public IWebDriver driver;
 
-
+        public BasePageClass(IWebDriver driver)
+        {
+            this.driver = driver;
 
         }
 
-       	public static void OpenURL()
-           {
 
-            PropertiesCollection.driver.Navigate().GoToUrl("https://3puser:N3xtD@y0@pos-stage-major.nextdayblinds.com");
-            PropertiesCollection.driver.Navigate().GoToUrl("https://pos-stage-major.nextdayblinds.com/login");
-            PropertiesCollection.driver.Manage().Window.Maximize();
-       
-           }
+        public void OpenURL()
+        {
+            driver.Navigate().GoToUrl(ConfigurationManager.AppSettings["AuthURL"]);
+            driver.Navigate().GoToUrl(ConfigurationManager.AppSettings["URL"]);
+            driver.Manage().Window.Maximize();
 
-        
+        }
+
+
     }
 }
