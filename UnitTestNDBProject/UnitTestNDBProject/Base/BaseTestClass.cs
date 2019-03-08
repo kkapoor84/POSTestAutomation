@@ -26,7 +26,7 @@ public class GlobalSetup
     [OneTimeSetUp]
     public void BeforeSuit()
     {
-        htmlReporter = new ExtentHtmlReporter(@"D:\Next Day Blinds\UnitTestNDBProject\UnitTestNDBProject\UnitTestNDBProject\Report\EReport.html");
+        htmlReporter = new ExtentHtmlReporter(@"D:\Automation\POS\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\Report\EReport.html");
         htmlReporter.Config.Theme = Theme.Dark;
         htmlReporter.Config.DocumentTitle = "Test Report | Khushboo Kapoor";
         htmlReporter.Config.ReportName = "KK Test Report | Khushboo Kapoor";
