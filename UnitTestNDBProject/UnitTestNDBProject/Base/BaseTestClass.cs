@@ -13,6 +13,7 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Firefox;
 using UnitTestNDBProject.Pages;
 using System.Configuration;
+using UnitTestNDBProject.Base;
 
 [SetUpFixture]
 public class GlobalSetup
@@ -21,20 +22,36 @@ public class GlobalSetup
     public static ExtentReports report;
     public static ExtentHtmlReporter htmlReporter;
     public static ExtentTest test;
+    public BrowserType browser;
+    public static IWebDriver driver;
+    public enum BrowserType
+    {
+        Chrome, Firefox, IE
+    }
 
+    
 
     [OneTimeSetUp]
     public void BeforeSuit()
     {
         htmlReporter = new ExtentHtmlReporter(@"D:\Automation\POS\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\Report\EReport.html");
         htmlReporter.Config.Theme = Theme.Dark;
-        htmlReporter.Config.DocumentTitle = "Test Report | Khushboo Kapoor";
-        htmlReporter.Config.ReportName = "KK Test Report | Khushboo Kapoor";
+        htmlReporter.Config.DocumentTitle = "Test Report | POS";
+        htmlReporter.Config.ReportName = "POS Test Report | POS";
         extent = new ExtentReports();
         extent.AttachReporter(htmlReporter);
-        // Initialization();
-        // OpenURL();
-        //ScreenshotUtil.SaveScreenShot("firstfile");
+        //if (browser == BrowserType.Chrome)
+        //{
+        //    driver = new ChromeDriver();
+        //}
+        //else if (browser == BrowserType.Firefox)
+        //{
+        //    driver = new FirefoxDriver();
+        //}
+
+        //Initialization();
+        //OpenURL();
+       // ScreenshotUtil.SaveScreenShot("firstfile");
     }
 
     [OneTimeTearDown]
@@ -42,6 +59,7 @@ public class GlobalSetup
     {
         //PropertiesCollection.driver.Quit();
         extent.Flush();
+        //driver.Quit();
     }
 }
 
@@ -55,9 +73,10 @@ namespace UnitTestNDBProject.Base
     [TestFixture]
     public class BaseTestClass
     {
-        public IWebDriver driver;
+        public static IWebDriver driver;
         public BrowserType browser;
         public LoginPage LP;
+        public EnterNewCustomerPage newCustomer;
         public SearchPage SP;
         public BasePageClass BPC;
 
@@ -81,6 +100,7 @@ namespace UnitTestNDBProject.Base
             LP = new LoginPage(driver);
             SP = new SearchPage(driver);
             BPC = new BasePageClass(driver);
+            newCustomer = new EnterNewCustomerPage(driver);
             BPC.OpenURL();
 
         }

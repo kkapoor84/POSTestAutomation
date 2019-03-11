@@ -62,7 +62,8 @@ namespace UnitTestNDBProject.Pages
             _logger.Info("password is {0}", userData.Password);
             loginButton.Clickme(driver);
 
-
+            EnterNewCustomerPage cust = new EnterNewCustomerPage(driver);
+            //cust.customerInformationCard();
 
 
         }

@@ -11,15 +11,15 @@ using UnitTestNDBProject.Utils;
 namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
-    [Parallelizable]
+  //  [Parallelizable]
     class SearchTest : BaseTestClass
     {
 
-        public SearchTest() : base(BrowserType.Firefox)
+        public SearchTest() : base(BrowserType.Chrome)
         {
         }
 
-        [Test, Order(1), Category("Regression")]
+      //  [Test, Order(1), Category("Regression")]
         public void VerifyLogin()
         {
             //   PropertiesCollection.driver.Navigate().GoToUrl("https://www.google.com");

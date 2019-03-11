@@ -13,7 +13,7 @@ using static UnitTestNDBProject.Utils.TestConstant;
 
 
 [TestFixture]
-[Parallelizable]
+//[Parallelizable]
 public class LoginTest : BaseTestClass
 {
     ILog log = LogManager.GetLogger(typeof(LoginTest));
@@ -51,7 +51,7 @@ public class LoginTest : BaseTestClass
 
             Assert.True(LP.VerifyHomePageTitle());
 
-            LP.Signout();
+            //LP.Signout();
         }
         catch (NoSuchElementException e)
         {
