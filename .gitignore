@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+/UnitTestNDBProject/.vs/UnitTestNDBProject/v15/Server/sqlite3
 /UnitTestNDBProject/.vs/UnitTestNDBProject/v15/Server/sqlite3/storage.ide-wal
 /UnitTestNDBProject/.vs/UnitTestNDBProject/v15/Server/sqlite3/storage.ide-shm
 /UnitTestNDBProject/.vs/UnitTestNDBProject/v15/Server/sqlite3/storage.ide
