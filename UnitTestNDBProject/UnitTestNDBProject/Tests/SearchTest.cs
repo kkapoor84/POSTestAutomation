@@ -11,7 +11,7 @@ using UnitTestNDBProject.Utils;
 namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
-    
+    [Parallelizable]
     class SearchTest : BaseTestClass
     {
 

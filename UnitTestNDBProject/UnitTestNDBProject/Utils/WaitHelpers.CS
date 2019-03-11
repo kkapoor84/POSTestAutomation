@@ -51,10 +51,10 @@ namespace UnitTestNDBProject.Utils
         }
 
 
-        public void waitForElementtobevisible(WebDriver driver, WebElement element, long timeout)
+        public static void waitForElementtobevisible( this IWebDriver driver, By bylocator, long timeout)
         {
-            WebDriverWait wait = new WebDriverWait(driver, timeout);
-            wait.until(ExpectedConditions.visibilityOf(element));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
+            wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(bylocator));
             //	Log.info("element found..."+element.getText());
         }
 
