@@ -49,9 +49,9 @@ public class LoginTest : BaseTestClass
             GlobalSetup.test = GlobalSetup.extent.CreateTest("LoginValidCredentials");
             LP.Login("LoginScreen$", "Valid");
 
-            Assert.True(LP.VerifyHomePageTitle());
+            Assert.True(HP.VerifyHomePageTitle());
 
-            LP.Signout();
+            HP.Signout();
         }
         catch (NoSuchElementException e)
         {

@@ -25,6 +25,9 @@ namespace UnitTestNDBProject.Pages
         public static By Settings = By.XPath("//button[@id='settingsTab']");
         public static By DashBoardTabText = By.XPath("//div[contains(text(),'QUOTES')]");
         public static By DepositSummaryText = By.XPath("//h2[contains(text(),'DEPOSIT SUMMARY')]");
+        public static By title = By.XPath("//h1[contains(text(),'Point of Sale Home Page')]");
+        public static By homeSignoutIcon = By.XPath("//i[@class='icon-account']");
+        public static By signoutButton = By.XPath("//a[contains(text(),'Log Out')]");
 
 
 
@@ -34,6 +37,26 @@ namespace UnitTestNDBProject.Pages
             DashBoardTab.Clickme(driver);
         }
 
+        public void Signout()
+        {
+            homeSignoutIcon.Clickme(driver);
+            driver.WaitForElement(signoutButton);
+            signoutButton.Clickme(driver);
+        }
+
+        public bool VerifyHomePageTitle()
+        {
+            driver.WaitForElement(title);
+            bool isTitlePresent = false;
+            String ActualValue = title.GetText(driver);
+            String ExpectedValue = "Point of Sale Home Page";
+            if (ActualValue.Contains(ExpectedValue))
+            {
+                isTitlePresent = true;
+            }
+            return isTitlePresent;
+
+        }
 
         public bool VerifyDashBoardTabIsClicked()
         {
