@@ -1,6 +1,8 @@
 ﻿using System.Configuration;
 using System.Data.OleDb;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Dapper;
 
 namespace UnitTestNDBProject.TestDataAccess
@@ -9,7 +11,9 @@ namespace UnitTestNDBProject.TestDataAccess
     {
         public static string TestDataFileConnection()
         {
-            var fileName = ConfigurationManager.AppSettings["TestDataSheetPath"];
+
+             string fileName = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\TestDataAccess\\TestData.xlsx";
+            //var fileName = ConfigurationManager.AppSettings["TestDataSheetPath"];
             string con = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + fileName + "';Extended Properties=\"Excel 8.0; HDR=Yes;\";";
 
             return con;

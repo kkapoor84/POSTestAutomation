@@ -36,6 +36,8 @@ public class LoginTest : BaseTestClass
         catch (Exception e)
         {
             GlobalSetup.test.Fail(e.StackTrace);
+            Assert.Fail("Exception Occurs" + e.StackTrace);
+            
         }
     }
 
@@ -53,13 +55,15 @@ public class LoginTest : BaseTestClass
 
             HP.Signout();
         }
-        catch (NoSuchElementException e)
+        catch (Exception e)
         {
             GlobalSetup.test.Fail(e.StackTrace);
+            Assert.Fail("Exception Occurs" + e.StackTrace);
         }
 
 
     }
+
 
 }
 
