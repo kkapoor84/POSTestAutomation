@@ -13,6 +13,7 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Firefox;
 using UnitTestNDBProject.Pages;
 using System.Configuration;
+using System.IO;
 
 [SetUpFixture]
 public class GlobalSetup
@@ -26,7 +27,9 @@ public class GlobalSetup
     [OneTimeSetUp]
     public void BeforeSuit()
     {
-        htmlReporter = new ExtentHtmlReporter(@"D:\Automation\POS\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\Report\EReport.html");
+        string FilePath = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\Report\\EReport.html";
+        //htmlReporter = new ExtentHtmlReporter(@"D:\NDBPOS-AUTOMATION-ST\UnitTestNDBProject\UnitTestNDBProject\Report\EReport.html");
+        htmlReporter = new ExtentHtmlReporter(FilePath);
         htmlReporter.Config.Theme = Theme.Dark;
         htmlReporter.Config.DocumentTitle = "Test Report | Khushboo Kapoor";
         htmlReporter.Config.ReportName = "KK Test Report | Khushboo Kapoor";
@@ -60,6 +63,7 @@ namespace UnitTestNDBProject.Base
         public LoginPage LP;
         public SearchPage SP;
         public BasePageClass BPC;
+        public HomePage HP;
 
         public BaseTestClass(BrowserType brows)
         {
@@ -81,6 +85,7 @@ namespace UnitTestNDBProject.Base
             LP = new LoginPage(driver);
             SP = new SearchPage(driver);
             BPC = new BasePageClass(driver);
+            HP = new HomePage(driver);
             BPC.OpenURL();
 
         }
