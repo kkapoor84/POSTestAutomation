@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnitTestNDBProject.Utils;
 
@@ -25,16 +26,26 @@ namespace UnitTestNDBProject.Pages
         public static By Settings = By.XPath("//button[@id='settingsTab']");
         public static By DashBoardTabText = By.XPath("//div[contains(text(),'QUOTES')]");
         public static By DepositSummaryText = By.XPath("//h2[contains(text(),'DEPOSIT SUMMARY')]");
+        public static By ResourcesTabText = By.XPath("//h2[contains(text(),'POS DOCUMENTS')]");
+        public static By SettingTabText = By.XPath("//h2[contains(text(),'DocuSign Consent')]");
         public static By title = By.XPath("//h1[contains(text(),'Point of Sale Home Page')]");
         public static By homeSignoutIcon = By.XPath("//i[@class='icon-account']");
         public static By signoutButton = By.XPath("//a[contains(text(),'Log Out')]");
+        public static By SAPLead = By.XPath("//div[contains(text(),'LEADS')]");
 
 
 
         public void ClickDashBoardTab()
         {
+
             driver.WaitForElement(DashBoardTab);
             DashBoardTab.Clickme(driver);
+        }
+
+        public void ClickDepositSummaryTab()
+        {
+            driver.WaitForElement(DepositSummaryTab);
+            DepositSummaryTab.Clickme(driver);
         }
 
         public void Signout()
@@ -44,8 +55,32 @@ namespace UnitTestNDBProject.Pages
             signoutButton.Clickme(driver);
         }
 
+        public void ClickShopAtHomeTab()
+        {
+            driver.WaitForElement(ShopAtHomeTab);
+            ShopAtHomeTab.Clickme(driver);
+            driver.WaitForElement(SAPLead);
+
+
+        }
+
+
+        public void ClickResourcesTab()
+        {
+
+            driver.WaitForElement(ResourcesTab);
+            ResourcesTab.Clickme(driver);
+        }
+
+        public void ClickSettingTab()
+        {
+
+            driver.WaitForElement(Settings);
+            Settings.Clickme(driver);
+        }
         public bool VerifyHomePageTitle()
         {
+            _logger.Info($"Valid Credentials");
             driver.WaitForElement(title);
             bool isTitlePresent = false;
             String ActualValue = title.GetText(driver);
@@ -53,6 +88,7 @@ namespace UnitTestNDBProject.Pages
             if (ActualValue.Contains(ExpectedValue))
             {
                 isTitlePresent = true;
+                _logger.Info($" :Verified the home page title on {this.GetType().Name}");
             }
             return isTitlePresent;
 
@@ -68,18 +104,12 @@ namespace UnitTestNDBProject.Pages
             if (Actual.Contains(Expected))
             {
                 IsTextPresent = true;
+                _logger.Info($" :Verified that Dashboard tab is clicked and accessible on{this.GetType().Name}");
             }
             return IsTextPresent;
 
 
         }
-
-        public void ClickDepositSummaryTab()
-        {
-            driver.WaitForElement(DepositSummaryTab);
-            DepositSummaryTab.Clickme(driver);
-        }
-
 
         public bool VerifyDepositSummaryTabIsClicked()
         {
@@ -91,33 +121,59 @@ namespace UnitTestNDBProject.Pages
             if (Actual.Contains(Expected))
             {
                 IsTextPresent = true;
+                _logger.Info($" :Verified that Deposit Summary tab is clicked and accessible on{this.GetType().Name}"); ;
             }
             return IsTextPresent;
 
 
         }
 
-        public void ClickShopAtHomeTab()
-        {
-            driver.WaitForElement(DepositSummaryTab);
-            DepositSummaryTab.Clickme(driver);
-        }
-
-
         public bool VerifyShopAtHomeTabIsClicked()
         {
+            _logger.Info($"Valid Credentials");
+            bool IsTextPresent1 = false;
+
+            String Expected = "LEADS";
+            String Actual = SAPLead.GetText(driver);
+
+            if (Actual.Contains(Expected))
+            {
+                IsTextPresent1 = true;
+                _logger.Info($" :Verified that Shop At Home tab is clicked and accessible on {this.GetType().Name}");
+            }
+            return IsTextPresent1;
+        }
+
+        public bool VerifyResourceTabIsClicked()
+        {
+
             bool IsTextPresent = false;
 
-            String Expected = "DEPOSIT SUMMARY";
-            String Actual = DepositSummaryText.GetText(driver);
+            String Expected = "POS DOCUMENTS";
+            String Actual = ResourcesTabText.GetText(driver);
 
             if (Actual.Contains(Expected))
             {
                 IsTextPresent = true;
+                _logger.Info($" :Verified that Resource tab is clicked and accessible on {this.GetType().Name}");
             }
             return IsTextPresent;
+        }
 
+        public bool VerifySettingTabIsClicked()
+        {
 
+            bool IsTextPresent = false;
+
+            String Expected = "DocuSign Consent";
+            String Actual = SettingTabText.GetText(driver);
+
+            if (Actual.Contains(Expected))
+            {
+                IsTextPresent = true;
+                _logger.Info($" :Verified that Setting tab is clicked and accessible on {this.GetType().Name}");
+            }
+            return IsTextPresent;
         }
 
     }

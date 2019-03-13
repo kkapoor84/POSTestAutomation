@@ -14,10 +14,12 @@ using OpenQA.Selenium.Firefox;
 using UnitTestNDBProject.Pages;
 using System.Configuration;
 using System.IO;
+using NLog;
 
 [SetUpFixture]
 public class GlobalSetup
 {
+    private static Logger _logger = LogManager.GetCurrentClassLogger();
     public static ExtentReports extent;
     public static ExtentReports report;
     public static ExtentHtmlReporter htmlReporter;
@@ -35,16 +37,15 @@ public class GlobalSetup
         htmlReporter.Config.ReportName = "KK Test Report | Khushboo Kapoor";
         extent = new ExtentReports();
         extent.AttachReporter(htmlReporter);
-        // Initialization();
-        // OpenURL();
-        //ScreenshotUtil.SaveScreenShot("firstfile");
+        _logger.Info(" :Successfully executed the BeforeSuit() method of " + this.GetType().Name);
+
     }
 
     [OneTimeTearDown]
     public void AfterSuit()
     {
-        //PropertiesCollection.driver.Quit();
         extent.Flush();
+        _logger.Info(" :Successfully executed the AfterSuit() method of " + this.GetType().Name);
     }
 }
 
@@ -58,12 +59,15 @@ namespace UnitTestNDBProject.Base
     [TestFixture]
     public class BaseTestClass
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         public IWebDriver driver;
         public BrowserType browser;
         public LoginPage LP;
         public SearchPage SP;
         public BasePageClass BPC;
         public HomePage HP;
+        public ScreenshotUtil SS;
+        
 
         public BaseTestClass(BrowserType brows)
         {
@@ -86,7 +90,9 @@ namespace UnitTestNDBProject.Base
             SP = new SearchPage(driver);
             BPC = new BasePageClass(driver);
             HP = new HomePage(driver);
+            SS = new ScreenshotUtil(driver);
             BPC.OpenURL();
+            _logger.Info($" :Successfully executed the BeforeClassInitialization() method for {this.GetType().Name}");
 
         }
 
@@ -95,6 +101,8 @@ namespace UnitTestNDBProject.Base
         public void AfterClassCLoseDriver()
         {
             driver.Quit();
+
+            _logger.Info($" :Successfully executed the AfterClassCLoseDriver() method for {this.GetType().Name}");
         }
 
 

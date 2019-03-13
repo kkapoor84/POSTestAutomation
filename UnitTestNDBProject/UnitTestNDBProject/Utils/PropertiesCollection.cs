@@ -10,6 +10,8 @@ namespace UnitTestNDBProject.Utils
 {
     public class PropertiesCollection
     {
+       
+
         public static IWebDriver driver { get; set; }
         public static LoginPage LP { get; set; }
     }

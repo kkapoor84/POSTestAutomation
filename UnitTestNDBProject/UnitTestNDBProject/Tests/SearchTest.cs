@@ -19,7 +19,7 @@ namespace UnitTestNDBProject.Tests
         {
         }
 
-        [Test, Order(1), Category("Regression")]
+        [Order(1), Category("Regression")]
         public void VerifyLogin()
         {
             //   PropertiesCollection.driver.Navigate().GoToUrl("https://www.google.com");

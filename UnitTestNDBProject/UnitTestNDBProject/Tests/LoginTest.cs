@@ -13,52 +13,53 @@ using static UnitTestNDBProject.Utils.TestConstant;
 
 
 [TestFixture]
-[Parallelizable]
+
 public class LoginTest : BaseTestClass
 {
-    ILog log = LogManager.GetLogger(typeof(LoginTest));
     public LoginTest() : base(BrowserType.Chrome)
     {
     }
 
-    [Test, Order(1), Category("Regression")]
-    public void VerifyLoginWithInValidCrdentails()
+
+    [Test, Category("Regression"),Category("Smoke"),Description("Validate that error message populates once user enter invalid credentials")]
+    public void A1_VerifyLoginWithInValidCrdentails()
     {
 
         try
         {
             GlobalSetup.test = GlobalSetup.extent.CreateTest("LoginInValidCredentials");
-            LP.Login("LoginScreen$", "InValid");
+            LP.Login("LoginScreen$", "InValidCredentials");
 
 
             Assert.True(LP.VerifyMessageInvalidCredentials(), "These credentials are correct");
         }
-        catch (Exception e)
+        catch (NoSuchElementException e)
         {
             GlobalSetup.test.Fail(e.StackTrace);
-            Assert.Fail("Exception Occurs" + e.StackTrace);
-            
+            SS.SaveScreenShot($"Failed Test{this.GetType().Name}");
+
+
         }
     }
 
-    [Test, Order(2), Category("Regression"), Category("Smoke")]
-    public void VerifyLoginWithValidCrdentails()
+    [Test,Category("Regression"), Category("Smoke"),Description("Validate that user is able to navigate to Home page using valid credentials")]
+    public void A2_VerifyLoginWithValidCrdentails()
     {
 
         try
         {
-            //log.Info("test valid started");
+
             GlobalSetup.test = GlobalSetup.extent.CreateTest("LoginValidCredentials");
-            LP.Login("LoginScreen$", "Valid");
-
-            Assert.True(HP.VerifyHomePageTitle());
-
+            LP.Login("LoginScreen$", "SAHUserValidCredentails");
+            HP.ClickShopAtHomeTab();
+            Assert.True(HP.VerifyShopAtHomeTabIsClicked());
             HP.Signout();
         }
-        catch (Exception e)
+        catch (NoSuchElementException e)
         {
+
             GlobalSetup.test.Fail(e.StackTrace);
-            Assert.Fail("Exception Occurs" + e.StackTrace);
+            SS.SaveScreenShot($"Failed Test{this.GetType().Name}");
         }
 
 

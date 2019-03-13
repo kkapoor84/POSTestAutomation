@@ -20,18 +20,22 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
-            LP.Login("LoginScreen$", "Valid");
+            LP.Login("LoginScreen$", "AccountUserValidCredentails");
 
         }
 
-        [Test, Description("Validate all the dashboard tabs are clickable")]
-        public void VerifyDashboardTabs()
+        [Test, Description("Validate all the Home Page tabs are clickable"),Category("Smoke"),Category("Regression")]
+        public void A3_VerifyHomePageTabs()
         {
-
+            HP.VerifyHomePageTitle();
             HP.ClickDashBoardTab();
             Assert.True(HP.VerifyDashBoardTabIsClicked());
             HP.ClickDepositSummaryTab();
             Assert.True(HP.VerifyDepositSummaryTabIsClicked());
+            HP.ClickResourcesTab();
+            Assert.True(HP.VerifyResourceTabIsClicked());
+            HP.ClickSettingTab();
+            Assert.True(HP.VerifySettingTabIsClicked());
 
         }
 

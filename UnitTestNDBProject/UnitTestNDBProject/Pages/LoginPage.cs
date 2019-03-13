@@ -19,8 +19,7 @@ namespace UnitTestNDBProject.Pages
 {
     public class LoginPage
     {
-        //test
-        public IWebDriver driver;
+       public IWebDriver driver;
 
         public LoginPage(IWebDriver driver)
         {
@@ -35,31 +34,15 @@ namespace UnitTestNDBProject.Pages
         public static By invalidcredentialmessage = By.XPath("//span[contains(text(),'User ID or Password are incorrect. Please try agai')]");
 
 
-
-
-        //public void Login(String Usern, String pwdn)
-        //{
-        //    _logger.Trace("Attempting to login");
-        //    PropertiesCollection.driver.Navigate().Refresh();
-        //    username.EnterText(Usern);
-        //    _logger.Info($"username is {Usern}");
-        //    pwd.EnterText(pwdn);
-        //    _logger.Info("password is {0}", pwdn);
-        //    loginButton.Clickme();
-
-
-        //}
-
-//branch kk
         public void Login(string sheetname, string testName)
         {
             _logger.Trace("Attempting to login");
             driver.Navigate().Refresh();
             var userData = ExcelDataAccess.GetTestData(sheetname, testName);
             username.EnterText(driver, userData.Username);
-            _logger.Info($"username is {userData.Username}");
+            _logger.Info($" :username is {userData.Username}");
             pwd.EnterText(driver, userData.Password);
-            _logger.Info("password is {0}", userData.Password);
+            _logger.Info(" :password is {0}", userData.Password);
             loginButton.Clickme(driver);
 
         }
@@ -72,10 +55,10 @@ namespace UnitTestNDBProject.Pages
 
             String ActualMessage = driver.FindElement(invalidcredentialmessage).Text;
             String ExpectedMessage = "User ID or Password are incorrect. Please try again or contact the NDB helpdesk";
-            // String ExpectedMessage = "YOUR";
-            if (ActualMessage.Contains(ExpectedMessage))
+             if (ActualMessage.Contains(ExpectedMessage))
             {
                 isMessagePopulate = true;
+                _logger.Info(" :Invalid Credentials");
             }
             return isMessagePopulate;
         }
