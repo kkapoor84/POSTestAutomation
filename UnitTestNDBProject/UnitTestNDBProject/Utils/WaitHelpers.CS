@@ -12,7 +12,7 @@ namespace UnitTestNDBProject.Utils
 {
     public static class WaitHelpers
     {
-        public static void WaitForElement(this IWebDriver driver, By bylocator)
+        public static void WaitForElement(this IWebDriver driver, IWebElement element)
         {
             // int timeOut = 12000;
             bool var;
@@ -22,9 +22,8 @@ namespace UnitTestNDBProject.Utils
             fluentWait.Timeout = TimeSpan.FromSeconds(30);
             fluentWait.PollingInterval = TimeSpan.FromMilliseconds(250);
             fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
-            IWebElement searchResult = fluentWait.Until(x => x.FindElement(bylocator));
+            IWebElement searchResult = fluentWait.Until(x => element);
 
-            // return var;
         }
 
         public static void WaitForElementToBecomeVisibleWithinTimeout(this IWebDriver driver, IWebElement element, int timeout)

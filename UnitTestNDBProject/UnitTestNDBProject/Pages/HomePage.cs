@@ -1,5 +1,6 @@
 ﻿using NLog;
 using OpenQA.Selenium;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,25 +14,54 @@ namespace UnitTestNDBProject.Pages
     public class HomePage
     {
         public IWebDriver driver;
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         public HomePage(IWebDriver driver)
         {
             this.driver = driver;
+            PageFactory.InitElements(driver, this);
+
         }
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
-        public static By DashBoardTab = By.XPath("//button[@name='Dashboard']");
-        public static By DepositSummaryTab = By.XPath("//button[@name='Deposit_Summary']");
-        public static By ShopAtHomeTab = By.XPath("//button[@name='Shop_At_Home']");
-        public static By ResourcesTab = By.XPath("//button[@name='Resources']");
-        public static By Settings = By.XPath("//button[@id='settingsTab']");
-        public static By DashBoardTabText = By.XPath("//div[contains(text(),'QUOTES')]");
-        public static By DepositSummaryText = By.XPath("//h2[contains(text(),'DEPOSIT SUMMARY')]");
-        public static By ResourcesTabText = By.XPath("//h2[contains(text(),'POS DOCUMENTS')]");
-        public static By SettingTabText = By.XPath("//h2[contains(text(),'DocuSign Consent')]");
-        public static By title = By.XPath("//h1[contains(text(),'Point of Sale Home Page')]");
-        public static By homeSignoutIcon = By.XPath("//i[@class='icon-account']");
-        public static By signoutButton = By.XPath("//a[contains(text(),'Log Out')]");
-        public static By SAPLead = By.XPath("//div[contains(text(),'LEADS')]");
+        [FindsBy(How = How.XPath, Using = "//button[@name='Dashboard']")]
+        public IWebElement DashBoardTab { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//button[@name='Deposit_Summary']")]
+        public IWebElement DepositSummaryTab { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//button[@name='Shop_At_Home']")]
+        public IWebElement ShopAtHomeTab { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//button[@name='Resources']")]
+        public IWebElement ResourcesTab { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//button[@id='settingsTab']")]
+        public IWebElement Settings { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'QUOTES')]")]
+        public IWebElement DashBoardTabText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h2[contains(text(),'DEPOSIT SUMMARY')]")]
+        public IWebElement DepositSummaryText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h2[contains(text(),'POS DOCUMENTS')]")]
+        public IWebElement ResourcesTabText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h2[contains(text(),'DocuSign Consent')]")]
+        public IWebElement SettingTabText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'Point of Sale Home Page')]")]
+        public IWebElement title { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//i[@class='icon-account']")]
+        public IWebElement homeSignoutIcon { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//a[contains(text(),'Log Out')]")]
+        public IWebElement signoutButton { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'LEADS')]")]
+        public IWebElement SAPLead { get; set; }
+
+
 
 
 
@@ -55,12 +85,12 @@ namespace UnitTestNDBProject.Pages
             signoutButton.Clickme(driver);
         }
 
-        public void ClickShopAtHomeTab()
+        public HomePage ClickShopAtHomeTab()
         {
-            driver.WaitForElement(ShopAtHomeTab);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(ShopAtHomeTab, 7000);
             ShopAtHomeTab.Clickme(driver);
-            driver.WaitForElement(SAPLead);
-
+            driver.WaitForElementToBecomeVisibleWithinTimeout(SAPLead, 7000);
+            return this;
 
         }
 
@@ -81,7 +111,7 @@ namespace UnitTestNDBProject.Pages
         public bool VerifyHomePageTitle()
         {
             _logger.Info($"Valid Credentials");
-            driver.WaitForElement(title);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(title,5000);
             bool isTitlePresent = false;
             String ActualValue = title.GetText(driver);
             String ExpectedValue = "Point of Sale Home Page";
@@ -130,7 +160,6 @@ namespace UnitTestNDBProject.Pages
 
         public bool VerifyShopAtHomeTabIsClicked()
         {
-            _logger.Info($"Valid Credentials");
             bool IsTextPresent1 = false;
 
             String Expected = "LEADS";

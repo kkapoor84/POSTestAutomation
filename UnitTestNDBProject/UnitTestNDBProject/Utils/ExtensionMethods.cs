@@ -10,15 +10,14 @@ namespace UnitTestNDBProject.Utils
 {
     public static class ExtensionMethods
     {
-        public static void EnterText(this By bylocator, IWebDriver driver, String value)
+        public static void EnterText(this IWebElement element, IWebDriver driver, String value)
         {
-            driver.FindElement(bylocator).SendKeys(value);
+            element.SendKeys(value);
         }
 
-
-        public static void Clickme(this By bylocator, IWebDriver driver)
+        public static void Clickme(this IWebElement element, IWebDriver driver)
         {
-            driver.FindElement(bylocator).Click();
+            element.Click();
         }
 
 
@@ -27,14 +26,14 @@ namespace UnitTestNDBProject.Utils
             new SelectElement(driver.FindElement(bylocator)).SelectByText(value);
         }
 
-        public static String GetText(this By bylocator, IWebDriver driver)
+        public static String GetText(this IWebElement element, IWebDriver driver)
         {
-            return driver.FindElement(bylocator).Text;
+            return element.Text;
         }
 
-        public static String GetTextDD(this By bylocator, IWebDriver driver)
+        public static String GetTextDD(this IWebElement element, IWebDriver driver)
         {
-            return new SelectElement(driver.FindElement(bylocator)).AllSelectedOptions.SingleOrDefault().Text;
+            return new SelectElement(element).AllSelectedOptions.SingleOrDefault().Text;
         }
     }
 

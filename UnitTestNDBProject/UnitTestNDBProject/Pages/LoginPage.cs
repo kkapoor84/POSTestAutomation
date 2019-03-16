@@ -1,66 +1,78 @@
 ﻿using NLog;
 using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using UnitTestNDBProject.Utils;
-using static UnitTestNDBProject.Utils.TestConstant;
-
-using OpenQA.Selenium.Support.PageObjects;
-using OpenQA.Selenium.Remote;
 using UnitTestNDBProject.TestDataAccess;
-using System.Configuration;
+using PageFactory = SeleniumExtras.PageObjects.PageFactory;
+using FindsByAttribute = SeleniumExtras.PageObjects.FindsByAttribute;
+using How = SeleniumExtras.PageObjects.How;
 using UnitTestNDBProject.Base;
 
 namespace UnitTestNDBProject.Pages
 {
-    public class LoginPage
+    public class LoginPage 
     {
-       public IWebDriver driver;
+        public IWebDriver driver;
 
         public LoginPage(IWebDriver driver)
         {
             this.driver = driver;
+            PageFactory.InitElements(driver, this);
 
         }
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        public static By username = By.CssSelector("#username");
-        public static By pwd = By.CssSelector("#password");
-        public static By loginButton = By.XPath("//button[@type='button']");
-        public static By invalidcredentialmessage = By.XPath("//span[contains(text(),'User ID or Password are incorrect. Please try agai')]");
+
+        [FindsBy(How = How.Id, Using = "username")]
+         public IWebElement username { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//input[@type='password']")]
+        public IWebElement pwd { get; set; }
 
 
-        public void Login(string sheetname, string testName)
+        [FindsBy(How = How.ClassName, Using = "btn-outline")]
+        public IWebElement loginButton { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'User ID or Password are incorrect. Please try again')]")]
+        public IWebElement invalidcredentialmessage { get; set; }
+
+
+        public LoginPage EnterUserName(string uname)
         {
-            _logger.Trace("Attempting to login");
             driver.Navigate().Refresh();
-            var userData = ExcelDataAccess.GetTestData(sheetname, testName);
-            username.EnterText(driver, userData.Username);
-            _logger.Info($" :username is {userData.Username}");
-            pwd.EnterText(driver, userData.Password);
-            _logger.Info(" :password is {0}", userData.Password);
-            loginButton.Clickme(driver);
+            username.SendKeys(uname);
+
+            return this;
 
         }
 
-       
-        public bool VerifyMessageInvalidCredentials()
+        public LoginPage EnterPassword(string password)
         {
-            driver.WaitForElement(invalidcredentialmessage);
+            pwd.SendKeys(password);
+            return this;
+
+        }
+        
+        public LoginPage ClickLoginButton()
+        {
+            loginButton.Clickme(driver);
+            return this;
+        }
+
+        public bool VerifyInvalidCredentialsAreDisplayed(string InvalidMesage)
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(invalidcredentialmessage,5000);
             bool isMessagePopulate = false;
 
-            String ActualMessage = driver.FindElement(invalidcredentialmessage).Text;
-            String ExpectedMessage = "User ID or Password are incorrect. Please try again or contact the NDB helpdesk";
-             if (ActualMessage.Contains(ExpectedMessage))
+            String ActualMessage = invalidcredentialmessage.Text;
+            String ExpectedMessage = InvalidMesage;
+
+            if (ActualMessage.Contains(ExpectedMessage))
             {
                 isMessagePopulate = true;
-                _logger.Info(" :Invalid Credentials");
             }
             return isMessagePopulate;
         }
+
     }
 }
