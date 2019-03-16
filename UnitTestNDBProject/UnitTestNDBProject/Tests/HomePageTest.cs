@@ -24,7 +24,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Description("Validate all the Home Page tabs are clickable"),Category("Smoke"),Category("Regression")]
+        [Description("Validate all the Home Page tabs are clickable"),Category("Smoke"),Category("Regression")]
         public void A3_VerifyHomePageTabs()
         {
             HP.VerifyHomePageTitle();
