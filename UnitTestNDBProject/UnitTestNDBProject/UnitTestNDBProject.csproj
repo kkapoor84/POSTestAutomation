@@ -133,12 +133,10 @@
   <ItemGroup>
     <Compile Include="Base\BaseTestClass.cs" />
     <Compile Include="Base\BasePageClass.cs" />
-    <Compile Include="Pages\EnterNewCustomerPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Pages\SearchPage.cs" />
     <Compile Include="TestDataAccess\ExcelDataAccess.cs" />
     <Compile Include="TestDataAccess\UserData.cs" />
-    <Compile Include="Tests\EnterNewCustomerTest.cs" />
     <Compile Include="Tests\HomePageTest.cs" />
     <Compile Include="Tests\SearchTest.cs" />
     <Compile Include="Utils\DateHelper.cs" />
