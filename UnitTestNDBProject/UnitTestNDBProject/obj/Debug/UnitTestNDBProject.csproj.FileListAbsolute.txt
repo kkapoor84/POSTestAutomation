@@ -180,4 +180,5 @@ D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestND
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csproj.CopyComplete
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.pdb
+D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\SeleniumExtras.PageObjects.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csprojAssemblyReference.cache
