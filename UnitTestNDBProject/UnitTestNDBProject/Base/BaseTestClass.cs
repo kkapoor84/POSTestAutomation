@@ -15,6 +15,7 @@ using UnitTestNDBProject.Pages;
 using System.Configuration;
 using System.IO;
 using NLog;
+using UnitTestNDBProject.TestDataAccess;
 
 [SetUpFixture]
 public class GlobalSetup
@@ -32,9 +33,10 @@ public class GlobalSetup
     [OneTimeSetUp]
     public void BeforeSuit()
     {
-        LogManager.Configuration.Variables["logdirectory"] = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\logs\\NdbPOS";
-        //"Environment.CurrentDirectory" Can be used//
-        string FilePath = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\Report\\EReport.html";
+        //LogManager.Configuration.Variables["logdirectory"] = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\logs\\NdbPOS";
+        LogManager.Configuration.Variables["logdirectory"] = "..\\UnitTestNDBProject\\UnitTestNDBProject\\logs\\NdbPOS";
+       // string FilePath = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\Report\\EReport.html";
+        string FilePath = "..\\UnitTestNDBProject\\UnitTestNDBProject\\Report\\EReport.html";
         htmlReporter = new ExtentHtmlReporter(FilePath);
         htmlReporter.Config.Theme = Theme.Dark;
         htmlReporter.Config.DocumentTitle = "Test Report | Khushboo Kapoor";
@@ -70,7 +72,7 @@ namespace UnitTestNDBProject.Base
         public HomePage HomePage_ { get; set; }
         public ScreenshotUtil ScreenshotUtil_ { get; set; }
         public LoginPage LoginPage_ { get; set; }
-
+        public SheetData sheetData;
 
         /// <summary>
         /// This method would be called before execution of each class
@@ -79,9 +81,12 @@ namespace UnitTestNDBProject.Base
 
         public void BeforeClassInitialization()
         {
+        
+
             if (ConfigurationManager.AppSettings["Browser"] == "Chrome")
             {
                 driver = new ChromeDriver();
+              
             }
             else if (ConfigurationManager.AppSettings["Browser"] == "Firefox")
             {
@@ -94,7 +99,6 @@ namespace UnitTestNDBProject.Base
             HomePage_ = new HomePage(driver);
             ScreenshotUtil_ = new ScreenshotUtil(driver);
 
-            ScreenshotUtil_.SaveScreenShot($"Failed Test{this.GetType().Name}");
             BasePageClass_.OpenURL();
 
             _logger.Info($" :Successfully executed the BeforeClassInitialization() method for {this.GetType().Name}");

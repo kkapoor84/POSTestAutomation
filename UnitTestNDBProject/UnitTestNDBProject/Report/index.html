@@ -53,7 +53,7 @@
           </li>
             <li class="m-r-10">
                 <a href="#">
-                    <span class="badge badge-primary">13-03-2019 19:45:49</span>
+                    <span class="badge badge-primary">22-03-2019 19:28:59</span>
                 </a>
             </li>
         </ul>
@@ -108,7 +108,7 @@
 											<i class="fa fa-exclamation-circle"></i>
 										</a>
 										<ul id="status-toggle" class="dropdown-menu dropdown-md p-v-0">
-<a status="pass" class="dropdown-item" href="#"><span>Pass</span><span class="status success pull-right"></span></a>																																																																		<div class="dropdown-divider"></div>
+											<a status="fail" class="dropdown-item" href="#"><span>Fail</span><span class="status danger pull-right"></span></a>																																																							<div class="dropdown-divider"></div>
 											<a status="clear" class="dropdown-item" href="#"><span>Clear</span><span class="pull-right"><i class="fa fa-close"></i></span></a>
 										</ul>
 									</li>
@@ -116,52 +116,57 @@
                             </div>
                             <div class="test-list-wrapper scrollable">
                                 <ul class="test-list-item">
-										<li class="test-item" status="pass" author="" device="" tag=""> 
-											<div class="status-avatar pass-bg">
-												<i class="fa fa-check text-white"></i>
+										<li class="test-item" status="fail" author="" device="" tag=""> 
+											<div class="status-avatar fail-bg">
+												<i class="fa fa-times text-white"></i>
 											</div>
 											<div class="open-test">
 												<div class="test-detail"> 
-													<p class="name">LoginInValidCredentials</p> 
-													<p class="duration text-sm">0h:0m:0s+000ms</p> 
-													<span class="datetime">19:46:01 PM</span>
+													<p class="name">A1_VerifyLoginWithInValidCredentails</p> 
+													<p class="duration text-sm">0h:0m:10s+016ms</p> 
+													<span class="datetime">19:29:12 PM</span>
 												</div>
 											</div>
 											<div class="test-contents d-none">
 												<div class="detail-head">
 													<div class="p-v-10 d-inline-block">	
 														<div class="info">
-															<h5 class="test-status text-pass">LoginInValidCredentials</h5>
-															<span class='badge badge-success'>13-03-2019 19:46:01</span>
-															<span class='badge badge-danger'>13-03-2019 19:46:01</span>
-															<span class='badge badge-default'>0h:0m:0s+000ms</span>
+															<h5 class="test-status text-fail">A1_VerifyLoginWithInValidCredentails</h5>
+															<span class='badge badge-success'>22-03-2019 19:29:12</span>
+															<span class='badge badge-danger'>22-03-2019 19:29:22</span>
+															<span class='badge badge-default'>0h:0m:10s+016ms</span>
 														</div>
 																											</div>
 												</div>
-											</div>
-										</li>
-										<li class="test-item" status="pass" author="" device="" tag=""> 
-											<div class="status-avatar pass-bg">
-												<i class="fa fa-check text-white"></i>
-											</div>
-											<div class="open-test">
-												<div class="test-detail"> 
-													<p class="name">LoginValidCredentials</p> 
-													<p class="duration text-sm">0h:0m:0s+000ms</p> 
-													<span class="datetime">19:46:10 PM</span>
-												</div>
-											</div>
-											<div class="test-contents d-none">
-												<div class="detail-head">
-													<div class="p-v-10 d-inline-block">	
-														<div class="info">
-															<h5 class="test-status text-pass">LoginValidCredentials</h5>
-															<span class='badge badge-success'>13-03-2019 19:46:10</span>
-															<span class='badge badge-danger'>13-03-2019 19:46:10</span>
-															<span class='badge badge-default'>0h:0m:0s+000ms</span>
-														</div>
-																											</div>
-												</div>
+<div class="detail-body mt-4">												
+	
+<table class="table table-sm">
+	<thead><tr>
+		<th class="status-col">Status</th>
+		<th class="timestamp-col">Timestamp</th>
+		<th class="details-col">Details</th>
+	</tr></thead>
+	<tbody>
+			<tr class="event-row">
+				<td><i class="fa fa-info text-info"></i></td>
+				<td>19:29:22</td>
+				<td>
+Expected: True
+  But was:  False
+  Expected: True
+  But was:  False									</td>
+			</tr>
+			<tr class="event-row">
+				<td><i class="fa fa-times text-fail"></i></td>
+				<td>19:29:22</td>
+				<td>
+Test ended with Fail  Expected: True
+  But was:  False									</td>
+			</tr>
+	</tbody>
+</table>
+
+</div>    
 											</div>
 										</li>
                                 </ul>    

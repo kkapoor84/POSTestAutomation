@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnitTestNDBProject.Utils;
+using SeleniumExtras.PageObjects;
 
 
 namespace UnitTestNDBProject.Utils
@@ -15,8 +17,6 @@ namespace UnitTestNDBProject.Utils
         public static void WaitForElement(this IWebDriver driver, IWebElement element)
         {
             // int timeOut = 12000;
-            bool var;
-            var = true;
 
             DefaultWait<IWebDriver> fluentWait = new DefaultWait<IWebDriver>(driver);
             fluentWait.Timeout = TimeSpan.FromSeconds(30);
@@ -28,15 +28,16 @@ namespace UnitTestNDBProject.Utils
 
         public static void WaitForElementToBecomeVisibleWithinTimeout(this IWebDriver driver, IWebElement element, int timeout)
         {
+           // Thread.Sleep(5000);
             new WebDriverWait(driver, TimeSpan.FromSeconds(timeout)).Until(ActionHelper.ElementIsVisible(element));
         }
 
 
 
         // Explicit Wait
-        public static void ExplicitWait()
+        public static void ExplicitWait(IWebDriver driver)
         { 
-        WebDriverWait wait = new WebDriverWait(PropertiesCollection.driver, TimeSpan.FromSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         IWebElement navList = wait.Until<IWebElement>((d) =>
         {
             return d.FindElement(By.Id("navlist"));
@@ -50,12 +51,12 @@ namespace UnitTestNDBProject.Utils
         }
 
 
-        public static void waitForElementtobevisible( this IWebDriver driver, By bylocator, long timeout)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-            wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(bylocator));
-            //	Log.info("element found..."+element.getText());
-        }
+        //public static void waitForElementtobevisible( this IWebDriver driver, By bylocator, long timeout)
+        //{
+        //    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
+        //    wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(bylocator));
+        //    //	Log.info("element found..."+element.getText());
+        //}
 
     }
 }

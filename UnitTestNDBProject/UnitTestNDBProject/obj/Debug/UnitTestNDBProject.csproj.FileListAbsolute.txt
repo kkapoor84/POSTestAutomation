@@ -134,6 +134,7 @@ D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\U
 D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.dll
 D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.pdb
 D:\Forrester\NDBPOS-AUTOMATION\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csprojAssemblyReference.cache
+D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csproj.CoreCompileInputs.cache
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
@@ -144,7 +145,6 @@ D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\UnitTestND
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Dapper.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\DnsClient.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\ExtentReports.dll
-D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\log4net.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\MongoDB.Bson.dll
@@ -154,6 +154,7 @@ D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Newtonsoft
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\NLog.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\nunit.framework.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\RazorEngine.dll
+D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\SeleniumExtras.PageObjects.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\System.Buffers.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\System.Web.Razor.dll
@@ -161,7 +162,6 @@ D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\WebDriver.
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\WebDriver.Support.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Dapper.xml
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\DnsClient.xml
-D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\log4net.xml
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\MongoDB.Bson.xml
@@ -176,9 +176,7 @@ D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\RazorEngin
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\System.Web.Razor.xml
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\WebDriver.xml
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\WebDriver.Support.xml
-D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csproj.CoreCompileInputs.cache
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csproj.CopyComplete
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.pdb
-D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\bin\Debug\SeleniumExtras.PageObjects.dll
 D:\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\obj\Debug\UnitTestNDBProject.csprojAssemblyReference.cache

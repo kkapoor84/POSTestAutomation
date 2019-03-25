@@ -64,8 +64,8 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElementToBecomeVisibleWithinTimeout(invalidcredentialmessage,5000);
             bool isMessagePopulate = false;
 
-            String ActualMessage = invalidcredentialmessage.Text;
-            String ExpectedMessage = InvalidMesage;
+            string ActualMessage = invalidcredentialmessage.Text;
+            string ExpectedMessage = InvalidMesage;
 
             if (ActualMessage.Contains(ExpectedMessage))
             {

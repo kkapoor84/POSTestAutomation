@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Threading;
 using UnitTestNDBProject.Base;
-using log4net;
-using static UnitTestNDBProject.Utils.TestConstant;
 using UnitTestNDBProject.TestDataAccess;
 using AventStack.ExtentReports;
 using NUnit.Framework.Interfaces;
@@ -22,26 +20,26 @@ public class LoginTest : BaseTestClass
     }
 
     [Test, Category("Regression"),Category("Smoke"),Description("Validate that error message populates once user enter invalid credentials")]
-    public void A1_VerifyLoginWithInValidCrdentails()
+    public void A1_VerifyLoginWithInValidCredentails()
     {
-        UserData userData = ExcelDataAccess.GetTestData("LoginScreen$", "InValidCredentials");
+        SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "InValidCredentials");
 
 
-        LoginPage_.EnterUserName(userData.Username).EnterPassword(userData.Password).ClickLoginButton();
-        _logger.Info($": Successfully Entered invalid username {userData.Username}and password {userData.Password} and clicked on login button");
+        LoginPage_.EnterUserName(sheetData.Username).EnterPassword(sheetData.Password).ClickLoginButton();
+        _logger.Info($": Successfully Entered invalid username {sheetData.Username}and password {sheetData.Password} and clicked on login button");
 
-        Assert.True(LoginPage_.VerifyInvalidCredentialsAreDisplayed("User ID or Password are incorrect. Please try again or contact the NDB helpdesk"));
-        _logger.Info($": Successfully Verified the message displayed after entering invalid username {userData.Username} and password {userData.Password}");
+        Assert.True(LoginPage_.VerifyInvalidCredentialsAreDisplayed("Aser ID or Password are incorrect. Please try again or contact the NDB helpdesk"));
+        _logger.Info($": Successfully Verified the message displayed after entering invalid username {sheetData.Username} and password {sheetData.Password}");
     }
     
 
     [Test,Category("Regression"), Category("Smoke"),Description("Validate that user is able to navigate to Home page using valid credentials")]
     public void A2_VerifyLoginWithValidCrdentails()
     {
-        UserData userData = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
+        SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
 
-        LoginPage_.EnterUserName(userData.Username).EnterPassword(userData.Password).ClickLoginButton();
-        _logger.Info($": Successfully Entered valid username {userData.Username} and password {userData.Password} and clicked on login button");
+        LoginPage_.EnterUserName(sheetData.Username).EnterPassword(sheetData.Password).ClickLoginButton();
+        _logger.Info($": Successfully Entered valid username {sheetData.Username} and password {sheetData.Password} and clicked on login button");
 
         HomePage_.ClickShopAtHomeTab();
         _logger.Info($": Successfully CLicked on Shop at Home Tab on homepage");
@@ -65,10 +63,10 @@ public class LoginTest : BaseTestClass
         switch (status)
         {
             case TestStatus.Failed:
+                ScreenshotUtil_.SaveScreenShot($"Failed Test{this.GetType().Name}");
                 driver.Navigate().Refresh();
                 Thread.Sleep(5000);
                 logstatus = Status.Fail;
-                ScreenshotUtil_.SaveScreenShot($"Failed Test{this.GetType().Name}");
                 GlobalSetup.test.Log(Status.Info, stacktrace + errorMessage);
                 break;
             case TestStatus.Inconclusive:
