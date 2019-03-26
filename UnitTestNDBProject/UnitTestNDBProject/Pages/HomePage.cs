@@ -87,7 +87,7 @@ namespace UnitTestNDBProject.Pages
 
         public HomePage ClickShopAtHomeTab()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(ShopAtHomeTab, 7000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(ShopAtHomeTab, 5000);
             ShopAtHomeTab.Clickme(driver);
             driver.WaitForElementToBecomeVisibleWithinTimeout(SAPLead, 7000);
             return this;
