@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static UnitTestNDBProject.Utils.PropertiesCollection;
+
 
 namespace UnitTestNDBProject.Utils
 {
@@ -15,6 +15,7 @@ namespace UnitTestNDBProject.Utils
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static String QuoteManagementButton1 = ".//*[contains(text(),'%s')]";
+
 
 
         public static Func<IWebDriver, bool> ElementIsVisible(this IWebElement element)
@@ -36,13 +37,13 @@ namespace UnitTestNDBProject.Utils
         }
 
 
-        public static bool isPresent(this By bylocator)
+        public static bool isPresent(this By bylocator,IWebDriver driver)
         {
 
             bool variable = false;
             try
             {
-                IWebElement element = PropertiesCollection.driver.FindElement(bylocator);
+                IWebElement element = driver.FindElement(bylocator);
                 variable = element != null;
             }
             catch (NoSuchElementException)
@@ -52,18 +53,29 @@ namespace UnitTestNDBProject.Utils
             return variable;
         }
 
-        public static bool DoesWebElementExist(string linkexist)
-        {
-            try
-            {
-                PropertiesCollection.driver.FindElement(By.XPath(linkexist));
-                return true;
-            }
-            catch (NoSuchElementException e)
-            {
-                return false;
-            }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="linkexist"></param>
+        /// <returns></returns>
+        //public static bool DoesWebElementExist(string linkexist, IWebDriver driver)
+        //{
+        //    try
+        //    {
+        //        driver.FindElement(By.XPath(linkexist));
+        //        return true;
+        //    }
+        //    catch (NoSuchElementException e)
+        //    {
+        //        return false;
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        //Add logging code
+
+        //        return false;
+        //    }
+        //}
         public static bool IsElementDisplayed_Generic_Login(this IWebDriver driver, By bylocator)
         {
             try
@@ -83,17 +95,17 @@ namespace UnitTestNDBProject.Utils
         }
 
 
-        public static bool isElementPresent(By fieldLocator)
+        public static bool isElementPresent(By fieldLocator, IWebDriver driver)
         {
             try
             {
                 _logger.Debug("Element: " + fieldLocator);
-                PropertiesCollection.driver.FindElement(fieldLocator);
+                driver.FindElement(fieldLocator);
 
             }
             catch (Exception Ex)
             {
-                _logger.Debug("Unable to locate Element: " + fieldLocator);
+                _logger.Debug("Unable to locate Element: " + fieldLocator +Ex.StackTrace);
                 return false;
             }
             return true;
@@ -109,10 +121,10 @@ namespace UnitTestNDBProject.Utils
 
 
 
-        public static bool CheckButtonFunctionalityEnabled(String LocatorName)
+        public static bool CheckButtonFunctionalityEnabled(String LocatorName, IWebDriver driver)
         {
             By text = DynamicXpath(QuoteManagementButton1, LocatorName);
-            return PropertiesCollection.driver.FindElement(text).Enabled;
+            return driver.FindElement(text).Enabled;
 
         }
 

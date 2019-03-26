@@ -26,6 +26,7 @@ namespace UnitTestNDBProject.Utils
         public void SaveScreenShot(string screenshotFirstName)
         {
              var folderLocation = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\ScreenShot\\";
+           // var folderLocation = "..\\UnitTestNDBProject\\UnitTestNDBProject\\ScreenShot\\";
             if (!Directory.Exists(folderLocation))
             {
                 Directory.CreateDirectory(folderLocation);

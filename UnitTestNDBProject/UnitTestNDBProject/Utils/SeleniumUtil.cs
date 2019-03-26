@@ -30,7 +30,8 @@ namespace UnitTestNDBProject.Utils
                 }
                 catch (ThreadInterruptedException e)
                 {
-                    _logger.Info("caught");
+                    _logger.Info("caught" + e.StackTrace);
+
                 }
                 if (js.ExecuteScript("return document.readyState").ToString().Equals("complete"))
                 {
