@@ -28,7 +28,7 @@ public class LoginTest : BaseTestClass
         LoginPage_.EnterUserName(sheetData.Username).EnterPassword(sheetData.Password).ClickLoginButton();
         _logger.Info($": Successfully Entered invalid username {sheetData.Username}and password {sheetData.Password} and clicked on login button");
 
-        Assert.True(LoginPage_.VerifyInvalidCredentialsAreDisplayed("Aser ID or Password are incorrect. Please try again or contact the NDB helpdesk"));
+        Assert.True(LoginPage_.VerifyInvalidCredentialsAreDisplayed("User ID or Password are incorrect. Please try again or contact the NDB helpdesk"));
         _logger.Info($": Successfully Verified the message displayed after entering invalid username {sheetData.Username} and password {sheetData.Password}");
     }
     
