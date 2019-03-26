@@ -33,10 +33,10 @@ public class GlobalSetup
     [OneTimeSetUp]
     public void BeforeSuit()
     {
-        //LogManager.Configuration.Variables["logdirectory"] = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\logs\\NdbPOS";
-        LogManager.Configuration.Variables["logdirectory"] = "..\\UnitTestNDBProject\\UnitTestNDBProject\\logs\\NdbPOS";
-       // string FilePath = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\Report\\EReport.html";
-        string FilePath = "..\\UnitTestNDBProject\\UnitTestNDBProject\\Report\\EReport.html";
+        LogManager.Configuration.Variables["logdirectory"] = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\logs\\NdbPOS";
+       // LogManager.Configuration.Variables["logdirectory"] = "..\\UnitTestNDBProject\\UnitTestNDBProject\\logs\\NdbPOS";
+        string FilePath = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\Report\\EReport.html";
+       // string FilePath = "..\\UnitTestNDBProject\\UnitTestNDBProject\\Report\\EReport.html";
         htmlReporter = new ExtentHtmlReporter(FilePath);
         htmlReporter.Config.Theme = Theme.Dark;
         htmlReporter.Config.DocumentTitle = "Test Report | Khushboo Kapoor";
