@@ -12,7 +12,7 @@ namespace UnitTestNDBProject.TestDataAccess
         public static string TestDataFileConnection()
         {
 
-            string fileName = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\UnitTestNDBProject\\UnitTestNDBProject\\TestDataAccess\\TestData.xlsx";
+            string fileName = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\UnitTestNDBProject\\TestDataAccess\\TestData.xlsx";
             // string fileName = "..\\UnitTestNDBProject\\UnitTestNDBProject\\TestDataAccess\\TestData.xlsx";
 
             //var fileName = ConfigurationManager.AppSettings["TestDataSheetPath"];
