@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,8 @@ using UnitTestNDBProject.Utils;
 
 namespace UnitTestNDBProject.Pages
 {
-    public class EnterNewCustomerPage {
+    public class EnterNewCustomerPage
+    {
         public IWebDriver driver;
 
         public EnterNewCustomerPage(IWebDriver driver)
@@ -23,39 +25,71 @@ namespace UnitTestNDBProject.Pages
         }
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private Actions builder;
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='main - header']/div/div[2]/div/div/button")]
+        //Actions builder = new Actions(driver);
+
+
+        [FindsBy(How = How.ClassName, Using = "customer-section")]
         public IWebElement enterNewCustomer { get; set; }
 
-        [FindsBy(How = How.Name, Using = "firstName")]
+        [FindsBy(How = How.Id, Using = "firstName")]
         public IWebElement firstName { get; set; }
+
         [FindsBy(How = How.Name, Using = "lastName")]
         public IWebElement lastname { get; set; }
+
         [FindsBy(How = How.Name, Using = "phoneLists[0].Phone")]
         public IWebElement phonenumber { get; set; }
-        [FindsBy(How = How.Id, Using = "react-select-18--value")]
+
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"react-select-4--value\"]/div[1]")]
+        //*[@id="react-select-4--value"]/div[1]
+        public IWebElement phoneTypeDropDown { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='phoneLists[0].phoneType']")]
+        //*[@id="react-select-4--value"]/div[1]
+        public IWebElement phoneTypeDropDown2 { get; set; }
+
+        /// <summary>
+        /// Phone Type
+        /// </summary>
+        [FindsBy(How = How.Name, Using = "Select is-clearable is-searchable Select--single")]
         public IWebElement phonetype { get; set; }
+
+        /// <summary>
+        /// Save Button
+        /// </summary>
         [FindsBy(How = How.Id, Using = "btnSaveUpper")]
         public IWebElement saveButton { get; set; }
+
+        /// <summary>
+        /// Continue With Existing Customer
+        /// </summary>
+
         [FindsBy(How = How.Id, Using = "btnContinue")]
         public IWebElement continueWithNewCustomer { get; set; }
 
 
-        [FindsBy(How = How.Id, Using = "contactEdit")]
+        [FindsBy(How = How.ClassName, Using = "contactEdit")]
         public IWebElement EditButton { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='customerHeaderWithDoc']/div/div/div[2]/div/div[2]/div/span")]
-        public IWebElement noOpenActivityText { get; set; }
+        [FindsBy(How = How.XPath, Using = "//*[@id='customerHeaderWithDoc']/div/div/div[2]/div/div[2]/div/h5")]
+        public IWebElement OpenActivityText { get; set; }
+
+
+        public Actions Builder { get => builder; set => builder = value; }
 
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
-            Thread.Sleep(2000);
+            
+            driver.WaitForElementToBecomeVisibleWithinTimeout(enterNewCustomer, 10000);
             enterNewCustomer.Clickme(driver);
             return this;
         }
 
         public EnterNewCustomerPage EnterFirstName(string fname)
         {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(firstName, 10000);
             firstName.SendKeys(fname);
             return this;
         }
@@ -71,36 +105,45 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        public EnterNewCustomerPage SelectPhoneType(string phonetype)
+        {
+            Actions actions = new Actions(driver);
+            actions.SendKeys(this.phoneTypeDropDown, phonetype).Build().Perform();
+            phoneTypeDropDown2.SendKeys(Keys.Enter);
+            return this;
+        }
+
         public EnterNewCustomerPage ClickSaveButton()
         {
-            enterNewCustomer.Clickme(driver);
+
+            saveButton.Clickme(driver);
+            return this;
+
+        }
+
+        public EnterNewCustomerPage ContinueNewCustomerCreation()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(continueWithNewCustomer, 10000);
+            continueWithNewCustomer.Clickme(driver);
             return this;
         }
 
 
-        
 
-        public EnterNewCustomerPage SelectPhoneType(string ptype)
+        public bool VerifyCustomerCreation(String ValidMessage)
         {
-            return this;
-        }
-        public bool VerifyCustomerCreation(string InvalidMesage)
-        {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(EditButton, 5000);
-            bool isMessagePopulate = false;
-
-            string ActualMessage = noOpenActivityText.Text;
-            string ExpectedMessage = InvalidMesage;
-
-            if (ActualMessage.Contains(ExpectedMessage))
+            driver.WaitForElementToBecomeVisibleWithinTimeout(OpenActivityText, 5000);
+            bool noActivityVerification = false;
+            String ActualValue = OpenActivityText.GetText(driver);
+            if (ActualValue.Contains(ValidMessage))
             {
-                isMessagePopulate = true;
+                noActivityVerification = true;
+                _logger.Info($" Customer Created Successfully");
             }
-            return isMessagePopulate;
+            return noActivityVerification;
         }
-    }
 
-   
+    }
    
 
 }
