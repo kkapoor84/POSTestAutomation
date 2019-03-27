@@ -37,15 +37,17 @@ namespace UnitTestNDBProject.Tests
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A3_VerifyCustomerCreation()
         {
-
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.firstName).EnterLastName(sheetData.lastName).EnterPhoneNumber(sheetData.phoneNumber);
             EnterNewCustomerPage_.SelectPhoneType(sheetData.phoneType).ClickSaveButton().ContinueNewCustomerCreation();
             _logger.Info($": Successfully Entered First Name {sheetData.firstName}, Last Name {sheetData.lastName} , Phone Number {sheetData.phoneNumber} and Phone Type {sheetData.phoneType}");
-
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
-          // Assert.AreEqual(true,driver.Ed)
-            //_logger.Info($": Successfully Verified the message displayed after entering invalid username {sheetData.Username} and password {sheetData.Password}");
+        }
+
+        [Test, Category("Regression"), Category("Smoke"), Description("Customer Page is view Only")]
+        public void A4_VerifyCustomerPageTurnViewOnly()
+        {
+            Assert.True(EnterNewCustomerPage_.VerifyEditButtonAvailable());
         }
 
         public void teardown()

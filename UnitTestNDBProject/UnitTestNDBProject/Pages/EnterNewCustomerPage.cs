@@ -70,7 +70,7 @@ namespace UnitTestNDBProject.Pages
         public IWebElement continueWithNewCustomer { get; set; }
 
 
-        [FindsBy(How = How.ClassName, Using = "contactEdit")]
+        [FindsBy(How = How.Id, Using = "contactEdit")]
         public IWebElement EditButton { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='customerHeaderWithDoc']/div/div/div[2]/div/div[2]/div/h5")]
@@ -141,6 +141,20 @@ namespace UnitTestNDBProject.Pages
                 _logger.Info($" Customer Created Successfully");
             }
             return noActivityVerification;
+        }
+
+        public bool VerifyEditButtonAvailable()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditButton, 5000);
+            bool editButtonAvailibility = false;
+            if (EditButton.Displayed)
+            {
+                editButtonAvailibility = true;
+                _logger.Info($" Edit Button is Available");
+            }
+
+            return editButtonAvailibility;
+            
         }
 
     }
