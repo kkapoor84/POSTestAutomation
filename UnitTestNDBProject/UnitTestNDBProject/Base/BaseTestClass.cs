@@ -72,6 +72,7 @@ namespace UnitTestNDBProject.Base
         public HomePage HomePage_ { get; set; }
         public ScreenshotUtil ScreenshotUtil_ { get; set; }
         public LoginPage LoginPage_ { get; set; }
+        public EnterNewCustomerPage EnterNewCustomerPage_ { get; set; }
         public SheetData sheetData;
 
         /// <summary>
@@ -98,6 +99,7 @@ namespace UnitTestNDBProject.Base
             BasePageClass_ = new BasePageClass(driver);
             HomePage_ = new HomePage(driver);
             ScreenshotUtil_ = new ScreenshotUtil(driver);
+            EnterNewCustomerPage_ = new EnterNewCustomerPage(driver);
 
             BasePageClass_.OpenURL();
 
