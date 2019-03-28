@@ -25,8 +25,6 @@ namespace UnitTestNDBProject.Pages
         }
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        private Actions builder;
-        private int numberOfCharacters;
 
         //Actions builder = new Actions(driver);
 
@@ -34,11 +32,18 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.ClassName, Using = "customer-section")]
         public IWebElement enterNewCustomer { get; set; }
 
+        /// <summary>
+        /// Enter First NAme and last Name of cutstomer.
+        /// </summary>
+
         [FindsBy(How = How.Id, Using = "firstName")]
         public IWebElement firstName { get; set; }
 
         [FindsBy(How = How.Name, Using = "lastName")]
         public IWebElement lastname { get; set; }
+        /// <summary>
+        /// Add Phone Details of Customer
+        /// </summary>
 
         [FindsBy(How = How.Name, Using = "phoneLists[0].Phone")]
         public IWebElement phonenumber { get; set; }
@@ -49,9 +54,7 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//*[@id='phoneLists[0].phoneType']")]
         public IWebElement phoneTypeDropDown2 { get; set; }
 
-        /// <summary>
-        /// Phone Type
-        /// </summary>
+        
         [FindsBy(How = How.Name, Using = "Select is-clearable is-searchable Select--single")]
         public IWebElement phonetype { get; set; }
 
@@ -87,7 +90,7 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//*[@id='customerHeaderWithDoc']/div/div/div[2]/div/div[2]/div/h5")]
         public IWebElement OpenActivityText { get; set; }
 
-        //public string emailAddress(int numberOfCharacters)
+
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
             
@@ -95,6 +98,12 @@ namespace UnitTestNDBProject.Pages
             enterNewCustomer.Clickme(driver);
             return this;
         }
+
+        /// <summary>
+        /// Functions to Enter FirstName and LastName
+        /// </summary>
+        /// <param name="fname"></param>
+        /// <returns></returns>
 
         public EnterNewCustomerPage EnterFirstName(string fname)
         {
@@ -109,7 +118,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
         /// <summary>
-        /// PhoneSection
+        /// Functions to Enter Phone Number
         /// </summary>
         /// <returns></returns>
 
@@ -133,15 +142,22 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Functions to Enter Email Address
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+
         public EnterNewCustomerPage AddEmailAddress(string email)
         {
-
-            //var characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
-            //var random = new Random();
-            //var EmailAddress = new string(Enumerable.Repeat(characters, numberOfCharacters).Select(s => s[random.Next(s.Length)]).ToArray());
             emailAddress.SendKeys(email);
             return this;
         }
+
+        /// <summary>
+        /// Functions to Save Customer
+        /// </summary>
+        /// <returns></returns>
 
         public EnterNewCustomerPage ClickSaveButton()
         {
@@ -150,6 +166,10 @@ namespace UnitTestNDBProject.Pages
             return this;
 
         }
+        /// <summary>
+        /// Functions to continue with new customer
+        /// </summary>
+        /// <returns></returns>
 
         public EnterNewCustomerPage ContinueNewCustomerCreation()
         {
@@ -158,7 +178,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-
+        /// <summary>
+        /// Verify Customer Creation is scuccessful.
+        /// </summary>
+        /// <param name="ValidMessage"></param>
+        /// <returns></returns>
 
         public bool VerifyCustomerCreation(String ValidMessage)
         {
@@ -172,7 +196,10 @@ namespace UnitTestNDBProject.Pages
             }
             return noActivityVerification;
         }
-
+        /// <summary>
+        /// Verify Customer Page is read only.
+        /// </summary>
+        /// <returns></returns>
         public bool VerifyEditButtonAvailable()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(EditButton, 5000);

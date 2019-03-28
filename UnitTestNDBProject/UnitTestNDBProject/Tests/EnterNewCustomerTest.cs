@@ -36,10 +36,10 @@ namespace UnitTestNDBProject.Tests
         {
             Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.firstName).EnterLastName(sheetData.lastName).EnterPhoneNumber(sheetData.phoneNumber1);
-            EnterNewCustomerPage_.SelectPhoneType(sheetData.phoneType1).AddEmailAddress(sheetData.emailAddress1+random.Next(100)+"@nextdayblinds.com");
-            EnterNewCustomerPage_.ClickSaveButton().ContinueNewCustomerCreation();
-            _logger.Info($": Successfully Entered First Name {sheetData.firstName}, Last Name {sheetData.lastName} , Phone Number {sheetData.phoneNumber1} and Phone Type {sheetData.phoneType1}");
+            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.firstName).EnterLastName(sheetData.lastName).EnterPhoneNumber(sheetData.phoneNumber1)
+                .SelectPhoneType(sheetData.phoneType1).AddEmailAddress(sheetData.emailAddress1+random.Next(100)+"@nextdayblinds.com")
+                .ClickSaveButton().ContinueNewCustomerCreation();
+            _logger.Info($": Successfully Entered First Name {sheetData.firstName}, Last Name {sheetData.lastName} , Phone Number {sheetData.phoneNumber1} and Phone Type {sheetData.phoneType1}, email { sheetData.emailAddress1}");
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
         }
 
