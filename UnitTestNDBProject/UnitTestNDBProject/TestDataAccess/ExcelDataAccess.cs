@@ -13,8 +13,8 @@ namespace UnitTestNDBProject.TestDataAccess
         {
 
             //string fileName = Directory.GetCurrentDirectory() + "\\UnitTestNDBProject\\UnitTestNDBProject\\TestDataAccess\\TestData.xlsx";
-            string fileName = "..\\UnitTestNDBProject\\UnitTestNDBProject\\TestDataAccess\\TestData.xlsx";
-            // string fileName = ConfigurationManager.AppSettings["TestDataSheetPath"];
+            //string fileName = "..\\UnitTestNDBProject\\UnitTestNDBProject\\TestDataAccess\\TestData.xlsx";
+             string fileName = ConfigurationManager.AppSettings["TestDataSheetPath"];
             string con = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + fileName + "';Extended Properties=\"Excel 8.0; HDR=Yes;\";";
 
             return con;
