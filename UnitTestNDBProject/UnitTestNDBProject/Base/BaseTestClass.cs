@@ -39,8 +39,8 @@ public class GlobalSetup
        // string FilePath = "..\\UnitTestNDBProject\\UnitTestNDBProject\\Report\\EReport.html";
         htmlReporter = new ExtentHtmlReporter(FilePath);
         htmlReporter.Config.Theme = Theme.Dark;
-        htmlReporter.Config.DocumentTitle = "Test Report | Khushboo Kapoor";
-        htmlReporter.Config.ReportName = "KK Test Report | Khushboo Kapoor";
+        htmlReporter.Config.DocumentTitle = "Test Report | Point Of Sales";
+        htmlReporter.Config.ReportName = "POS Test Report | Point Of Sales";
         extent = new ExtentReports();
         extent.AttachReporter(htmlReporter);
         _logger.Info(" :Successfully executed the BeforeSuit() method of " + this.GetType().Name);
@@ -72,6 +72,7 @@ namespace UnitTestNDBProject.Base
         public HomePage HomePage_ { get; set; }
         public ScreenshotUtil ScreenshotUtil_ { get; set; }
         public LoginPage LoginPage_ { get; set; }
+        public EnterNewCustomerPage EnterNewCustomerPage_ { get; set; }
         public SheetData sheetData;
 
         /// <summary>
@@ -98,6 +99,7 @@ namespace UnitTestNDBProject.Base
             BasePageClass_ = new BasePageClass(driver);
             HomePage_ = new HomePage(driver);
             ScreenshotUtil_ = new ScreenshotUtil(driver);
+            EnterNewCustomerPage_ = new EnterNewCustomerPage(driver);
 
             BasePageClass_.OpenURL();
 

@@ -21,9 +21,9 @@ namespace UnitTestNDBProject.Utils
         }
 
 
-        public static void SelectDropDown(this By bylocator, IWebDriver driver, String value)
+        public static void SelectDropDown(this IWebElement element, IWebDriver driver, String value)
         {
-            new SelectElement(driver.FindElement(bylocator)).SelectByText(value);
+            new SelectElement(element).SelectByText(value);
         }
 
         public static String GetText(this IWebElement element, IWebDriver driver)
