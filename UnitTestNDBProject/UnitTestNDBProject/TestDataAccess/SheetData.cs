@@ -11,15 +11,15 @@ namespace UnitTestNDBProject.TestDataAccess
         public string Key { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string phoneNumber1 { get; set; }
-        public string phoneType1 { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber1 { get; set; }
+        public string PhoneType1 { get; set; }
 
-        public string phoneNumber2 { get; set; }
-        public string phoneType2 { get; set; }
+        public string PhoneNumber2 { get; set; }
+        public string PhoneType2 { get; set; }
 
-        public string emailAddress1 { get; set; }
+        public string EmailAddress1 { get; set; }
     }
 
 }

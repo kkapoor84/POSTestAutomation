@@ -16,7 +16,7 @@ namespace UnitTestNDBProject.Tests
     [TestFixture]
     class EnterNewCustomerTest : BaseTestClass
     {
-        private static Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         [SetUp]
         public void Setup()
@@ -36,10 +36,10 @@ namespace UnitTestNDBProject.Tests
         {
             Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.firstName).EnterLastName(sheetData.lastName).EnterPhoneNumber(sheetData.phoneNumber1)
-                .SelectPhoneType(sheetData.phoneType1).AddEmailAddress(sheetData.emailAddress1+random.Next(100)+"@nextdayblinds.com")
+            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName).EnterPhoneNumber(sheetData.PhoneNumber1)
+                .SelectPhoneType(sheetData.PhoneType1).AddEmailAddress(sheetData.EmailAddress1+random.Next(100)+"@nextdayblinds.com")
                 .ClickSaveButton().ContinueNewCustomerCreation();
-            _logger.Info($": Successfully Entered First Name {sheetData.firstName}, Last Name {sheetData.lastName} , Phone Number {sheetData.phoneNumber1} and Phone Type {sheetData.phoneType1}, email { sheetData.emailAddress1}");
+            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number {sheetData.PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email { sheetData.EmailAddress1}");
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
         }
 

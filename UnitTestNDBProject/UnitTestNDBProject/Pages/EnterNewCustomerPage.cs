@@ -26,24 +26,16 @@ namespace UnitTestNDBProject.Pages
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        //Actions builder = new Actions(driver);
-
 
         [FindsBy(How = How.ClassName, Using = "customer-section")]
         public IWebElement enterNewCustomer { get; set; }
 
-        /// <summary>
-        /// Enter First NAme and last Name of cutstomer.
-        /// </summary>
 
         [FindsBy(How = How.Id, Using = "firstName")]
         public IWebElement firstName { get; set; }
 
         [FindsBy(How = How.Name, Using = "lastName")]
         public IWebElement lastname { get; set; }
-        /// <summary>
-        /// Add Phone Details of Customer
-        /// </summary>
 
         [FindsBy(How = How.Name, Using = "phoneLists[0].Phone")]
         public IWebElement phonenumber { get; set; }
@@ -61,31 +53,18 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "idAddPhone")]
         public IWebElement addPhone { get; set; }
 
-        /// <summary>
-        /// Add email address to customer 
-        /// </summary>
-
         [FindsBy(How = How.Id, Using = "emailList[0].Email")]
         public IWebElement emailAddress { get; set; }
 
-        /// <summary>
-        /// Save Button
-        /// </summary>
         [FindsBy(How = How.Id, Using = "btnSaveUpper")]
         public IWebElement saveButton { get; set; }
-
-        /// <summary>
-        /// Continue With Existing Customer
-        /// </summary>
 
         [FindsBy(How = How.Id, Using = "btnContinue")]
         public IWebElement continueWithNewCustomer { get; set; }
 
-
         [FindsBy(How = How.Id, Using = "contactEdit")]
         public IWebElement EditButton { get; set; }
 
-        
 
         [FindsBy(How = How.XPath, Using = "//*[@id='customerHeaderWithDoc']/div/div/div[2]/div/div[2]/div/h5")]
         public IWebElement OpenActivityText { get; set; }
@@ -100,7 +79,7 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
-        /// Functions to Enter FirstName and LastName
+        /// Functions to Enter First Name
         /// </summary>
         /// <param name="fname"></param>
         /// <returns></returns>
@@ -111,6 +90,11 @@ namespace UnitTestNDBProject.Pages
             firstName.SendKeys(fname);
             return this;
         }
+        /// <summary>
+        /// Functions to Enter Last Name
+        /// </summary>
+        /// <param name="lname"></param>
+        /// <returns></returns>
 
         public EnterNewCustomerPage EnterLastName(string lname)
         {
@@ -128,6 +112,12 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Functions to Enter Phone Type
+        /// </summary>
+        /// <param name="phonetype"></param>
+        /// <returns></returns>
+
         public EnterNewCustomerPage SelectPhoneType(string phonetype)
         {
             Actions actions = new Actions(driver);
@@ -136,6 +126,10 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Functions to Add Phone
+        /// </summary>
+        /// <returns></returns>
         public EnterNewCustomerPage AddPhoneNumber()
         {
             addPhone.Clickme(driver);
@@ -150,6 +144,7 @@ namespace UnitTestNDBProject.Pages
 
         public EnterNewCustomerPage AddEmailAddress(string email)
         {
+
             emailAddress.SendKeys(email);
             return this;
         }
@@ -158,6 +153,7 @@ namespace UnitTestNDBProject.Pages
         /// Functions to Save Customer
         /// </summary>
         /// <returns></returns>
+        /// 
 
         public EnterNewCustomerPage ClickSaveButton()
         {
