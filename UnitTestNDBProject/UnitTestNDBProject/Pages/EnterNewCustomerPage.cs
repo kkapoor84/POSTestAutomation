@@ -26,6 +26,7 @@ namespace UnitTestNDBProject.Pages
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private Actions builder;
+        private int numberOfCharacters;
 
         //Actions builder = new Actions(driver);
 
@@ -43,11 +44,9 @@ namespace UnitTestNDBProject.Pages
         public IWebElement phonenumber { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id=\"react-select-4--value\"]/div[1]")]
-        //*[@id="react-select-4--value"]/div[1]
         public IWebElement phoneTypeDropDown { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='phoneLists[0].phoneType']")]
-        //*[@id="react-select-4--value"]/div[1]
         public IWebElement phoneTypeDropDown2 { get; set; }
 
         /// <summary>
@@ -55,6 +54,16 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         [FindsBy(How = How.Name, Using = "Select is-clearable is-searchable Select--single")]
         public IWebElement phonetype { get; set; }
+
+        [FindsBy(How = How.Id, Using = "idAddPhone")]
+        public IWebElement addPhone { get; set; }
+
+        /// <summary>
+        /// Add email address to customer 
+        /// </summary>
+
+        [FindsBy(How = How.Id, Using = "emailList[0].Email")]
+        public IWebElement emailAddress { get; set; }
 
         /// <summary>
         /// Save Button
@@ -73,12 +82,12 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "contactEdit")]
         public IWebElement EditButton { get; set; }
 
+        
+
         [FindsBy(How = How.XPath, Using = "//*[@id='customerHeaderWithDoc']/div/div/div[2]/div/div[2]/div/h5")]
         public IWebElement OpenActivityText { get; set; }
 
-
-        public Actions Builder { get => builder; set => builder = value; }
-
+        //public string emailAddress(int numberOfCharacters)
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
             
@@ -99,6 +108,11 @@ namespace UnitTestNDBProject.Pages
             lastname.SendKeys(lname);
             return this;
         }
+        /// <summary>
+        /// PhoneSection
+        /// </summary>
+        /// <returns></returns>
+
         public EnterNewCustomerPage EnterPhoneNumber(string phone)
         {
             phonenumber.SendKeys(phone);
@@ -110,6 +124,22 @@ namespace UnitTestNDBProject.Pages
             Actions actions = new Actions(driver);
             actions.SendKeys(this.phoneTypeDropDown, phonetype).Build().Perform();
             phoneTypeDropDown2.SendKeys(Keys.Enter);
+            return this;
+        }
+
+        public EnterNewCustomerPage AddPhoneNumber()
+        {
+            addPhone.Clickme(driver);
+            return this;
+        }
+
+        public EnterNewCustomerPage AddEmailAddress(string email)
+        {
+
+            //var characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
+            //var random = new Random();
+            //var EmailAddress = new string(Enumerable.Repeat(characters, numberOfCharacters).Select(s => s[random.Next(s.Length)]).ToArray());
+            emailAddress.SendKeys(email);
             return this;
         }
 
@@ -147,7 +177,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(EditButton, 5000);
             bool editButtonAvailibility = false;
-            if (EditButton.Displayed)
+            if (EditButton.Enabled)
             {
                 editButtonAvailibility = true;
                 _logger.Info($" Edit Button is Available");

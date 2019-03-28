@@ -29,18 +29,17 @@ namespace UnitTestNDBProject.Tests
         {
             SheetData sheetData1 = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
             LoginPage_.EnterUserName(sheetData1.Username).EnterPassword(sheetData1.Password).ClickLoginButton();
-
-            //driver.WaitForElement(enterNewCustomer);
-            //enterNewCustomer.Clickme(driver);
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A3_VerifyCustomerCreation()
         {
+            Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.firstName).EnterLastName(sheetData.lastName).EnterPhoneNumber(sheetData.phoneNumber);
-            EnterNewCustomerPage_.SelectPhoneType(sheetData.phoneType).ClickSaveButton().ContinueNewCustomerCreation();
-            _logger.Info($": Successfully Entered First Name {sheetData.firstName}, Last Name {sheetData.lastName} , Phone Number {sheetData.phoneNumber} and Phone Type {sheetData.phoneType}");
+            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.firstName).EnterLastName(sheetData.lastName).EnterPhoneNumber(sheetData.phoneNumber1);
+            EnterNewCustomerPage_.SelectPhoneType(sheetData.phoneType1).AddEmailAddress(sheetData.emailAddress1+random.Next(100)+"@nextdayblinds.com");
+            EnterNewCustomerPage_.ClickSaveButton().ContinueNewCustomerCreation();
+            _logger.Info($": Successfully Entered First Name {sheetData.firstName}, Last Name {sheetData.lastName} , Phone Number {sheetData.phoneNumber1} and Phone Type {sheetData.phoneType1}");
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
         }
 

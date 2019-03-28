@@ -13,8 +13,13 @@ namespace UnitTestNDBProject.TestDataAccess
         public string Password { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
-        public string phoneNumber { get; set; }
-        public string phoneType { get; set; }
+        public string phoneNumber1 { get; set; }
+        public string phoneType1 { get; set; }
+
+        public string phoneNumber2 { get; set; }
+        public string phoneType2 { get; set; }
+
+        public string emailAddress1 { get; set; }
     }
 
 }
