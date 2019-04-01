@@ -37,7 +37,7 @@ namespace UnitTestNDBProject.Tests
 
 
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        public void A3_VerifyCustomerCreation()
+        public void A4_VerifyCustomerCreation()
         {
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
 
@@ -71,7 +71,7 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Customer Page is view Only")]
-        public void A4_VerifyCustomerPageTurnViewOnly()
+        public void A5_VerifyCustomerPageTurnViewOnly()
         {
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
 
@@ -80,7 +80,7 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Customer is created with correct firstname and lastname")]
-        public void A5_VerifyNewlyCreatedCustomerInformation()
+        public void A6_VerifyNewlyCreatedCustomerInformation()
         {
             Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(PreservedCustomerInformation_.firstName));
             _logger.Info($":Verified that New customer having first name {PreservedCustomerInformation_.firstName} is created successfully");
