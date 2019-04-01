@@ -74,10 +74,18 @@ namespace UnitTestNDBProject.Tests
         public void A4_VerifyCustomerPageTurnViewOnly()
         {
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            Assert.True(EnterNewCustomerPage_.VerifyEditButtonAvailable());
-            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(PreservedCustomerInformation_.firstName));
-            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(PreservedCustomerInformation_.lastName));
 
+            Assert.True(EnterNewCustomerPage_.VerifyEditButtonAvailable());
+            _logger.Info($":Verified that Edit button is present on the screeen");
+        }
+
+        [Test, Category("Regression"), Category("Smoke"), Description("Customer is created with correct firstname and lastname")]
+        public void A5_VerifyNewlyCreatedCustomerInformation()
+        {
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(PreservedCustomerInformation_.firstName));
+            _logger.Info($":Verified that New customer having first name {PreservedCustomerInformation_.firstName} is created successfully");
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(PreservedCustomerInformation_.lastName));
+            _logger.Info($":Verified that New customer having last name {PreservedCustomerInformation_.lastName} is created successfully");
         }
 
         public void teardown()
