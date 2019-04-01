@@ -31,8 +31,14 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "firstName")]
         public IWebElement firstName { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")]
+        public IWebElement ViewOnlyfirstName { get; set; }
+
         [FindsBy(How = How.Name, Using = "lastName")]
         public IWebElement lastname { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")]
+        public IWebElement ViewOnlylastname { get; set; }
 
         [FindsBy(How = How.Name, Using = "phoneLists[0].Phone")]
         public IWebElement phonenumber { get; set; }
@@ -262,8 +268,7 @@ namespace UnitTestNDBProject.Pages
         public bool VerifCustomerIsCreatedWithValidFirstName(String ExpFirstName)
         {
             bool IsFirstName = false;
-            IWebElement ele = driver.FindElement(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']"));
-            String ActualFirstName = ele.GetText(driver);
+            String ActualFirstName = ViewOnlyfirstName.GetText(driver);
 
             if (ExpFirstName.Contains(ActualFirstName))
             {
@@ -276,8 +281,7 @@ namespace UnitTestNDBProject.Pages
         public bool VerifCustomerIsCreatedWithValidLastName(String ExpLastName)
         {
             bool IsLastName = false;
-            IWebElement ele = driver.FindElement(By.XPath("//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']"));
-            String ActualLastName = ele.GetText(driver);
+            String ActualLastName = ViewOnlylastname.GetText(driver);
 
             if (ExpLastName.Contains(ActualLastName))
             {
