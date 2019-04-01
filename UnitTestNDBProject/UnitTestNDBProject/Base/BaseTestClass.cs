@@ -40,8 +40,8 @@ public class GlobalSetup
        // string FilePath = "..\\UnitTestNDBProject\\UnitTestNDBProject\\Report\\EReport.html";
         htmlReporter = new ExtentHtmlReporter(FilePath);
         htmlReporter.Config.Theme = Theme.Dark;
-        htmlReporter.Config.DocumentTitle = "Test Report | Khushboo Kapoor";
-        htmlReporter.Config.ReportName = "KK Test Report | Khushboo Kapoor";
+        htmlReporter.Config.DocumentTitle = "Test Report | Point Of Sales";
+        htmlReporter.Config.ReportName = "POS Test Report | Point Of Sales";
         extent = new ExtentReports();
         extent.AttachReporter(htmlReporter);
         _logger.Info(" :Successfully executed the BeforeSuit() method of " + this.GetType().Name);
