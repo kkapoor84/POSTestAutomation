@@ -37,7 +37,7 @@ namespace UnitTestNDBProject.Tests
             Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-                .EnterPhoneNumber(sheetData.PhoneNumber1 + random.Next(1000000000)).SelectPhoneType(sheetData.PhoneType1).EnterPhoneNumber2(sheetData.PhoneNumber2 + random.Next(1000000000)).SelectPhoneType2(sheetData.PhoneType2)
+                .EnterPhoneNumber(2)//.SelectPhoneType(sheetData.PhoneType1).SelectPhoneType2(sheetData.PhoneType2)
                 .AddEmailAddress(sheetData.EmailAddress1 + random.Next(100) + "@nextdayblinds.com").AddEmailAddress2(sheetData.EmailAddress2 + random.Next(1000) + "@nextdayblinds.com")
                 .ClickSaveButton().ContinueNewCustomerCreation();
             _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number {sheetData.PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email { sheetData.EmailAddress1}");

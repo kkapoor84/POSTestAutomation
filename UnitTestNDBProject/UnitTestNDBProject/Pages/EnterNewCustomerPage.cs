@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UnitTestNDBProject.TestDataAccess;
 using UnitTestNDBProject.Utils;
 
 namespace UnitTestNDBProject.Pages
@@ -37,11 +38,11 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Name, Using = "lastName")]
         public IWebElement lastname { get; set; }
 
-        [FindsBy(How = How.Name, Using = "phoneLists[0].Phone")]
-        public IWebElement phonenumber { get; set; }
+        //[FindsBy(How = How.Name, Using = "phoneLists[0].Phone")]
+        //public IWebElement phonenumber { get; set; }
 
-        [FindsBy(How = How.Name, Using = "phoneLists[1].Phone")]
-        public IWebElement phonenumber1 { get; set; }
+        //[FindsBy(How = How.Name, Using = "phoneLists[1].Phone")]
+        //public IWebElement phonenumber1 { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id=\"react-select-4--value\"]/div[1]")]
         public IWebElement phoneTypeDropDown { get; set; }
@@ -59,8 +60,8 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Name, Using = "Select is-clearable is-searchable Select--single")]
         public IWebElement phonetype { get; set; }
 
-        [FindsBy(How = How.Id, Using = "idAddPhone")]
-        public IWebElement addPhone { get; set; }
+        //[FindsBy(How = How.Id, Using = "idAddPhone")]
+        //public IWebElement addPhone { get; set; }
 
         [FindsBy(How = How.Id, Using = "emailList[0].Email")]
         public IWebElement emailAddress { get; set; }
@@ -140,16 +141,79 @@ namespace UnitTestNDBProject.Pages
             lastname.SendKeys(lname);
             return this;
         }
+               
+        public EnterNewCustomerPage loopEntryPhone(string phone, int i)
+        {
+            //*[@id='phoneLists[0].phoneType']
+          //  string strPhoneType = "phoneLists[" + i + "].phoneType";
+            string strMyXPath = "phoneLists[" + i + "].Phone";
+                driver.FindElement(By.Id(strMyXPath)).SendKeys(phone);
+          //*  Actions actions = new Actions(driver);
+            //actions.SendKeys(this.strPhoneType, phonetype).Build().Perform();
+            //strPhoneType.SendKeys(Keys.Enter);
+            return this;
+                       
+        }
+
+        public EnterNewCustomerPage loopAddPhone()
+        {
+
+            //string strMyXPath = "phoneLists[" + i + "].Phone";
+            //driver.FindElement(By.Id(strMyXPath)).SendKeys(phone);
+            driver.FindElement(By.Id("idAddPhone")).Clickme(driver);
+            return this;
+
+        }
+
+        public EnterNewCustomerPage SelectPhoneType(string phonetype)
+        {
+            //*[@id='phoneLists[0].phoneType']"
+            //*[@id=\"react-select-7--value\"]/div[1]
+            Actions actions = new Actions(driver);
+            actions.SendKeys(phoneTypeDropDown2, phonetype).Build().Perform();
+            phoneTypeDropDown2.SendKeys(Keys.Enter);
+            //addPhone.Clickme(driver);
+            return this;
+
+        }
+
+        public EnterNewCustomerPage EnterPhoneNumber(int j)
+        {
+            Random random = new Random();
+            SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
+            for (int i = 0; i < j; i++)
+            {
+                
+                loopEntryPhone(sheetData.PhoneNumber1 + random.Next(1000000000), i);
+                if(i==0)
+                {
+                    SelectPhoneType(sheetData.PhoneType1);
+                }
+                else if(i==1)
+                {
+                    SelectPhoneType(sheetData.PhoneType2);
+                }
+                
+                if (i == (j-i))
+                {
+                    break;
+                }
+                loopAddPhone();
+                            }
+            return this;
+
+        }
+
         /// <summary>
         /// Functions to Enter Phone Number 1
         /// </summary>
         /// <returns></returns>
 
-        public EnterNewCustomerPage EnterPhoneNumber(string phone)
-        {
-            phonenumber.SendKeys(phone);
-            return this;
-        }
+        //public EnterNewCustomerPage EnterPhoneNumber(string phone)
+        //{
+        //    phonenumber.SendKeys(phone);
+        //    return this;
+        //}
 
         /// <summary>
         /// Functions to Enter Phone Number 2
@@ -157,11 +221,11 @@ namespace UnitTestNDBProject.Pages
         /// <param name="phone"></param>
         /// <returns></returns>
 
-        public EnterNewCustomerPage EnterPhoneNumber2(string phone)
-        {
-            phonenumber1.SendKeys(phone);
-            return this;
-        }
+        //public EnterNewCustomerPage EnterPhoneNumber2(string phone)
+        //{
+        //    phonenumber1.SendKeys(phone);
+        //    return this;
+        //}
 
         /// <summary>
         /// Functions to Enter Phone Type 1
@@ -169,15 +233,7 @@ namespace UnitTestNDBProject.Pages
         /// <param name="phonetype"></param>
         /// <returns></returns>
 
-        public EnterNewCustomerPage SelectPhoneType(string phonetype)
-        {
-            Actions actions = new Actions(driver);
-            actions.SendKeys(this.phoneTypeDropDown, phonetype).Build().Perform();
-            phoneTypeDropDown2.SendKeys(Keys.Enter);
-            addPhone.Clickme(driver);
-            return this;
-
-        }
+       
 
         /// <summary>
         /// Functions to Enter Phone Type 2
