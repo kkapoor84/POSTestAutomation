@@ -11,19 +11,7 @@ namespace UnitTestNDBProject.TestDataAccess
         public string Key { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-<<<<<<< .mine
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PhoneNumber1 { get; set; }
-        public string PhoneType1 { get; set; }
 
-        public string PhoneNumber2 { get; set; }
-        public string PhoneType2 { get; set; }
-
-        public string EmailAddress1 { get; set; }
-
-
-=======
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber1 { get; set; }
@@ -35,8 +23,6 @@ namespace UnitTestNDBProject.TestDataAccess
         public string EmailAddress1 { get; set; }
         public string EmailAddress2 { get; set; }
 
->>>>>>> .theirs
     }
-
 }
 
