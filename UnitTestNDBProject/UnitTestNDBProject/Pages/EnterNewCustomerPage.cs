@@ -38,11 +38,11 @@ namespace UnitTestNDBProject.Pages
         public IWebElement phonenumber { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id=\"react-select-4--value\"]/div[1]")]
-        //*[@id="react-select-4--value"]/div[1]
+
         public IWebElement phoneTypeDropDown { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//*[@id='phoneLists[0].phoneType']")]
-        //*[@id="react-select-4--value"]/div[1]
+
         public IWebElement phoneTypeDropDown2 { get; set; }
 
         [FindsBy(How = How.Name, Using = "Select is-clearable is-searchable Select--single")]
@@ -81,6 +81,35 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//*[@id='customerHeaderWithDoc']/div/div/div[2]/div/div[2]/div/h5")]
         public IWebElement OpenActivityText { get; set; }
 
+        
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Add Address')]")]
+        public IWebElement AddAddress { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnUseCorrectedAddress")]
+        public IWebElement CorrectedAddressbutton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "emailList[0].Email")]
+        public IWebElement emailAddress { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#checkbox-TaxExempt")]
+        public IWebElement TaxCheckBox { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#taxIdNumber1")]
+        public IWebElement TaxIDNumber { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//input[@id='exemptStateAbbreviation1']")]
+        public IWebElement TaxState { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//input[@id='doesNotExpire1']")]
+        public IWebElement DoesntExpire { get; set; }
+
+
+        
+
+
+
+
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
 
@@ -110,7 +139,7 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage SelectPhoneType(string phonetype)
         {
             Actions actions_ = new Actions(driver);
-            actions_.SendKeys(this.phoneTypeDropDown, phonetype).Build().Perform();
+            actions_.SendKeys(this.phoneTypeDropDown2, phonetype).Build().Perform();
             phoneTypeDropDown2.SendKeys(Keys.Enter);
             return this;
         }
@@ -125,7 +154,9 @@ namespace UnitTestNDBProject.Pages
 
         public EnterNewCustomerPage ClickOnAddressLine1()
         {
+            Thread.Sleep(2000);
             addressLine1.Clickme(driver);
+            
             return this;
         }
 
@@ -169,15 +200,96 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-    public EnterNewCustomerPage enterZip(String Zip)
+        public EnterNewCustomerPage SelectTaxState(String taxstatevalue)
+        {
+
+
+            Actions actions_ = new Actions(driver);
+            actions_.SendKeys(this.TaxState, taxstatevalue).Build().Perform();
+            TaxState.SendKeys(Keys.Enter);
+            return this;
+        }
+
+        public EnterNewCustomerPage enterZip(String Zip)
     {
         zip.SendKeys(Zip);
             _logger.Info("entering zip...." + Zip);
             return this;
         }
 
+        public EnterNewCustomerPage ClickOnAddAddressPlusButton()
+        {
+            AddAddress.Clickme(driver);
+            Thread.Sleep(2000);
+            return this;
+        }
 
-    public bool VerifyCustomerCreation(String ValidMessage)
+        public EnterNewCustomerPage ClickOnCorrectedAddressButtonOnSmartyStreet()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CorrectedAddressbutton, 10000);
+            CorrectedAddressbutton.Clickme(driver);
+            return this;
+        }
+
+        public EnterNewCustomerPage AddEmailAddress(string email)
+        {
+
+            emailAddress.SendKeys(email);
+            return this;
+        }
+
+        public EnterNewCustomerPage ClickTaxExemptionCheckBox()
+        {
+
+            TaxCheckBox.Clickme(driver);
+            return this;
+        }
+
+        public EnterNewCustomerPage EnterTaxIDNumber (string taxid)
+        {
+
+            TaxIDNumber.SendKeys(taxid);
+            return this;
+        }
+
+        public EnterNewCustomerPage ClickDoesntExpireCheckBox()
+        {
+
+            DoesntExpire.Clickme(driver);
+            return this;
+        }
+
+        public bool VerifCustomerIsCreatedWithValidFirstName(String ExpFirstName)
+        {
+            bool IsFirstName = false;
+            IWebElement ele = driver.FindElement(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']"));
+            String ActualFirstName = ele.GetText(driver);
+
+            if (ExpFirstName.Contains(ActualFirstName))
+            {
+                IsFirstName = true;
+            }
+            
+            return IsFirstName;
+        }
+
+        public bool VerifCustomerIsCreatedWithValidLastName(String ExpLastName)
+        {
+            bool IsLastName = false;
+            IWebElement ele = driver.FindElement(By.XPath("//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']"));
+            String ActualLastName = ele.GetText(driver);
+
+            if (ExpLastName.Contains(ActualLastName))
+            {
+                IsLastName = true;
+            }
+
+            return IsLastName;
+        }
+
+
+
+        public bool VerifyCustomerCreation(String ValidMessage)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(OpenActivityText, 5000);
             bool noActivityVerification = false;

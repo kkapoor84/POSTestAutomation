@@ -20,7 +20,7 @@ public class LoginTest : BaseTestClass
     }
 
     [Test, Category("Regression"),Category("Smoke"),Description("Validate that error message populates once user enter invalid credentials")]
-    public void A1_VerifyLoginWithInValidCredentails()
+    public void A2_VerifyLoginWithInValidCredentails()
     {
         SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "InValidCredentials");
 
@@ -34,7 +34,7 @@ public class LoginTest : BaseTestClass
     
 
     [Test,Category("Regression"), Category("Smoke"),Description("Validate that user is able to navigate to Home page using valid credentials")]
-    public void A2_VerifyLoginWithValidCrdentails()
+    public void A1_VerifyLoginWithValidCrdentails()
     {
         SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
 
