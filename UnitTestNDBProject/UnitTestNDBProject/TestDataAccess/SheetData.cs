@@ -20,6 +20,8 @@ namespace UnitTestNDBProject.TestDataAccess
         public string PhoneType2 { get; set; }
 
         public string EmailAddress1 { get; set; }
+        public string EmailAddress2 { get; set; }
+
     }
 
 }
