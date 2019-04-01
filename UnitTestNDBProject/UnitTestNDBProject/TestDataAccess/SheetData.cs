@@ -12,33 +12,33 @@ namespace UnitTestNDBProject.TestDataAccess
         public string Key { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string phoneNumber1 { get; set; }
-        public string phoneType1 { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber1 { get; set; }
+        public string PhoneType1 { get; set; }
         public string EmailAddress1 { get; set; }
 
         
-        public string addressline1 { get; set; }
-        public string addressline2 { get; set; }
-        public string city { get; set; }
-        public string state { get; set; }
-        public string zipcode { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
 
-        public string taxidnumber { get; set; }
+        public string TaxIdNumber { get; set; }
 
-        public string taxstate { get; set; }
+        public string TaxState { get; set; }
 
 
         public String FistNameUnique()
         {
-            String FirstUniqueName = firstName + random.Next(1, 100); ;
+            String FirstUniqueName = FirstName + random.Next(1, 100); ;
             return FirstUniqueName;
         }
 
         public String LastNameUnique()
         {
-            String LastUniqueName = lastName + random.Next(1, 100);
+            String LastUniqueName = LastName + random.Next(1, 100);
             return LastUniqueName;
         }
 

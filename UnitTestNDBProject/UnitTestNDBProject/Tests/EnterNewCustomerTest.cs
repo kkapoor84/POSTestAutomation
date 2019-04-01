@@ -44,22 +44,22 @@ namespace UnitTestNDBProject.Tests
             PreservedCustomerInformation_.firstName = sheetData.FistNameUnique();
             PreservedCustomerInformation_.lastName = sheetData.LastNameUnique();
 
-            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(PreservedCustomerInformation_.firstName).EnterLastName(PreservedCustomerInformation_.lastName).EnterPhoneNumber(sheetData.phoneNumber1).SelectPhoneType(sheetData.phoneType1).AddEmailAddress(sheetData.EmailAddressUnique());
-            _logger.Info($": Successfully Entered First Name {sheetData.FistNameUnique()}, Last Name {sheetData.LastNameUnique()} , Phone Number {sheetData.phoneNumber1} , Phone Type {sheetData.phoneType1} and email adress {sheetData.EmailAddressUnique()}");
+            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(PreservedCustomerInformation_.firstName).EnterLastName(PreservedCustomerInformation_.lastName).EnterPhoneNumber(sheetData.PhoneNumber1).SelectPhoneType(sheetData.PhoneType1).AddEmailAddress(sheetData.EmailAddressUnique());
+            _logger.Info($": Successfully Entered First Name {sheetData.FistNameUnique()}, Last Name {sheetData.LastNameUnique()} , Phone Number {sheetData.PhoneNumber1} , Phone Type {sheetData.PhoneType1} and email adress {sheetData.EmailAddressUnique()}");
 
             EnterNewCustomerPage_.ClickOnAddressLine1().ContinueNewCustomerCreation();
             _logger.Info(": Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button");
 
-            EnterNewCustomerPage_.EnterAddressLine1(sheetData.addressline1).EnterCity(sheetData.city).SelectState(sheetData.state).enterZip(sheetData.zipcode);
-            _logger.Info($": Customer First Address: Successfully Entered AddressLine1 {sheetData.addressline1},EnterCity {sheetData.city} ,SelectState {sheetData.state} , enterZip {sheetData.zipcode} ");
+            EnterNewCustomerPage_.EnterAddressLine1(sheetData.AddressLine1).EnterCity(sheetData.City).SelectState(sheetData.State).enterZip(sheetData.ZipCode);
+            _logger.Info($": Customer First Address: Successfully Entered AddressLine1 {sheetData.AddressLine1},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode} ");
 
             SheetData sheetData1 = ExcelDataAccess.GetTestData("UserCreationData$", "customer1address2");
 
-            EnterNewCustomerPage_.ClickOnAddAddressPlusButton().EnterAddressLine1(sheetData1.addressline1).EnterCity(sheetData1.city).SelectState(sheetData1.state).enterZip(sheetData1.zipcode);
-            _logger.Info($": Customer Second Address: Successfully Entered AddressLine1 {sheetData.addressline1},EnterCity {sheetData.city} ,SelectState {sheetData.state} , enterZip {sheetData.zipcode}");
+            EnterNewCustomerPage_.ClickOnAddAddressPlusButton().EnterAddressLine1(sheetData1.AddressLine1).EnterCity(sheetData1.City).SelectState(sheetData1.State).enterZip(sheetData1.ZipCode);
+            _logger.Info($": Customer Second Address: Successfully Entered AddressLine1 {sheetData.AddressLine1},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode}");
 
-            EnterNewCustomerPage_.ClickTaxExemptionCheckBox().EnterTaxIDNumber(sheetData1.taxidnumber).SelectTaxState(sheetData1.taxstate).ClickDoesntExpireCheckBox();
-            _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData1.taxidnumber} ,SelectTaxState {sheetData1.taxstate} and ClickDoesntExpireCheckBox");
+            EnterNewCustomerPage_.ClickTaxExemptionCheckBox().EnterTaxIDNumber(sheetData1.TaxIdNumber).SelectTaxState(sheetData1.TaxState).ClickDoesntExpireCheckBox();
+            _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData1.TaxIdNumber} ,SelectTaxState {sheetData1.TaxState} and ClickDoesntExpireCheckBox");
 
             EnterNewCustomerPage_.ClickSaveButton().ClickOnCorrectedAddressButtonOnSmartyStreet().ContinueNewCustomerCreation();
             _logger.Info($":Successfully Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
