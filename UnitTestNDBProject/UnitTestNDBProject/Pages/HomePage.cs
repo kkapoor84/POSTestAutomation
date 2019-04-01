@@ -68,13 +68,11 @@ namespace UnitTestNDBProject.Pages
         public void ClickDashBoardTab()
         {
 
-            driver.WaitForElement(DashBoardTab);
-            DashBoardTab.Clickme(driver);
+           DashBoardTab.Clickme(driver);
         }
 
         public void ClickDepositSummaryTab()
         {
-            driver.WaitForElement(DepositSummaryTab);
             DepositSummaryTab.Clickme(driver);
         }
 
@@ -97,25 +95,19 @@ namespace UnitTestNDBProject.Pages
 
         public void ClickResourcesTab()
         {
-
-            driver.WaitForElement(ResourcesTab);
             ResourcesTab.Clickme(driver);
         }
 
         public void ClickSettingTab()
         {
-
-            driver.WaitForElement(Settings);
-            Settings.Clickme(driver);
+           Settings.Clickme(driver);
         }
-        public bool VerifyHomePageTitle()
+        public bool VerifyHomePageTitle(String ExpectedTitle)
         {
-            _logger.Info($"Valid Credentials");
             driver.WaitForElementToBecomeVisibleWithinTimeout(title,5000);
             bool isTitlePresent = false;
             String ActualValue = title.GetText(driver);
-            String ExpectedValue = "Point of Sale Home Page";
-            if (ActualValue.Contains(ExpectedValue))
+            if (ActualValue.Contains(ExpectedTitle))
             {
                 isTitlePresent = true;
                 _logger.Info($" :Verified the home page title on {this.GetType().Name}");
