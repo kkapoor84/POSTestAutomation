@@ -33,13 +33,18 @@ namespace UnitTestNDBProject.Pages
         {
             Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
+            string num1 = sheetData.PhoneNumber1Unique();
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-               // .EnterPhoneNumber(sheetData.PhoneNumber1 + random.Next(1000000000)).SelectPhoneType(sheetData.PhoneType1).EnterPhoneNumber(sheetData.PhoneNumber2 + random.Next(1000000000)).SelectPhoneType2(sheetData.PhoneType2)
-                .AddEmailAddress(sheetData.EmailAddress1 + random.Next(100) + "@nextdayblinds.com").AddEmailAddress2(sheetData.EmailAddress2 + random.Next(1000) + "@nextdayblinds.com")
-                .ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion().ClickEditSaveButton();
+                .EnterPhone(num1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2, 1)
+                .AddEmailAddress(sheetData.EmailAddress1Unique(), 0).AddEmailAddress(sheetData.EmailAddress2Unique(), 1)
+                .ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();//.ClickEditSaveButton();
             _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number {sheetData.PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email_1 { sheetData.EmailAddress1},email_2 { sheetData.EmailAddress1}");
             
-            Assert.True(EnterNewCustomerPage_.VerifyEditButtonAvailable());
+          // Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber());
+            _logger.Info(num1);
+            Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(num1));
+
+            EnterNewCustomerPage_.ClickEditSaveButton();
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Verify Green bar is Displayed.")]

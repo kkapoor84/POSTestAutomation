@@ -103,7 +103,7 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")]
         public IWebElement LastNameText { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='col-sm-4 col-md-4']//span[@class='form-value']")]
+        [FindsBy(How = How.XPath, Using = "//*[@id='customerPage']/div/div/form/div[1]/div/div[1]/div/div/div[2]/div/div[3]/div/div/div[2]/div[1]/div[1]")]
         public IWebElement PhoneNumberText { get; set; }
 
         //*[@id="customerPage"]/div/div/form/div[1]/div/div[1]/div/div/div[2]/div/div[3]/div[1]/div/div[2]/div[1]/div[1]/span
@@ -142,114 +142,48 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
                
-        public EnterNewCustomerPage loopEntryPhone(string phone, int i)
+        public EnterNewCustomerPage EnterPhone(string phone, int i)
         {
-            //*[@id='phoneLists[0].phoneType']
-          //  string strPhoneType = "phoneLists[" + i + "].phoneType";
             string strMyXPath = "phoneLists[" + i + "].Phone";
-                driver.FindElement(By.Id(strMyXPath)).SendKeys(phone);
-          //*  Actions actions = new Actions(driver);
-            //actions.SendKeys(this.strPhoneType, phonetype).Build().Perform();
-            //strPhoneType.SendKeys(Keys.Enter);
+            driver.FindElement(By.Id(strMyXPath)).SendKeys(phone);
             return this;
                        
         }
 
-        public EnterNewCustomerPage loopAddPhone()
+        public EnterNewCustomerPage AddPhone()
         {
-
-            //string strMyXPath = "phoneLists[" + i + "].Phone";
-            //driver.FindElement(By.Id(strMyXPath)).SendKeys(phone);
             driver.FindElement(By.Id("idAddPhone")).Clickme(driver);
             return this;
 
         }
 
-        public EnterNewCustomerPage SelectPhoneType(string phonetype)
+        public EnterNewCustomerPage SelectPhoneType(string phonetype, int i)
         {
-            //*[@id='phoneLists[0].phoneType']"
-            //*[@id=\"react-select-7--value\"]/div[1]
+
+           string strMyXPath = "phoneLists[" + i + "].phoneType";
             Actions actions = new Actions(driver);
-            actions.SendKeys(phoneTypeDropDown2, phonetype).Build().Perform();
-            phoneTypeDropDown2.SendKeys(Keys.Enter);
-            //addPhone.Clickme(driver);
+            actions.SendKeys(driver.FindElement(By.Id(strMyXPath)), phonetype).Build().Perform();
+            driver.FindElement(By.Id(strMyXPath)).SendKeys(Keys.Enter);
             return this;
 
+        } 
+
+        public EnterNewCustomerPage AddEmailAddress(string email, int i)
+        {
+            String strEmailAddress = "emailList["+ i +"].Email";
+            driver.FindElement(By.Id(strEmailAddress)).SendKeys(email);
+            addEmail.Clickme(driver);
+            return this;
         }
 
-        public EnterNewCustomerPage EnterPhoneNumber(int j)
+        public void ComparePhone(string s1, string s2)
         {
-            Random random = new Random();
-            SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            for (int i = 0; i < j; i++)
+            if(s1 == s2)
             {
-                
-                loopEntryPhone(sheetData.PhoneNumber1 + random.Next(1000000000), i);
-                if(i==0)
-                {
-                    SelectPhoneType(sheetData.PhoneType1);
-                }
-                else if(i==1)
-                {
-                    SelectPhoneType(sheetData.PhoneType2);
-                }
-                
-                if (i == (j-i))
-                {
-                    break;
-                }
-                loopAddPhone();
-                            }
-            return this;
-
+                _logger.Info("Phone numbers are same");
+            }
         }
 
-        /// <summary>
-        /// Functions to Enter Phone Number 1
-        /// </summary>
-        /// <returns></returns>
-
-        //public EnterNewCustomerPage EnterPhoneNumber(string phone)
-        //{
-        //    phonenumber.SendKeys(phone);
-        //    return this;
-        //}
-
-        /// <summary>
-        /// Functions to Enter Phone Number 2
-        /// </summary>
-        /// <param name="phone"></param>
-        /// <returns></returns>
-
-        //public EnterNewCustomerPage EnterPhoneNumber2(string phone)
-        //{
-        //    phonenumber1.SendKeys(phone);
-        //    return this;
-        //}
-
-        /// <summary>
-        /// Functions to Enter Phone Type 1
-        /// </summary>
-        /// <param name="phonetype"></param>
-        /// <returns></returns>
-
-       
-
-        /// <summary>
-        /// Functions to Enter Phone Type 2
-        /// </summary>
-        /// <param name="phonetype"></param>
-        /// <returns></returns>
-
-        public EnterNewCustomerPage SelectPhoneType2(string phonetype)
-        {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(phoneTypeDropDownForPhone2, 4000);
-            Actions actions = new Actions(driver);
-            actions.SendKeys(this.phoneTypeDropDownForPhone2, phonetype).Build().Perform();
-            phoneTypeDropDown2ForPhone2.SendKeys(Keys.Enter);
-            return this;
-
-        }
 
         /// <summary>
         /// Functions to Enter Email Address 1
@@ -257,13 +191,13 @@ namespace UnitTestNDBProject.Pages
         /// <param name="email"></param>
         /// <returns></returns>
 
-        public EnterNewCustomerPage AddEmailAddress(string email)
+       /* public EnterNewCustomerPage AddEmailAddress(string email)
         {
 
             emailAddress.SendKeys(email);
             addEmail.Clickme(driver);
             return this;
-        }
+        } */
 
         /// <summary>
         /// Functions to Enter Email Address 2
@@ -271,13 +205,13 @@ namespace UnitTestNDBProject.Pages
         /// <param name="email"></param>
         /// <returns></returns>
 
-        public EnterNewCustomerPage AddEmailAddress2(string email)
-        {
+        //public EnterNewCustomerPage AddEmailAddress2(string email)
+        //{
 
-            emailAddress1.SendKeys(email);
-            addEmail.Clickme(driver);
-            return this;
-        }
+        //    emailAddress1.SendKeys(email);
+        //    addEmail.Clickme(driver);
+        //    return this;
+        //}
 
         /// <summary>
         /// Functions to Save Customer
@@ -400,7 +334,6 @@ namespace UnitTestNDBProject.Pages
 
         public bool VerifyFirstName(String FirstNameOnScreen)
         {
-            IJavaScriptExecutor js = driver as IJavaScriptExecutor;
             driver.WaitForElementToBecomeVisibleWithinTimeout(FirstNameText, 10000);
             String FirstName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
@@ -427,19 +360,51 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        public bool VerifyPhoneNumber(String PhoneNumberOnScreen)
+        public bool VerifyPhoneNumber(string EnteredPhone)
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(LastNameText, 10000);
-            String LastName = PhoneNumberText.GetText(driver);
-            bool lastNameValue = false;
-            if (PhoneNumberOnScreen.Equals(LastName))
+            driver.WaitForElementToBecomeVisibleWithinTimeout(PhoneNumberText, 10000);
+            string PhoneNumber = PhoneNumberText.GetText(driver);
+            string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3),PhoneNumber.Substring(6, 3),PhoneNumber.Substring(10, 4));
+            _logger.Info(ActualPhoneNumber);
+            bool PhoneNumberValue = false;
+            if (EnteredPhone.Contains(ActualPhoneNumber))
             {
-                lastNameValue = true;
+                PhoneNumberValue = true;
                 _logger.Info($" Phone Is Correct");
             }
-            return lastNameValue;
+            return PhoneNumberValue;
 
         }
+
+        public bool VerifyExistingPhoneNumber(string EnteredPhone)
+        {
+            Thread.Sleep(4000);
+            int i = 0;
+            string[] tempVar = new string[100];
+            do
+            {
+                string PhoneNumber = driver.FindElement(By.Id("phoneLists[" + i + "].Phone")).GetAttribute("value");
+                _logger.Info("I am inside VerificationMethod" + PhoneNumber);
+                string ActualPhoneNumber = string.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
+                tempVar[i] = ActualPhoneNumber;
+                i++;
+            } while (By.Id("phoneLists[" + i + "].Phone").isPresent(driver));
+            
+            int j = 0;
+            bool PhoneExist = false;
+            do
+            {
+                if(EnteredPhone.Contains((tempVar[j])))
+                    {
+                    PhoneExist = true;
+                    break;
+                }
+                j++;
+            } while (tempVar[j] != null);
+
+            return PhoneExist;
+
+                    }
 
     }
 

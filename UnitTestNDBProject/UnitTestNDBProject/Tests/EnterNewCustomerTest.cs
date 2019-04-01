@@ -36,12 +36,17 @@ namespace UnitTestNDBProject.Tests
         {
             Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
+
+            string num1 = sheetData.PhoneNumber1Unique();
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-                .EnterPhoneNumber(2)//.SelectPhoneType(sheetData.PhoneType1).SelectPhoneType2(sheetData.PhoneType2)
-                .AddEmailAddress(sheetData.EmailAddress1 + random.Next(100) + "@nextdayblinds.com").AddEmailAddress2(sheetData.EmailAddress2 + random.Next(1000) + "@nextdayblinds.com")
+                .EnterPhone(num1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2,1)
+                .AddEmailAddress(sheetData.EmailAddress1Unique(),0).AddEmailAddress(sheetData.EmailAddress2Unique(),1)
                 .ClickSaveButton().ContinueNewCustomerCreation();
             _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number {sheetData.PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email { sheetData.EmailAddress1}");
-            Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
+            //Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
+            _logger.Info(num1);
+            Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(num1));
+            //EnterNewCustomerPage_.ComparePhone(sheetData.PhoneNumber1Unique(),EnterNewCustomerPage_.PhoneNumberText.)
         }
 
        
