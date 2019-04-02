@@ -204,8 +204,6 @@ namespace UnitTestNDBProject.Pages
                 WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10)); 
                 customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnContinue")));
                 continueWithNewCustomer.Clickme(driver);
-
-
             }
             catch (Exception e)
             {
