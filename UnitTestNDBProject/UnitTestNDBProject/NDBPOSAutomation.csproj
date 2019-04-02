@@ -138,6 +138,7 @@
     <Compile Include="TestDataAccess\SheetData.cs" />
     <Compile Include="Tests\EnterNewCustomerTest.cs" />
     <Compile Include="Tests\HomePageTest.cs" />
+    <Compile Include="Tests\PointOfSalePage.cs" />
     <Compile Include="Tests\SearchTest.cs" />
     <Compile Include="Utils\DateHelper.cs" />
     <Compile Include="Pages\LoginPage.cs" />

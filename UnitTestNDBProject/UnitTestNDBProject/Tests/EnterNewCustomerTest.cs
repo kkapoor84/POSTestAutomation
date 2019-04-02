@@ -32,7 +32,7 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        public void A3_VerifyCustomerCreation()
+        public void A4_VerifyCustomerCreation()
         {
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
             string PhoneNumber1 = sheetData.PhoneNumber1Unique();
@@ -43,13 +43,13 @@ namespace UnitTestNDBProject.Tests
                 .ClickSaveButton().ContinueNewCustomerCreation();
             _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number1 {PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email1 { EmailAddress1}");
             Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
-            _logger.Info("Green banner displayed successfully.");
+            _logger.Info("Green Banner Displayed Successfully.");
             Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(PhoneNumber1));
-            _logger.Info("Phone Number is same as entered.");
+            _logger.Info("Phone Number Is Same As Entered.");
             Assert.True(EnterNewCustomerPage_.VerifyFirstName("Shivani"));
-            _logger.Info("First Name is same as entered.");
+            _logger.Info("First Name Is Same As Entered.");
             Assert.True(EnterNewCustomerPage_.VerifyLastName("Thaman"));
-            _logger.Info("Last Name is same as entered.");
+            _logger.Info("Last Name Is Same As Entered.");
         }
 
         public void teardown()

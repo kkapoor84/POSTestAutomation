@@ -69,13 +69,13 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.ClassName, Using = "msg-container")]
         public IWebElement GreenBar { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='customerPage']/div/div/form/div[1]/div/div[1]/div/div/div[2]/div/div[2]/div/div/div[2]/span")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")]
         public IWebElement FirstNameText { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")]
         public IWebElement LastNameText { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='customerPage']/div/div/form/div[1]/div/div[1]/div/div/div[2]/div/div[3]/div/div/div[2]/div[1]/div[1]")]
+        [FindsBy(How = How.XPath, Using = "(//div[@class='row phone-data']//span[@class='form-value'])[1]")]
         public IWebElement PhoneNumberText { get; set; }
 
         /// <summary>
@@ -187,20 +187,38 @@ namespace UnitTestNDBProject.Pages
 
         public EnterNewCustomerPage ContinueNewCustomerCreation()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(continueWithNewCustomer, 10000);
-            continueWithNewCustomer.Clickme(driver);
+           
+            if(ContinuePath().Equals(true)){
+                continueWithNewCustomer.Clickme(driver);
+            }
             return this;
         }
 
         /// <summary>
+        /// Function to validate cuggestion popup is exists or not
+        /// </summary>
+        /// <returns></returns>
+        public Boolean ContinuePath()
+        {
+
+            Boolean CustomerSuggestionPopupIsAvailable = false;
+            Thread.Sleep(8000);
+            if (By.Id("btnContinue").isPresent(driver))
+            {
+                CustomerSuggestionPopupIsAvailable = true;
+            }
+                          
+            return CustomerSuggestionPopupIsAvailable;
+
+        }
+        /// <summary>
         /// Functions to continue with existing customer
         /// </summary>
         /// <returns></returns>
-
+        /// 
         public EnterNewCustomerPage UpdateExistingCustomerFromCustomerSuggestion()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(continueWithExistingCustomer, 10000);
-            //Thread.Sleep(10000);
             continueWithExistingCustomer.Clickme(driver);
             return this;
         }
