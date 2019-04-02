@@ -38,38 +38,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Name, Using = "lastName")]
         public IWebElement lastname { get; set; }
 
-        //[FindsBy(How = How.Name, Using = "phoneLists[0].Phone")]
-        //public IWebElement phonenumber { get; set; }
+        [FindsBy(How = How.Id, Using = "idAddPhone")]
+        public IWebElement addPhone { get; set; }
 
-        //[FindsBy(How = How.Name, Using = "phoneLists[1].Phone")]
-        //public IWebElement phonenumber1 { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"react-select-4--value\"]/div[1]")]
-        public IWebElement phoneTypeDropDown { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"react-select-7--value\"]/div[1]")]
-        public IWebElement phoneTypeDropDownForPhone2 { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//*[@id='phoneLists[0].phoneType']")]
-        public IWebElement phoneTypeDropDown2 { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//*[@id='phoneLists[1].phoneType']")]
-        public IWebElement phoneTypeDropDown2ForPhone2 { get; set; }
-
-
-        [FindsBy(How = How.Name, Using = "Select is-clearable is-searchable Select--single")]
-        public IWebElement phonetype { get; set; }
-
-        //[FindsBy(How = How.Id, Using = "idAddPhone")]
-        //public IWebElement addPhone { get; set; }
-
-        [FindsBy(How = How.Id, Using = "emailList[0].Email")]
-        public IWebElement emailAddress { get; set; }
-
-        [FindsBy(How = How.Id, Using = "emailList[1].Email")]
-        public IWebElement emailAddress1 { get; set; }
         [FindsBy(How = How.Id, Using = "btnAddEmail")]
-
         public IWebElement addEmail { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnSaveUpper")]
@@ -106,9 +78,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//*[@id='customerPage']/div/div/form/div[1]/div/div[1]/div/div/div[2]/div/div[3]/div/div/div[2]/div[1]/div[1]")]
         public IWebElement PhoneNumberText { get; set; }
 
-        //*[@id="customerPage"]/div/div/form/div[1]/div/div[1]/div/div/div[2]/div/div[3]/div[1]/div/div[2]/div[1]/div[1]/span
-
-
+        /// <summary>
+        /// Click On Enter New Customer Buton
+        /// </summary>
+        /// <returns></returns>
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
 
@@ -141,7 +114,12 @@ namespace UnitTestNDBProject.Pages
             lastname.SendKeys(lname);
             return this;
         }
-               
+               /// <summary>
+               /// Enter Phone Number
+               /// </summary>
+               /// <param name="phone"></param>
+               /// <param name="i"></param>
+               /// <returns></returns>
         public EnterNewCustomerPage EnterPhone(string phone, int i)
         {
             string strMyXPath = "phoneLists[" + i + "].Phone";
@@ -149,14 +127,23 @@ namespace UnitTestNDBProject.Pages
             return this;
                        
         }
-
+        /// <summary>
+        /// Add New Phone
+        /// </summary>
+        /// <returns></returns>
         public EnterNewCustomerPage AddPhone()
         {
-            driver.FindElement(By.Id("idAddPhone")).Clickme(driver);
+            addPhone.Clickme(driver);
             return this;
 
         }
 
+        /// <summary>
+        /// Select Phone Type
+        /// </summary>
+        /// <param name="phonetype"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage SelectPhoneType(string phonetype, int i)
         {
 
@@ -168,6 +155,12 @@ namespace UnitTestNDBProject.Pages
 
         } 
 
+        /// <summary>
+        /// Add Email Address
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage AddEmailAddress(string email, int i)
         {
             String strEmailAddress = "emailList["+ i +"].Email";
@@ -176,53 +169,13 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        public void ComparePhone(string s1, string s2)
-        {
-            if(s1 == s2)
-            {
-                _logger.Info("Phone numbers are same");
-            }
-        }
-
-
         /// <summary>
-        /// Functions to Enter Email Address 1
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-
-       /* public EnterNewCustomerPage AddEmailAddress(string email)
-        {
-
-            emailAddress.SendKeys(email);
-            addEmail.Clickme(driver);
-            return this;
-        } */
-
-        /// <summary>
-        /// Functions to Enter Email Address 2
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-
-        //public EnterNewCustomerPage AddEmailAddress2(string email)
-        //{
-
-        //    emailAddress1.SendKeys(email);
-        //    addEmail.Clickme(driver);
-        //    return this;
-        //}
-
-        /// <summary>
-        /// Functions to Save Customer
+        /// Click on Save button
         /// </summary>
         /// <returns></returns>
-        /// 
-
         public EnterNewCustomerPage ClickSaveButton()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButton, 10000);
-            //Thread.Sleep(10000);
             saveButton.Clickme(driver);
             return this;
 
@@ -318,6 +271,10 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Verify Green Banner
+        /// </summary>
+        /// <returns></returns>
         public bool VerifyGreedbarAfterEditIsSuccessful()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(GreenBar, 5000);
@@ -332,6 +289,11 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Verify First Name is same as entered
+        /// </summary>
+        /// <param name="FirstNameOnScreen"></param>
+        /// <returns></returns>
         public bool VerifyFirstName(String FirstNameOnScreen)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(FirstNameText, 10000);
@@ -346,6 +308,11 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Verify last name is same as entered
+        /// </summary>
+        /// <param name="LastNameOnScreen"></param>
+        /// <returns></returns>
         public bool VerifyLastName(String LastNameOnScreen)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(LastNameText, 10000);
@@ -359,13 +326,17 @@ namespace UnitTestNDBProject.Pages
             return lastNameValue;
 
         }
-
+        
+        /// <summary>
+        /// Veerify Phone Number is same as entered
+        /// </summary>
+        /// <param name="EnteredPhone"></param>
+        /// <returns></returns>
         public bool VerifyPhoneNumber(string EnteredPhone)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(PhoneNumberText, 10000);
             string PhoneNumber = PhoneNumberText.GetText(driver);
-            string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3),PhoneNumber.Substring(6, 3),PhoneNumber.Substring(10, 4));
-            _logger.Info(ActualPhoneNumber);
+            string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
             bool PhoneNumberValue = false;
             if (EnteredPhone.Contains(ActualPhoneNumber))
             {
@@ -376,17 +347,21 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Verify that phone numbers are appended in existing customer.
+        /// </summary>
+        /// <param name="EnteredPhone"></param>
+        /// <returns></returns>
         public bool VerifyExistingPhoneNumber(string EnteredPhone)
         {
             Thread.Sleep(4000);
             int i = 0;
-            string[] tempVar = new string[100];
+            string[] PhoneNumberArray = new string[100];
             do
             {
                 string PhoneNumber = driver.FindElement(By.Id("phoneLists[" + i + "].Phone")).GetAttribute("value");
-                _logger.Info("I am inside VerificationMethod" + PhoneNumber);
                 string ActualPhoneNumber = string.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
-                tempVar[i] = ActualPhoneNumber;
+                PhoneNumberArray[i] = ActualPhoneNumber;
                 i++;
             } while (By.Id("phoneLists[" + i + "].Phone").isPresent(driver));
             
@@ -394,17 +369,56 @@ namespace UnitTestNDBProject.Pages
             bool PhoneExist = false;
             do
             {
-                if(EnteredPhone.Contains((tempVar[j])))
+                if(EnteredPhone.Contains((PhoneNumberArray[j])))
                     {
                     PhoneExist = true;
+                    _logger.Info($" Phone For Existing Customer Is Added");
                     break;
                 }
                 j++;
-            } while (tempVar[j] != null);
+            } while (PhoneNumberArray[j] != null);
 
             return PhoneExist;
 
-                    }
+        }
+
+
+        /// <summary>
+        /// Verify that email addresses are appended in existing customer.
+        /// </summary>
+        /// <param name="EnteredEmail"></param>
+        /// <returns></returns>
+        public bool VerifyExistingEmailAddress(string EnteredEmail)
+        {
+            Thread.Sleep(4000);
+            int i = 0;
+            string[] EmailAddressArray = new string[100];
+            do
+            {
+                string EmailAddress = driver.FindElement(By.Id("emailList[" + i + "].Email")).GetAttribute("value");
+                //string ActualPhoneNumber = string.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
+                EmailAddressArray[i] = EmailAddress;
+                i++;
+            } while (By.Id("phoneLists[" + i + "].Phone").isPresent(driver));
+
+            int j = 0;
+            bool EmailExist = false;
+            do
+            {
+                if (EnteredEmail.Contains((EmailAddressArray[j])))
+                {
+                    EmailExist = true;
+                    _logger.Info($" Email For Existing Customer Is Added");
+                    break;
+                }
+                j++;
+            } while (EmailAddressArray[j] != null);
+
+            return EmailExist;
+
+        }
+
+    
 
     }
 

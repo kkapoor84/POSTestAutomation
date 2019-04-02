@@ -33,16 +33,17 @@ namespace UnitTestNDBProject.Pages
         {
             Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            string num1 = sheetData.PhoneNumber1Unique();
+            string PhoneNumber1 = sheetData.PhoneNumber1Unique();
+            string EmailAddress1 = sheetData.EmailAddress1Unique();
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-                .EnterPhone(num1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2, 1)
-                .AddEmailAddress(sheetData.EmailAddress1Unique(), 0).AddEmailAddress(sheetData.EmailAddress2Unique(), 1)
-                .ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();//.ClickEditSaveButton();
+                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2, 1)
+                .AddEmailAddress(EmailAddress1, 0).AddEmailAddress(sheetData.EmailAddress2Unique(), 1)
+                .ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();
+
             _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number {sheetData.PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email_1 { sheetData.EmailAddress1},email_2 { sheetData.EmailAddress1}");
             
-          // Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber());
-            _logger.Info(num1);
-            Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(num1));
+            Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber1));
+            Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress1));
 
             EnterNewCustomerPage_.ClickEditSaveButton();
         }

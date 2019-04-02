@@ -37,37 +37,23 @@ namespace UnitTestNDBProject.Tests
             Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
 
-            string num1 = sheetData.PhoneNumber1Unique();
+            string PhoneNumber1 = sheetData.PhoneNumber1Unique();
+            string EmailAddress1 = sheetData.EmailAddress1Unique();
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-                .EnterPhone(num1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2,1)
-                .AddEmailAddress(sheetData.EmailAddress1Unique(),0).AddEmailAddress(sheetData.EmailAddress2Unique(),1)
+                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2,1)
+                .AddEmailAddress(EmailAddress1,0).AddEmailAddress(sheetData.EmailAddress2Unique(),1)
                 .ClickSaveButton().ContinueNewCustomerCreation();
-            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number {sheetData.PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email { sheetData.EmailAddress1}");
-            //Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
-            _logger.Info(num1);
-            Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(num1));
-            //EnterNewCustomerPage_.ComparePhone(sheetData.PhoneNumber1Unique(),EnterNewCustomerPage_.PhoneNumberText.)
-        }
-
-       
-
-        [Test, Category("Regression"), Category("Smoke"), Description("Verify Green bar is Displayed.")]
-        public void A9_VerifyGreenBar()
-        {
+            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number1 {PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email1 { EmailAddress1}");
             Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
-        }
-
-        [Test, Category("Regression"), Category("Smoke"), Description("Verify First Name Of Customer")]
-        public void B10_VerifyFirstName()
-        {
+            _logger.Info("Green banner displayed successfully.");
+            Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(PhoneNumber1));
+            _logger.Info("Phone Number is same as entered.");
             Assert.True(EnterNewCustomerPage_.VerifyFirstName("Shivani"));
+            _logger.Info("First Name is same as entered.");
+            Assert.True(EnterNewCustomerPage_.VerifyLastName("Thaman"));
+            _logger.Info("Last Name is same as entered.");
         }
 
-        [Test, Category("Regression"), Category("Smoke"), Description("Verify Last Name Of Customer")]
-        public void B11_VerifyLastName()
-        {
-            Assert.True(EnterNewCustomerPage_.VerifyLastName("Thaman"));
-        }
         public void teardown()
         {
 
