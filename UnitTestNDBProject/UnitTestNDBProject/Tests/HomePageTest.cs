@@ -15,6 +15,7 @@ using UnitTestNDBProject.TestDataAccess;
 namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
+    [Order(2)]
     class HomePageTest : BaseTestClass
     {
 
@@ -38,8 +39,8 @@ namespace UnitTestNDBProject.Tests
             GlobalSetup.test = GlobalSetup.extent.CreateTest(TestContext.CurrentContext.Test.Name);
         }
 
-        [Test, Category("Regression"), Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
-        public void A3_VerifyHomePageTabs()
+        [Test, Category("Regression"),Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
+        public void B1_VerifyHomePageTabs()
         {
             HomePage_.ClickDashBoardTab();
             _logger.Info($": Successfully CLicked on Dashboard Tab on homepage");

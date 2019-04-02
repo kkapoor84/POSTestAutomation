@@ -16,7 +16,7 @@ namespace UnitTestNDBProject.Pages
     public class EnterNewCustomerPage
     {
         public IWebDriver driver;
-        public static Logger _logger = LogManager.GetCurrentClassLogger();
+        public Logger _logger = LogManager.GetCurrentClassLogger();
 
         public EnterNewCustomerPage(IWebDriver driver)
         {

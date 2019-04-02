@@ -68,7 +68,6 @@ namespace UnitTestNDBProject.Base
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public IWebDriver driver { get; set; }
-      //  public SearchPage SearchPage_ { get; set; }
         public BasePageClass BasePageClass_ { get; set; }
         public HomePage HomePage_ { get; set; }
         public ScreenshotUtil ScreenshotUtil_ { get; set; }
@@ -98,7 +97,6 @@ namespace UnitTestNDBProject.Base
             }
 
             LoginPage_ = new LoginPage(driver);
-         //   SearchPage_ = new SearchPage(driver);
             BasePageClass_ = new BasePageClass(driver);
             HomePage_ = new HomePage(driver);
             ScreenshotUtil_ = new ScreenshotUtil(driver);
