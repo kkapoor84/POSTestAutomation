@@ -34,9 +34,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A3_VerifyCustomerCreation()
         {
-            Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-
             string PhoneNumber1 = sheetData.PhoneNumber1Unique();
             string EmailAddress1 = sheetData.EmailAddress1Unique();
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
