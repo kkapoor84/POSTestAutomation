@@ -1,6 +1,7 @@
 ﻿using NLog;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnitTestNDBProject.Utils;
+using SeleniumExtras.WaitHelpers;
+using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace UnitTestNDBProject.Pages
 
@@ -39,6 +42,8 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")]
         public IWebElement ViewOnlylastname { get; set; }
+
+
 
         [FindsBy(How = How.Name, Using = "phoneLists[0].Phone")]
         public IWebElement phonenumber { get; set; }
@@ -111,11 +116,14 @@ namespace UnitTestNDBProject.Pages
         public IWebElement DoesntExpire { get; set; }
 
 
-        
 
 
 
 
+        /// <summary>
+        /// Click On Enter New Customer Buton
+        /// </summary>
+        /// <returns></returns>
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
 
@@ -124,6 +132,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Functions to Enter First Name
+        /// </summary>
+        /// <param name="fname"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage EnterFirstName(string fname)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(firstName, 10000);
@@ -131,11 +144,22 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Functions to Enter Last Name
+        /// </summary>
+        /// <param name="lname"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage EnterLastName(string lname)
         {
             lastname.SendKeys(lname);
             return this;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage EnterPhoneNumber(string phone)
         {
             phonenumber.SendKeys(phone);
@@ -158,45 +182,80 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// CLick on Address Line1
+        /// </summary>
+        /// <returns></returns>
+
         public EnterNewCustomerPage ClickOnAddressLine1()
         {
             Thread.Sleep(2000);
             addressLine1.Clickme(driver);
-            
-            return this;
+             return this;
         }
 
-
-        public EnterNewCustomerPage ContinueNewCustomerCreation()
+        /// <summary>
+        /// Click on New Customer Creation button (if customer suggetion popup populates)
+        /// </summary>
+        public void ContinueNewCustomerCreation()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(continueWithNewCustomer, 10000);
-            continueWithNewCustomer.Clickme(driver);
-            return this;
+            try
+            {
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10)); 
+                customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnContinue")));
+                continueWithNewCustomer.Clickme(driver);
+
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+
         }
 
+        /// <summary>
+        /// Function to enter address in Address Line1
+        /// </summary>
+        /// <param name="address1"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage EnterAddressLine1(String address1)
         {
-		
-		addressLine1.SendKeys(address1);
+ 		addressLine1.SendKeys(address1);
             _logger.Info("entering address Line 1...."+ address1);
             return this;
 		}
 
-    public EnterNewCustomerPage EnterAddressLine2 (String address2)
+        /// <summary>
+        /// Function to enter address in Address Line2
+        /// </summary>
+        /// <param name="address2"></param>
+        /// <returns></returns>
+        public EnterNewCustomerPage EnterAddressLine2 (String address2)
 	{
 		addressLine2.SendKeys(address2);
             _logger.Info("entering address Line 2...." + address2);
             return this;
         }
 
-    public EnterNewCustomerPage EnterCity(String City)
+        /// <summary>
+        /// Function to enter city 
+        /// </summary>
+        /// <param name="City"></param>
+        /// <returns></returns>
+        public EnterNewCustomerPage EnterCity(String City)
     {
         city.SendKeys(City);
             _logger.Info("entering city...." + City);
             return this;
         }
 
-    public EnterNewCustomerPage SelectState(String statevalue)
+        /// <summary>
+        /// Function to select state value
+        /// </summary>
+        /// <param name="statevalue"></param>
+        /// <returns></returns>
+        public EnterNewCustomerPage SelectState(String statevalue)
     {
 
 
@@ -206,6 +265,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to select state in tax section
+        /// </summary>
+        /// <param name="taxstatevalue"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage SelectTaxState(String taxstatevalue)
         {
 
@@ -216,6 +280,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to enter zip
+        /// </summary>
+        /// <param name="Zip"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage enterZip(String Zip)
     {
         zip.SendKeys(Zip);
@@ -223,6 +292,10 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to Click on addtion address for the customer
+        /// </summary>
+        /// <returns></returns>
         public EnterNewCustomerPage ClickOnAddAddressPlusButton()
         {
             AddAddress.Clickme(driver);
@@ -230,12 +303,22 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to click on corrected address button on smarty street
+        /// </summary>
+        /// <returns></returns>
         public EnterNewCustomerPage ClickOnCorrectedAddressButtonOnSmartyStreet()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(CorrectedAddressbutton, 10000);
             CorrectedAddressbutton.Clickme(driver);
             return this;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
 
         public EnterNewCustomerPage AddEmailAddress(string email)
         {
@@ -244,6 +327,10 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to Clicking on tax exemption checkbox
+        /// </summary>
+        /// <returns></returns>
         public EnterNewCustomerPage ClickTaxExemptionCheckBox()
         {
 
@@ -251,6 +338,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to enter taxid number
+        /// </summary>
+        /// <param name="taxid"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage EnterTaxIDNumber (string taxid)
         {
 
@@ -258,6 +350,10 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to check the doesnt expire tax exemption checkbox
+        /// </summary>
+        /// <returns></returns>
         public EnterNewCustomerPage ClickDoesntExpireCheckBox()
         {
 
@@ -265,6 +361,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to verify thatcustomer is created the valid first name
+        /// </summary>
+        /// <param name="ExpFirstName"></param>
+        /// <returns></returns>
         public bool VerifCustomerIsCreatedWithValidFirstName(String ExpFirstName)
         {
             bool IsFirstName = false;
@@ -278,6 +379,11 @@ namespace UnitTestNDBProject.Pages
             return IsFirstName;
         }
 
+        /// <summary>
+        /// Function to verify thatcustomer is created the valid last name
+        /// </summary>
+        /// <param name="ExpLastName"></param>
+        /// <returns></returns>
         public bool VerifCustomerIsCreatedWithValidLastName(String ExpLastName)
         {
             bool IsLastName = false;
@@ -292,7 +398,11 @@ namespace UnitTestNDBProject.Pages
         }
 
 
-
+        /// <summary>
+        /// Function to verify that customer is created and activity text is displayed
+        /// </summary>
+        /// <param name="ValidMessage"></param>
+        /// <returns></returns>
         public bool VerifyCustomerCreation(String ValidMessage)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(OpenActivityText, 5000);
@@ -305,6 +415,7 @@ namespace UnitTestNDBProject.Pages
             }
             return noActivityVerification;
         }
+
 
         public bool VerifyEditButtonAvailable()
         {

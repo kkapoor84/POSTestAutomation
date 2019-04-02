@@ -48,7 +48,7 @@ namespace UnitTestNDBProject.Tests
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(PreservedCustomerInformation_.firstName).EnterLastName(PreservedCustomerInformation_.lastName).EnterPhoneNumber(sheetData.PhoneNumber1).SelectPhoneType(sheetData.PhoneType1).AddEmailAddress(sheetData.EmailAddressUnique());
             _logger.Info($": Successfully Entered First Name {sheetData.FistNameUnique()}, Last Name {sheetData.LastNameUnique()} , Phone Number {sheetData.PhoneNumber1} , Phone Type {sheetData.PhoneType1} and email adress {sheetData.EmailAddressUnique()}");
 
-            EnterNewCustomerPage_.ClickOnAddressLine1().ContinueNewCustomerCreation();
+                EnterNewCustomerPage_.ClickOnAddressLine1().ContinueNewCustomerCreation();
             _logger.Info(": Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button");
 
             EnterNewCustomerPage_.EnterAddressLine1(sheetData.AddressLine1).EnterCity(sheetData.City).SelectState(sheetData.State).enterZip(sheetData.ZipCode);
@@ -65,29 +65,25 @@ namespace UnitTestNDBProject.Tests
             EnterNewCustomerPage_.ClickSaveButton().ClickOnCorrectedAddressButtonOnSmartyStreet().ContinueNewCustomerCreation();
             _logger.Info($":Successfully Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
 
+
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
             _logger.Info($":Verified that New customer {sheetData.FistNameUnique()} and {sheetData.LastNameUnique()}  is created successfully");
 
-         
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(PreservedCustomerInformation_.firstName));
+            _logger.Info($":Verified that New customer having first name {PreservedCustomerInformation_.firstName} is created successfully");
+
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(PreservedCustomerInformation_.lastName));
+            _logger.Info($":Verified that New customer having last name {PreservedCustomerInformation_.lastName} is created successfully");
+
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Customer Page is view Only")]
         public void C2_VerifyCustomerPageTurnViewOnly()
         {
-            SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-
             Assert.True(EnterNewCustomerPage_.VerifyEditButtonAvailable());
             _logger.Info($":Verified that Edit button is present on the screeen");
         }
 
-        [Test, Category("Regression"), Category("Smoke"), Description("Customer is created with correct firstname and lastname")]
-        public void C3_VerifyNewlyCreatedCustomerInformation()
-        {
-            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(PreservedCustomerInformation_.firstName));
-            _logger.Info($":Verified that New customer having first name {PreservedCustomerInformation_.firstName} is created successfully");
-            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(PreservedCustomerInformation_.lastName));
-            _logger.Info($":Verified that New customer having last name {PreservedCustomerInformation_.lastName} is created successfully");
-        }
 
         public void teardown()
         {
