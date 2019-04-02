@@ -32,25 +32,29 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        public void A3_VerifyCustomerCreation()
+        public void A4_VerifyCustomerCreation()
         {
-            Random random = new Random();
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName).EnterPhoneNumber(sheetData.PhoneNumber1)
-                .SelectPhoneType(sheetData.PhoneType1).AddEmailAddress(sheetData.EmailAddress1+random.Next(100)+"@nextdayblinds.com")
+            string PhoneNumber1 = sheetData.PhoneNumber1Unique();
+            string EmailAddress1 = sheetData.EmailAddress1Unique();
+            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
+                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2,1)
+                .AddEmailAddress(EmailAddress1,0).AddEmailAddress(sheetData.EmailAddress2Unique(),1)
                 .ClickSaveButton().ContinueNewCustomerCreation();
-            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number {sheetData.PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email { sheetData.EmailAddress1}");
-            Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
-        }
-
-        [Test, Category("Regression"), Category("Smoke"), Description("Customer Page is view Only")]
-        public void A4_VerifyCustomerPageTurnViewOnly()
-        {
-            Assert.True(EnterNewCustomerPage_.VerifyEditButtonAvailable());
+            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number1 {PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email1 { EmailAddress1}");
+            Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
+            _logger.Info("Green Banner Displayed Successfully.");
+            Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(PhoneNumber1));
+            _logger.Info("Phone Number Is Same As Entered.");
+            Assert.True(EnterNewCustomerPage_.VerifyFirstName("Shivani"));
+            _logger.Info("First Name Is Same As Entered.");
+            Assert.True(EnterNewCustomerPage_.VerifyLastName("Thaman"));
+            _logger.Info("Last Name Is Same As Entered.");
         }
 
         public void teardown()
         {
+
             var status = TestContext.CurrentContext.Result.Outcome.Status;
             var stacktrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
                     ? ""
