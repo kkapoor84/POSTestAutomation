@@ -10,18 +10,5 @@ using static UnitTestNDBProject.Pages.LoginPage;
 
 namespace UnitTestNDBProject.Pages
 {
-    public class SearchPage
-    {
-        public IWebDriver driver;
-
-        public SearchPage(IWebDriver driver)
-        {
-            this.driver = driver;
-
-        }
-
-
-
-
-    }
+  
 }

@@ -8,6 +8,7 @@ using NLog;
 using UnitTestNDBProject.Utils;
 
 [TestFixture]
+[Order(3)]
 
 public class LoginTest : BaseTestClass
 {
@@ -19,8 +20,8 @@ public class LoginTest : BaseTestClass
      GlobalSetup.test = GlobalSetup.extent.CreateTest(TestContext.CurrentContext.Test.Name);
     }
 
-    [Test, Category("Regression"),Category("Smoke"),Description("Validate that error message populates once user enter invalid credentials")]
-    public void A1_VerifyLoginWithInValidCredentails()
+    [Test, Category("Regression"), Order(2),Category("Smoke"),Description("Validate that error message populates once user enter invalid credentials")]
+    public void A2_VerifyLoginWithInValidCredentails()
     {
         SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "InValidCredentials");
 
@@ -33,8 +34,8 @@ public class LoginTest : BaseTestClass
     }
     
 
-    [Test,Category("Regression"), Category("Smoke"),Description("Validate that user is able to navigate to Home page using valid credentials")]
-    public void A2_VerifyLoginWithValidCrdentails()
+    [Test,Category("Regression"), Order(1), Category("Smoke"),Description("Validate that user is able to navigate to Home page using valid credentials")]
+    public void A1_VerifyLoginWithValidCrdentails()
     {
         SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
 

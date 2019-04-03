@@ -14,7 +14,7 @@ namespace UnitTestNDBProject.Pages
     public class HomePage
     {
         public IWebDriver driver;
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private Logger _logger = LogManager.GetCurrentClassLogger();
         public HomePage(IWebDriver driver)
         {
             this.driver = driver;

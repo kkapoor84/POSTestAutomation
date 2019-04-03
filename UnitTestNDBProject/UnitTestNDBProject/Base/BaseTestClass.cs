@@ -16,6 +16,7 @@ using System.Configuration;
 using System.IO;
 using NLog;
 using UnitTestNDBProject.TestDataAccess;
+using OpenQA.Selenium.Interactions;
 
 [SetUpFixture]
 public class GlobalSetup
@@ -67,13 +68,14 @@ namespace UnitTestNDBProject.Base
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public IWebDriver driver { get; set; }
-        public SearchPage SearchPage_ { get; set; }
         public BasePageClass BasePageClass_ { get; set; }
         public HomePage HomePage_ { get; set; }
         public ScreenshotUtil ScreenshotUtil_ { get; set; }
         public LoginPage LoginPage_ { get; set; }
+        public SheetData sheetData; 
         public EnterNewCustomerPage EnterNewCustomerPage_ { get; set; }
-        public SheetData sheetData;
+        public PreservedCustomerInformation PreservedCustomerInformation_ { get; set; }
+
 
         /// <summary>
         /// This method would be called before execution of each class
@@ -95,12 +97,12 @@ namespace UnitTestNDBProject.Base
             }
 
             LoginPage_ = new LoginPage(driver);
-            SearchPage_ = new SearchPage(driver);
             BasePageClass_ = new BasePageClass(driver);
             HomePage_ = new HomePage(driver);
             ScreenshotUtil_ = new ScreenshotUtil(driver);
-            EnterNewCustomerPage_ = new EnterNewCustomerPage(driver);
+            PreservedCustomerInformation_ = new PreservedCustomerInformation();
 
+            EnterNewCustomerPage_ = new EnterNewCustomerPage(driver);
             BasePageClass_.OpenURL();
 
             _logger.Info($" :Successfully executed the BeforeClassInitialization() method for {this.GetType().Name}");

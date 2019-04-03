@@ -14,6 +14,7 @@ using UnitTestNDBProject.TestDataAccess;
 namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
+    [Order(1)]
     class EnterNewCustomerTest : BaseTestClass
     {
         private Logger _logger = NLog.LogManager.GetCurrentClassLogger();
@@ -38,8 +39,8 @@ namespace UnitTestNDBProject.Tests
             string PhoneNumber1 = sheetData.PhoneNumber1Unique();
             string EmailAddress1 = sheetData.EmailAddress1Unique();
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2,1)
-                .AddEmailAddress(EmailAddress1,0).AddEmailAddress(sheetData.EmailAddress2Unique(),1)
+                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2, 1)
+                .AddEmailAddress(EmailAddress1, 0).AddEmailAddress(sheetData.EmailAddress2Unique(), 1)
                 .ClickSaveButton().ContinueNewCustomerCreation();
             _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number1 {PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email1 { EmailAddress1}");
             Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
@@ -50,6 +51,52 @@ namespace UnitTestNDBProject.Tests
             _logger.Info("First Name Is Same As Entered.");
             Assert.True(EnterNewCustomerPage_.VerifyLastName("Thaman"));
             _logger.Info("Last Name Is Same As Entered.");
+        }
+
+        [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        public void C1_VerifyCustomerCreation()
+        {
+            SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
+
+            string firstNameUnique = sheetData.FistNameUnique();
+            string lastNameUnique = sheetData.LastNameUnique();
+
+            string addressline1_2Unique = sheetData.addressline1_2Unique();
+
+            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique).EnterPhoneNumber(sheetData.PhoneNumber1).SelectPhoneType(sheetData.PhoneType1).AddEmailAddress(sheetData.EmailAddressUnique())
+                                 .ClickOnAddressLine1().ContinueNewCustomerCreation();
+
+            _logger.Info($": Successfully Entered First Name {sheetData.FistNameUnique()}, Last Name {sheetData.LastNameUnique()} , Phone Number {sheetData.PhoneNumber1} , Phone Type {sheetData.PhoneType1} and email adress {sheetData.EmailAddressUnique()} then Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button-IF available");
+
+            EnterNewCustomerPage_.EnterAddressLine1(sheetData.AddressLine1).EnterCity(sheetData.City).SelectState(sheetData.State).enterZip(sheetData.ZipCode)
+                                .ClickOnAddAddressPlusButton().EnterAddressLine1(addressline1_2Unique).EnterCity(sheetData.City).SelectState(sheetData.State).enterZip(sheetData.ZipCode);
+
+            _logger.Info($": Successfully Entered Customer 2 address : AddressLine1 {sheetData.AddressLine1},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode}  AND  AddressLine1 {addressline1_2Unique},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode}");
+
+
+            EnterNewCustomerPage_.ClickTaxExemptionCheckBox().EnterTaxIDNumber(sheetData.TaxIdNumber1, 1).SelectTaxState(sheetData.TaxState1, 1).ClickDoesntExpireCheckBox(1).AddTax().EnterTaxIDNumber(sheetData.TaxIdNumber2, 2).SelectTaxState(sheetData.TaxState2, 2).ClickDoesntExpireCheckBox(2)
+                                .ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
+            _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData.TaxIdNumber1} ,SelectTaxState {sheetData.TaxState1} and ClickDoesntExpireCheckBox then Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
+
+
+            Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
+            _logger.Info($":Verified that New customer {sheetData.FistNameUnique()} and {sheetData.LastNameUnique()}  is created successfully");
+
+            Assert.True(EnterNewCustomerPage_.VerifyEditButtonAvailable());
+            _logger.Info($":Verified that Edit button is present on the screeen");
+
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
+            _logger.Info($":Verified that New customer having first name {firstNameUnique} is created successfully");
+
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
+            _logger.Info($":Verified that New customer having first name {lastNameUnique} is created successfully");
+
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1, sheetData.City, sheetData.State, sheetData.ZipCode));
+            _logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
+
+
+
+
         }
 
         public void teardown()

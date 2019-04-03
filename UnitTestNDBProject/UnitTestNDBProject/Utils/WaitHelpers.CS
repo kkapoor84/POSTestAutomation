@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnitTestNDBProject.Utils;
 using SeleniumExtras.PageObjects;
+using SeleniumExtras;
 
 
 namespace UnitTestNDBProject.Utils
@@ -43,7 +44,11 @@ namespace UnitTestNDBProject.Utils
             return d.FindElement(By.Id("navlist"));
         });
       }
-       // Implicit Wait
+
+
+
+
+        // Implicit Wait
         public static void ImplicitWaitMethod()
         {
            //PropertiesCollection.driver.Manage().Timeouts().ImplicitWait(new TimeSpan(0, 0, 0, 10));

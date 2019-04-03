@@ -22,6 +22,20 @@ namespace UnitTestNDBProject.TestDataAccess
 
         public string EmailAddress1 { get; set; }
         public string EmailAddress2 { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+
+        public string TaxIdNumber1 { get; set; }
+
+        public string TaxState1 { get; set; }
+
+        public string TaxIdNumber2 { get; set; }
+
+        public string TaxState2 { get; set; }
+
         Random random = new Random();
 
         public string PhoneNumber1Unique()
@@ -47,6 +61,39 @@ namespace UnitTestNDBProject.TestDataAccess
             string EmailAddress2Unique = EmailAddress2 + +random.Next(10000) + "@nextdayblinds.com";
             return EmailAddress2Unique;
         }
+
+        public String FistNameUnique()
+        {
+            String FirstUniqueName = FirstName + random.Next(1, 100); ;
+            return FirstUniqueName;
+        }
+
+        public String LastNameUnique()
+        {
+            String LastUniqueName = LastName + random.Next(1, 100);
+            return LastUniqueName;
+        }
+
+        public String addressline1_2Unique()
+        {
+            String addressLine1Unique = AddressLine1 + random.Next(1, 100);
+
+            return addressLine1Unique;
+
+        }
+        public String EmailAddressUnique()
+        {
+            String EmailAddressUnique = EmailAddress1 + new Random().Next(1000) + "@nextdayblinds.com";
+
+            return EmailAddressUnique;
+
+        }
+    }
+
+    public class PreservedCustomerInformation
+    {
+        public string firstName { get; set; }
+        public string lastName { get; set; }
     }
 }
 

@@ -39,7 +39,7 @@ namespace UnitTestNDBProject.Pages
 
         public LoginPage EnterUserName(string uname)
         {
-            driver.Navigate().Refresh();
+           
             username.SendKeys(uname);
 
             return this;
