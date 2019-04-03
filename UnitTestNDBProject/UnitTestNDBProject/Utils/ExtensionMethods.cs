@@ -36,6 +36,8 @@ namespace UnitTestNDBProject.Utils
         {
             return new SelectElement(element).AllSelectedOptions.SingleOrDefault().Text;
         }
+
+
     }
 
 }
