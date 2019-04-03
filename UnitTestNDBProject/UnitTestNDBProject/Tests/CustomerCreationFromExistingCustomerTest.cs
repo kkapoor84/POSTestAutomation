@@ -8,6 +8,8 @@ using UnitTestNDBProject.TestDataAccess;
 using NUnit.Framework.Interfaces;
 using UnitTestNDBProject.Base;
 using NLog;
+using System.Threading;
+using AventStack.ExtentReports;
 
 namespace UnitTestNDBProject.Pages
 {
@@ -71,7 +73,38 @@ namespace UnitTestNDBProject.Pages
             _logger.Info("Last Name Is Same As Selected From Customer Suggestion.");
         }
 
+        public void teardown()
+        {
 
-        
+            var status = TestContext.CurrentContext.Result.Outcome.Status;
+            var stacktrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
+                    ? ""
+                    : string.Format("{0}", TestContext.CurrentContext.Result.Message);
+            Status logstatus;
+            var errorMessage = TestContext.CurrentContext.Result.Message;
+            switch (status)
+            {
+                case TestStatus.Failed:
+                    ScreenshotUtil_.SaveScreenShot($"Failed Test{this.GetType().Name}");
+                    driver.Navigate().Refresh();
+                    Thread.Sleep(5000);
+                    logstatus = Status.Fail;
+                    GlobalSetup.test.Log(Status.Info, stacktrace + errorMessage);
+                    break;
+                case TestStatus.Inconclusive:
+                    logstatus = Status.Warning;
+                    break;
+                case TestStatus.Skipped:
+                    logstatus = Status.Skip;
+                    break;
+
+                default:
+
+                    logstatus = Status.Pass;
+                    break;
+            }
+            GlobalSetup.test.Log(logstatus, "Test ended with " + logstatus + stacktrace);
+        }
+
     }
 }
