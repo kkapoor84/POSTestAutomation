@@ -119,17 +119,12 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.CssSelector, Using = "#checkbox-TaxExempt")]
         public IWebElement TaxCheckBox { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "#taxIdNumber1")]
-        public IWebElement TaxIDNumber { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='exemptStateAbbreviation1']")]
-        public IWebElement TaxState { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//input[@id='doesNotExpire1']")]
-        public IWebElement DoesntExpire { get; set; }
+        [FindsBy(How = How.XPath, Using = "//div[@class='exceptions-section']//i[@class='icon-plus-circle']")]
+        public IWebElement AddTaxButton { get; set; }
 
 
-
+        
 
 
 
@@ -276,20 +271,6 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        /// <summary>
-        /// Function to select state in tax section
-        /// </summary>
-        /// <param name="taxstatevalue"></param>
-        /// <returns></returns>
-        public EnterNewCustomerPage SelectTaxState(String taxstatevalue)
-        {
-
-
-            Actions actions_ = new Actions(driver);
-            actions_.SendKeys(this.TaxState, taxstatevalue).Build().Perform();
-            TaxState.SendKeys(Keys.Enter);
-            return this;
-        }
 
         /// <summary>
         /// Function to enter zip
@@ -346,6 +327,7 @@ namespace UnitTestNDBProject.Pages
         {
 
             TaxCheckBox.Clickme(driver);
+            Thread.Sleep(1000);
             return this;
         }
 
@@ -354,23 +336,53 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="taxid"></param>
         /// <returns></returns>
-        public EnterNewCustomerPage EnterTaxIDNumber (string taxid)
+        public EnterNewCustomerPage EnterTaxIDNumber(string taxid, int i)
         {
-
-            TaxIDNumber.SendKeys(taxid);
+            String strtaxID = "#taxIdNumber" + i;
+            driver.FindElement(By.CssSelector(strtaxID)).SendKeys(taxid);
             return this;
         }
+
+
+        /// <summary>
+        /// Function to select state in tax section
+        /// </summary>
+        /// <param name="taxstatevalue"></param>
+        /// <returns></returns>
+
+
+        public EnterNewCustomerPage SelectTaxState(String taxstatevalue, int i)
+        {
+            String strtaxID = "//input[@id='exemptStateAbbreviation" + i + "']";
+
+            Actions actions_ = new Actions(driver);
+            actions_.SendKeys(driver.FindElement(By.XPath(strtaxID)), taxstatevalue).Build().Perform();
+            driver.FindElement(By.XPath(strtaxID)).SendKeys(Keys.Enter);
+            return this;
+        }
+
 
         /// <summary>
         /// Function to check the doesnt expire tax exemption checkbox
         /// </summary>
         /// <returns></returns>
-        public EnterNewCustomerPage ClickDoesntExpireCheckBox()
+        public EnterNewCustomerPage ClickDoesntExpireCheckBox(int i)
         {
+            String doesntexpirecheckbox = "//input[@id='doesNotExpire" + i + "']";
 
-            DoesntExpire.Clickme(driver);
+            driver.FindElement(By.XPath(doesntexpirecheckbox)).Clickme(driver);
             return this;
         }
+
+
+        public EnterNewCustomerPage AddTax()
+        {
+            AddTaxButton.Clickme(driver);
+            Thread.Sleep(2000);
+            return this;
+        }
+
+
 
         /// <summary>
         /// Function to verify thatcustomer is created the valid first name

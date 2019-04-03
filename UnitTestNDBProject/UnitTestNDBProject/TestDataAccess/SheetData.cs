@@ -25,9 +25,13 @@ namespace UnitTestNDBProject.TestDataAccess
         public string State { get; set; }
         public string ZipCode { get; set; }
 
-        public string TaxIdNumber { get; set; }
+        public string TaxIdNumber1 { get; set; }
 
-        public string TaxState { get; set; }
+        public string TaxState1 { get; set; }
+
+        public string TaxIdNumber2 { get; set; }
+
+        public string TaxState2 { get; set; }
 
 
         public String FistNameUnique()

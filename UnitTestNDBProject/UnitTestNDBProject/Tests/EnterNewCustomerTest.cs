@@ -56,11 +56,11 @@ namespace UnitTestNDBProject.Tests
                                 .ClickOnAddAddressPlusButton().EnterAddressLine1(addressline1_2Unique).EnterCity(sheetData.City).SelectState(sheetData.State).enterZip(sheetData.ZipCode);
 
             _logger.Info($": Successfully Entered Customer 2 address : AddressLine1 {sheetData.AddressLine1},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode}  AND  AddressLine1 {addressline1_2Unique},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode}");
-          
 
-            EnterNewCustomerPage_.ClickTaxExemptionCheckBox().EnterTaxIDNumber(sheetData.TaxIdNumber).SelectTaxState(sheetData.TaxState).ClickDoesntExpireCheckBox()  
+
+            EnterNewCustomerPage_.ClickTaxExemptionCheckBox().EnterTaxIDNumber(sheetData.TaxIdNumber1, 1).SelectTaxState(sheetData.TaxState1, 1).ClickDoesntExpireCheckBox(1).AddTax().EnterTaxIDNumber(sheetData.TaxIdNumber2, 2).SelectTaxState(sheetData.TaxState2, 2).ClickDoesntExpireCheckBox(2)
                                 .ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
-            _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData.TaxIdNumber} ,SelectTaxState {sheetData.TaxState} and ClickDoesntExpireCheckBox then Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
+            _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData.TaxIdNumber1} ,SelectTaxState {sheetData.TaxState1} and ClickDoesntExpireCheckBox then Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
 
 
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
