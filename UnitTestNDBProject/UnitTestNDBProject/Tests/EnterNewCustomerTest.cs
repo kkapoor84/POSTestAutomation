@@ -44,23 +44,23 @@ namespace UnitTestNDBProject.Tests
 
             string firstNameUnique = sheetData.FistNameUnique();
             string lastNameUnique = sheetData.LastNameUnique();
+ 
+            string addressline1_2Unique = sheetData.addressline1_2Unique();
 
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique).EnterPhoneNumber(sheetData.PhoneNumber1).SelectPhoneType(sheetData.PhoneType1).AddEmailAddress(sheetData.EmailAddressUnique())
                                  .ClickOnAddressLine1().ContinueNewCustomerCreation();
 
             _logger.Info($": Successfully Entered First Name {sheetData.FistNameUnique()}, Last Name {sheetData.LastNameUnique()} , Phone Number {sheetData.PhoneNumber1} , Phone Type {sheetData.PhoneType1} and email adress {sheetData.EmailAddressUnique()} then Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button-IF available");
 
-            EnterNewCustomerPage_.EnterAddressLine1(sheetData.AddressLine1).EnterCity(sheetData.City).SelectState(sheetData.State).enterZip(sheetData.ZipCode);
-            _logger.Info($": Customer First Address: Successfully Entered AddressLine1 {sheetData.AddressLine1},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode} ");
+            EnterNewCustomerPage_.EnterAddressLine1(sheetData.AddressLine1).EnterCity(sheetData.City).SelectState(sheetData.State).enterZip(sheetData.ZipCode)        
+                                .ClickOnAddAddressPlusButton().EnterAddressLine1(addressline1_2Unique).EnterCity(sheetData.City).SelectState(sheetData.State).enterZip(sheetData.ZipCode);
 
-            SheetData sheetData1 = ExcelDataAccess.GetTestData("UserCreationData$", "customer1address2");
+            _logger.Info($": Successfully Entered Customer 2 address : AddressLine1 {sheetData.AddressLine1},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode}  AND  AddressLine1 {addressline1_2Unique},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode}");
+          
 
-            EnterNewCustomerPage_.ClickOnAddAddressPlusButton().EnterAddressLine1(sheetData1.AddressLine1).EnterCity(sheetData1.City).SelectState(sheetData1.State).enterZip(sheetData1.ZipCode);
-            _logger.Info($": Customer Second Address: Successfully Entered AddressLine1 {sheetData.AddressLine1},EnterCity {sheetData.City} ,SelectState {sheetData.State} , enterZip {sheetData.ZipCode}");
-
-            EnterNewCustomerPage_.ClickTaxExemptionCheckBox().EnterTaxIDNumber(sheetData1.TaxIdNumber).SelectTaxState(sheetData1.TaxState).ClickDoesntExpireCheckBox()  
-                                .ClickSaveButton().ClickOnCorrectedAddressButtonOnSmartyStreet().ContinueNewCustomerCreation();
-            _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData1.TaxIdNumber} ,SelectTaxState {sheetData1.TaxState} and ClickDoesntExpireCheckBox then Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
+            EnterNewCustomerPage_.ClickTaxExemptionCheckBox().EnterTaxIDNumber(sheetData.TaxIdNumber).SelectTaxState(sheetData.TaxState).ClickDoesntExpireCheckBox()  
+                                .ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
+            _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData.TaxIdNumber} ,SelectTaxState {sheetData.TaxState} and ClickDoesntExpireCheckBox then Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
 
 
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
@@ -72,8 +72,14 @@ namespace UnitTestNDBProject.Tests
             Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
             _logger.Info($":Verified that New customer having first name {firstNameUnique} is created successfully");
 
-            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(lastNameUnique));
+            _logger.Info($":Verified that New customer having first name {lastNameUnique} is created successfully");
+
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1,sheetData.City,sheetData.State,sheetData.ZipCode));
             _logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
+
+
+
 
         }
 

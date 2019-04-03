@@ -50,6 +50,15 @@ namespace UnitTestNDBProject.TestDataAccess
 
         }
 
+        public String addressline1_2Unique()
+        {
+            String addressLine1Unique = AddressLine1 + random.Next(1, 100);
+
+            return addressLine1Unique;
+
+        }
+
+
     }
 
     public class PreservedCustomerInformation

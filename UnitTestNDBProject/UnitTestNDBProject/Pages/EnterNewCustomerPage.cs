@@ -58,13 +58,15 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.Name, Using = "Select is-clearable is-searchable Select--single")]
         public IWebElement phonetype { get; set; }
-
+  
         [FindsBy(How = How.Id, Using = "address-line1")]
-
         public IWebElement addressLine1 { get; set; }
 
-        [FindsBy(How = How.Id, Using = "address-line2")]
+        [FindsBy(How = How.XPath, Using = "//label[@for='addressLine1']/following-sibling::span")]
+        public IWebElement viewOnlyAddressLine1 { get; set; }
 
+
+        [FindsBy(How = How.Id, Using = "address-line2")]
         public IWebElement addressLine2 { get; set; }
 
         [FindsBy(How = How.Id, Using = "address-city")]
@@ -72,12 +74,23 @@ namespace UnitTestNDBProject.Pages
         public IWebElement city { get; set; }
 
 
+        [FindsBy(How = How.XPath, Using = "//label[@for='city']/following-sibling::span")]
+
+        public IWebElement viewOnlyCity { get; set; }
+
         [FindsBy(How = How.XPath, Using = "//input[@id='state']")]
 
         public IWebElement state { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//label[@for='state']/following-sibling::span")]
+        public IWebElement viewOnlyState { get; set; }
+       
+
         [FindsBy(How = How.Name, Using = "zip")]
         public IWebElement zip { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//div[@class='col-sm-2']//span[@class='form-value'])[2]")]
+        public IWebElement viewOnlyZip { get; set; }
 
         [FindsBy(How = How.Id, Using = "btnSaveUpper")]
         public IWebElement saveButton { get; set; }
@@ -97,8 +110,8 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Add Address')]")]
         public IWebElement AddAddress { get; set; }
 
-        [FindsBy(How = How.Id, Using = "btnUseCorrectedAddress")]
-        public IWebElement CorrectedAddressbutton { get; set; }
+        [FindsBy(How = How.Id, Using = "btnUseEnteredAddress")]
+        public IWebElement UseAddressAsEntered { get; set; }
 
         [FindsBy(How = How.Id, Using = "emailList[0].Email")]
         public IWebElement emailAddress { get; set; }
@@ -305,10 +318,10 @@ namespace UnitTestNDBProject.Pages
         /// Function to click on corrected address button on smarty street
         /// </summary>
         /// <returns></returns>
-        public EnterNewCustomerPage ClickOnCorrectedAddressButtonOnSmartyStreet()
+        public EnterNewCustomerPage ClickOnUserAddressAsEnteredButtonOnSmartyStreet()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(CorrectedAddressbutton, 10000);
-            CorrectedAddressbutton.Clickme(driver);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(UseAddressAsEntered, 20000);
+            UseAddressAsEntered.Clickme(driver);
             return this;
         }
 
@@ -393,6 +406,36 @@ namespace UnitTestNDBProject.Pages
             }
 
             return IsLastName;
+        }
+
+        /// <summary>
+        /// Function to verify that customer is created with valid address
+        /// </summary>
+        /// <param name="ExpAddressline1"></param>
+        /// <param name="ExpCity"></param>
+        /// <param name="ExpState"></param>
+        /// <param name="ExpZipcode"></param>
+        /// <returns></returns>
+        public bool VerifCustomerIsCreatedWithValidBillingAddress(String ExpAddressline1,String ExpCity, String ExpState, String ExpZipcode)
+        {
+            bool IsAddressCorrect = false;
+            driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 2000);
+            String ActualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
+            String ActualCity = viewOnlyCity.GetText(driver);
+            String ActualState = viewOnlyState.GetText(driver);
+            String ActualZip = viewOnlyZip.GetText(driver);
+            bool billingaddress = driver.FindElement(By.XPath("//span[contains(text(),'Billing Address')]")).Displayed;
+
+            if (ExpAddressline1.Contains(ActualAddressLine1) && ExpCity.Contains(ActualCity) && ExpState.Contains(ActualState.Substring(0,1)) && ExpZipcode.Contains(ActualZip))
+            {
+                if (billingaddress == true)
+                {
+                    IsAddressCorrect = true;
+                }
+                
+            }
+
+            return IsAddressCorrect;
         }
 
 
