@@ -72,7 +72,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
             _logger.Info($":Verified that New customer having first name {firstNameUnique} is created successfully");
 
-            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidFirstName(lastNameUnique));
+            Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
             _logger.Info($":Verified that New customer having first name {lastNameUnique} is created successfully");
 
             Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1,sheetData.City,sheetData.State,sheetData.ZipCode));
