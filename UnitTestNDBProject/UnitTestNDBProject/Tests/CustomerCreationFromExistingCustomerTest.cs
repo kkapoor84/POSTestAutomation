@@ -31,20 +31,36 @@ namespace UnitTestNDBProject.Pages
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A5_VerifyCustomerCreationUsingCustomerSuggestion()
         {
-            Random random = new Random();
+
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
+            // string[] AddedPhones = { PhoneNumber1, PhoneNumber2 };
             string PhoneNumber1 = sheetData.PhoneNumber1Unique();
+            string PhoneNumber2 = sheetData.PhoneNumber2Unique();
             string EmailAddress1 = sheetData.EmailAddress1Unique();
+            string EmailAddress2 = sheetData.EmailAddress2Unique();
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2, 1)
-                .AddEmailAddress(EmailAddress1, 0).AddEmailAddress(sheetData.EmailAddress2Unique(), 1)
+                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(PhoneNumber2, 1).SelectPhoneType(sheetData.PhoneType2, 1)
+                .AddEmailAddress(EmailAddress1, 0).AddEmailAddress(EmailAddress2, 1)
                 .ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();
 
-            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number {sheetData.PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email_1 { sheetData.EmailAddress1},email_2 { sheetData.EmailAddress1}");
-            
+            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} " +
+                $", Phone Number_1 {sheetData.PhoneNumber1} and Phone Type1 {sheetData.PhoneType1}, Phone Number_2 {sheetData.PhoneNumber2} and Phone Type2 {sheetData.PhoneType2}," +
+                $" email_1 { sheetData.EmailAddress1},email_2 { sheetData.EmailAddress1}");
+
+            // Assert.True(EnterNewCustomerPage_.VerifyAddedPhones(EnterNewCustomerPage_.getAddedPhones()));
+
+         //   Assert.True(EnterNewCustomerPage_.VerifyAddedPhones(PhonesArray));
+
             Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber1));
+            _logger.Info("Phone1 copied successfully");
+            Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber2));
+            _logger.Info("Phone2 copied successfully");
             Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress1));
+            _logger.Info("Email Address1 copied successfully");
             
+            Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress2));
+            _logger.Info("Email Address2 copied successfully");
+
             EnterNewCustomerPage_.ClickEditSaveButton();
 
             Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());

@@ -60,7 +60,7 @@ namespace UnitTestNDBProject.Pages
         public IWebElement EditButton { get; set; }
 
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='customerHeaderWithDoc']/div/div/div[2]/div/div[2]/div/h5")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='filterLabel']")]
         public IWebElement OpenActivityText { get; set; }
 
         [FindsBy(How = How.Id, Using = "enterNewQuote")]
@@ -77,6 +77,8 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "(//div[@class='row phone-data']//span[@class='form-value'])[1]")]
         public IWebElement PhoneNumberText { get; set; }
+
+
 
         /// <summary>
         /// Click On Enter New Customer Buton
@@ -400,9 +402,6 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-
-        /// <summary>
-        /// Verify that email addresses are appended in existing customer.
         /// </summary>
         /// <param name="EnteredEmail"></param>
         /// <returns></returns>
@@ -414,10 +413,9 @@ namespace UnitTestNDBProject.Pages
             do
             {
                 string EmailAddress = driver.FindElement(By.Id("emailList[" + i + "].Email")).GetAttribute("value");
-                //string ActualPhoneNumber = string.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
                 EmailAddressArray[i] = EmailAddress;
                 i++;
-            } while (By.Id("phoneLists[" + i + "].Phone").isPresent(driver));
+            } while (By.Id("emailList[" + i + "].Email").isPresent(driver));
 
             int j = 0;
             bool EmailExist = false;
