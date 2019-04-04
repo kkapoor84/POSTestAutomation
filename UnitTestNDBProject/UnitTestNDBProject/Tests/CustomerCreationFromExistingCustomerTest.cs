@@ -11,7 +11,7 @@ using NLog;
 using System.Threading;
 using AventStack.ExtentReports;
 
-namespace UnitTestNDBProject.Pages
+namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
     class CustomerCreationFromExistingCustomerTest : BaseTestClass
@@ -50,23 +50,27 @@ namespace UnitTestNDBProject.Pages
 
 
             Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber1));
-            _logger.Info("Phone1 copied successfully");
+            _logger.Info($": Phone1 copied successfully");
+
             Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber2));
-            _logger.Info("Phone2 copied successfully");
+            _logger.Info($": Phone2 copied successfully");
+
             Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress1));
-            _logger.Info("Email Address1 copied successfully");
+            _logger.Info($": Email Address1 copied successfully");
             
             Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress2));
-            _logger.Info("Email Address2 copied successfully");
+            _logger.Info($": Email Address2 copied successfully");
 
             EnterNewCustomerPage_.ClickEditSaveButton();
 
             Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
-            _logger.Info("Green Banner Displayed Successfully.");
-            Assert.True(EnterNewCustomerPage_.VerifyFirstName("Shivani"));
-            _logger.Info("First Name Is Same As Selected From Customer Suggestion.");
-            Assert.True(EnterNewCustomerPage_.VerifyLastName("Thaman"));
-            _logger.Info("Last Name Is Same As Selected From Customer Suggestion.");
+            _logger.Info($": Green Banner Displayed Successfully.");
+
+            Assert.True(EnterNewCustomerPage_.VerifyFirstName("AutomationPOS"));
+            _logger.Info($": First Name Is Same As Selected From Customer Suggestion.");
+
+            Assert.True(EnterNewCustomerPage_.VerifyLastName("AutomationPOS"));
+            _logger.Info($": Last Name Is Same As Selected From Customer Suggestion.");
         }
 
         public void teardown()
