@@ -11,7 +11,7 @@ using NLog;
 using System.Threading;
 using AventStack.ExtentReports;
 
-namespace UnitTestNDBProject.Pages
+namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
     class CustomerCreationFromExistingCustomerTest : BaseTestClass
