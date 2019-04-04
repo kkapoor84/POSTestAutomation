@@ -63,7 +63,7 @@ namespace UnitTestNDBProject.Tests
             _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData.TaxIdNumber1} ,SelectTaxState {sheetData.TaxState1} and ClickDoesntExpireCheckBox then Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
 
             Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
-            _logger.Info("Green Banner Displayed Successfully.");
+            _logger.Info($":Green Banner Displayed Successfully.");
 
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
             _logger.Info($":Verified that New customer {sheetData.FistNameUnique()} and {sheetData.LastNameUnique()}  is created successfully");
@@ -75,7 +75,7 @@ namespace UnitTestNDBProject.Tests
             _logger.Info($":Verified that New customer having first name {firstNameUnique} is created successfully");
 
             Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
-            _logger.Info($":Verified that New customer having first name {lastNameUnique} is created successfully");
+            _logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
 
             Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(PhoneNumber1));
             _logger.Info("Phone Number Is Same As Entered.");
