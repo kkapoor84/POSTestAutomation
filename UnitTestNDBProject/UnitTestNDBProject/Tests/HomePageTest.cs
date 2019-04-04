@@ -40,7 +40,7 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Category("Regression"),Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
-        public void B1_VerifyHomePageTabs()
+        public void A3_VerifyHomePageTabs()
         {
             HomePage_.ClickDashBoardTab();
             _logger.Info($": Successfully CLicked on Dashboard Tab on homepage");

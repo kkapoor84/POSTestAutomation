@@ -74,7 +74,7 @@ namespace UnitTestNDBProject.Base
         public LoginPage LoginPage_ { get; set; }
         public SheetData sheetData; 
         public EnterNewCustomerPage EnterNewCustomerPage_ { get; set; }
-        public PreservedCustomerInformation PreservedCustomerInformation_ { get; set; }
+       
 
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace UnitTestNDBProject.Base
             BasePageClass_ = new BasePageClass(driver);
             HomePage_ = new HomePage(driver);
             ScreenshotUtil_ = new ScreenshotUtil(driver);
-            PreservedCustomerInformation_ = new PreservedCustomerInformation();
+           
 
             EnterNewCustomerPage_ = new EnterNewCustomerPage(driver);
             BasePageClass_.OpenURL();

@@ -14,7 +14,6 @@ using UnitTestNDBProject.TestDataAccess;
 namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
-    [Order(1)]
     class EnterNewCustomerTest : BaseTestClass
     {
         private Logger _logger = NLog.LogManager.GetCurrentClassLogger();
@@ -28,43 +27,28 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
-            SheetData sheetData1 = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
+            SheetData sheetData1 = ExcelDataAccess.GetTestData("LoginScreen$", "AccountUserValidCredentails");
             LoginPage_.EnterUserName(sheetData1.Username).EnterPassword(sheetData1.Password).ClickLoginButton();
         }
+
 
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A4_VerifyCustomerCreation()
         {
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            string PhoneNumber1 = sheetData.PhoneNumber1Unique();
-            string EmailAddress1 = sheetData.EmailAddress1Unique();
-            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2, 1)
-                .AddEmailAddress(EmailAddress1, 0).AddEmailAddress(sheetData.EmailAddress2Unique(), 1)
-                .ClickSaveButton().ContinueNewCustomerCreation();
-            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} , Phone Number1 {PhoneNumber1} and Phone Type {sheetData.PhoneType1}, email1 { EmailAddress1}");
-            Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
-            _logger.Info("Green Banner Displayed Successfully.");
-            Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(PhoneNumber1));
-            _logger.Info("Phone Number Is Same As Entered.");
-            Assert.True(EnterNewCustomerPage_.VerifyFirstName("Shivani"));
-            _logger.Info("First Name Is Same As Entered.");
-            Assert.True(EnterNewCustomerPage_.VerifyLastName("Thaman"));
-            _logger.Info("Last Name Is Same As Entered.");
-        }
-
-        [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        public void C1_VerifyCustomerCreation()
-        {
-            SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
 
             string firstNameUnique = sheetData.FistNameUnique();
             string lastNameUnique = sheetData.LastNameUnique();
+            string PhoneNumber1 = sheetData.PhoneNumber1Unique();
+            string EmailAddress1 = sheetData.EmailAddress1Unique();
 
             string addressline1_2Unique = sheetData.addressline1_2Unique();
 
-            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique).EnterPhoneNumber(sheetData.PhoneNumber1).SelectPhoneType(sheetData.PhoneType1).AddEmailAddress(sheetData.EmailAddressUnique())
-                                 .ClickOnAddressLine1().ContinueNewCustomerCreation();
+            
+            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique)
+                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(sheetData.PhoneNumber2Unique(), 1).SelectPhoneType(sheetData.PhoneType2, 1)
+                .AddEmailAddress(EmailAddress1, 0).AddEmailAddress(sheetData.EmailAddress2Unique(), 1)
+                .ClickOnAddressLine1().ContinueNewCustomerCreation();
 
             _logger.Info($": Successfully Entered First Name {sheetData.FistNameUnique()}, Last Name {sheetData.LastNameUnique()} , Phone Number {sheetData.PhoneNumber1} , Phone Type {sheetData.PhoneType1} and email adress {sheetData.EmailAddressUnique()} then Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button-IF available");
 
@@ -78,6 +62,8 @@ namespace UnitTestNDBProject.Tests
                                 .ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
             _logger.Info($":Successfully Selected TaxExemption checkbox],EnterTaxIDNumber {sheetData.TaxIdNumber1} ,SelectTaxState {sheetData.TaxState1} and ClickDoesntExpireCheckBox then Clicked on saved button,selected correct address from smarty street and clicked on contiue new customer button");
 
+            Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
+            _logger.Info("Green Banner Displayed Successfully.");
 
             Assert.True(EnterNewCustomerPage_.VerifyCustomerCreation("Open Activity"));
             _logger.Info($":Verified that New customer {sheetData.FistNameUnique()} and {sheetData.LastNameUnique()}  is created successfully");
@@ -91,11 +77,11 @@ namespace UnitTestNDBProject.Tests
             Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
             _logger.Info($":Verified that New customer having first name {lastNameUnique} is created successfully");
 
+            Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(PhoneNumber1));
+            _logger.Info("Phone Number Is Same As Entered.");
+
             Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1, sheetData.City, sheetData.State, sheetData.ZipCode));
             _logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
-
-
-
 
         }
 

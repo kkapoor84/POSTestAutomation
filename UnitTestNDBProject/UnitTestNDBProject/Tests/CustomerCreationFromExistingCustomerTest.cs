@@ -35,7 +35,6 @@ namespace UnitTestNDBProject.Pages
         {
 
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            // string[] AddedPhones = { PhoneNumber1, PhoneNumber2 };
             string PhoneNumber1 = sheetData.PhoneNumber1Unique();
             string PhoneNumber2 = sheetData.PhoneNumber2Unique();
             string EmailAddress1 = sheetData.EmailAddress1Unique();
@@ -49,9 +48,6 @@ namespace UnitTestNDBProject.Pages
                 $", Phone Number_1 {sheetData.PhoneNumber1} and Phone Type1 {sheetData.PhoneType1}, Phone Number_2 {sheetData.PhoneNumber2} and Phone Type2 {sheetData.PhoneType2}," +
                 $" email_1 { sheetData.EmailAddress1},email_2 { sheetData.EmailAddress1}");
 
-            // Assert.True(EnterNewCustomerPage_.VerifyAddedPhones(EnterNewCustomerPage_.getAddedPhones()));
-
-         //   Assert.True(EnterNewCustomerPage_.VerifyAddedPhones(PhonesArray));
 
             Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber1));
             _logger.Info("Phone1 copied successfully");

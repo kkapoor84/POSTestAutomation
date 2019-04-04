@@ -12,6 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnitTestNDBProject.TestDataAccess;
 using UnitTestNDBProject.Utils;
+using SeleniumExtras.WaitHelpers;
+using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace UnitTestNDBProject.Pages
 {
@@ -114,7 +116,7 @@ namespace UnitTestNDBProject.Pages
         public IWebElement EditButton { get; set; }
 
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='filterLabel']")]
+        [FindsBy(How = How.XPath, Using = "//h5[text()='Open Activity']")]
         public IWebElement OpenActivityText { get; set; }
 
         [FindsBy(How = How.Id, Using = "enterNewQuote")]
@@ -208,6 +210,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage EnterPhone(string phone, int i)
         {
+            Thread.Sleep(1000);
             string strMyXPath = "phoneLists[" + i + "].Phone";
             driver.FindElement(By.Id(strMyXPath)).SendKeys(phone);
             return this;
@@ -298,23 +301,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        /// <summary>
-        /// Function to validate cuggestion popup is exists or not
-        /// </summary>
-        /// <returns></returns>
-        public Boolean ContinuePath()
-        {
-
-            Boolean CustomerSuggestionPopupIsAvailable = false;
-            Thread.Sleep(8000);
-            if (By.Id("btnContinue").isPresent(driver))
-            {
-                CustomerSuggestionPopupIsAvailable = true;
-            }
-
-            return CustomerSuggestionPopupIsAvailable;
-
-        }
+ 
         /// <summary>
         /// Functions to continue with existing customer
         /// </summary>
