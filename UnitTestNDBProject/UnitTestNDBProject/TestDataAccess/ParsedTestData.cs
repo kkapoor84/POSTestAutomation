@@ -18,11 +18,17 @@ namespace UnitTestNDBProject.TestDataAccess
         public object Value { get; set; }
     }
 
+    #region Login Data Specific Classes
+
     public class LoginData
     {
         public string Username { get; set; }
         public string Password { get; set; }
     }
+
+    #endregion
+
+    #region Customer Data Specific Classes
 
     public class NewCustomerData
     {
@@ -51,7 +57,7 @@ namespace UnitTestNDBProject.TestDataAccess
         public string AddressLine2 { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string ZipCode { get; set; }        
+        public string ZipCode { get; set; }
     }
 
     public class TaxNumber
@@ -59,4 +65,26 @@ namespace UnitTestNDBProject.TestDataAccess
         public string TaxIdNumber { get; set; }
         public string TaxState { get; set; }
     }
+
+    #endregion
+
+    #region Product Line data specific classes
+
+    public class ProductLineData
+    {
+        public string Width { get; set; }
+        public string Height { get; set; }
+        public string NDBRoomLocation { get; set; }
+        public string Quantity { get; set; }
+        public string ProductType { get; set; }
+        public List<ProductDetail> ProductDetails { get; set; }
+    }
+
+    public class ProductDetail
+    {
+        public string OptionType { get; set; }
+        public string Option { get; set; }
+    }
+
+    #endregion
 }

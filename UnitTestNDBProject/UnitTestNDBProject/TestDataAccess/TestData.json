@@ -116,6 +116,70 @@
             }
           ]
         }
+      },
+      {
+        "Key": "Product2",
+        "Value": {
+          "Width": "40",
+          "Height": "40",
+          "NDBRoomLocation": "Room",
+          "Quantity": 1,
+          "ProductType": "Aluminium Blinds(MB), Deluxe Aluminium Blinds",
+          "ProductDetails": [
+            {
+              "OptionType": "Mounting",
+              "Option": "Inside Mount"
+            },
+            {
+              "OptionType": "Color",
+              "Option": "Allure"
+            },
+            {
+              "OptionType": "Lift System",
+              "Option": "Cordlock"
+            },
+            {
+              "OptionType": "Control Position",
+              "Option": "Tilt Left/Lift Right"
+            }
+          ]
+        }
+      },
+      {
+        "Key": "Product3",
+        "Value": {
+          "Width": "40",
+          "Height": "40",
+          "NDBRoomLocation": "Room",
+          "Quantity": 1,
+          "ProductType": "Honeycomb Shades (CF), Room Darkening Honeycomb Shades",
+          "ProductDetails": [
+            {
+              "OptionType": "Cell Size",
+              "Option": "3/4\" Single Cell"
+            },
+            {
+              "OptionType": "Mounting",
+              "Option": "Inside Mount"
+            },
+            {
+              "OptionType": "Color",
+              "Option": "Adobe"
+            },
+            {
+              "OptionType": "Number On Headrail",
+              "Option": "Standard"
+            },
+            {
+              "OptionType": "Lift System",
+              "Option": "Premium Cordless Top Down/Bottom Up"
+            },
+            {
+              "OptionType": "Swivel Brackets",
+              "Option": "No"
+            }
+          ]
+        }
       }
     ]
   }
