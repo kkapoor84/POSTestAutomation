@@ -10,6 +10,7 @@ using UnitTestNDBProject.Base;
 using NLog;
 using System.Threading;
 using AventStack.ExtentReports;
+using UnitTestNDBProject.Utils;
 
 namespace UnitTestNDBProject.Tests
 {
@@ -17,6 +18,8 @@ namespace UnitTestNDBProject.Tests
     class CustomerCreationFromExistingCustomerTest : BaseTestClass
     {
         private Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private static ParsedTestData loginFeatureParsedData;
+        private static ParsedTestData newCustomerFeatureParsedData;
 
         [SetUp]
         public void Setup()
@@ -27,39 +30,67 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
-            SheetData sheetData1 = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
-            LoginPage_.EnterUserName(sheetData1.Username).EnterPassword(sheetData1.Password).ClickLoginButton();
+            loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
+            object sahLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
+            LoginData loginData = ExcelDataAccess.ParseLoginData(sahLoginData);
+
+            LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
+
+            newCustomerFeatureParsedData = ExcelDataAccess.GetFeatureData("NewCustomerScreen");
         }
+
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A5_VerifyCustomerCreationUsingCustomerSuggestion()
         {
-
-            SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
-            string PhoneNumber1 = sheetData.PhoneNumber1Unique();
-            string PhoneNumber2 = sheetData.PhoneNumber2Unique();
-            string EmailAddress1 = sheetData.EmailAddress1Unique();
-            string EmailAddress2 = sheetData.EmailAddress2Unique();
-            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(sheetData.FirstName).EnterLastName(sheetData.LastName)
-                .EnterPhone(PhoneNumber1, 0).SelectPhoneType(sheetData.PhoneType1, 0).AddPhone().EnterPhone(PhoneNumber2, 1).SelectPhoneType(sheetData.PhoneType2, 1)
-                .AddEmailAddress(EmailAddress1, 0).AddEmailAddress(EmailAddress2, 1)
-                .ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();
-
-            _logger.Info($": Successfully Entered First Name {sheetData.FirstName}, Last Name {sheetData.LastName} " +
-                $", Phone Number_1 {sheetData.PhoneNumber1} and Phone Type1 {sheetData.PhoneType1}, Phone Number_2 {sheetData.PhoneNumber2} and Phone Type2 {sheetData.PhoneType2}," +
-                $" email_1 { sheetData.EmailAddress1},email_2 { sheetData.EmailAddress1}");
-
-
-            Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber1));
-            _logger.Info($": Phone1 copied successfully");
-
-            Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber2));
-            _logger.Info($": Phone2 copied successfully");
-
-            Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress1));
-            _logger.Info($": Email Address1 copied successfully");
+            object newCustomerFeatureData = ExcelDataAccess.GetKeyJsonData(newCustomerFeatureParsedData, "customer1");
+            NewCustomerData newCustomerData = ExcelDataAccess.ParseNewCustomerData(newCustomerFeatureData);
             
-            Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress2));
-            _logger.Info($": Email Address2 copied successfully");
+            EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
+
+            _logger.Info($": Successfully Entered First Name {newCustomerData.FirstName}, Last Name {newCustomerData.LastName}");
+
+            //Input phones
+            for (int counter = 0; counter < newCustomerData.Phones.Count; counter++)
+            {
+                string phone = CommonFunctions.AppendMaxRangeRandomString(newCustomerData.Phones[counter].PhoneNumber);
+                string phoneType = newCustomerData.Phones[counter].PhoneType;
+                EnterNewCustomerPage_.EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
+
+                if (counter < newCustomerData.Phones.Count - 1)
+                {
+                    EnterNewCustomerPage_.AddPhone();
+                }
+
+                _logger.Info($": Successfully Entered Phone Number {phone} , Phone Type {phoneType}");
+            }
+
+            //Input emails
+            for (int counter = 0; counter < newCustomerData.Emails.Count; counter++)
+            {
+                string email = CommonFunctions.RandomizeEmail(newCustomerData.Emails[counter].EmailText);
+                EnterNewCustomerPage_.EnterEmailAddress(email, counter);
+
+                if (counter < newCustomerData.Emails.Count - 1)
+                {
+                    EnterNewCustomerPage_.AddEmailAddress();
+                }
+
+                _logger.Info($": Successfully Entered Email {email} then Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button-IF available");
+            }
+
+            EnterNewCustomerPage_.ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();
+
+            //Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber1));
+            //_logger.Info($": Phone1 copied successfully");
+
+            //Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber2));
+            //_logger.Info($": Phone2 copied successfully");
+
+            //Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress1));
+            //_logger.Info($": Email Address1 copied successfully");
+
+            //Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress2));
+            //_logger.Info($": Email Address2 copied successfully");
 
             EnterNewCustomerPage_.ClickEditSaveButton();
 

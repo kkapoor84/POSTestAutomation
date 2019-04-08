@@ -224,7 +224,6 @@ namespace UnitTestNDBProject.Pages
         {
             addPhone.Clickme(driver);
             return this;
-
         }
 
         /// <summary>
@@ -244,16 +243,16 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        /// <summary>
-        /// Add Email Address
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public EnterNewCustomerPage AddEmailAddress(string email, int i)
+        public EnterNewCustomerPage EnterEmailAddress(string email, int i)
         {
             String strEmailAddress = "emailList[" + i + "].Email";
             driver.FindElement(By.Id(strEmailAddress)).SendKeys(email);
+            //addEmail.Clickme(driver);
+            return this;
+        }
+        
+        public EnterNewCustomerPage AddEmailAddress()
+        {
             addEmail.Clickme(driver);
             return this;
         }
@@ -580,7 +579,7 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="Zip"></param>
         /// <returns></returns>
-        public EnterNewCustomerPage enterZip(String Zip)
+        public EnterNewCustomerPage EnterZip(String Zip)
         {
             zip.SendKeys(Zip);
             _logger.Info("entering zip...." + Zip);

@@ -26,7 +26,7 @@
     ]
   },
   {
-    "Feature": "UserCreationData",
+    "Feature": "NewCustomerScreen",
     "Data": [
       {
         "Key": "customer1",
@@ -45,10 +45,10 @@
           ],
           "Emails": [
             {
-              "Email": "posuser"
+              "EmailText": "posuser"
             },
             {
-              "Email": "automationuser"
+              "EmailText": "automationuser"
             }
           ],
           "Addresses": [

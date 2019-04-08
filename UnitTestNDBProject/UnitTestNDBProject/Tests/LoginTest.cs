@@ -13,12 +13,12 @@ using UnitTestNDBProject.Utils;
 public class LoginTest : BaseTestClass
 {
     private static Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private static ParsedTestData featureParsedData;
+    private static ParsedTestData loginFeatureParsedData;
 
     [OneTimeSetUp]
     public void BeforeClass()
     {
-        featureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
+        loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
     }
 
     [SetUp]
@@ -31,7 +31,7 @@ public class LoginTest : BaseTestClass
     public void A2_VerifyLoginWithInValidCredentails()
     {
         //LoginData loginData = (LoginData)ExcelDataAccess.GetJsonData("LoginScreen", "InValidCredentials");
-        object invalidLoginData = ExcelDataAccess.GetKeyJsonData(featureParsedData, "InValidCredentials");
+        object invalidLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "InValidCredentials");
 
         LoginData loginData = ExcelDataAccess.ParseLoginData(invalidLoginData);
 
@@ -47,7 +47,7 @@ public class LoginTest : BaseTestClass
     public void A1_VerifyLoginWithValidCrdentails()
     {
         //SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
-        object validLoginData = ExcelDataAccess.GetKeyJsonData(featureParsedData, "SAHUserValidCredentails");
+        object validLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
 
         LoginData loginData = ExcelDataAccess.ParseLoginData(validLoginData);
 

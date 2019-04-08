@@ -64,7 +64,7 @@ namespace UnitTestNDBProject.TestDataAccess
 
         public String FistNameUnique()
         {
-            String FirstUniqueName = FirstName + random.Next(1, 100); ;
+            String FirstUniqueName = FirstName + random.Next(1, 100);
             return FirstUniqueName;
         }
 

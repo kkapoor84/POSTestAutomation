@@ -18,19 +18,22 @@ namespace UnitTestNDBProject.Tests
     [Order(2)]
     class HomePageTest : BaseTestClass
     {
-
         private static Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private static ParsedTestData loginFeatureParsedData;
 
         [OneTimeSetUp]
         public void BeforeClass()
         {
-            SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "AccountUserValidCredentails");
+            loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
+            object accountingLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
+            LoginData loginData = ExcelDataAccess.ParseLoginData(accountingLoginData);
 
-            LoginPage_.EnterUserName(sheetData.Username).EnterPassword(sheetData.Password).ClickLoginButton();
-            _logger.Info($": Successfully Entered valid username {sheetData.Username}and password {sheetData.Password} and clicked on login button");
+            //SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "AccountUserValidCredentails");
+
+            LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
+            _logger.Info($": Successfully Entered valid username {loginData.Username}and password {loginData.Password} and clicked on login button");
 
             Assert.True(HomePage_.VerifyHomePageTitle("Point of Sale Home Page"));
-
         }
 
         [SetUp]

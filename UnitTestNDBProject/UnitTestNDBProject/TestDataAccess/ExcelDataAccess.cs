@@ -60,7 +60,14 @@ namespace UnitTestNDBProject.TestDataAccess
         
         public static LoginData ParseLoginData(object jsonData)
         {
+            //TODO: This could be make generic - use T function
             return (LoginData)JsonConvert.DeserializeObject(Convert.ToString(jsonData), typeof(LoginData));
+        }
+
+        public static NewCustomerData ParseNewCustomerData(object jsonData)
+        {
+            //TODO: This could be make generic - use T function
+            return (NewCustomerData)JsonConvert.DeserializeObject(Convert.ToString(jsonData), typeof(NewCustomerData));
         }
     }
 }
