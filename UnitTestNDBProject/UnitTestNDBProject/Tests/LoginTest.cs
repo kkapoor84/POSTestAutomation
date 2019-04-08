@@ -9,7 +9,6 @@ using UnitTestNDBProject.Utils;
 
 [TestFixture]
 [Order(3)]
-
 public class LoginTest : BaseTestClass
 {
     private static Logger _logger = NLog.LogManager.GetCurrentClassLogger();
@@ -30,10 +29,9 @@ public class LoginTest : BaseTestClass
     [Test, Category("Regression"), Order(2), Category("Smoke"), Description("Validate that error message populates once user enter invalid credentials")]
     public void A2_VerifyLoginWithInValidCredentails()
     {
-        //LoginData loginData = (LoginData)ExcelDataAccess.GetJsonData("LoginScreen", "InValidCredentials");
         object invalidLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "InValidCredentials");
 
-        LoginData loginData = ExcelDataAccess.ParseLoginData(invalidLoginData);
+        LoginData loginData = JsonDataParser<LoginData>.ParseData(invalidLoginData);
 
         LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
         _logger.Info($": Successfully Entered invalid username {loginData.Username}and password {loginData.Password} and clicked on login button");
@@ -42,26 +40,24 @@ public class LoginTest : BaseTestClass
         _logger.Info($": Successfully Verified the message displayed after entering invalid username {loginData.Username} and password {loginData.Password}");
     }
 
-
     [Test, Category("Regression"), Order(1), Category("Smoke"), Description("Validate that user is able to navigate to Home page using valid credentials")]
     public void A1_VerifyLoginWithValidCrdentails()
     {
-        //SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
         object validLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
 
-        LoginData loginData = ExcelDataAccess.ParseLoginData(validLoginData);
+        LoginData loginData = JsonDataParser<LoginData>.ParseData(validLoginData);
 
         LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
         _logger.Info($": Successfully Entered valid username {loginData.Username} and password {loginData.Password} and clicked on login button");
 
         HomePage_.ClickShopAtHomeTab();
-        _logger.Info($": Successfully CLicked on Shop at Home Tab on homepage");
+        _logger.Info($": Successfully Clicked on Shop at Home Tab on homepage");
 
         Assert.True(HomePage_.VerifyShopAtHomeTabIsClicked());
-        _logger.Info($": Successfully Verfied that Shop at Home tab is clicked on homepage");
+        _logger.Info($": Successfully Verified that Shop at Home tab is clicked on homepage");
 
         HomePage_.Signout();
-        _logger.Info($": Successfully CLicked on Signout button n homepage");
+        _logger.Info($": Successfully Clicked on Signout button n homepage");
     }
 
     [TearDown]

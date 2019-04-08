@@ -57,17 +57,13 @@ namespace UnitTestNDBProject.TestDataAccess
         {
             return featureParsedData.Data.FirstOrDefault(x => x.Key == key).Value;
         }
-        
-        public static LoginData ParseLoginData(object jsonData)
-        {
-            //TODO: This could be make generic - use T function
-            return (LoginData)JsonConvert.DeserializeObject(Convert.ToString(jsonData), typeof(LoginData));
-        }
+    }
 
-        public static NewCustomerData ParseNewCustomerData(object jsonData)
+    public static class JsonDataParser<T>
+    {
+        public static T ParseData(object jsonData)
         {
-            //TODO: This could be make generic - use T function
-            return (NewCustomerData)JsonConvert.DeserializeObject(Convert.ToString(jsonData), typeof(NewCustomerData));
+            return (T)JsonConvert.DeserializeObject(Convert.ToString(jsonData), typeof(T));
         }
     }
 }

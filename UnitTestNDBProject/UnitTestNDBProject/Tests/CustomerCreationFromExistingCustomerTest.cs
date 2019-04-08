@@ -32,7 +32,7 @@ namespace UnitTestNDBProject.Tests
         {
             loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
             object sahLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
-            LoginData loginData = ExcelDataAccess.ParseLoginData(sahLoginData);
+            LoginData loginData = JsonDataParser<LoginData>.ParseData(sahLoginData);
 
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
@@ -43,8 +43,9 @@ namespace UnitTestNDBProject.Tests
         public void A5_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             object newCustomerFeatureData = ExcelDataAccess.GetKeyJsonData(newCustomerFeatureParsedData, "customer1");
-            NewCustomerData newCustomerData = ExcelDataAccess.ParseNewCustomerData(newCustomerFeatureData);
-            
+            NewCustomerData newCustomerData = JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
+
+
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
 
             _logger.Info($": Successfully Entered First Name {newCustomerData.FirstName}, Last Name {newCustomerData.LastName}");

@@ -26,7 +26,7 @@ namespace UnitTestNDBProject.Tests
         {
             loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
             object accountingLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
-            LoginData loginData = ExcelDataAccess.ParseLoginData(accountingLoginData);
+            LoginData loginData = JsonDataParser<LoginData>.ParseData(accountingLoginData);
 
             //SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "AccountUserValidCredentails");
 

@@ -73,5 +73,50 @@
         }
       }
     ]
+  },
+  {
+    "Feature": "ProductLineScreen",
+    "Data": [
+      {
+        "Key": "Product1",
+        "Value": {
+          "Width": "40",
+          "Height": "40",
+          "NDBRoomLocation": "Room",
+          "Quantity": 1,
+          "ProductType": "Wood Blinds(NW), Faux Wood Blinds",
+          "ProductDetails": [
+            {
+              "OptionType": "Mounting",
+              "Option": "Inside Mount"
+            },
+            {
+              "OptionType": "Color",
+              "Option": "Cloud"
+            },
+            {
+              "OptionType": "Number On Headrail",
+              "Option": "Standard"
+            },
+            {
+              "OptionType": "Lift System",
+              "Option": "Cordlock"
+            },
+            {
+              "OptionType": "Tilt Control",
+              "Option": "Cord Tilt"
+            },
+            {
+              "OptionType": "Control Position",
+              "Option": "Tilt Left/Lift Right"
+            },
+            {
+              "OptionType": "Valance",
+              "Option": "Standard"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]

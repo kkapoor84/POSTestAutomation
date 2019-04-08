@@ -32,7 +32,7 @@ namespace UnitTestNDBProject.Tests
         {
             loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
             object accountingLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
-            LoginData loginData = ExcelDataAccess.ParseLoginData(accountingLoginData);
+            LoginData loginData = JsonDataParser<LoginData>.ParseData(accountingLoginData);
             
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
@@ -43,7 +43,7 @@ namespace UnitTestNDBProject.Tests
         public void A4_VerifyCustomerCreation()
         {            
             object newCustomerFeatureData = ExcelDataAccess.GetKeyJsonData(newCustomerFeatureParsedData, "customer1");
-            NewCustomerData newCustomerData = ExcelDataAccess.ParseNewCustomerData(newCustomerFeatureData);
+            NewCustomerData newCustomerData = JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
 
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
             string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
