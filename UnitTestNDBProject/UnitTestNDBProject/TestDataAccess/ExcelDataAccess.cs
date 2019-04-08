@@ -10,7 +10,7 @@ using System;
 
 namespace UnitTestNDBProject.TestDataAccess
 {
-    class ExcelDataAccess
+    public static class ExcelDataAccess
     {
         public static List<ParsedTestData> GetFullJsonData()
         {
@@ -34,8 +34,17 @@ namespace UnitTestNDBProject.TestDataAccess
         }
     }
 
+    /// <summary>
+    /// Generic class to parse dynamic json data
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public static class JsonDataParser<T>
     {
+        /// <summary>
+        /// Function to parse dynamic json data
+        /// </summary>
+        /// <param name="jsonData"></param>
+        /// <returns></returns>
         public static T ParseData(object jsonData)
         {
             return (T)JsonConvert.DeserializeObject(Convert.ToString(jsonData), typeof(T));
