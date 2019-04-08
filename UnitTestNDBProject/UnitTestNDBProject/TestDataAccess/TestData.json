@@ -1,0 +1,77 @@
+﻿[
+  {
+    "Feature": "LoginScreen",
+    "Data": [
+      {
+        "Key": "InValidCredentials",
+        "Value": {
+          "UserName": "POS",
+          "Password": "N0tS3cur3!"
+        }
+      },
+      {
+        "Key": "SAHUserValidCredentails",
+        "Value": {
+          "UserName": "Pos-sahtest",
+          "Password": "N0tS3cur3!"
+        }
+      },
+      {
+        "Key": "AccountUserValidCredentails",
+        "Value": {
+          "UserName": "Pos-acctrec",
+          "Password": "N0tS3cur3!"
+        }
+      }
+    ]
+  },
+  {
+    "Feature": "UserCreationData",
+    "Data": [
+      {
+        "Key": "customer1",
+        "Value": {
+          "FirstName": "AutomationPOS_FN",
+          "LastName": "AutomationPOS_LN",
+          "Phones": [
+            {
+              "PhoneNumber": "85",
+              "PhoneType": "Home"
+            },
+            {
+              "PhoneNumber": "98",
+              "PhoneType": "Mobile"
+            }
+          ],
+          "Emails": [
+            {
+              "Email": "posuser"
+            },
+            {
+              "Email": "automationuser"
+            }
+          ],
+          "Addresses": [
+            {
+              "AddressLine1": "1499 Massachusetts Ave NW",
+              "AddressLine2": "",
+              "City": "Washington",
+              "State": "DC",
+              "ZipCode": "20005-2869"
+            }
+          ],
+          "TaxNumbers": [
+            {
+              "TaxIdNumber": "123456789",
+              "TaxState": "DC"
+            },
+            {
+              "TaxIdNumber": "111111111",
+              "TaxState": "DC"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

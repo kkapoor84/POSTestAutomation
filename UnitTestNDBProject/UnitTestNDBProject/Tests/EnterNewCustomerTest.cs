@@ -35,6 +35,8 @@ namespace UnitTestNDBProject.Tests
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A4_VerifyCustomerCreation()
         {
+
+
             SheetData sheetData = ExcelDataAccess.GetTestData("UserCreationData$", "customer1");
 
             string firstNameUnique = sheetData.FistNameUnique();
