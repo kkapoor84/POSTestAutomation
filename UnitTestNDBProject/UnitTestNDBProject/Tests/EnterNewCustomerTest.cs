@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using AventStack.ExtentReports;
+﻿using AventStack.ExtentReports;
 using NLog;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using System.Threading;
 using UnitTestNDBProject.Base;
 using UnitTestNDBProject.TestDataAccess;
 using UnitTestNDBProject.Utils;
@@ -30,12 +25,14 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
+            //Get data for login
             loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
             object accountingLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(accountingLoginData);
             
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
+            //Get data for customer screen
             newCustomerFeatureParsedData = ExcelDataAccess.GetFeatureData("NewCustomerScreen");
         }
 

@@ -30,12 +30,14 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
+            //Get data for login
             loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
             object sahLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(sahLoginData);
 
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
+            //Get data for customer
             newCustomerFeatureParsedData = ExcelDataAccess.GetFeatureData("NewCustomerScreen");
         }
 
@@ -137,6 +139,5 @@ namespace UnitTestNDBProject.Tests
             }
             GlobalSetup.test.Log(logstatus, "Test ended with " + logstatus + stacktrace);
         }
-
     }
 }

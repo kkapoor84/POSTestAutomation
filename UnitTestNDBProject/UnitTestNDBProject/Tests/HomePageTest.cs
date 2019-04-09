@@ -2,13 +2,7 @@
 using NLog;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using UnitTestNDBProject.Base;
 using UnitTestNDBProject.TestDataAccess;
 
@@ -24,12 +18,11 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
+            //Get data for login
             loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
             object accountingLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(accountingLoginData);
-
-            //SheetData sheetData = ExcelDataAccess.GetTestData("LoginScreen$", "AccountUserValidCredentails");
-
+                        
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
             _logger.Info($": Successfully Entered valid username {loginData.Username}and password {loginData.Password} and clicked on login button");
 
