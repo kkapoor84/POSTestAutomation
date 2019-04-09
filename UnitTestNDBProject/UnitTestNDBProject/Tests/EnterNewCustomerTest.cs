@@ -2,6 +2,8 @@
 using NLog;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnitTestNDBProject.Base;
 using UnitTestNDBProject.TestDataAccess;
@@ -15,6 +17,7 @@ namespace UnitTestNDBProject.Tests
         private Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
+        CommonTest commonTest;
 
         [SetUp]
         public void Setup()
@@ -25,6 +28,8 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
+            commonTest = new CommonTest();
+
             //Get data for login
             loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
             object accountingLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
@@ -50,35 +55,22 @@ namespace UnitTestNDBProject.Tests
             _logger.Info($": Successfully Entered First Name {firstNameUnique}, Last Name {lastNameUnique}");
 
             //Input phones
-            for (int counter = 0; counter < newCustomerData.Phones.Count; counter++)
+            List<Tuple<string, string>> phones = commonTest.AddCustomerPhones(EnterNewCustomerPage_, newCustomerData.Phones);
+            foreach(Tuple<string, string> phone in phones)
             {
-                string phone = CommonFunctions.AppendMaxRangeRandomString(newCustomerData.Phones[counter].PhoneNumber);
-                string phoneType = newCustomerData.Phones[counter].PhoneType;
-                EnterNewCustomerPage_.EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
-
-                if (counter < newCustomerData.Phones.Count - 1)
-                {
-                    EnterNewCustomerPage_.AddPhone();
-                }
-
-                _logger.Info($": Successfully Entered Phone Number {phone} , Phone Type {phoneType}");
+                _logger.Info($": Successfully Entered Phone Number {phone.Item1} , Phone Type {phone.Item2}");
             }
 
             //Input emails
-            for (int counter = 0; counter < newCustomerData.Emails.Count; counter++)
+            List<string> emails = commonTest.AddCustomerEmails(EnterNewCustomerPage_, newCustomerData.Emails);
+            foreach (string email in emails)
             {
-                string email = CommonFunctions.RandomizeEmail(newCustomerData.Emails[counter].EmailText);
-                EnterNewCustomerPage_.EnterEmailAddress(email, counter);
-
-                if (counter < newCustomerData.Emails.Count - 1)
-                {
-                    EnterNewCustomerPage_.AddEmailAddress();
-                }
-
-                _logger.Info($": Successfully Entered Email {email} then Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button-IF available");
+                _logger.Info($": Successfully Entered Email {email}");
             }
-
+                        
+            //Click on Address line 1
             EnterNewCustomerPage_.ClickOnAddressLine1().ContinueNewCustomerCreation();
+            _logger.Info($": Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button-IF available");
 
             //Input addresses
             for (int counter = 0; counter < newCustomerData.Addresses.Count; counter++)
@@ -138,12 +130,14 @@ namespace UnitTestNDBProject.Tests
 
             Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
             _logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
+                                                
+            for(int counter = 0; counter < phones.Count; counter++)
+            {
+                Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(phones[counter].Item1));
+                _logger.Info("Phone Number " + (counter + 1) + " Is Same As Entered.");
+            }
 
-            //TODO: Write logic to be able to preserve phone numbers/email/addresses/tax etc and verify on Asserts.
-
-            //Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(PhoneNumber1));
-            //_logger.Info("Phone Number Is Same As Entered.");
-
+            //TODO: How to ASSERT below statement?
             //Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1, sheetData.City, sheetData.State, sheetData.ZipCode));
             //_logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
         }

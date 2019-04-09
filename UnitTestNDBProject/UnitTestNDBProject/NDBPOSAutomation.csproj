@@ -135,6 +135,7 @@
     <Compile Include="Base\BaseTestClass.cs" />
     <Compile Include="Base\BasePageClass.cs" />
     <Compile Include="TestDataAccess\ParsedTestData.cs" />
+    <Compile Include="Tests\CommonTest.cs" />
     <Compile Include="Tests\CustomerCreationFromExistingCustomerTest.cs" />
     <Compile Include="Pages\EnterNewCustomerPage.cs" />
     <Compile Include="Pages\HomePage.cs" />

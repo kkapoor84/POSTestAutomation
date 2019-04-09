@@ -20,6 +20,7 @@ namespace UnitTestNDBProject.Tests
         private Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
+        CommonTest commonTest;
 
         [SetUp]
         public void Setup()
@@ -30,6 +31,8 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
+            commonTest = new CommonTest();
+
             //Get data for login
             loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
             object sahLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
@@ -46,64 +49,49 @@ namespace UnitTestNDBProject.Tests
         {
             object newCustomerFeatureData = ExcelDataAccess.GetKeyJsonData(newCustomerFeatureParsedData, "customer1");
             NewCustomerData newCustomerData = JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
-
-
+            
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
 
             _logger.Info($": Successfully Entered First Name {newCustomerData.FirstName}, Last Name {newCustomerData.LastName}");
-
+                  
             //Input phones
-            for (int counter = 0; counter < newCustomerData.Phones.Count; counter++)
+            List<Tuple<string, string>> phones = commonTest.AddCustomerPhones(EnterNewCustomerPage_, newCustomerData.Phones);
+            foreach (Tuple<string, string> phone in phones)
             {
-                string phone = CommonFunctions.AppendMaxRangeRandomString(newCustomerData.Phones[counter].PhoneNumber);
-                string phoneType = newCustomerData.Phones[counter].PhoneType;
-                EnterNewCustomerPage_.EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
-
-                if (counter < newCustomerData.Phones.Count - 1)
-                {
-                    EnterNewCustomerPage_.AddPhone();
-                }
-
-                _logger.Info($": Successfully Entered Phone Number {phone} , Phone Type {phoneType}");
+                _logger.Info($": Successfully Entered Phone Number {phone.Item1} , Phone Type {phone.Item2}");
             }
 
             //Input emails
-            for (int counter = 0; counter < newCustomerData.Emails.Count; counter++)
+            List<string> emails = commonTest.AddCustomerEmails(EnterNewCustomerPage_, newCustomerData.Emails);
+            foreach (string email in emails)
             {
-                string email = CommonFunctions.RandomizeEmail(newCustomerData.Emails[counter].EmailText);
-                EnterNewCustomerPage_.EnterEmailAddress(email, counter);
-
-                if (counter < newCustomerData.Emails.Count - 1)
-                {
-                    EnterNewCustomerPage_.AddEmailAddress();
-                }
-
-                _logger.Info($": Successfully Entered Email {email} then Clicked on AddressLine1 text box then on ContinueNewCustomerCreation button-IF available");
+                _logger.Info($": Successfully Entered Email {email}");
             }
-
+            
+            //Click on SAVE button and update existing customer
             EnterNewCustomerPage_.ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();
 
-            //Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber1));
-            //_logger.Info($": Phone1 copied successfully");
+            for (int counter = 0; counter < phones.Count; counter++)
+            {
+                Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(phones[counter].Item1));
+                _logger.Info($": Phone " + (counter + 1) + " copied successfully");
+            }
 
-            //Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(PhoneNumber2));
-            //_logger.Info($": Phone2 copied successfully");
-
-            //Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress1));
-            //_logger.Info($": Email Address1 copied successfully");
-
-            //Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(EmailAddress2));
-            //_logger.Info($": Email Address2 copied successfully");
+            for (int counter = 0; counter < emails.Count; counter++)
+            {
+                Assert.True(EnterNewCustomerPage_.VerifyExistingEmailAddress(emails[counter]));
+                _logger.Info($": Email " + (counter + 1) + " copied successfully");
+            }
 
             EnterNewCustomerPage_.ClickEditSaveButton();
 
             Assert.True(EnterNewCustomerPage_.VerifyGreedbarAfterEditIsSuccessful());
             _logger.Info($": Green Banner Displayed Successfully.");
 
-            Assert.True(EnterNewCustomerPage_.VerifyFirstName("AutomationPOS"));
+            Assert.True(EnterNewCustomerPage_.VerifyFirstName(newCustomerData.FirstName));
             _logger.Info($": First Name Is Same As Selected From Customer Suggestion.");
 
-            Assert.True(EnterNewCustomerPage_.VerifyLastName("AutomationPOS"));
+            Assert.True(EnterNewCustomerPage_.VerifyLastName(newCustomerData.LastName));
             _logger.Info($": Last Name Is Same As Selected From Customer Suggestion.");
         }
 
