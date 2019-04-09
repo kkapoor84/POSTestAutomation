@@ -67,5 +67,27 @@ namespace UnitTestNDBProject.Tests
 
             return newEmails;
         }
+
+
+        // Add Product Details
+
+        public List<Tuple<string, string>> AddProductDetails(List<ProductDetail> ProductDetails)
+        {
+            List<Tuple<string, string>> addedProducts = new List<Tuple<string, string>>();
+
+            //Input product details
+            for (int counter = 0; counter < ProductDetails.Count; counter++)
+            {
+                string optiontype = ProductDetails[counter].OptionTypeId;
+                string option = ProductDetails[counter].Option;
+
+                addedProducts.Add(new Tuple<string, string>(optiontype, option));
+            }
+
+            return addedProducts;
+        }
+
+
+
     }
 }

@@ -82,7 +82,7 @@ namespace UnitTestNDBProject.TestDataAccess
 
     public class ProductDetail
     {
-        public string OptionType { get; set; }
+        public string OptionTypeId { get; set; }
         public string Option { get; set; }
     }
 

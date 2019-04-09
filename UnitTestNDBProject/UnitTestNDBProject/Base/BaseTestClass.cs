@@ -74,6 +74,7 @@ namespace UnitTestNDBProject.Base
         public LoginPage LoginPage_ { get; set; }
         //public SheetData sheetData; 
         public EnterNewCustomerPage EnterNewCustomerPage_ { get; set; }
+        public AddQuotePage AddQuotePage_ { get; set; }
        
 
 
@@ -103,6 +104,7 @@ namespace UnitTestNDBProject.Base
            
 
             EnterNewCustomerPage_ = new EnterNewCustomerPage(driver);
+            AddQuotePage_ = new AddQuotePage(driver);
             BasePageClass_.OpenURL();
 
             _logger.Info($" :Successfully executed the BeforeClassInitialization() method for {this.GetType().Name}");

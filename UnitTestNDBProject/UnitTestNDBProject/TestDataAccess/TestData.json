@@ -95,19 +95,19 @@
               "Option": "Cloud"
             },
             {
-              "OptionTypeId": "Number On Headrail",
+              "OptionTypeId": "NumberOnHeadrail",
               "Option": "Standard"
             },
             {
-              "OptionTypeId": "Lift System",
+              "OptionTypeId": "LiftSystem",
               "Option": "Cordlock"
             },
             {
-              "OptionTypeId": "Tilt Control",
+              "OptionTypeId": "TiltControl",
               "Option": "Cord Tilt"
             },
             {
-              "OptionTypeId": "Control Position",
+              "OptionTypeId": "ControlLocation",
               "Option": "Tilt Left/Lift Right"
             },
             {
