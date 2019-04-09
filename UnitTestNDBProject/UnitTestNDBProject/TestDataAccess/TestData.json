@@ -87,31 +87,31 @@
           "ProductType": "Wood Blinds(NW), Faux Wood Blinds",
           "ProductDetails": [
             {
-              "OptionType": "Mounting",
+              "OptionTypeId": "Mounting",
               "Option": "Inside Mount"
             },
             {
-              "OptionType": "Color",
+              "OptionTypeId": "Color",
               "Option": "Cloud"
             },
             {
-              "OptionType": "Number On Headrail",
+              "OptionTypeId": "Number On Headrail",
               "Option": "Standard"
             },
             {
-              "OptionType": "Lift System",
+              "OptionTypeId": "Lift System",
               "Option": "Cordlock"
             },
             {
-              "OptionType": "Tilt Control",
+              "OptionTypeId": "Tilt Control",
               "Option": "Cord Tilt"
             },
             {
-              "OptionType": "Control Position",
+              "OptionTypeId": "Control Position",
               "Option": "Tilt Left/Lift Right"
             },
             {
-              "OptionType": "Valance",
+              "OptionTypeId": "Valance",
               "Option": "Standard"
             }
           ]
@@ -127,19 +127,19 @@
           "ProductType": "Aluminium Blinds(MB), Deluxe Aluminium Blinds",
           "ProductDetails": [
             {
-              "OptionType": "Mounting",
+              "OptionTypeId": "Mounting",
               "Option": "Inside Mount"
             },
             {
-              "OptionType": "Color",
+              "OptionTypeId": "Color",
               "Option": "Allure"
             },
             {
-              "OptionType": "Lift System",
+              "OptionTypeId": "Lift System",
               "Option": "Cordlock"
             },
             {
-              "OptionType": "Control Position",
+              "OptionTypeId": "Control Position",
               "Option": "Tilt Left/Lift Right"
             }
           ]
@@ -155,27 +155,27 @@
           "ProductType": "Honeycomb Shades (CF), Room Darkening Honeycomb Shades",
           "ProductDetails": [
             {
-              "OptionType": "Cell Size",
+              "OptionTypeId": "Cell Size",
               "Option": "3/4\" Single Cell"
             },
             {
-              "OptionType": "Mounting",
+              "OptionTypeId": "Mounting",
               "Option": "Inside Mount"
             },
             {
-              "OptionType": "Color",
+              "OptionTypeId": "Color",
               "Option": "Adobe"
             },
             {
-              "OptionType": "Number On Headrail",
+              "OptionTypeId": "Number On Headrail",
               "Option": "Standard"
             },
             {
-              "OptionType": "Lift System",
+              "OptionTypeId": "Lift System",
               "Option": "Premium Cordless Top Down/Bottom Up"
             },
             {
-              "OptionType": "Swivel Brackets",
+              "OptionTypeId": "Swivel Brackets",
               "Option": "No"
             }
           ]

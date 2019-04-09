@@ -19,8 +19,8 @@ namespace UnitTestNDBProject.Tests
         public void BeforeClass()
         {
             //Get data for login
-            loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
-            object accountingLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
+            loginFeatureParsedData = DataAccess.GetFeatureData("LoginScreen");
+            object accountingLoginData = DataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(accountingLoginData);
                         
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();

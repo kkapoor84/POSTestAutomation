@@ -19,7 +19,7 @@ namespace UnitTestNDBProject.Tests
         public void BeforeClass()
         {
             //Get data for login
-            loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
+            loginFeatureParsedData = DataAccess.GetFeatureData("LoginScreen");
         }
 
         [SetUp]
@@ -32,7 +32,7 @@ namespace UnitTestNDBProject.Tests
         public void A2_VerifyLoginWithInValidCredentails()
         {
             //Get invalid user credentials
-            object invalidLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "InValidCredentials");
+            object invalidLoginData = DataAccess.GetKeyJsonData(loginFeatureParsedData, "InValidCredentials");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(invalidLoginData);
 
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
@@ -46,7 +46,7 @@ namespace UnitTestNDBProject.Tests
         public void A1_VerifyLoginWithValidCrdentails()
         {
             //Get valid SAH user credentials
-            object validLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
+            object validLoginData = DataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(validLoginData);
 
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();

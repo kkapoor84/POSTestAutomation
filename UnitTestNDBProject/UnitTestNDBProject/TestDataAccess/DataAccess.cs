@@ -10,13 +10,14 @@ using System;
 
 namespace UnitTestNDBProject.TestDataAccess
 {
-    public static class ExcelDataAccess
+    public static class DataAccess
     {
         public static List<ParsedTestData> GetFullJsonData()
         {
             //TODO: Add code to dynamically read the path
             //TODO: Save the output of this function in a static variable so that it doesn't gets called everytime
-            var fileName = @"D:\Projects\NextDayBlind\Repository\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\TestDataAccess\TestData.json";
+            var fileName = ConfigurationManager.AppSettings["TestDataPath"];
+            //var fileName = @"D:\Projects\NextDayBlind\Repository\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\TestDataAccess\TestData.json";
             string json = File.ReadAllText(fileName);
             return (List<ParsedTestData>)JsonConvert.DeserializeObject(json, typeof(List<ParsedTestData>));
         }

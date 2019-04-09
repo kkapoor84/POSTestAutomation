@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,23 @@ namespace UnitTestNDBProject.Utils
             random = new Random();
             string randomText = email + random.Next(1000000000) + "@nextdayblinds.com";
             return randomText;
+        }
+
+        /// <summary>
+        /// Returns the web element by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="driver"></param>
+        /// <returns></returns>
+        public IWebElement GetElementById(string id, IWebDriver driver)
+        {
+            if(string.IsNullOrEmpty(id))
+            {
+                return null;
+            }
+
+            IWebElement element = driver.FindElement(By.Id(id));
+            return element;
         }
     }
 }

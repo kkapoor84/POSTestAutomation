@@ -72,7 +72,7 @@ namespace UnitTestNDBProject.Base
         public HomePage HomePage_ { get; set; }
         public ScreenshotUtil ScreenshotUtil_ { get; set; }
         public LoginPage LoginPage_ { get; set; }
-        public SheetData sheetData; 
+        //public SheetData sheetData; 
         public EnterNewCustomerPage EnterNewCustomerPage_ { get; set; }
        
 

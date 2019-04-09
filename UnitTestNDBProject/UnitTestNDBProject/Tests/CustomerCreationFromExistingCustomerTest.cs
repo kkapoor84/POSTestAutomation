@@ -34,20 +34,20 @@ namespace UnitTestNDBProject.Tests
             commonTest = new CommonTest();
 
             //Get data for login
-            loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
-            object sahLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
+            loginFeatureParsedData = DataAccess.GetFeatureData("LoginScreen");
+            object sahLoginData = DataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(sahLoginData);
 
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
             //Get data for customer
-            newCustomerFeatureParsedData = ExcelDataAccess.GetFeatureData("NewCustomerScreen");
+            newCustomerFeatureParsedData = DataAccess.GetFeatureData("NewCustomerScreen");
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A5_VerifyCustomerCreationUsingCustomerSuggestion()
         {
-            object newCustomerFeatureData = ExcelDataAccess.GetKeyJsonData(newCustomerFeatureParsedData, "customer1");
+            object newCustomerFeatureData = DataAccess.GetKeyJsonData(newCustomerFeatureParsedData, "customer1");
             NewCustomerData newCustomerData = JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
             
             EnterNewCustomerPage_.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);

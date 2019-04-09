@@ -140,8 +140,7 @@
     <Compile Include="Pages\EnterNewCustomerPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Pages\SearchPage.cs" />
-    <Compile Include="TestDataAccess\ExcelDataAccess.cs" />
-    <Compile Include="TestDataAccess\SheetData.cs" />
+    <Compile Include="TestDataAccess\DataAccess.cs" />
     <Compile Include="Tests\EnterNewCustomerTest.cs" />
     <Compile Include="Tests\HomePageTest.cs" />
     <Compile Include="Tests\SearchTest.cs" />

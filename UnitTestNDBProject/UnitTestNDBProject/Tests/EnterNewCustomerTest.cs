@@ -31,20 +31,20 @@ namespace UnitTestNDBProject.Tests
             commonTest = new CommonTest();
 
             //Get data for login
-            loginFeatureParsedData = ExcelDataAccess.GetFeatureData("LoginScreen");
-            object accountingLoginData = ExcelDataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
+            loginFeatureParsedData = DataAccess.GetFeatureData("LoginScreen");
+            object accountingLoginData = DataAccess.GetKeyJsonData(loginFeatureParsedData, "AccountUserValidCredentails");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(accountingLoginData);
             
             LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
             //Get data for customer screen
-            newCustomerFeatureParsedData = ExcelDataAccess.GetFeatureData("NewCustomerScreen");
+            newCustomerFeatureParsedData = DataAccess.GetFeatureData("NewCustomerScreen");
         }
 
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A4_VerifyCustomerCreation()
         {            
-            object newCustomerFeatureData = ExcelDataAccess.GetKeyJsonData(newCustomerFeatureParsedData, "customer1");
+            object newCustomerFeatureData = DataAccess.GetKeyJsonData(newCustomerFeatureParsedData, "customer1");
             NewCustomerData newCustomerData = JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
 
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
