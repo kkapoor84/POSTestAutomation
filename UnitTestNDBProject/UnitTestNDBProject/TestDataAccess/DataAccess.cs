@@ -16,8 +16,7 @@ namespace UnitTestNDBProject.TestDataAccess
         {
             //TODO: Add code to dynamically read the path
             //TODO: Save the output of this function in a static variable so that it doesn't gets called everytime
-            var fileName = ConfigurationManager.AppSettings["TestDataPath"];
-            //var fileName = @"D:\Projects\NextDayBlind\Repository\POS2TestAutomation\UnitTestNDBProject\UnitTestNDBProject\TestDataAccess\TestData.json";
+            var fileName = ConfigurationManager.AppSettings["TestDataPath"];            
             string json = File.ReadAllText(fileName);
             return (List<ParsedTestData>)JsonConvert.DeserializeObject(json, typeof(List<ParsedTestData>));
         }
