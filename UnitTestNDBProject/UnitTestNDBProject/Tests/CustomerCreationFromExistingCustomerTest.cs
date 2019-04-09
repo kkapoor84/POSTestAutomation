@@ -73,7 +73,7 @@ namespace UnitTestNDBProject.Tests
 
             for (int counter = 0; counter < phones.Count; counter++)
             {
-                Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(phones[counter].Item1));
+                Assert.True(EnterNewCustomerPage_.VerifyExistingPhoneNumber(phones[counter].Item1));
                 _logger.Info($": Phone " + (counter + 1) + " copied successfully");
             }
 

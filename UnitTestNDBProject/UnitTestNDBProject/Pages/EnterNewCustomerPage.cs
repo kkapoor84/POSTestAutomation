@@ -288,14 +288,13 @@ namespace UnitTestNDBProject.Pages
         {
             try
             {
-                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
                 customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnContinue")));
                 continueWithNewCustomer.Clickme(driver);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
-                
+                Console.WriteLine(e.StackTrace);                
             }
             return this;
         }
@@ -308,8 +307,16 @@ namespace UnitTestNDBProject.Pages
         /// 
         public EnterNewCustomerPage UpdateExistingCustomerFromCustomerSuggestion()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(continueWithExistingCustomer, 10000);
-            continueWithExistingCustomer.Clickme(driver);
+            try
+            {
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='btnSection']/div/div[1]/div[2]/div/div/div/div/div/div[2]/div/div[1]")));
+                continueWithExistingCustomer.Clickme(driver);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
             return this;
         }
 
