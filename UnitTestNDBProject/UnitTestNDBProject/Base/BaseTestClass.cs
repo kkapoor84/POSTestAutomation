@@ -68,14 +68,11 @@ namespace UnitTestNDBProject.Base
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public IWebDriver driver { get; set; }
-        public BasePageClass BasePageClass_ { get; set; }
-        public HomePage HomePage_ { get; set; }
-        public ScreenshotUtil ScreenshotUtil_ { get; set; }
-        public LoginPage LoginPage_ { get; set; }
-        //public SheetData sheetData; 
-        public EnterNewCustomerPage EnterNewCustomerPage_ { get; set; }
-       
-
+        public BasePageClass _BasePageClass { get; set; }
+        public HomePage _HomePage { get; set; }
+        public ScreenshotUtil _ScreenshotUtil { get; set; }
+        public LoginPage _LoginPage { get; set; }        
+        public EnterNewCustomerPage _EnterNewCustomerPage { get; set; }
 
         /// <summary>
         /// This method would be called before execution of each class
@@ -96,14 +93,14 @@ namespace UnitTestNDBProject.Base
                 driver = new FirefoxDriver();
             }
 
-            LoginPage_ = new LoginPage(driver);
-            BasePageClass_ = new BasePageClass(driver);
-            HomePage_ = new HomePage(driver);
-            ScreenshotUtil_ = new ScreenshotUtil(driver);
+            _LoginPage = new LoginPage(driver);
+            _BasePageClass = new BasePageClass(driver);
+            _HomePage = new HomePage(driver);
+            _ScreenshotUtil = new ScreenshotUtil(driver);
            
 
-            EnterNewCustomerPage_ = new EnterNewCustomerPage(driver);
-            BasePageClass_.OpenURL();
+            _EnterNewCustomerPage = new EnterNewCustomerPage(driver);
+            _BasePageClass.OpenURL();
 
             _logger.Info($" :Successfully executed the BeforeClassInitialization() method for {this.GetType().Name}");
 

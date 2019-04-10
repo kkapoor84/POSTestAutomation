@@ -14,8 +14,7 @@ namespace UnitTestNDBProject.TestDataAccess
     {
         public static List<ParsedTestData> GetFullJsonData()
         {
-            //TODO: Add code to dynamically read the path
-            //TODO: Save the output of this function in a static variable so that it doesn't gets called everytime
+            //TODO: Modify path in AppConfig file 
             var fileName = ConfigurationManager.AppSettings["TestDataPath"];            
             string json = File.ReadAllText(fileName);
             return (List<ParsedTestData>)JsonConvert.DeserializeObject(json, typeof(List<ParsedTestData>));
@@ -26,6 +25,11 @@ namespace UnitTestNDBProject.TestDataAccess
             List<ParsedTestData> fullParsedJsonData = GetFullJsonData();
             
             return fullParsedJsonData.FirstOrDefault(x => x.Feature == feature);           
+        }
+
+        public static ParsedTestData GetFeatureDataFromJson(List<ParsedTestData> json, string feature)
+        {
+            return json.FirstOrDefault(x => x.Feature == feature);
         }
 
         public static object GetKeyJsonData(ParsedTestData featureParsedData, string key)

@@ -60,25 +60,23 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//div[contains(text(),'LEADS')]")]
         public IWebElement SAPLead { get; set; }
-
-
-
-
-
+                
         public void ClickDashBoardTab()
         {
-
            DashBoardTab.Clickme(driver);
+            _logger.Info($": Successfully Clicked on Dashboard Tab on homepage");
         }
 
         public void ClickDepositSummaryTab()
         {
             DepositSummaryTab.Clickme(driver);
+            _logger.Info($": Successfully Clicked on Deposit Summary Tab on homepage");
         }
 
         public void Signout()
         {
             homeSignoutIcon.Clickme(driver);
+            _logger.Info($": Successfully Clicked on Signout button");
             driver.WaitForElement(signoutButton);
             signoutButton.Clickme(driver);
         }
@@ -87,21 +85,24 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(ShopAtHomeTab, 5000);
             ShopAtHomeTab.Clickme(driver);
+            _logger.Info($": Successfully Clicked on Shop at Home Tab on homepage");
             driver.WaitForElementToBecomeVisibleWithinTimeout(SAPLead, 7000);
             return this;
-
         }
 
 
         public void ClickResourcesTab()
         {
             ResourcesTab.Clickme(driver);
+            _logger.Info($": Successfully Clicked on Resources Tab on homepage");
         }
 
         public void ClickSettingTab()
         {
            Settings.Clickme(driver);
+            _logger.Info($": Successfully Clicked on Setting Tab on homepage");
         }
+
         public bool VerifyHomePageTitle(String ExpectedTitle)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(title,5000);

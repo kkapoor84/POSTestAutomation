@@ -11,8 +11,9 @@ namespace UnitTestNDBProject.Utils
 {
     public static class ExtensionMethods
     {
-        public static void EnterText(this IWebElement element, IWebDriver driver, String value)
+        public static void EnterText(this IWebElement element, string value)
         {
+            element.Clear();
             element.SendKeys(value);
         }
 
@@ -20,7 +21,6 @@ namespace UnitTestNDBProject.Utils
         {
             element.Click();
         }
-
 
         public static void SelectDropDown(this IWebElement element, IWebDriver driver, String value)
         {

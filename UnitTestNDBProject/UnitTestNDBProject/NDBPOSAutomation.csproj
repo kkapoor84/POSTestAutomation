@@ -135,7 +135,6 @@
     <Compile Include="Base\BaseTestClass.cs" />
     <Compile Include="Base\BasePageClass.cs" />
     <Compile Include="TestDataAccess\ParsedTestData.cs" />
-    <Compile Include="Tests\CommonTest.cs" />
     <Compile Include="Tests\CustomerCreationFromExistingCustomerTest.cs" />
     <Compile Include="Pages\EnterNewCustomerPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
@@ -143,7 +142,7 @@
     <Compile Include="TestDataAccess\DataAccess.cs" />
     <Compile Include="Tests\EnterNewCustomerTest.cs" />
     <Compile Include="Tests\HomePageTest.cs" />
-    <Compile Include="Tests\SearchTest.cs" />
+    <Compile Include="Tests\SmokeSuite.cs" />
     <Compile Include="Utils\CommonFunctions.cs" />
     <Compile Include="Utils\DateHelper.cs" />
     <Compile Include="Pages\LoginPage.cs" />
