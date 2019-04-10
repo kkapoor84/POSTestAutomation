@@ -252,7 +252,7 @@ namespace UnitTestNDBProject.Pages
         {
             String strEmailAddress = "emailList[" + i + "].Email";
             driver.FindElement(By.Id(strEmailAddress)).EnterText(email);
-            _logger.Info($": Successfully Entered Email {email}");            
+            _logger.Info($": Successfully Entered Email {email}");
             return this;
         }
 
@@ -456,25 +456,6 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        /// <summary>
-        /// Veerify Phone Number is same as entered
-        /// </summary>
-        /// <param name="EnteredPhone"></param>
-        /// <returns></returns>
-        public bool VerifyPhoneNumber(string EnteredPhone)
-        {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(PhoneNumberText, 10000);
-            string PhoneNumber = PhoneNumberText.GetText(driver);
-            string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
-            bool PhoneNumberValue = false;
-            if (EnteredPhone.Contains(ActualPhoneNumber))
-            {
-                PhoneNumberValue = true;
-                _logger.Info($" Phone Is Correct");
-            }
-            return PhoneNumberValue;
-
-        }
 
         /// <summary>
         /// Verify that phone numbers are appended in existing customer.
@@ -585,7 +566,7 @@ namespace UnitTestNDBProject.Pages
         /// <param name="statevalue"></param>
         /// <returns></returns>
         public EnterNewCustomerPage SelectState(String statevalue)
-        {            
+        {
             Actions actions_ = new Actions(driver);
             actions_.SendKeys(this.state, statevalue).Build().Perform();
             state.SendKeys(Keys.Enter);
@@ -690,6 +671,12 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        public EnterNewCustomerPage ClickEditButton(string id)
+        {
+            driver.FindElement(By.Id(id)).Clickme(driver);
+            return this;
+        }
+
         /// <summary>
         /// Function to verify thatcustomer is created the valid first name
         /// </summary>
@@ -775,6 +762,7 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
         }
 
+        List<Tuple<string, string>> newPhones = new List<Tuple<string, string>>();
         /// <summary>
         /// Function to add customer phones
         /// </summary>
@@ -782,7 +770,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public List<Tuple<string, string>> AddCustomerPhones(List<Phone> phones)
         {
-            List<Tuple<string, string>> newPhones = new List<Tuple<string, string>>();
+  
 
             //Input phones
             for (int counter = 0; counter < phones.Count; counter++)
@@ -800,6 +788,52 @@ namespace UnitTestNDBProject.Pages
             }
 
             return newPhones;
+        }
+
+
+        /// <summary>
+        /// Veerify Phone Number is same as entered
+        /// </summary>
+        /// <param name="EnteredPhone"></param>
+        /// <returns></returns>
+        public bool VerifyPhoneNumber(List<Phone> phones)
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(PhoneNumberText, 10000);
+
+            bool PhoneNumberAndTypeValue = false;
+
+            for (int counteri = 0; counteri < newPhones.Count; counteri++)
+            {
+                var phoneCounter = counteri * 2 + 1;
+
+                String Phonenumberxpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phoneCounter + "]";
+                string PhoneNumber = driver.FindElement(By.XPath(Phonenumberxpath)).GetText(driver);
+                string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
+
+                string ExpectedPhone = newPhones[counteri].Item1;
+                // string phoneType = phones[counteri].PhoneType;
+                if (ExpectedPhone.Contains(ActualPhoneNumber))
+                {
+                    PhoneNumberAndTypeValue = true;
+                    _logger.Info($" Phone Is Correct");
+                }
+
+                var phonetypecounter = phoneCounter + 1;
+
+                String Phonetypexpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phonetypecounter + "]";
+                string ActualPhoneType = driver.FindElement(By.XPath(Phonetypexpath)).GetText(driver);
+                string ExpectedPhoneType = phones[counteri].PhoneType;
+
+                if (ExpectedPhoneType.Contains(ActualPhoneType))
+                {
+                    PhoneNumberAndTypeValue = true;
+                    _logger.Info($" Phone Is Correct");
+                }
+
+            }
+
+            return PhoneNumberAndTypeValue;
+
         }
 
         /// <summary>

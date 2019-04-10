@@ -20,6 +20,7 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         NewCustomerData newCustomerData;
+        LoginData loginData;
 
         [OneTimeSetUp]
         public void BeforeClass()
@@ -34,6 +35,7 @@ namespace UnitTestNDBProject.Tests
             newCustomerFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "NewCustomerScreen");
 
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
+            
         }
 
         [SetUp]
@@ -45,8 +47,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(1), Category("Smoke"), Description("Validate that error message populates once user enter invalid credentials")]
         public void A1_VerifyLoginWithInValidCredentails()
         {
-            LoginData loginData = LoginPage.GetInvalidLoginData(loginFeatureParsedData);
-
+            loginData = LoginPage.GetInvalidLoginData(loginFeatureParsedData);
             _LoginPage.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
             Assert.True(_LoginPage.VerifyInvalidCredentialsAreDisplayed("User ID or Password are incorrect. Please try again or contact the NDB helpdesk"));            
@@ -55,7 +56,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(2), Category("Smoke"), Description("Validate that user is able to navigate to Home page using valid credentials")]
         public void A2_VerifyLoginWithValidCrdentails()
         {
-            LoginData loginData = LoginPage.GetSAHUserLoginData(loginFeatureParsedData);
+            loginData = LoginPage.GetSAHUserLoginData(loginFeatureParsedData);
 
             _LoginPage.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
             _HomePage.ClickShopAtHomeTab();            
@@ -103,7 +104,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
-            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumber(phones[0].Item1));
+            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumber(newCustomerData.Phones));
 
             //TODO: Ability to assert multiple PHONES
             //for(int counter = 0; counter < phones.Count; counter++)
@@ -116,34 +117,7 @@ namespace UnitTestNDBProject.Tests
             //Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1, sheetData.City, sheetData.State, sheetData.ZipCode));
             //_logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
         }
-
-        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
-        public void A5_VerifyCustomerCreationUsingCustomerSuggestion()
-        {
-            _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
-
-            List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
-            List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
-
-            //Click on SAVE button and update existing customer
-            _EnterNewCustomerPage.ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();
-
-            for (int counter = 0; counter < phones.Count; counter++)
-            {
-                Assert.True(_EnterNewCustomerPage.VerifyExistingPhoneNumber(phones[counter].Item1));
-            }
-
-            for (int counter = 0; counter < emails.Count; counter++)
-            {
-                Assert.True(_EnterNewCustomerPage.VerifyExistingEmailAddress(emails[counter]));
-            }
-
-            _EnterNewCustomerPage.ClickEditSaveButton();
-
-            Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
-            Assert.True(_EnterNewCustomerPage.VerifyFirstName(newCustomerData.FirstName));
-            Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
-        }
+       
 
         [TearDown]
         public void teardown()
