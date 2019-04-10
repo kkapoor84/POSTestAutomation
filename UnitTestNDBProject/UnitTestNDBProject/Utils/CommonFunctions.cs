@@ -31,7 +31,7 @@ namespace UnitTestNDBProject.Utils
 
         public static string RandomizeEmail(string email)
         {
-            string randomText = email + random.Next(1000000000) + "@nextdayblinds.com";
+            string randomText = email + random.Next(100000) + "@nextdayblinds.com";
             return randomText;
         }
 

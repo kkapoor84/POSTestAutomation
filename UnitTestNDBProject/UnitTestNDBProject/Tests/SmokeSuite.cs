@@ -122,30 +122,21 @@ namespace UnitTestNDBProject.Tests
             _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
             _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
 
-            //TODO: Make Smarty Street pop-up dynamic
-            //EnterNewCustomerPage_.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
-            _EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
+            //TODO: Make Smarty Street pop-up dynamic--DONE
+            _EnterNewCustomerPage.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
             
             Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
             Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
             Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
-            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType(newCustomerData.Phones));
+            //TODO--DONE
+            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
+            //TODO--DONE
+            Assert.True(_EnterNewCustomerPage.VerifyAddress());
 
-            //TODO: Ability to assert multiple PHONES
-            //for(int counter = 0; counter < phones.Count; counter++)
-            //{
-            //    Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(phones[counter].Item1));
-            //    _logger.Info("Phone Number " + (counter + 1) + " Is Same As Entered.");
-            //}
-
-            //TODO: How to ASSERT below statement?
-            //Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1, sheetData.City, sheetData.State, sheetData.ZipCode));
-            //_logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
         }
 
-       
 
         [TearDown]
         public void teardown()
