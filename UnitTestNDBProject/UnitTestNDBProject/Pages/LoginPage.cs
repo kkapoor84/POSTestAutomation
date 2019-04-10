@@ -39,23 +39,22 @@ namespace UnitTestNDBProject.Pages
 
         public LoginPage EnterUserName(string uname)
         {
-           
-            username.SendKeys(uname);
-
+            username.EnterText(uname);
+            _logger.Info($": Successfully entered username {uname}");
             return this;
-
         }
 
         public LoginPage EnterPassword(string password)
         {
-            pwd.SendKeys(password);
+            pwd.EnterText(password);
+            _logger.Info($": Successfully entered password {password}");
             return this;
-
         }
         
         public LoginPage ClickLoginButton()
         {
             loginButton.Clickme(driver);
+            _logger.Info($": Login button clicked");
             return this;
         }
 
@@ -74,5 +73,20 @@ namespace UnitTestNDBProject.Pages
             return isMessagePopulate;
         }
 
+        public static LoginData GetLoginDataByKey(ParsedTestData loginFeatureParsedData, string key)
+        {
+            object loginDataByKey = DataAccess.GetKeyJsonData(loginFeatureParsedData, key);
+            return JsonDataParser<LoginData>.ParseData(loginDataByKey);
+        }
+
+        public static LoginData GetInvalidLoginData(ParsedTestData loginFeatureParsedData)
+        {
+            return GetLoginDataByKey(loginFeatureParsedData, "InValidCredentials");
+        }
+
+        public static LoginData GetSAHUserLoginData(ParsedTestData loginFeatureParsedData)
+        {
+            return GetLoginDataByKey(loginFeatureParsedData, "SAHUserValidCredentails");
+        }
     }
 }

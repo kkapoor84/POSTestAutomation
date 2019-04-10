@@ -1,0 +1,186 @@
+﻿[
+  {
+    "Feature": "LoginScreen",
+    "Data": [
+      {
+        "Key": "InValidCredentials",
+        "Value": {
+          "UserName": "POS",
+          "Password": "N0tS3cur3!"
+        }
+      },
+      {
+        "Key": "SAHUserValidCredentails",
+        "Value": {
+          "UserName": "Pos-sahtest",
+          "Password": "N0tS3cur3!"
+        }
+      },
+      {
+        "Key": "AccountUserValidCredentails",
+        "Value": {
+          "UserName": "Pos-acctrec",
+          "Password": "N0tS3cur3!"
+        }
+      }
+    ]
+  },
+  {
+    "Feature": "NewCustomerScreen",
+    "Data": [
+      {
+        "Key": "customer1",
+        "Value": {
+          "FirstName": "AutomationPOS_FN",
+          "LastName": "AutomationPOS_LN",
+          "Phones": [
+            {
+              "PhoneNumber": "85",
+              "PhoneType": "Home"
+            },
+            {
+              "PhoneNumber": "98",
+              "PhoneType": "Mobile"
+            }
+          ],
+          "Emails": [
+            {
+              "EmailText": "posuser"
+            },
+            {
+              "EmailText": "automationuser"
+            }
+          ],
+          "Addresses": [
+            {
+              "AddressLine1": "1499 Massachusetts Ave NW",
+              "AddressLine2": "",
+              "City": "Washington",
+              "State": "DC",
+              "ZipCode": "20005-2869"
+            }
+          ],
+          "TaxNumbers": [
+            {
+              "TaxIdNumber": "123456789",
+              "TaxState": "DC"
+            },
+            {
+              "TaxIdNumber": "111111111",
+              "TaxState": "DC"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "Feature": "ProductLineScreen",
+    "Data": [
+      {
+        "Key": "Product1",
+        "Value": {
+          "Width": "40",
+          "Height": "40",
+          "NDBRoomLocation": "Room",
+          "Quantity": 1,
+          "ProductType": "Wood Blinds(NW), Faux Wood Blinds",
+          "ProductDetails": [
+            {
+              "OptionTypeId": "Mounting",
+              "Option": "Inside Mount"
+            },
+            {
+              "OptionTypeId": "Color",
+              "Option": "Cloud"
+            },
+            {
+              "OptionTypeId": "Number On Headrail",
+              "Option": "Standard"
+            },
+            {
+              "OptionTypeId": "Lift System",
+              "Option": "Cordlock"
+            },
+            {
+              "OptionTypeId": "Tilt Control",
+              "Option": "Cord Tilt"
+            },
+            {
+              "OptionTypeId": "Control Position",
+              "Option": "Tilt Left/Lift Right"
+            },
+            {
+              "OptionTypeId": "Valance",
+              "Option": "Standard"
+            }
+          ]
+        }
+      },
+      {
+        "Key": "Product2",
+        "Value": {
+          "Width": "40",
+          "Height": "40",
+          "NDBRoomLocation": "Room",
+          "Quantity": 1,
+          "ProductType": "Aluminium Blinds(MB), Deluxe Aluminium Blinds",
+          "ProductDetails": [
+            {
+              "OptionTypeId": "Mounting",
+              "Option": "Inside Mount"
+            },
+            {
+              "OptionTypeId": "Color",
+              "Option": "Allure"
+            },
+            {
+              "OptionTypeId": "Lift System",
+              "Option": "Cordlock"
+            },
+            {
+              "OptionTypeId": "Control Position",
+              "Option": "Tilt Left/Lift Right"
+            }
+          ]
+        }
+      },
+      {
+        "Key": "Product3",
+        "Value": {
+          "Width": "40",
+          "Height": "40",
+          "NDBRoomLocation": "Room",
+          "Quantity": 1,
+          "ProductType": "Honeycomb Shades (CF), Room Darkening Honeycomb Shades",
+          "ProductDetails": [
+            {
+              "OptionTypeId": "Cell Size",
+              "Option": "3/4\" Single Cell"
+            },
+            {
+              "OptionTypeId": "Mounting",
+              "Option": "Inside Mount"
+            },
+            {
+              "OptionTypeId": "Color",
+              "Option": "Adobe"
+            },
+            {
+              "OptionTypeId": "Number On Headrail",
+              "Option": "Standard"
+            },
+            {
+              "OptionTypeId": "Lift System",
+              "Option": "Premium Cordless Top Down/Bottom Up"
+            },
+            {
+              "OptionTypeId": "Swivel Brackets",
+              "Option": "No"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

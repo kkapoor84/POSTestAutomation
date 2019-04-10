@@ -156,8 +156,9 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
 
-            driver.WaitForElementToBecomeVisibleWithinTimeout(enterNewCustomer, 10000);
+            Thread.Sleep(5000);
             enterNewCustomer.Clickme(driver);
+            _logger.Info($": Successfully clicked Enter New Custokmer button");
             return this;
         }
 
@@ -172,6 +173,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(firstName, 10000);
             firstName.SendKeys(fname);
+            _logger.Info($": Successfully Entered First Name {fname}");
             return this;
         }
         /// <summary>
@@ -183,6 +185,7 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage EnterLastName(string lname)
         {
             lastname.SendKeys(lname);
+            _logger.Info($": Successfully Entered Last Name {lname}");
             return this;
         }
         /// <summary>
@@ -212,7 +215,8 @@ namespace UnitTestNDBProject.Pages
         {
             Thread.Sleep(1000);
             string strMyXPath = "phoneLists[" + i + "].Phone";
-            driver.FindElement(By.Id(strMyXPath)).SendKeys(phone);
+            driver.FindElement(By.Id(strMyXPath)).EnterText(phone);
+            _logger.Info($": Successfully Entered Phone Number {phone}");
             return this;
 
         }
@@ -223,8 +227,8 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage AddPhone()
         {
             addPhone.Clickme(driver);
+            _logger.Info($": Successfully Entered Add Phone button");
             return this;
-
         }
 
         /// <summary>
@@ -235,26 +239,27 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage SelectPhoneType(string phonetype, int i)
         {
-
             string strMyXPath = "phoneLists[" + i + "].phoneType";
             Actions actions = new Actions(driver);
             actions.SendKeys(driver.FindElement(By.Id(strMyXPath)), phonetype).Build().Perform();
             driver.FindElement(By.Id(strMyXPath)).SendKeys(Keys.Enter);
+            _logger.Info($": Successfully Entered Phone Type {phonetype}");
             return this;
 
         }
 
-        /// <summary>
-        /// Add Email Address
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public EnterNewCustomerPage AddEmailAddress(string email, int i)
+        public EnterNewCustomerPage EnterEmailAddress(string email, int i)
         {
             String strEmailAddress = "emailList[" + i + "].Email";
-            driver.FindElement(By.Id(strEmailAddress)).SendKeys(email);
+            driver.FindElement(By.Id(strEmailAddress)).EnterText(email);
+            _logger.Info($": Successfully Entered Email {email}");            
+            return this;
+        }
+
+        public EnterNewCustomerPage AddEmailAddress()
+        {
             addEmail.Clickme(driver);
+            _logger.Info($": Successfully Entered Add Email button");
             return this;
         }
 
@@ -266,8 +271,8 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButton, 10000);
             saveButton.Clickme(driver);
+            _logger.Info($":Clicked on SAVE button of customer page");
             return this;
-
         }
 
         /// <summary>
@@ -278,6 +283,7 @@ namespace UnitTestNDBProject.Pages
         {
             Thread.Sleep(2000);
             addressLine1.Clickme(driver);
+            _logger.Info($": Clicked on AddressLine1 text box");
             return this;
         }
         /// <summary>
@@ -289,19 +295,19 @@ namespace UnitTestNDBProject.Pages
         {
             try
             {
-                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
                 customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnContinue")));
                 continueWithNewCustomer.Clickme(driver);
+                _logger.Info($": Continue As New Customer button - If available");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.StackTrace);
-                
             }
             return this;
         }
 
- 
+
         /// <summary>
         /// Functions to continue with existing customer
         /// </summary>
@@ -309,8 +315,17 @@ namespace UnitTestNDBProject.Pages
         /// 
         public EnterNewCustomerPage UpdateExistingCustomerFromCustomerSuggestion()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(continueWithExistingCustomer, 10000);
-            continueWithExistingCustomer.Clickme(driver);
+            try
+            {
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='btnSection']/div/div[1]/div[2]/div/div/div/div/div/div[2]/div/div[1]")));
+                continueWithExistingCustomer.Clickme(driver);
+                _logger.Info($": Selects existing customer");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
             return this;
         }
 
@@ -322,6 +337,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButtonEdit, 10000);
             saveButtonEdit.Clickme(driver);
+            _logger.Info($": Successfully clicked on SAVE button for existing customer");
             return this;
 
         }
@@ -386,7 +402,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyGreedbarAfterEditIsSuccessful()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(GreenBar, 5000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("msg-container")));
             bool editButtonAvailibility = false;
             if (GreenBar.Displayed)
             {
@@ -405,7 +422,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyFirstName(String FirstNameOnScreen)
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(FirstNameText, 10000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
             String FirstName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
             if (FirstNameOnScreen.Contains(FirstName))
@@ -424,7 +442,9 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyLastName(String LastNameOnScreen)
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(LastNameText, 10000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")));
+
             String LastName = LastNameText.GetText(driver);
             bool lastNameValue = false;
             if (LastNameOnScreen.Contains(LastName))
@@ -481,7 +501,7 @@ namespace UnitTestNDBProject.Pages
                 if (EnteredPhone.Contains((PhoneNumberArray[j])))
                 {
                     PhoneExist = true;
-                    _logger.Info($" Phone For Existing Customer Is Added");
+                    _logger.Info($" Phone " + EnteredPhone + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
@@ -513,7 +533,7 @@ namespace UnitTestNDBProject.Pages
                 if (EnteredEmail.Contains((EmailAddressArray[j])))
                 {
                     EmailExist = true;
-                    _logger.Info($" Email For Existing Customer Is Added");
+                    _logger.Info($" Email " + EnteredEmail + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
@@ -530,8 +550,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage EnterAddressLine1(String address1)
         {
-            addressLine1.SendKeys(address1);
-            _logger.Info("entering address Line 1...." + address1);
+            addressLine1.EnterText(address1);
+            _logger.Info("Entering address Line 1: " + address1);
             return this;
         }
 
@@ -542,8 +562,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage EnterAddressLine2(String address2)
         {
-            addressLine2.SendKeys(address2);
-            _logger.Info("entering address Line 2...." + address2);
+            addressLine2.EnterText(address2);
+            _logger.Info("Entering address Line 2: " + address2);
             return this;
         }
 
@@ -554,8 +574,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage EnterCity(String City)
         {
-            city.SendKeys(City);
-            _logger.Info("entering city...." + City);
+            city.EnterText(City);
+            _logger.Info("Entering city: " + City);
             return this;
         }
 
@@ -565,25 +585,23 @@ namespace UnitTestNDBProject.Pages
         /// <param name="statevalue"></param>
         /// <returns></returns>
         public EnterNewCustomerPage SelectState(String statevalue)
-        {
-
-
+        {            
             Actions actions_ = new Actions(driver);
             actions_.SendKeys(this.state, statevalue).Build().Perform();
             state.SendKeys(Keys.Enter);
+            _logger.Info("Entering state: " + statevalue);
             return this;
         }
-
 
         /// <summary>
         /// Function to enter zip
         /// </summary>
         /// <param name="Zip"></param>
         /// <returns></returns>
-        public EnterNewCustomerPage enterZip(String Zip)
+        public EnterNewCustomerPage EnterZip(String Zip)
         {
-            zip.SendKeys(Zip);
-            _logger.Info("entering zip...." + Zip);
+            zip.EnterText(Zip);
+            _logger.Info("Entering zip: " + Zip);
             return this;
         }
 
@@ -594,6 +612,7 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage ClickOnAddAddressPlusButton()
         {
             AddAddress.Clickme(driver);
+            _logger.Info($": Successfully clicked Add Address button");
             Thread.Sleep(2000);
             return this;
         }
@@ -615,8 +634,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage ClickTaxExemptionCheckBox()
         {
-
             TaxCheckBox.Clickme(driver);
+            _logger.Info($": Successfully Selected Tax Exemption checkbox");
             Thread.Sleep(1000);
             return this;
         }
@@ -629,18 +648,16 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage EnterTaxIDNumber(string taxid, int i)
         {
             String strtaxID = "#taxIdNumber" + i;
-            driver.FindElement(By.CssSelector(strtaxID)).SendKeys(taxid);
+            driver.FindElement(By.CssSelector(strtaxID)).EnterText(taxid);
+            _logger.Info($": Successfully Selected TaxIDNumber: {taxid}");
             return this;
         }
-
 
         /// <summary>
         /// Function to select state in tax section
         /// </summary>
         /// <param name="taxstatevalue"></param>
         /// <returns></returns>
-
-
         public EnterNewCustomerPage SelectTaxState(String taxstatevalue, int i)
         {
             String strtaxID = "//input[@id='exemptStateAbbreviation" + i + "']";
@@ -648,9 +665,9 @@ namespace UnitTestNDBProject.Pages
             Actions actions_ = new Actions(driver);
             actions_.SendKeys(driver.FindElement(By.XPath(strtaxID)), taxstatevalue).Build().Perform();
             driver.FindElement(By.XPath(strtaxID)).SendKeys(Keys.Enter);
+            _logger.Info($": Successfully Selected TaxState {taxstatevalue}");
             return this;
         }
-
 
         /// <summary>
         /// Function to check the doesnt expire tax exemption checkbox
@@ -661,18 +678,17 @@ namespace UnitTestNDBProject.Pages
             String doesntexpirecheckbox = "//input[@id='doesNotExpire" + i + "']";
 
             driver.FindElement(By.XPath(doesntexpirecheckbox)).Clickme(driver);
+            _logger.Info($": Successfully clicked Doesnt Expire CheckBox");
             return this;
         }
-
 
         public EnterNewCustomerPage AddTax()
         {
             AddTaxButton.Clickme(driver);
+            _logger.Info($": Successfully clicked on Add Tax button");
             Thread.Sleep(2000);
             return this;
         }
-
-
 
         /// <summary>
         /// Function to verify thatcustomer is created the valid first name
@@ -752,7 +768,109 @@ namespace UnitTestNDBProject.Pages
             emailAddress.SendKeys(email);
             return this;
         }
+
+        public static NewCustomerData GetCustomerData(ParsedTestData featureData)
+        {
+            object newCustomerFeatureData = DataAccess.GetKeyJsonData(featureData, "customer1");
+            return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
+        }
+
+        /// <summary>
+        /// Function to add customer phones
+        /// </summary>
+        /// <param name="phones"></param>
+        /// <returns></returns>
+        public List<Tuple<string, string>> AddCustomerPhones(List<Phone> phones)
+        {
+            List<Tuple<string, string>> newPhones = new List<Tuple<string, string>>();
+
+            //Input phones
+            for (int counter = 0; counter < phones.Count; counter++)
+            {
+                string phone = CommonFunctions.AppendMaxRangeRandomString(phones[counter].PhoneNumber);
+                string phoneType = phones[counter].PhoneType;
+                EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
+
+                if (counter < phones.Count - 1)
+                {
+                    AddPhone();
+                }
+
+                newPhones.Add(new Tuple<string, string>(phone, phoneType));
+            }
+
+            return newPhones;
+        }
+
+        /// <summary>
+        /// Function to add customer emails
+        /// </summary>
+        /// <param name="emails"></param>
+        /// <returns></returns>
+        public List<string> AddCustomerEmails(List<Email> emails)
+        {
+            List<string> newEmails = new List<string>();
+
+            for (int counter = 0; counter < emails.Count; counter++)
+            {
+                string email = CommonFunctions.RandomizeEmail(emails[counter].EmailText);
+                EnterEmailAddress(email, counter);
+
+                if (counter < emails.Count - 1)
+                {
+                    AddEmailAddress();
+                }
+
+                newEmails.Add(email);
+            }
+
+            return newEmails;
+        }
+
+        /// <summary>
+        /// Function to add customer addresses
+        /// </summary>
+        /// <param name="addresses"></param>
+        public void AddCustomerAddresses(List<Address> addresses)
+        {
+            //Input addresses
+            for (int counter = 0; counter < addresses.Count; counter++)
+            {
+                string custAddLine1 = addresses[counter].AddressLine1;
+                string custAddLine2 = addresses[counter].AddressLine2;
+                string custCity = addresses[counter].City;
+                string custState = addresses[counter].State;
+                string custZipCode = addresses[counter].ZipCode;
+
+                EnterAddressLine1(custAddLine1).EnterAddressLine2(custAddLine2).EnterCity(custCity).SelectState(custState).EnterZip(custZipCode);
+
+                if (counter < addresses.Count - 1)
+                {
+                    ClickOnAddAddressPlusButton();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Function to add tax numbers
+        /// </summary>
+        /// <param name="taxNumbers"></param>
+        public void AddCustomerTaxNumbers(List<TaxNumber> taxNumbers)
+        {
+            ClickTaxExemptionCheckBox();
+
+            for (int counter = 0; counter < taxNumbers.Count; counter++)
+            {
+                string taxId = CommonFunctions.AppendMaxRangeRandomString(taxNumbers[counter].TaxIdNumber);
+                string taxState = taxNumbers[counter].TaxState;
+
+                EnterTaxIDNumber(taxId, counter + 1).SelectTaxState(taxState, counter + 1).ClickDoesntExpireCheckBox(counter + 1);
+
+                if (counter < taxNumbers.Count - 1)
+                {
+                    AddTax();
+                }
+            }
+        }
     }
-
-
 }
