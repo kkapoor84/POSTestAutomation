@@ -155,8 +155,10 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
-            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-            customWait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("customer-section")));
+
+           Thread.Sleep(10000);
+            //WebDriverWait customWait1 = new WebDriverWait(driver, TimeSpan.FromSeconds(50));
+            //customWait1.Until(ExpectedConditions.ElementToBeSelected(By.ClassName("customer-section")));
 
             enterNewCustomer.Clickme(driver);
             _logger.Info($": Successfully clicked Enter New Custokmer button");
@@ -403,7 +405,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyGreedbarAfterEditIsSuccessful()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(GreenBar, 5000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("msg-container")));
             bool editButtonAvailibility = false;
             if (GreenBar.Displayed)
             {
@@ -422,7 +425,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyFirstName(String FirstNameOnScreen)
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(FirstNameText, 10000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
             String FirstName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
             if (FirstNameOnScreen.Contains(FirstName))
@@ -441,7 +445,9 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyLastName(String LastNameOnScreen)
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(LastNameText, 10000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")));
+
             String LastName = LastNameText.GetText(driver);
             bool lastNameValue = false;
             if (LastNameOnScreen.Contains(LastName))
