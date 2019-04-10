@@ -84,7 +84,7 @@
           "Height": "40",
           "NDBRoomLocation": "Room",
           "Quantity": 1,
-          "ProductType": "Wood Blinds(NW), Faux Wood Blinds",
+          "ProductType": "Faux Wood Blinds",
           "ProductDetails": [
             {
               "OptionTypeId": "Mounting",
@@ -124,7 +124,7 @@
           "Height": "40",
           "NDBRoomLocation": "Room",
           "Quantity": 1,
-          "ProductType": "Aluminium Blinds(MB), Deluxe Aluminium Blinds",
+          "ProductType": "Deluxe Aluminum Blinds",
           "ProductDetails": [
             {
               "OptionTypeId": "Mounting",
@@ -152,7 +152,7 @@
           "Height": "40",
           "NDBRoomLocation": "Room",
           "Quantity": 1,
-          "ProductType": "Honeycomb Shades (CF), Room Darkening Honeycomb Shades",
+          "ProductType": "Room Darkening Honeycomb Shades",
           "ProductDetails": [
             {
               "OptionTypeId": "Cell Size",

@@ -50,8 +50,16 @@ namespace UnitTestNDBProject.Tests
         public void A5_VerifyProductCreation()
         {
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
-            object productLineData = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
-            ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(productLineData);
+            object productLineData1 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
+            ProductLineData productLine1 = JsonDataParser<ProductLineData>.ParseData(productLineData1);
+
+            object productLineData2 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product2");
+            ProductLineData productLine2 = JsonDataParser<ProductLineData>.ParseData(productLineData2);
+
+            object productLineData3 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product3");
+            ProductLineData productLine3 = JsonDataParser<ProductLineData>.ParseData(productLineData3);
+
+
             //productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
             //object productLineData = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
             //ProductLineData productLine = JsonDataParser<productLineData>.ParseData(productLineData);
@@ -61,12 +69,25 @@ namespace UnitTestNDBProject.Tests
             //{
             //    _logger.Info($": Successfully Entered Option Type {product.Item1} , Option {product.Item2}");
             //}
-            AddQuotePage_.SearchFunction().ClickOnAddNewQuote().ClickOnAddProduct().EnterWidth().EnterHeight().EnterRoomLocation().SelectProduct();
-                
-                //.SelectProduct().SelectMounting().SelectColor()
-            //  .SelectNumberOnHeadrails().SelectLiftSystem().SelectTiltControl().SelectControlPosition().SelectValance();
-            AddQuotePage_.getProductDetails();
-            AddQuotePage_.SelectMountingDynamic();
+            AddQuotePage_.SearchFunction().ClickOnAddNewQuote().ClickOnAddProduct().EnterWidth(productLine1.Width).EnterHeight(productLine1.Height)
+                .EnterRoomLocation(productLine1.NDBRoomLocation).SelectProduct(productLine1.ProductType).SelectMountingDynamic().ClickAddProductButton();
+
+            AddQuotePage_.ClickOnAddProduct().EnterWidth(productLine2.Width).EnterHeight(productLine2.Height)
+               .EnterRoomLocation(productLine2.NDBRoomLocation).SelectProduct(productLine2.ProductType).SelectMountingDynamic().ClickAddProductButton();
+
+            AddQuotePage_.ClickOnAddProduct().EnterWidth(productLine3.Width).EnterHeight(productLine3.Height)
+               .EnterRoomLocation(productLine3.NDBRoomLocation).SelectProduct(productLine3.ProductType).SelectMountingDynamic().ClickAddProductButton();
+
+            //AddQuotePage_.getProductDetails();
+
+
+            //AddQuotePage_.ClickOnAddProduct().EnterWidth().EnterHeight().EnterRoomLocation().SelectHoneycombShade();
+            //AddQuotePage_.getProductDetails();
+            //AddQuotePage_.SelectMountingDynamic().ClickAddProductButton();
+
+            //AddQuotePage_.ClickOnAddProduct().EnterWidth().EnterHeight().EnterRoomLocation().SelectDeluxeBlinds();
+            //AddQuotePage_.getProductDetails();
+            //AddQuotePage_.SelectMountingDynamic().ClickAddProductButton();
 
         }
     }
