@@ -135,13 +135,9 @@
     <Compile Include="Base\BaseTestClass.cs" />
     <Compile Include="Base\BasePageClass.cs" />
     <Compile Include="TestDataAccess\ParsedTestData.cs" />
-    <Compile Include="Tests\CustomerCreationFromExistingCustomerTest.cs" />
     <Compile Include="Pages\EnterNewCustomerPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
-    <Compile Include="Pages\SearchPage.cs" />
     <Compile Include="TestDataAccess\DataAccess.cs" />
-    <Compile Include="Tests\EnterNewCustomerTest.cs" />
-    <Compile Include="Tests\HomePageTest.cs" />
     <Compile Include="Tests\SmokeSuite.cs" />
     <Compile Include="Utils\CommonFunctions.cs" />
     <Compile Include="Utils\DateHelper.cs" />
@@ -151,7 +147,6 @@
     <Compile Include="Utils\ScreenshotUtil.cs" />
     <Compile Include="Utils\SeleniumUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\LoginTest.cs" />
     <Compile Include="Utils\WaitHelpers.CS" />
   </ItemGroup>
   <ItemGroup>
