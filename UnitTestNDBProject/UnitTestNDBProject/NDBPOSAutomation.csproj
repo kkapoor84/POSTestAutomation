@@ -145,7 +145,7 @@
     <Compile Include="TestDataAccess\DataAccess.cs" />
     <Compile Include="Tests\EnterNewCustomerTest.cs" />
     <Compile Include="Tests\HomePageTest.cs" />
-    <Compile Include="Tests\SearchTest.cs" />
+    <Compile Include="Tests\SmokeSuite.cs" />
     <Compile Include="Utils\CommonFunctions.cs" />
     <Compile Include="Utils\DateHelper.cs" />
     <Compile Include="Pages\LoginPage.cs" />

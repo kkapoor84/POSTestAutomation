@@ -34,7 +34,7 @@ namespace UnitTestNDBProject.Tests
             loginFeatureParsedData = DataAccess.GetFeatureData("LoginScreen");
             object accountingLoginData = DataAccess.GetKeyJsonData(loginFeatureParsedData, "SAHUserValidCredentails");
             LoginData loginData = JsonDataParser<LoginData>.ParseData(accountingLoginData);
-            LoginPage_.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
+            _LoginPage.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
             //SheetData sheetData1 = ExcelDataAccess.GetTestData("LoginScreen$", "SAHUserValidCredentails");
             //LoginPage_.EnterUserName(sheetData1.Username).EnterPassword(sheetData1.Password).ClickLoginButton();
@@ -69,13 +69,13 @@ namespace UnitTestNDBProject.Tests
             //{
             //    _logger.Info($": Successfully Entered Option Type {product.Item1} , Option {product.Item2}");
             //}
-            AddQuotePage_.SearchFunction().ClickOnAddNewQuote().ClickOnAddProduct().EnterWidth(productLine1.Width).EnterHeight(productLine1.Height)
+            _AddQuotePage.SearchFunction().ClickOnAddNewQuote().ClickOnAddProduct().EnterWidth(productLine1.Width).EnterHeight(productLine1.Height)
                 .EnterRoomLocation(productLine1.NDBRoomLocation).SelectProduct(productLine1.ProductType).SelectMountingDynamic().ClickAddProductButton();
 
-            AddQuotePage_.ClickOnAddProduct().EnterWidth(productLine2.Width).EnterHeight(productLine2.Height)
+            _AddQuotePage.ClickOnAddProduct().EnterWidth(productLine2.Width).EnterHeight(productLine2.Height)
                .EnterRoomLocation(productLine2.NDBRoomLocation).SelectProduct(productLine2.ProductType).SelectMountingDynamic().ClickAddProductButton();
 
-            AddQuotePage_.ClickOnAddProduct().EnterWidth(productLine3.Width).EnterHeight(productLine3.Height)
+            _AddQuotePage.ClickOnAddProduct().EnterWidth(productLine3.Width).EnterHeight(productLine3.Height)
                .EnterRoomLocation(productLine3.NDBRoomLocation).SelectProduct(productLine3.ProductType).SelectMountingDynamic().ClickAddProductButton();
 
             //AddQuotePage_.getProductDetails();

@@ -24,12 +24,12 @@ namespace UnitTestNDBProject.Pages
         {
             this.driver = driver;
             PageFactory.InitElements(driver, this);
-            
+
         }
 
         private Logger _logger = LogManager.GetCurrentClassLogger();
-        
-        
+
+
         //productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
@@ -150,7 +150,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        
+
 
         public AddQuotePage SelectProduct(string ProductType)
         {
@@ -197,13 +197,13 @@ namespace UnitTestNDBProject.Pages
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
             foreach (Tuple<string, string> product in productDetails)
             {
-                
+
                 driver.FindElement(By.Id(product.Item1)).SendKeys(product.Item2);
                 driver.FindElement(By.Id(product.Item1)).SendKeys(Keys.Enter);
 
                 try
                 {
-                    WebDriverWait customWait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                    WebDriverWait customWait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
                     customWait2.Until(ExpectedConditions.ElementIsVisible(By.Id("idBtnOK")));
                     OkButton.Clickme(driver);
                 }
@@ -223,70 +223,7 @@ namespace UnitTestNDBProject.Pages
             AddProductLineButton.Clickme(driver);
             return this;
         }
-     
-        //public AddQuotePage SelectMounting()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Mounting, 10000);
-        //    Mounting.SendKeys("Inside Mount");
-        //    Mounting.SendKeys(Keys.Enter);
-        //    return this;
-        //}
 
-        //public AddQuotePage SelectColor()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Color, 10000);
-        //    Color.SendKeys("Cloud");
-        //    Color.SendKeys(Keys.Enter);
-        //    return this;
-        //}
-
-        //public AddQuotePage SelectNumberOnHeadrails()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(NumberOnHeadrail, 10000);
-        //    NumberOnHeadrail.SendKeys("Standard");
-        //    NumberOnHeadrail.SendKeys(Keys.Enter);
-        //    return this;
-        //}
-
-        //public AddQuotePage SelectLiftSystem()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(LiftSystem, 10000);
-        //    LiftSystem.SendKeys("Cordlock");
-        //    LiftSystem.SendKeys(Keys.Enter);
-
-        //    return this;
-        //}
-
-        //public AddQuotePage SelectTiltControl()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(TiltControl, 10000);
-        //    TiltControl.SendKeys("Cord Tilt");
-        //    TiltControl.SendKeys(Keys.Enter);
-        //    OkButton.Clickme(driver);
-        //    return this;
-        //}
-
-        //public AddQuotePage SelectControlPosition()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(ControlLocation, 10000);
-        //    ControlLocation.SendKeys("Til Left/Lift Right");
-        //    ControlLocation.SendKeys(Keys.Enter);
-        //    return this;
-        //}
-
-        //public AddQuotePage SelectValance()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Valance, 10000);
-        //    Valance.SendKeys("Standard");
-        //    Valance.SendKeys(Keys.Enter);
-        //    return this;
-        //}
+       
     }
 }
