@@ -20,6 +20,7 @@ namespace UnitTestNDBProject.Pages
     public class EnterNewCustomerPage
     {
         public IWebDriver driver;
+        public List<Tuple<string, string>> newPhones;
 
         public EnterNewCustomerPage(IWebDriver driver)
         {
@@ -420,13 +421,15 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="FirstNameOnScreen"></param>
         /// <returns></returns>
-        public bool VerifyFirstName(String FirstNameOnScreen)
+        public bool VerifyFirstName(String FirstNameOnFile)
         {
+            Thread.Sleep(3000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
             String FirstName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
-            if (FirstNameOnScreen.Contains(FirstName))
+            Thread.Sleep(1000);
+            if (FirstName.Contains(FirstNameOnFile))
             {
                 firstNameValue = true;
                 _logger.Info($" First Name Is Correct");
@@ -440,14 +443,15 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="LastNameOnScreen"></param>
         /// <returns></returns>
-        public bool VerifyLastName(String LastNameOnScreen)
+        public bool VerifyLastName(String LastNameOnFile)
         {
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")));
 
             String LastName = LastNameText.GetText(driver);
             bool lastNameValue = false;
-            if (LastNameOnScreen.Contains(LastName))
+            Thread.Sleep(1000);
+            if (LastName.Contains(LastNameOnFile))
             {
                 lastNameValue = true;
                 _logger.Info($" Last Name Is Correct");
@@ -457,22 +461,74 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
+        /// Function to add customer phones
+        /// </summary>
+        /// <param name="phones"></param>
+        /// <returns></returns>
+        public List<Tuple<string, string>> AddCustomerPhones(List<Phone> phones)
+        {
+            newPhones = new List<Tuple<string, string>>();
+
+            //Input phones
+            for (int counter = 0; counter < phones.Count; counter++)
+            {
+                string phone = CommonFunctions.AppendMaxRangeRandomString(phones[counter].PhoneNumber);
+                string phoneType = phones[counter].PhoneType;
+                EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
+
+                if (counter < phones.Count - 1)
+                {
+                    AddPhone();
+                }
+
+                newPhones.Add(new Tuple<string, string>(phone, phoneType));
+            }
+
+            return newPhones;
+        }
+
+
+        /// <summary>
         /// Veerify Phone Number is same as entered
         /// </summary>
         /// <param name="EnteredPhone"></param>
         /// <returns></returns>
-        public bool VerifyPhoneNumber(string EnteredPhone)
+        public bool VerifyPhoneNumberAndPhoneType (List<Phone> phones)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(PhoneNumberText, 10000);
-            string PhoneNumber = PhoneNumberText.GetText(driver);
-            string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
-            bool PhoneNumberValue = false;
-            if (EnteredPhone.Contains(ActualPhoneNumber))
+
+            bool PhoneNumberAndTypeValue = false;
+
+            for (int counteri = 0; counteri < newPhones.Count; counteri++)
             {
-                PhoneNumberValue = true;
-                _logger.Info($" Phone Is Correct");
+                var phoneCounter = counteri * 2 + 1;
+
+                String Phonenumberxpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phoneCounter + "]";
+                string PhoneNumber = driver.FindElement(By.XPath(Phonenumberxpath)).GetText(driver);
+                string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
+
+                string ExpectedPhone = newPhones[counteri].Item1;
+                if (ExpectedPhone.Contains(ActualPhoneNumber))
+                {
+                    PhoneNumberAndTypeValue = true;
+                    _logger.Info($" Phone Is Correct");
+                }
+
+                var phonetypecounter = phoneCounter + 1;
+
+                String Phonetypexpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phonetypecounter + "]";
+                string ActualPhoneType = driver.FindElement(By.XPath(Phonetypexpath)).GetText(driver);
+                string ExpectedPhoneType = phones[counteri].PhoneType;
+
+                if (ExpectedPhoneType.Contains(ActualPhoneType))
+                {
+                    PhoneNumberAndTypeValue = true;
+                    _logger.Info($" Phone Is Correct");
+                }
+
             }
-            return PhoneNumberValue;
+
+            return PhoneNumberAndTypeValue;
 
         }
 
@@ -690,6 +746,12 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        public EnterNewCustomerPage ClickEditButton(string id)
+        {
+            driver.FindElement(By.Id(id)).Clickme(driver);
+            return this;
+        }
+
         /// <summary>
         /// Function to verify thatcustomer is created the valid first name
         /// </summary>
@@ -775,33 +837,7 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
         }
 
-        /// <summary>
-        /// Function to add customer phones
-        /// </summary>
-        /// <param name="phones"></param>
-        /// <returns></returns>
-        public List<Tuple<string, string>> AddCustomerPhones(List<Phone> phones)
-        {
-            List<Tuple<string, string>> newPhones = new List<Tuple<string, string>>();
-
-            //Input phones
-            for (int counter = 0; counter < phones.Count; counter++)
-            {
-                string phone = CommonFunctions.AppendMaxRangeRandomString(phones[counter].PhoneNumber);
-                string phoneType = phones[counter].PhoneType;
-                EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
-
-                if (counter < phones.Count - 1)
-                {
-                    AddPhone();
-                }
-
-                newPhones.Add(new Tuple<string, string>(phone, phoneType));
-            }
-
-            return newPhones;
-        }
-
+       
         /// <summary>
         /// Function to add customer emails
         /// </summary>

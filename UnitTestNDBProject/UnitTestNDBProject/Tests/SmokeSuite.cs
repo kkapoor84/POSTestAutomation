@@ -103,7 +103,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
-            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumber(phones[0].Item1));
+            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType(newCustomerData.Phones));
 
             //TODO: Ability to assert multiple PHONES
             //for(int counter = 0; counter < phones.Count; counter++)
