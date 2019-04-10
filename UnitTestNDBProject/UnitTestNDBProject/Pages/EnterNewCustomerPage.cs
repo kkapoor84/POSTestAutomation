@@ -321,6 +321,7 @@ namespace UnitTestNDBProject.Pages
                 WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
                 customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='btnSection']/div/div[1]/div[2]/div/div/div/div/div/div[2]/div/div[1]")));
                 continueWithExistingCustomer.Clickme(driver);
+                _logger.Info($": Selects existing customer");
             }
             catch (Exception e)
             {
@@ -337,6 +338,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButtonEdit, 10000);
             saveButtonEdit.Clickme(driver);
+            _logger.Info($": Successfully clicked on SAVE button for existing customer");
             return this;
 
         }
@@ -496,7 +498,7 @@ namespace UnitTestNDBProject.Pages
                 if (EnteredPhone.Contains((PhoneNumberArray[j])))
                 {
                     PhoneExist = true;
-                    _logger.Info($" Phone For Existing Customer Is Added");
+                    _logger.Info($" Phone " + EnteredPhone + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
@@ -528,7 +530,7 @@ namespace UnitTestNDBProject.Pages
                 if (EnteredEmail.Contains((EmailAddressArray[j])))
                 {
                     EmailExist = true;
-                    _logger.Info($" Email For Existing Customer Is Added");
+                    _logger.Info($" Email " + EnteredEmail + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
