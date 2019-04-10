@@ -18,22 +18,19 @@ namespace UnitTestNDBProject.Utils
         /// <returns>Randomized text</returns>
         public static string AppendInRangeRandomString(string text)
         {
-            random = new Random();
-            string randomText = text + random.Next(1, 100);
+             string randomText = text + random.Next(1, 100);
             return randomText;
         }
 
         public static string AppendMaxRangeRandomString(string text, int? range = null)
         {
             int finalRange = range != null ? (int)range : 1000000000;
-            random = new Random();
             string randomText = text + random.Next(finalRange);
             return randomText;
         }
 
         public static string RandomizeEmail(string email)
         {
-            random = new Random();
             string randomText = email + random.Next(1000000000) + "@nextdayblinds.com";
             return randomText;
         }

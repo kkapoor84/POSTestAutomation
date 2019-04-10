@@ -20,6 +20,7 @@ namespace UnitTestNDBProject.Pages
     public class EnterNewCustomerPage
     {
         public IWebDriver driver;
+        public List<Tuple<string, string>> newPhones;
 
         public EnterNewCustomerPage(IWebDriver driver)
         {
@@ -337,6 +338,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButtonEdit, 10000);
             saveButtonEdit.Clickme(driver);
+          
             _logger.Info($": Successfully clicked on SAVE button for existing customer");
             return this;
 
@@ -420,13 +422,15 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="FirstNameOnScreen"></param>
         /// <returns></returns>
-        public bool VerifyFirstName(String FirstNameOnScreen)
+        public bool VerifyFirstName(String FirstNameOnFile)
         {
+            Thread.Sleep(3000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
             String FirstName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
-            if (FirstNameOnScreen.Contains(FirstName))
+            Thread.Sleep(1000);
+            if (FirstName.Contains(FirstNameOnFile))
             {
                 firstNameValue = true;
                 _logger.Info($" First Name Is Correct");
@@ -440,14 +444,15 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="LastNameOnScreen"></param>
         /// <returns></returns>
-        public bool VerifyLastName(String LastNameOnScreen)
+        public bool VerifyLastName(String LastNameOnFile)
         {
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")));
 
             String LastName = LastNameText.GetText(driver);
             bool lastNameValue = false;
-            if (LastNameOnScreen.Contains(LastName))
+            Thread.Sleep(1000);
+            if (LastName.Contains(LastNameOnFile))
             {
                 lastNameValue = true;
                 _logger.Info($" Last Name Is Correct");
@@ -762,7 +767,7 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
         }
 
-        List<Tuple<string, string>> newPhones = new List<Tuple<string, string>>();
+        
         /// <summary>
         /// Function to add customer phones
         /// </summary>
@@ -770,11 +775,12 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public List<Tuple<string, string>> AddCustomerPhones(List<Phone> phones)
         {
-  
 
+            newPhones = new List<Tuple<string, string>>();
             //Input phones
             for (int counter = 0; counter < phones.Count; counter++)
             {
+                
                 string phone = CommonFunctions.AppendMaxRangeRandomString(phones[counter].PhoneNumber);
                 string phoneType = phones[counter].PhoneType;
                 EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
@@ -811,7 +817,6 @@ namespace UnitTestNDBProject.Pages
                 string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
 
                 string ExpectedPhone = newPhones[counteri].Item1;
-                // string phoneType = phones[counteri].PhoneType;
                 if (ExpectedPhone.Contains(ActualPhoneNumber))
                 {
                     PhoneNumberAndTypeValue = true;

@@ -117,7 +117,35 @@ namespace UnitTestNDBProject.Tests
             //Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1, sheetData.City, sheetData.State, sheetData.ZipCode));
             //_logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
         }
-       
+
+
+        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
+        public void A5_VerifyCustomerCreationUsingCustomerSuggestion()
+        {
+            _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
+
+            List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
+            List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
+
+            //Click on SAVE button and update existing customer
+            _EnterNewCustomerPage.ClickSaveButton().UpdateExistingCustomerFromCustomerSuggestion();
+
+            for (int counter = 0; counter < phones.Count; counter++)
+            {
+                Assert.True(_EnterNewCustomerPage.VerifyExistingPhoneNumber(phones[counter].Item1));
+            }
+
+            for (int counter = 0; counter < emails.Count; counter++)
+            {
+                Assert.True(_EnterNewCustomerPage.VerifyExistingEmailAddress(emails[counter]));
+            }
+
+            _EnterNewCustomerPage.ClickEditSaveButton();
+
+            Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
+            Assert.True(_EnterNewCustomerPage.VerifyFirstName(newCustomerData.FirstName));
+            Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
+        }
 
         [TearDown]
         public void teardown()
