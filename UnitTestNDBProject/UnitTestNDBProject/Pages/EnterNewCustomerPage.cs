@@ -156,10 +156,7 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
 
-           Thread.Sleep(10000);
-            //WebDriverWait customWait1 = new WebDriverWait(driver, TimeSpan.FromSeconds(50));
-            //customWait1.Until(ExpectedConditions.ElementToBeSelected(By.ClassName("customer-section")));
-
+            Thread.Sleep(5000);
             enterNewCustomer.Clickme(driver);
             _logger.Info($": Successfully clicked Enter New Custokmer button");
             return this;
