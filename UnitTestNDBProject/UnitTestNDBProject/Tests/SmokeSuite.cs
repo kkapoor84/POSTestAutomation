@@ -19,6 +19,7 @@ namespace UnitTestNDBProject.Tests
         private static List<ParsedTestData> fullParsedJsonData;
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
+        private static ParsedTestData productLineFeatureParsedData;
         NewCustomerData newCustomerData;
 
         [OneTimeSetUp]
@@ -29,9 +30,10 @@ namespace UnitTestNDBProject.Tests
 
             //Get login screen data
             loginFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "LoginScreen");
-
             //Get data for customer screen
             newCustomerFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "NewCustomerScreen");
+            //Get product line feature data
+            productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
 
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
         }
@@ -49,7 +51,7 @@ namespace UnitTestNDBProject.Tests
 
             _LoginPage.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
 
-            Assert.True(_LoginPage.VerifyInvalidCredentialsAreDisplayed("User ID or Password are incorrect. Please try again or contact the NDB helpdesk"));            
+            Assert.True(_LoginPage.VerifyInvalidCredentialsAreDisplayed("User ID or Password are incorrect. Please try again or contact the NDB helpdesk"));
         }
 
         [Test, Order(2), Category("Smoke"), Description("Validate that user is able to navigate to Home page using valid credentials")]
@@ -74,7 +76,7 @@ namespace UnitTestNDBProject.Tests
 
             _HomePage.ClickResourcesTab();
             Assert.True(_HomePage.VerifyResourceTabIsClicked());
-            
+
             _HomePage.ClickSettingTab();
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
@@ -113,17 +115,17 @@ namespace UnitTestNDBProject.Tests
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
             string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
 
-            _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);            
+            _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);
             List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
             List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
-                        
+
             _EnterNewCustomerPage.ClickOnAddressLine1().ContinueNewCustomerCreation();
 
             _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
             _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
-            
+
             _EnterNewCustomerPage.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
-            
+
             Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
             Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
             Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
@@ -131,6 +133,26 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
             Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
             Assert.True(_EnterNewCustomerPage.VerifyAddress());
+        }
+
+        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        public void A6_VerifyProductCreation()
+        {
+            //TODO: Create a new Quote for newly created customer rather than serahcing it. This is just a temporary arrangement
+            Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
+            _QuotePage.SearchFunction().ClickOnAddNewQuote();
+
+            foreach (DataDictionary data in productLineFeatureParsedData.Data)
+            {
+                ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
+
+                //TODO: Temporary arrangement to ensure ADD PRODUCTS button is visible and clickable. Must be removed later. 
+                //TODO: We should ideally check if the button is clickable or not.
+                Thread.Sleep(5000);
+
+                _QuotePage.ClickOnAddProduct().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
+                    .SelectProduct(productLine.ProductType).SelectMountingDynamic(productLine.ProductDetails).ClickAddProductButton();
+            }
         }
 
         /// <summary>
@@ -170,9 +192,15 @@ namespace UnitTestNDBProject.Tests
             GlobalSetup.test.Log(logstatus, "Test ended with " + logstatus + stacktrace);
         }
 
+        /// <summary>
+        /// One tiem Tear Down function
+        /// </summary>
         [OneTimeTearDown]
         public void AfterClass()
         {
+            //This is just to ensure that there isn't any loader blocking the button.
+            //TODO: Any better way to handle it?
+            Thread.Sleep(5000);
             _HomePage.Signout();
         }
     }

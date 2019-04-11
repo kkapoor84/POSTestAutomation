@@ -84,7 +84,7 @@
           "Height": "40",
           "NDBRoomLocation": "Room",
           "Quantity": 1,
-          "ProductType": "Wood Blinds(NW), Faux Wood Blinds",
+          "ProductType": "Faux Wood Blinds",
           "ProductDetails": [
             {
               "OptionTypeId": "Mounting",
@@ -95,19 +95,19 @@
               "Option": "Cloud"
             },
             {
-              "OptionTypeId": "Number On Headrail",
+              "OptionTypeId": "NumberOnHeadrail",
               "Option": "Standard"
             },
             {
-              "OptionTypeId": "Lift System",
+              "OptionTypeId": "LiftSystem",
               "Option": "Cordlock"
             },
             {
-              "OptionTypeId": "Tilt Control",
+              "OptionTypeId": "TiltControl",
               "Option": "Cord Tilt"
             },
             {
-              "OptionTypeId": "Control Position",
+              "OptionTypeId": "ControlLocation",
               "Option": "Tilt Left/Lift Right"
             },
             {
@@ -124,7 +124,7 @@
           "Height": "40",
           "NDBRoomLocation": "Room",
           "Quantity": 1,
-          "ProductType": "Aluminium Blinds(MB), Deluxe Aluminium Blinds",
+          "ProductType": "Deluxe Aluminum Blinds",
           "ProductDetails": [
             {
               "OptionTypeId": "Mounting",
@@ -135,11 +135,11 @@
               "Option": "Allure"
             },
             {
-              "OptionTypeId": "Lift System",
+              "OptionTypeId": "LiftSystem",
               "Option": "Cordlock"
             },
             {
-              "OptionTypeId": "Control Position",
+              "OptionTypeId": "ControlLocation",
               "Option": "Tilt Left/Lift Right"
             }
           ]
@@ -152,10 +152,10 @@
           "Height": "40",
           "NDBRoomLocation": "Room",
           "Quantity": 1,
-          "ProductType": "Honeycomb Shades (CF), Room Darkening Honeycomb Shades",
+          "ProductType": "Room Darkening Honeycomb Shades",
           "ProductDetails": [
             {
-              "OptionTypeId": "Cell Size",
+              "OptionTypeId": "CellSize",
               "Option": "3/4\" Single Cell"
             },
             {
@@ -167,15 +167,15 @@
               "Option": "Adobe"
             },
             {
-              "OptionTypeId": "Number On Headrail",
+              "OptionTypeId": "NumberOnHeadrail",
               "Option": "Standard"
             },
             {
-              "OptionTypeId": "Lift System",
+              "OptionTypeId": "LiftSystem",
               "Option": "Premium Cordless Top Down/Bottom Up"
             },
             {
-              "OptionTypeId": "Swivel Brackets",
+              "OptionTypeId": "SwivelBrackets",
               "Option": "No"
             }
           ]
