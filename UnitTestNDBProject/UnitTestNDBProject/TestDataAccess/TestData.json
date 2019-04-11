@@ -45,10 +45,10 @@
           ],
           "Emails": [
             {
-              "EmailText": "posuser"
+              "EmailText": "pos"
             },
             {
-              "EmailText": "automationuser"
+              "EmailText": "auto"
             }
           ],
           "Addresses": [

@@ -31,8 +31,16 @@ namespace UnitTestNDBProject.Utils
 
         public static string RandomizeEmail(string email)
         {
-            string randomText = email + random.Next(100000) + "@nextdayblinds.com";
+            string randomText = email + GenerateRandomString() + random.Next(100000) + "@nextdayblinds.com";
             return randomText;
+        }
+
+        public static string GenerateRandomString()
+        {
+            int length = 10;
+            const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         /// <summary>
