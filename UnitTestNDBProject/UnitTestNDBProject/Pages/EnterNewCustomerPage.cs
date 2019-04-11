@@ -30,7 +30,7 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        private Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
 
         [FindsBy(How = How.ClassName, Using = "customer-section")]
@@ -433,15 +433,15 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="FirstNameOnScreen"></param>
         /// <returns></returns>
-        public bool VerifyFirstName(String FirstNameOnFile)
+        public bool VerifyFirstName(String firstNameOnFile)
         {
             Thread.Sleep(3000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
-            String FirstName = FirstNameText.GetText(driver);
+            String fName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
             Thread.Sleep(1000);
-            if (FirstName.Contains(FirstNameOnFile))
+            if (fName.Contains(firstNameOnFile))
             {
                 firstNameValue = true;
                 _logger.Info($" First Name Is Correct");
@@ -455,7 +455,7 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="LastNameOnScreen"></param>
         /// <returns></returns>
-        public bool VerifyLastName(String LastNameOnFile)
+        public bool VerifyLastName(String lastNameOnFile)
         {
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")));
@@ -463,7 +463,7 @@ namespace UnitTestNDBProject.Pages
             String LastName = LastNameText.GetText(driver);
             bool lastNameValue = false;
             Thread.Sleep(1000);
-            if (LastName.Contains(LastNameOnFile))
+            if (LastName.Contains(lastNameOnFile))
             {
                 lastNameValue = true;
                 _logger.Info($" Last Name Is Correct");
@@ -511,16 +511,16 @@ namespace UnitTestNDBProject.Pages
 
             bool PhoneNumberAndTypeValue = false;
 
-            for (int counteri = 0; counteri < newPhones.Count; counteri++)
+            for (int counter = 0; counter < newPhones.Count; counter++)
             {
-                var phoneCounter = counteri * 2 + 1;
+                var phoneCounter = counter * 2 + 1;
 
-                String Phonenumberxpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phoneCounter + "]";
-                string PhoneNumber = driver.FindElement(By.XPath(Phonenumberxpath)).GetText(driver);
-                string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
+                string phoneNumberXpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phoneCounter + "]";
+                string phoneNumber = driver.FindElement(By.XPath(phoneNumberXpath)).GetText(driver);
+                string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
 
-                string ExpectedPhone = newPhones[counteri].Item1;
-                if (ExpectedPhone.Contains(ActualPhoneNumber))
+                string ExpectedPhone = newPhones[counter].Item1;
+                if (ExpectedPhone.Contains(actualPhoneNumber))
                 {
                     PhoneNumberAndTypeValue = true;
                     _logger.Info($" Phone Is Correct");
@@ -528,9 +528,9 @@ namespace UnitTestNDBProject.Pages
 
                 var phonetypecounter = phoneCounter + 1;
 
-                String Phonetypexpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phonetypecounter + "]";
+                string Phonetypexpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phonetypecounter + "]";
                 string ActualPhoneType = driver.FindElement(By.XPath(Phonetypexpath)).GetText(driver);
-                string ExpectedPhoneType = newPhones[counteri].Item2;
+                string ExpectedPhoneType = newPhones[counter].Item2;
 
                 if (ExpectedPhoneType.Contains(ActualPhoneType))
                 {
@@ -552,9 +552,9 @@ namespace UnitTestNDBProject.Pages
         /// <param name="ExpState"></param>
         /// <param name="ExpZipcode"></param>
         /// <returns></returns>
-        public bool VerifCustomerIsCreatedWithValidBillingAddress(String ExpAddressline1, String ExpCity, String ExpState, String ExpZipcode)
+        public bool VerifCustomerIsCreatedWithValidBillingAddress(string expAddressline1, string expCity, string expState, string expZipcode)
         {
-            bool IsAddressCorrect = false;
+            bool isAddressCorrect = false;
             driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 2000);
             String ActualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
             String ActualCity = viewOnlyCity.GetText(driver);
@@ -562,57 +562,48 @@ namespace UnitTestNDBProject.Pages
             String ActualZip = viewOnlyZip.GetText(driver);
             bool billingaddress = driver.FindElement(By.XPath("//span[contains(text(),'Billing Address')]")).Displayed;
 
-            if (ExpAddressline1.Contains(ActualAddressLine1) && ExpCity.Contains(ActualCity) && ExpState.Contains(ActualState.Substring(0, 1)) && ExpZipcode.Contains(ActualZip))
+            if (expAddressline1.Contains(ActualAddressLine1) && expCity.Contains(ActualCity) && expState.Contains(ActualState.Substring(0, 1)) && expZipcode.Contains(ActualZip) && billingaddress)
             {
-                if (billingaddress == true)
-                {
-                    IsAddressCorrect = true;
-                }
-
+                isAddressCorrect = true;
             }
 
-            return IsAddressCorrect;
+            return isAddressCorrect;
         }
 
+        /// <summary>
+        /// Verifies the address
+        /// </summary>
+        /// <returns></returns>
         public bool VerifyAddress()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 10000);
 
-            bool IsAddressCorrect = false;
+            bool isAddressCorrect = false;
 
-            for (int counteri = 0; counteri < newAddresses.Count; counteri++)
+            for (int counter = 0; counter < newAddresses.Count; counter++)
             {
-
-                string ExpectedAddressLine1 = newAddresses[counteri].Item1;
-                string ActualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
-                string ExpectedAddressLine2 = newAddresses[counteri].Item2;
-                string ActualAddressLine2 = viewOnlyAddressLine2.GetText(driver);
-                string ExpectedCity = newAddresses[counteri].Item3;
-                string ActualCity = viewOnlyCity.GetText(driver);
-                string ExpectedState = newAddresses[counteri].Item4;
-                string ActualState = viewOnlyState.GetText(driver);
-                String ExpectedZip = newAddresses[counteri].Item5;
-                String ActualZip = viewOnlyZip.GetText(driver);
+                string expectedAddressLine1 = newAddresses[counter].Item1;
+                string actualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
+                string expectedAddressLine2 = newAddresses[counter].Item2;
+                string actualAddressLine2 = viewOnlyAddressLine2.GetText(driver);
+                string expectedCity = newAddresses[counter].Item3;
+                string actualCity = viewOnlyCity.GetText(driver);
+                string expectedState = newAddresses[counter].Item4;
+                string actualState = viewOnlyState.GetText(driver);
+                string expectedZip = newAddresses[counter].Item5;
+                string actualZip = viewOnlyZip.GetText(driver);
 
                 bool billingaddress = driver.FindElement(By.XPath("//span[contains(text(),'Billing Address')]")).Displayed;
 
-                if (ExpectedAddressLine1.Contains(ActualAddressLine1) && ExpectedAddressLine2.Contains(ActualAddressLine2) && ExpectedCity.Contains(ActualCity) && ExpectedState.Contains(ActualState.Substring(0, 1)) && ExpectedZip.Contains(ActualZip))
+                if (expectedAddressLine1.Contains(actualAddressLine1) && expectedAddressLine2.Contains(actualAddressLine2) && expectedCity.Contains(actualCity) && expectedState.Contains(actualState.Substring(0, 1)) && expectedZip.Contains(actualZip) && billingaddress)
                 {
-                    if (billingaddress == true)
-                    {
-                        IsAddressCorrect = true;
-                    }
-
+                    isAddressCorrect = true;
                 }
-
             }
 
-            return IsAddressCorrect;
-
+            return isAddressCorrect;
         }
-
-
-
+        
 
         /// <summary>
         /// Verify that phone numbers are appended in existing customer.
@@ -623,29 +614,30 @@ namespace UnitTestNDBProject.Pages
         {
             Thread.Sleep(4000);
             int i = 0;
-            string[] PhoneNumberArray = new string[100];
+            string[] phoneNumberArray = new string[100];
+
             do
             {
-                string PhoneNumber = driver.FindElement(By.Id("phoneLists[" + i + "].Phone")).GetAttribute("value");
-                string ActualPhoneNumber = string.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
-                PhoneNumberArray[i] = ActualPhoneNumber;
+                string phoneNumber = driver.FindElement(By.Id("phoneLists[" + i + "].Phone")).GetAttribute("value");
+                string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
+                phoneNumberArray[i] = actualPhoneNumber;
                 i++;
             } while (By.Id("phoneLists[" + i + "].Phone").isPresent(driver));
 
             int j = 0;
-            bool PhoneExist = false;
+            bool phoneExist = false;
             do
             {
-                if (EnteredPhone.Contains((PhoneNumberArray[j])))
+                if (EnteredPhone.Contains((phoneNumberArray[j])))
                 {
-                    PhoneExist = true;
+                    phoneExist = true;
                     _logger.Info($" Phone " + EnteredPhone + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
-            } while (PhoneNumberArray[j] != null);
+            } while (phoneNumberArray[j] != null);
 
-            return PhoneExist;
+            return phoneExist;
 
         }
 
@@ -656,28 +648,28 @@ namespace UnitTestNDBProject.Pages
         {
             Thread.Sleep(4000);
             int i = 0;
-            string[] EmailAddressArray = new string[100];
+            string[] emailAddressArray = new string[100];
             do
             {
                 string EmailAddress = driver.FindElement(By.Id("emailList[" + i + "].Email")).GetAttribute("value");
-                EmailAddressArray[i] = EmailAddress;
+                emailAddressArray[i] = EmailAddress;
                 i++;
             } while (By.Id("emailList[" + i + "].Email").isPresent(driver));
 
             int j = 0;
-            bool EmailExist = false;
+            bool emailExist = false;
             do
             {
-                if (EnteredEmail.Contains((EmailAddressArray[j])))
+                if (EnteredEmail.Contains((emailAddressArray[j])))
                 {
-                    EmailExist = true;
+                    emailExist = true;
                     _logger.Info($" Email " + EnteredEmail + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
-            } while (EmailAddressArray[j] != null);
+            } while (emailAddressArray[j] != null);
 
-            return EmailExist;
+            return emailExist;
 
         }
 
@@ -783,8 +775,8 @@ namespace UnitTestNDBProject.Pages
                 }
                
             }
-            return this;
 
+            return this;
         }
 
         /// <summary>

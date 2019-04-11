@@ -121,8 +121,7 @@ namespace UnitTestNDBProject.Tests
 
             _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
             _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
-
-            //TODO: Make Smarty Street pop-up dynamic--DONE
+            
             _EnterNewCustomerPage.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
             
             Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
@@ -130,16 +129,15 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
-            //TODO--DONE
             Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
-            //TODO--DONE
             Assert.True(_EnterNewCustomerPage.VerifyAddress());
-
         }
 
-
+        /// <summary>
+        /// Tear Down function
+        /// </summary>
         [TearDown]
-        public void teardown()
+        public void Teardown()
         {
             var status = TestContext.CurrentContext.Result.Outcome.Status;
             var stacktrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
