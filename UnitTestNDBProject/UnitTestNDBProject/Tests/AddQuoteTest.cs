@@ -49,15 +49,21 @@ namespace UnitTestNDBProject.Tests
         [Test, Category("Regression"), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A5_VerifyProductCreation()
         {
-            productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
-            object productLineData1 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
-            ProductLineData productLine1 = JsonDataParser<ProductLineData>.ParseData(productLineData1);
+            Thread.Sleep(6000);
+            _AddQuotePage.SearchFunction().ClickOnAddNewQuote();
 
-            object productLineData2 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product2");
-            ProductLineData productLine2 = JsonDataParser<ProductLineData>.ParseData(productLineData2);
+            _AddQuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);
 
-            object productLineData3 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product3");
-            ProductLineData productLine3 = JsonDataParser<ProductLineData>.ParseData(productLineData3);
+
+            //productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
+            //object productLineData1 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
+            //ProductLineData productLine1 = JsonDataParser<ProductLineData>.ParseData(productLineData1);
+
+            //object productLineData2 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product2");
+            //ProductLineData productLine2 = JsonDataParser<ProductLineData>.ParseData(productLineData2);
+
+            //object productLineData3 = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product3");
+            //ProductLineData productLine3 = JsonDataParser<ProductLineData>.ParseData(productLineData3);
 
 
             //productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
@@ -69,7 +75,7 @@ namespace UnitTestNDBProject.Tests
             //{
             //    _logger.Info($": Successfully Entered Option Type {product.Item1} , Option {product.Item2}");
             //}
-            _AddQuotePage.SearchFunction().ClickOnAddNewQuote().ClickOnAddProduct().EnterWidth(productLine1.Width).EnterHeight(productLine1.Height)
+         /*   _AddQuotePage.SearchFunction().ClickOnAddNewQuote().ClickOnAddProduct().EnterWidth(productLine1.Width).EnterHeight(productLine1.Height)
                 .EnterRoomLocation(productLine1.NDBRoomLocation).SelectProduct(productLine1.ProductType).SelectMountingDynamic().ClickAddProductButton();
 
             _AddQuotePage.ClickOnAddProduct().EnterWidth(productLine2.Width).EnterHeight(productLine2.Height)
@@ -77,7 +83,7 @@ namespace UnitTestNDBProject.Tests
 
             _AddQuotePage.ClickOnAddProduct().EnterWidth(productLine3.Width).EnterHeight(productLine3.Height)
                .EnterRoomLocation(productLine3.NDBRoomLocation).SelectProduct(productLine3.ProductType).SelectMountingDynamic().ClickAddProductButton();
-
+               */
             //AddQuotePage_.getProductDetails();
 
 

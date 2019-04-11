@@ -103,10 +103,10 @@ namespace UnitTestNDBProject.Pages
 
         public AddQuotePage SearchFunction()
         {
-            Thread.Sleep(15000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
             Search.Clickme(driver);
             SearchOrder.Clickme(driver);
-            EnterOrder.SendKeys("2013047");
+            EnterOrder.EnterText("2013047");
             Enter.Clickme(driver);
             return this;
         }
@@ -115,95 +115,83 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddNewQuote, 10000);
             AddNewQuote.Clickme(driver);
+            _logger.Info($": NEW QUOTE button clicked");
             return this;
         }
 
         public AddQuotePage ClickOnAddProduct()
         {
-            Thread.Sleep(4000);
+            //Do not remove below Wait. This is essential to ensure that spinner is gone on Quote/Order page and ADD PRODUCTS button is clickable
+            Thread.Sleep(5000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddProductLine, 10000);
             AddProductLine.Clickme(driver);
+            _logger.Info($": ADD PRODUCTS button clicked");
             return this;
         }
 
         public AddQuotePage EnterWidth(string WidthEntered)
         {
-            Thread.Sleep(4000);
+            //Do not remove below Wait. This is essential to ensure that page has loaded
+            Thread.Sleep(1000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(Width, 10000);
-            Width.SendKeys(WidthEntered);
+            Width.EnterText(WidthEntered);
+            _logger.Info($": Successfully entered width {WidthEntered}");
             return this;
         }
 
         public AddQuotePage EnterHeight(string HeightEntered)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Height, 10000);
-            Height.SendKeys(HeightEntered);
+            Height.EnterText(HeightEntered);
+            _logger.Info($": Successfully entered height {HeightEntered}");
             return this;
         }
 
         public AddQuotePage EnterRoomLocation(string RoomLocation)
         {
-            Thread.Sleep(4000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(roomlocation, 10000);
-            roomlocation.SendKeys(RoomLocation);
-            roomlocation.SendKeys(Keys.Enter);
+            roomlocation.EnterText(RoomLocation);
+            roomlocation.EnterText(Keys.Enter);
+            _logger.Info($": Successfully entered room location {RoomLocation}");
             return this;
         }
-
-
 
         public AddQuotePage SelectProduct(string ProductType)
         {
-            Thread.Sleep(4000);
-            driver.WaitForElementToBecomeVisibleWithinTimeout(ProductCode, 10000);
-            ProductCode.SendKeys(ProductType);
+            //Do not remove below Wait. This is essential to ensure that products have loaded as per updated dimensions
             Thread.Sleep(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(ProductCode, 10000);
+            ProductCode.EnterText(ProductType);
+            Thread.Sleep(200);
             ProductCode.SendKeys(Keys.Enter);
+            _logger.Info($": Successfully selected the product {ProductType}");
             return this;
         }
 
-
-        public void getAllProductDetails()
+        public void GetProductDetails()
         {
-
-            CommonTest ct = new CommonTest();
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
             object productLineData = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
             ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(productLineData);
 
-            productDetails = ct.AddProductDetails(productLine.ProductDetails);
-
-            //return productLists;
+            productDetails = AddProductDetails(productLine.ProductDetails);
         }
 
-
-        public void getProductDetails()
+        public AddQuotePage SelectProductOptions(List<ProductDetail> productDetails)
         {
-            CommonTest ct = new CommonTest();
-            productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
-            object productLineData = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
-            ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(productLineData);
-
-            productDetails = ct.AddProductDetails(productLine.ProductDetails);
-
-            //return productLists;
-        }
-
-        //productDetails = getProductDetails();
-        public AddQuotePage SelectMountingDynamic()
-        {
-            getProductDetails();
-            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            GetProductDetails();
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
-            foreach (Tuple<string, string> product in productDetails)
-            {
 
-                driver.FindElement(By.Id(product.Item1)).SendKeys(product.Item2);
-                driver.FindElement(By.Id(product.Item1)).SendKeys(Keys.Enter);
+            foreach (ProductDetail product in productDetails)
+            {
+                driver.FindElement(By.Id(product.OptionTypeId)).EnterText(product.Option);
+                driver.FindElement(By.Id(product.OptionTypeId)).SendKeys(Keys.Enter);
+                _logger.Info($": Successfully entered Option {product.Option} for Option Type {product.OptionTypeId}");
 
                 try
                 {
-                    WebDriverWait customWait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
+                    WebDriverWait customWait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(1));
                     customWait2.Until(ExpectedConditions.ElementIsVisible(By.Id("idBtnOK")));
                     OkButton.Clickme(driver);
                 }
@@ -211,19 +199,45 @@ namespace UnitTestNDBProject.Pages
                 {
                     Console.WriteLine(e.StackTrace);
                 }
-                Thread.Sleep(4000);
+                Thread.Sleep(500);
             }
             return this;
         }
 
         public AddQuotePage ClickAddProductButton()
         {
-            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
             AddProductLineButton.Clickme(driver);
+            _logger.Info($": ADD LINE button clicked");
             return this;
         }
 
-       
+        public List<Tuple<string, string>> AddProductDetails(List<ProductDetail> ProductDetails)
+        {
+            List<Tuple<string, string>> addedProducts = new List<Tuple<string, string>>();
+
+            //Input product details
+            for (int counter = 0; counter < ProductDetails.Count; counter++)
+            {
+                string optiontype = ProductDetails[counter].OptionTypeId;
+                string option = ProductDetails[counter].Option;
+
+                addedProducts.Add(new Tuple<string, string>(optiontype, option));
+            }
+
+            return addedProducts;
+        }
+
+        public void AddMultipleProducts(List<DataDictionary> productLineData)
+        {
+            foreach (DataDictionary data in productLineData)
+            {
+                ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
+
+                ClickOnAddProduct().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
+                    .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton();
+            }
+        }
     }
 }

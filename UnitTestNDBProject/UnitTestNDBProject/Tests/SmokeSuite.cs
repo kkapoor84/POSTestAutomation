@@ -19,6 +19,7 @@ namespace UnitTestNDBProject.Tests
         private static List<ParsedTestData> fullParsedJsonData;
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
+        private static ParsedTestData productLineFeatureParsedData;
         NewCustomerData newCustomerData;
 
         [OneTimeSetUp]
@@ -144,6 +145,17 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyFirstName(newCustomerData.FirstName));
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
+
+        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        public void A6_VerifyProductCreation()
+        {
+            //TODO: Create a new Quote for newly created customer rather than serahcing it. This is just a temporary arrangement
+            Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
+            _AddQuotePage.SearchFunction().ClickOnAddNewQuote();
+
+            _AddQuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);
+        }
+
 
         [TearDown]
         public void teardown()
