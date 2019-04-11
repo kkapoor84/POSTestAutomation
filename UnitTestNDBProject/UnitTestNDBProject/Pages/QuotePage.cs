@@ -58,32 +58,10 @@ namespace UnitTestNDBProject.Pages
         public IWebElement AddProductLineButton { get; set; }
 
         [FindsBy(How = How.Id, Using = "idBtnOK")]
-        public IWebElement OkButton { get; set; }
-
-        [FindsBy(How = How.Id, Using = "Mounting")]
-        public IWebElement Mounting { get; set; }
-
-        [FindsBy(How = How.Id, Using = "Color")]
-        public IWebElement Color { get; set; }
-
-        [FindsBy(How = How.Id, Using = "NumberOnHeadrail")]
-        public IWebElement NumberOnHeadrail { get; set; }
-
-        [FindsBy(How = How.Id, Using = "LiftSystem")]
-        public IWebElement LiftSystem { get; set; }
-
-        [FindsBy(How = How.Id, Using = "TiltControl")]
-        public IWebElement TiltControl { get; set; }
-
-        [FindsBy(How = How.Id, Using = "ControlLocation")]
-        public IWebElement ControlLocation { get; set; }
-
-        [FindsBy(How = How.Id, Using = "Valance")]
-        public IWebElement Valance { get; set; }
+        public IWebElement OkButton { get; set; }        
 
         public QuotePage SearchFunction()
         {
-            //Thread.Sleep(10000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
             Search.Clickme(driver);
             SearchOrder.Clickme(driver);
@@ -101,7 +79,8 @@ namespace UnitTestNDBProject.Pages
 
         public QuotePage ClickOnAddProduct()
         {
-            //Thread.Sleep(4000);
+            //Do not remove below Wait. This is essential to ensure that spinner is gone on Quote/Order page and ADD PRODUCTS button is clickable
+            Thread.Sleep(5000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddProductLine, 10000);
             AddProductLine.Clickme(driver);
             return this;
@@ -125,7 +104,6 @@ namespace UnitTestNDBProject.Pages
 
         public QuotePage EnterRoomLocation(string RoomLocation)
         {
-            //Thread.Sleep(4000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(roomlocation, 10000);
             roomlocation.EnterText(RoomLocation);
             roomlocation.EnterText(Keys.Enter);
@@ -152,7 +130,7 @@ namespace UnitTestNDBProject.Pages
             productDetails = AddProductDetails(productLine.ProductDetails);
         }
         
-        public QuotePage SelectMountingDynamic(List<ProductDetail> productDetails)
+        public QuotePage SelectProductOptions(List<ProductDetail> productDetails)
         {
             GetProductDetails();
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
@@ -200,73 +178,17 @@ namespace UnitTestNDBProject.Pages
             }
 
             return addedProducts;
+        }    
+        
+        public void AddMultipleProducts(List<DataDictionary> productLineData)
+        {
+            foreach (DataDictionary data in productLineData)
+            {
+                ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
+
+                ClickOnAddProduct().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
+                    .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton();
+            }
         }
-
-        //public QuotePage SelectMounting()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Mounting, 10000);
-        //    Mounting.SendKeys("Inside Mount");
-        //    Mounting.SendKeys(Keys.Enter);
-        //    return this;
-        //}
-
-        //public QuotePage SelectColor()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Color, 10000);
-        //    Color.SendKeys("Cloud");
-        //    Color.SendKeys(Keys.Enter);
-        //    return this;
-        //}
-
-        //public QuotePage SelectNumberOnHeadrails()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(NumberOnHeadrail, 10000);
-        //    NumberOnHeadrail.SendKeys("Standard");
-        //    NumberOnHeadrail.SendKeys(Keys.Enter);
-        //    return this;
-        //}
-
-        //public QuotePage SelectLiftSystem()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(LiftSystem, 10000);
-        //    LiftSystem.SendKeys("Cordlock");
-        //    LiftSystem.SendKeys(Keys.Enter);
-
-        //    return this;
-        //}
-
-        //public QuotePage SelectTiltControl()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(TiltControl, 10000);
-        //    TiltControl.SendKeys("Cord Tilt");
-        //    TiltControl.SendKeys(Keys.Enter);
-        //    OkButton.Clickme(driver);
-        //    return this;
-        //}
-
-        //public QuotePage SelectControlPosition()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(ControlLocation, 10000);
-        //    ControlLocation.SendKeys("Til Left/Lift Right");
-        //    ControlLocation.SendKeys(Keys.Enter);
-        //    return this;
-        //}
-
-        //public QuotePage SelectValance()
-        //{
-        //    Thread.Sleep(4000);
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Valance, 10000);
-        //    Valance.SendKeys("Standard");
-        //    Valance.SendKeys(Keys.Enter);
-        //    return this;
-        //}
-
-        // Add Product Details
     }
 }

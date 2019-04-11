@@ -142,17 +142,7 @@ namespace UnitTestNDBProject.Tests
             Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
             _QuotePage.SearchFunction().ClickOnAddNewQuote();
 
-            foreach (DataDictionary data in productLineFeatureParsedData.Data)
-            {
-                ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
-
-                //TODO: Temporary arrangement to ensure ADD PRODUCTS button is visible and clickable. Must be removed later. 
-                //TODO: We should ideally check if the button is clickable or not.
-                Thread.Sleep(5000);
-
-                _QuotePage.ClickOnAddProduct().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
-                    .SelectProduct(productLine.ProductType).SelectMountingDynamic(productLine.ProductDetails).ClickAddProductButton();
-            }
+            _QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);            
         }
 
         /// <summary>

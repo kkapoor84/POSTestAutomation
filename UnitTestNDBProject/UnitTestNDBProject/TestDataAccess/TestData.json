@@ -81,8 +81,8 @@
         "Key": "Product1",
         "Value": {
           "Width": "40",
-          "Height": "40",
-          "NDBRoomLocation": "Room",
+          "Height": "50",
+          "NDBRoomLocation": "Main Room",
           "Quantity": 1,
           "ProductType": "Faux Wood Blinds",
           "ProductDetails": [
@@ -120,15 +120,15 @@
       {
         "Key": "Product2",
         "Value": {
-          "Width": "40",
-          "Height": "40",
-          "NDBRoomLocation": "Room",
+          "Width": "50",
+          "Height": "60",
+          "NDBRoomLocation": "Bedroom",
           "Quantity": 1,
           "ProductType": "Deluxe Aluminum Blinds",
           "ProductDetails": [
             {
               "OptionTypeId": "Mounting",
-              "Option": "Inside Mount"
+              "Option": "Outside Mount"
             },
             {
               "OptionTypeId": "Color",
@@ -148,9 +148,9 @@
       {
         "Key": "Product3",
         "Value": {
-          "Width": "40",
-          "Height": "40",
-          "NDBRoomLocation": "Room",
+          "Width": "60",
+          "Height": "70",
+          "NDBRoomLocation": "Lobby",
           "Quantity": 1,
           "ProductType": "Room Darkening Honeycomb Shades",
           "ProductDetails": [
