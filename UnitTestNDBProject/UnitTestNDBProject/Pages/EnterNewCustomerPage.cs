@@ -20,6 +20,8 @@ namespace UnitTestNDBProject.Pages
     public class EnterNewCustomerPage
     {
         public IWebDriver driver;
+        public List<Tuple<string, string>> newPhones;
+        public List<Tuple<string, string, string,string,string>> newAddresses;
 
         public EnterNewCustomerPage(IWebDriver driver)
         {
@@ -28,7 +30,7 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        private Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
 
         [FindsBy(How = How.ClassName, Using = "customer-section")]
@@ -67,6 +69,8 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//label[@for='addressLine1']/following-sibling::span")]
         public IWebElement viewOnlyAddressLine1 { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//label[@for='addressLine2']/following-sibling::span")]
+        public IWebElement viewOnlyAddressLine2 { get; set; }
 
         [FindsBy(How = How.Id, Using = "address-line2")]
         public IWebElement addressLine2 { get; set; }
@@ -139,6 +143,10 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.Id, Using = "btnUseEnteredAddress")]
         public IWebElement UseAddressAsEntered { get; set; }
+        
+
+       [FindsBy(How = How.Id, Using = "btnCorrectAddress")]
+        public IWebElement AddressIsCorrect { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "#checkbox-TaxExempt")]
         public IWebElement TaxCheckBox { get; set; }
@@ -172,6 +180,7 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage EnterFirstName(string fname)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(firstName, 10000);
+            firstName.Clear();
             firstName.SendKeys(fname);
             _logger.Info($": Successfully Entered First Name {fname}");
             return this;
@@ -184,6 +193,7 @@ namespace UnitTestNDBProject.Pages
 
         public EnterNewCustomerPage EnterLastName(string lname)
         {
+            lastname.Clear();
             lastname.SendKeys(lname);
             _logger.Info($": Successfully Entered Last Name {lname}");
             return this;
@@ -250,7 +260,9 @@ namespace UnitTestNDBProject.Pages
 
         public EnterNewCustomerPage EnterEmailAddress(string email, int i)
         {
-            String strEmailAddress = "emailList[" + i + "].Email";
+             String strEmailAddress = "emailList[" + i + "].Email";
+            driver.FindElement(By.Id(strEmailAddress)).Clear();
+            Thread.Sleep(2000);
             driver.FindElement(By.Id(strEmailAddress)).EnterText(email);
             _logger.Info($": Successfully Entered Email {email}");            
             return this;
@@ -337,6 +349,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButtonEdit, 10000);
             saveButtonEdit.Clickme(driver);
+            Thread.Sleep(2000);
             _logger.Info($": Successfully clicked on SAVE button for existing customer");
             return this;
 
@@ -420,13 +433,15 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="FirstNameOnScreen"></param>
         /// <returns></returns>
-        public bool VerifyFirstName(String FirstNameOnScreen)
+        public bool VerifyFirstName(String firstNameOnFile)
         {
+            Thread.Sleep(3000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
-            String FirstName = FirstNameText.GetText(driver);
+            String fName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
-            if (FirstNameOnScreen.Contains(FirstName))
+            Thread.Sleep(1000);
+            if (fName.Contains(firstNameOnFile))
             {
                 firstNameValue = true;
                 _logger.Info($" First Name Is Correct");
@@ -440,14 +455,15 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="LastNameOnScreen"></param>
         /// <returns></returns>
-        public bool VerifyLastName(String LastNameOnScreen)
+        public bool VerifyLastName(String lastNameOnFile)
         {
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-6 pad-left-none']//span[@class='form-value']")));
 
             String LastName = LastNameText.GetText(driver);
             bool lastNameValue = false;
-            if (LastNameOnScreen.Contains(LastName))
+            Thread.Sleep(1000);
+            if (LastName.Contains(lastNameOnFile))
             {
                 lastNameValue = true;
                 _logger.Info($" Last Name Is Correct");
@@ -457,24 +473,137 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
+        /// Function to add customer phones
+        /// </summary>
+        /// <param name="phones"></param>
+        /// <returns></returns>
+        public List<Tuple<string, string>> AddCustomerPhones(List<Phone> phones)
+        {
+            newPhones = new List<Tuple<string, string>>();
+
+            //Input phones
+            for (int counter = 0; counter < phones.Count; counter++)
+            {
+                string phone = CommonFunctions.AppendMaxRangeRandomString(phones[counter].PhoneNumber);
+                string phoneType = phones[counter].PhoneType;
+                EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
+
+                if (counter < phones.Count - 1)
+                {
+                    AddPhone();
+                }
+
+                newPhones.Add(new Tuple<string, string>(phone, phoneType));
+            }
+
+            return newPhones;
+        }
+
+
+        /// <summary>
         /// Veerify Phone Number is same as entered
         /// </summary>
         /// <param name="EnteredPhone"></param>
         /// <returns></returns>
-        public bool VerifyPhoneNumber(string EnteredPhone)
+        public bool VerifyPhoneNumberAndPhoneType ()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(PhoneNumberText, 10000);
-            string PhoneNumber = PhoneNumberText.GetText(driver);
-            string ActualPhoneNumber = String.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
-            bool PhoneNumberValue = false;
-            if (EnteredPhone.Contains(ActualPhoneNumber))
+
+            bool PhoneNumberAndTypeValue = false;
+
+            for (int counter = 0; counter < newPhones.Count; counter++)
             {
-                PhoneNumberValue = true;
-                _logger.Info($" Phone Is Correct");
+                var phoneCounter = counter * 2 + 1;
+
+                string phoneNumberXpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phoneCounter + "]";
+                string phoneNumber = driver.FindElement(By.XPath(phoneNumberXpath)).GetText(driver);
+                string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
+
+                string ExpectedPhone = newPhones[counter].Item1;
+                if (ExpectedPhone.Contains(actualPhoneNumber))
+                {
+                    PhoneNumberAndTypeValue = true;
+                    _logger.Info($" Phone Is Correct");
+                }
+
+                var phonetypecounter = phoneCounter + 1;
+
+                string Phonetypexpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + phonetypecounter + "]";
+                string ActualPhoneType = driver.FindElement(By.XPath(Phonetypexpath)).GetText(driver);
+                string ExpectedPhoneType = newPhones[counter].Item2;
+
+                if (ExpectedPhoneType.Contains(ActualPhoneType))
+                {
+                    PhoneNumberAndTypeValue = true;
+                    _logger.Info($" Phone Is Correct");
+                }
+
             }
-            return PhoneNumberValue;
+
+            return PhoneNumberAndTypeValue;
 
         }
+
+        /// <summary>
+        /// Function to verify that customer is created with valid address
+        /// </summary>
+        /// <param name="ExpAddressline1"></param>
+        /// <param name="ExpCity"></param>
+        /// <param name="ExpState"></param>
+        /// <param name="ExpZipcode"></param>
+        /// <returns></returns>
+        public bool VerifCustomerIsCreatedWithValidBillingAddress(string expAddressline1, string expCity, string expState, string expZipcode)
+        {
+            bool isAddressCorrect = false;
+            driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 2000);
+            String ActualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
+            String ActualCity = viewOnlyCity.GetText(driver);
+            String ActualState = viewOnlyState.GetText(driver);
+            String ActualZip = viewOnlyZip.GetText(driver);
+            bool billingaddress = driver.FindElement(By.XPath("//span[contains(text(),'Billing Address')]")).Displayed;
+
+            if (expAddressline1.Contains(ActualAddressLine1) && expCity.Contains(ActualCity) && expState.Contains(ActualState.Substring(0, 1)) && expZipcode.Contains(ActualZip) && billingaddress)
+            {
+                isAddressCorrect = true;
+            }
+
+            return isAddressCorrect;
+        }
+
+        /// <summary>
+        /// Verifies the address
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyAddress()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 10000);
+
+            bool isAddressCorrect = false;
+
+            for (int counter = 0; counter < newAddresses.Count; counter++)
+            {
+                string expectedAddressLine1 = newAddresses[counter].Item1;
+                string actualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
+                string expectedAddressLine2 = newAddresses[counter].Item2;
+                string actualAddressLine2 = viewOnlyAddressLine2.GetText(driver);
+                string expectedCity = newAddresses[counter].Item3;
+                string actualCity = viewOnlyCity.GetText(driver);
+                string expectedState = newAddresses[counter].Item4;
+                string actualState = viewOnlyState.GetText(driver);
+                string expectedZip = newAddresses[counter].Item5;
+                string actualZip = viewOnlyZip.GetText(driver);
+
+                bool billingaddress = driver.FindElement(By.XPath("//span[contains(text(),'Billing Address')]")).Displayed;
+
+                if (expectedAddressLine1.Contains(actualAddressLine1) && expectedAddressLine2.Contains(actualAddressLine2) && expectedCity.Contains(actualCity) && expectedState.Contains(actualState.Substring(0, 1)) && expectedZip.Contains(actualZip) && billingaddress)
+                {
+                    isAddressCorrect = true;
+                }
+            }
+
+            return isAddressCorrect;
+        }
+        
 
         /// <summary>
         /// Verify that phone numbers are appended in existing customer.
@@ -485,29 +614,30 @@ namespace UnitTestNDBProject.Pages
         {
             Thread.Sleep(4000);
             int i = 0;
-            string[] PhoneNumberArray = new string[100];
+            string[] phoneNumberArray = new string[100];
+
             do
             {
-                string PhoneNumber = driver.FindElement(By.Id("phoneLists[" + i + "].Phone")).GetAttribute("value");
-                string ActualPhoneNumber = string.Concat(PhoneNumber.Substring(1, 3), PhoneNumber.Substring(6, 3), PhoneNumber.Substring(10, 4));
-                PhoneNumberArray[i] = ActualPhoneNumber;
+                string phoneNumber = driver.FindElement(By.Id("phoneLists[" + i + "].Phone")).GetAttribute("value");
+                string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
+                phoneNumberArray[i] = actualPhoneNumber;
                 i++;
             } while (By.Id("phoneLists[" + i + "].Phone").isPresent(driver));
 
             int j = 0;
-            bool PhoneExist = false;
+            bool phoneExist = false;
             do
             {
-                if (EnteredPhone.Contains((PhoneNumberArray[j])))
+                if (EnteredPhone.Contains((phoneNumberArray[j])))
                 {
-                    PhoneExist = true;
+                    phoneExist = true;
                     _logger.Info($" Phone " + EnteredPhone + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
-            } while (PhoneNumberArray[j] != null);
+            } while (phoneNumberArray[j] != null);
 
-            return PhoneExist;
+            return phoneExist;
 
         }
 
@@ -518,28 +648,28 @@ namespace UnitTestNDBProject.Pages
         {
             Thread.Sleep(4000);
             int i = 0;
-            string[] EmailAddressArray = new string[100];
+            string[] emailAddressArray = new string[100];
             do
             {
                 string EmailAddress = driver.FindElement(By.Id("emailList[" + i + "].Email")).GetAttribute("value");
-                EmailAddressArray[i] = EmailAddress;
+                emailAddressArray[i] = EmailAddress;
                 i++;
             } while (By.Id("emailList[" + i + "].Email").isPresent(driver));
 
             int j = 0;
-            bool EmailExist = false;
+            bool emailExist = false;
             do
             {
-                if (EnteredEmail.Contains((EmailAddressArray[j])))
+                if (EnteredEmail.Contains((emailAddressArray[j])))
                 {
-                    EmailExist = true;
+                    emailExist = true;
                     _logger.Info($" Email " + EnteredEmail + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
-            } while (EmailAddressArray[j] != null);
+            } while (emailAddressArray[j] != null);
 
-            return EmailExist;
+            return emailExist;
 
         }
 
@@ -623,8 +753,29 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage ClickOnUserAddressAsEnteredButtonOnSmartyStreet()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(UseAddressAsEntered, 20000);
-            UseAddressAsEntered.Clickme(driver);
+            try
+            {
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnUseEnteredAddress")));
+                UseAddressAsEntered.Clickme(driver);
+                _logger.Info($": Continue As Use address as entered on smarty street - If available");
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                    customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnCorrectAddress")));
+                    AddressIsCorrect.Clickme(driver);
+                    _logger.Info($": Continue As This address is correct on smarty street - If available");
+                }
+                catch (Exception e1)
+                {
+                    Console.WriteLine(e1.StackTrace);
+                }
+               
+            }
+
             return this;
         }
 
@@ -690,6 +841,14 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        public EnterNewCustomerPage ClickEditButton(string id)
+        {
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.Id(id)));
+            driver.FindElement(By.Id(id)).Clickme(driver);
+            return this;
+        }
+
         /// <summary>
         /// Function to verify thatcustomer is created the valid first name
         /// </summary>
@@ -726,35 +885,6 @@ namespace UnitTestNDBProject.Pages
             return IsLastName;
         }
 
-        /// <summary>
-        /// Function to verify that customer is created with valid address
-        /// </summary>
-        /// <param name="ExpAddressline1"></param>
-        /// <param name="ExpCity"></param>
-        /// <param name="ExpState"></param>
-        /// <param name="ExpZipcode"></param>
-        /// <returns></returns>
-        public bool VerifCustomerIsCreatedWithValidBillingAddress(String ExpAddressline1, String ExpCity, String ExpState, String ExpZipcode)
-        {
-            bool IsAddressCorrect = false;
-            driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 2000);
-            String ActualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
-            String ActualCity = viewOnlyCity.GetText(driver);
-            String ActualState = viewOnlyState.GetText(driver);
-            String ActualZip = viewOnlyZip.GetText(driver);
-            bool billingaddress = driver.FindElement(By.XPath("//span[contains(text(),'Billing Address')]")).Displayed;
-
-            if (ExpAddressline1.Contains(ActualAddressLine1) && ExpCity.Contains(ActualCity) && ExpState.Contains(ActualState.Substring(0, 1)) && ExpZipcode.Contains(ActualZip))
-            {
-                if (billingaddress == true)
-                {
-                    IsAddressCorrect = true;
-                }
-
-            }
-
-            return IsAddressCorrect;
-        }
 
         /// <summary>
         /// 
@@ -775,33 +905,7 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
         }
 
-        /// <summary>
-        /// Function to add customer phones
-        /// </summary>
-        /// <param name="phones"></param>
-        /// <returns></returns>
-        public List<Tuple<string, string>> AddCustomerPhones(List<Phone> phones)
-        {
-            List<Tuple<string, string>> newPhones = new List<Tuple<string, string>>();
-
-            //Input phones
-            for (int counter = 0; counter < phones.Count; counter++)
-            {
-                string phone = CommonFunctions.AppendMaxRangeRandomString(phones[counter].PhoneNumber);
-                string phoneType = phones[counter].PhoneType;
-                EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
-
-                if (counter < phones.Count - 1)
-                {
-                    AddPhone();
-                }
-
-                newPhones.Add(new Tuple<string, string>(phone, phoneType));
-            }
-
-            return newPhones;
-        }
-
+       
         /// <summary>
         /// Function to add customer emails
         /// </summary>
@@ -827,18 +931,20 @@ namespace UnitTestNDBProject.Pages
             return newEmails;
         }
 
-        /// <summary>
-        /// Function to add customer addresses
-        /// </summary>
-        /// <param name="addresses"></param>
-        public void AddCustomerAddresses(List<Address> addresses)
+/// <summary>
+/// 
+/// </summary>
+/// <param name="addresses"></param>
+/// <returns></returns>
+        public List<Tuple<string, string,string,string,string>> AddCustomerAddresses(List<Address> addresses)
         {
+            newAddresses = new List<Tuple<string, string,string,string,string>>();
             //Input addresses
             for (int counter = 0; counter < addresses.Count; counter++)
             {
-                string custAddLine1 = addresses[counter].AddressLine1;
-                string custAddLine2 = addresses[counter].AddressLine2;
-                string custCity = addresses[counter].City;
+                string custAddLine1 = CommonFunctions.AppendInRangeRandomString(addresses[counter].AddressLine1);
+                string custAddLine2 = CommonFunctions.AppendInRangeRandomString(addresses[counter].AddressLine2);
+                string custCity = CommonFunctions.AppendInRangeRandomString(addresses[counter].City);
                 string custState = addresses[counter].State;
                 string custZipCode = addresses[counter].ZipCode;
 
@@ -848,7 +954,9 @@ namespace UnitTestNDBProject.Pages
                 {
                     ClickOnAddAddressPlusButton();
                 }
+                newAddresses.Add(new Tuple<string, string,string,string,string>(custAddLine1, custAddLine2, custCity,custState,custZipCode));
             }
+            return newAddresses;
         }
 
         /// <summary>

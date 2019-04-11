@@ -112,7 +112,7 @@ namespace UnitTestNDBProject.Base
         [OneTimeTearDown]
         public void AfterClassCLoseDriver()
         {
-            driver.Quit();
+           driver.Quit();
 
             _logger.Info($" :Successfully executed the AfterClassCLoseDriver() method for {this.GetType().Name}");
         }

@@ -79,46 +79,8 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
 
-        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        public void A4_VerifyCustomerCreation()
-        {
-            string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
-            string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
-
-            _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);            
-            List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
-            List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
-                        
-            _EnterNewCustomerPage.ClickOnAddressLine1().ContinueNewCustomerCreation();
-
-            _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
-            _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
-
-            //TODO: Make Smarty Street pop-up dynamic
-            //EnterNewCustomerPage_.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
-            _EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
-            
-            Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
-            Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
-            Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
-            Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
-            Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
-            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumber(phones[0].Item1));
-
-            //TODO: Ability to assert multiple PHONES
-            //for(int counter = 0; counter < phones.Count; counter++)
-            //{
-            //    Assert.True(EnterNewCustomerPage_.VerifyPhoneNumber(phones[counter].Item1));
-            //    _logger.Info("Phone Number " + (counter + 1) + " Is Same As Entered.");
-            //}
-
-            //TODO: How to ASSERT below statement?
-            //Assert.True(EnterNewCustomerPage_.VerifCustomerIsCreatedWithValidBillingAddress(sheetData.AddressLine1, sheetData.City, sheetData.State, sheetData.ZipCode));
-            //_logger.Info($":Verified that New customer having last name {lastNameUnique} is created successfully");
-        }
-
-        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
-        public void A5_VerifyCustomerCreationUsingCustomerSuggestion()
+        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
+        public void A4_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
 
@@ -145,8 +107,37 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
 
+        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        public void A5_VerifyCustomerCreation()
+        {
+            string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
+            string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
+
+            _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);            
+            List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
+            List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
+                        
+            _EnterNewCustomerPage.ClickOnAddressLine1().ContinueNewCustomerCreation();
+
+            _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
+            _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
+            
+            _EnterNewCustomerPage.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
+            
+            Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
+            Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
+            Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
+            Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
+            Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
+            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
+            Assert.True(_EnterNewCustomerPage.VerifyAddress());
+        }
+
+        /// <summary>
+        /// Tear Down function
+        /// </summary>
         [TearDown]
-        public void teardown()
+        public void Teardown()
         {
             var status = TestContext.CurrentContext.Result.Outcome.Status;
             var stacktrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
