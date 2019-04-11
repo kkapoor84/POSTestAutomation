@@ -181,7 +181,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(firstName, 10000);
             firstName.Clear();
-            firstName.SendKeys(fname);
+            firstName.EnterText(fname);
             _logger.Info($": Successfully Entered First Name {fname}");
             return this;
         }
@@ -194,7 +194,7 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage EnterLastName(string lname)
         {
             lastname.Clear();
-            lastname.SendKeys(lname);
+            lastname.EnterText(lname);
             _logger.Info($": Successfully Entered Last Name {lname}");
             return this;
         }
@@ -205,7 +205,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage EnterPhoneNumber(string phone)
         {
-            phonenumber.SendKeys(phone);
+            phonenumber.EnterText(phone);
             return this;
         }
         public EnterNewCustomerPage SelectPhoneType(string phonetype)
@@ -644,15 +644,15 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="EnteredEmail"></param>
         /// <returns></returns>
-        public bool VerifyExistingEmailAddress(string EnteredEmail)
+        public bool VerifyExistingEmailAddress(string enteredEmail)
         {
             Thread.Sleep(4000);
             int i = 0;
             string[] emailAddressArray = new string[100];
             do
             {
-                string EmailAddress = driver.FindElement(By.Id("emailList[" + i + "].Email")).GetAttribute("value");
-                emailAddressArray[i] = EmailAddress;
+                string emailAddress = driver.FindElement(By.Id("emailList[" + i + "].Email")).GetAttribute("value");
+                emailAddressArray[i] = emailAddress;
                 i++;
             } while (By.Id("emailList[" + i + "].Email").isPresent(driver));
 
@@ -660,10 +660,10 @@ namespace UnitTestNDBProject.Pages
             bool emailExist = false;
             do
             {
-                if (EnteredEmail.Contains((emailAddressArray[j])))
+                if (enteredEmail.Contains((emailAddressArray[j])))
                 {
                     emailExist = true;
-                    _logger.Info($" Email " + EnteredEmail + " For Existing Customer Is Added");
+                    _logger.Info($" Email " + enteredEmail + " For Existing Customer Is Added");
                     break;
                 }
                 j++;
@@ -728,7 +728,7 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="Zip"></param>
         /// <returns></returns>
-        public EnterNewCustomerPage EnterZip(String Zip)
+        public EnterNewCustomerPage EnterZip(string Zip)
         {
             zip.EnterText(Zip);
             _logger.Info("Entering zip: " + Zip);
@@ -883,28 +883,13 @@ namespace UnitTestNDBProject.Pages
             }
 
             return IsLastName;
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-
-        public EnterNewCustomerPage AddEmailAddress(string email)
-        {
-
-            emailAddress.SendKeys(email);
-            return this;
-        }
+        }        
 
         public static NewCustomerData GetCustomerData(ParsedTestData featureData)
         {
             object newCustomerFeatureData = DataAccess.GetKeyJsonData(featureData, "customer1");
             return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
         }
-
        
         /// <summary>
         /// Function to add customer emails
