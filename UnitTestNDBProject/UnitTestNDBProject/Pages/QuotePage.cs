@@ -74,6 +74,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddNewQuote, 10000);
             AddNewQuote.Clickme(driver);
+            _logger.Info($": NEW QUOTE button clicked");
             return this;
         }
 
@@ -83,6 +84,7 @@ namespace UnitTestNDBProject.Pages
             Thread.Sleep(5000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddProductLine, 10000);
             AddProductLine.Clickme(driver);
+            _logger.Info($": ADD PRODUCTS button clicked");
             return this;
         }
 
@@ -92,6 +94,7 @@ namespace UnitTestNDBProject.Pages
             Thread.Sleep(1000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(Width, 10000);
             Width.EnterText(WidthEntered);
+            _logger.Info($": Successfully entered width {WidthEntered}");
             return this;
         }
 
@@ -99,6 +102,7 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Height, 10000);
             Height.EnterText(HeightEntered);
+            _logger.Info($": Successfully entered height {HeightEntered}");
             return this;
         }
 
@@ -107,6 +111,7 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElementToBecomeVisibleWithinTimeout(roomlocation, 10000);
             roomlocation.EnterText(RoomLocation);
             roomlocation.EnterText(Keys.Enter);
+            _logger.Info($": Successfully entered room location {RoomLocation}");
             return this;
         }
 
@@ -118,6 +123,7 @@ namespace UnitTestNDBProject.Pages
             ProductCode.EnterText(ProductType);
             Thread.Sleep(200);
             ProductCode.SendKeys(Keys.Enter);
+            _logger.Info($": Successfully selected the product {ProductType}");
             return this;
         }
 
@@ -140,6 +146,7 @@ namespace UnitTestNDBProject.Pages
             {
                 driver.FindElement(By.Id(product.OptionTypeId)).EnterText(product.Option);
                 driver.FindElement(By.Id(product.OptionTypeId)).SendKeys(Keys.Enter);
+                _logger.Info($": Successfully entered Option {product.Option} for Option Type {product.OptionTypeId}");
 
                 try
                 {
@@ -161,6 +168,7 @@ namespace UnitTestNDBProject.Pages
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
             AddProductLineButton.Clickme(driver);
+            _logger.Info($": ADD LINE button clicked");
             return this;
         }
 
