@@ -136,7 +136,34 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyAddress());
 
         }
+        [Test, Order(6), Category("Smoke"), Ignore("yy"), Description("Enter Customer Card Details and create new customer")]
+        public void A6_VerifyCustomerUpdate()
+        {
+            string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
+            string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
 
+            _EnterNewCustomerPage.ClickEditButton("contactEdit");
+            _EnterNewCustomerPage.EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);
+            List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
+            List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
+
+            _EnterNewCustomerPage.ClickEditSaveButton();
+
+            //  _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
+            //  _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
+
+            //TODO: Make Smarty Street pop-up dynamic
+            //EnterNewCustomerPage_.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
+            //  _EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
+
+            //Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
+            //Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
+            //Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
+            //Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
+            //Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
+            //Assert.True(_EnterNewCustomerPage.VerifyPhoneNumber(phones[0].Item1));
+
+        }
 
         [TearDown]
         public void teardown()
