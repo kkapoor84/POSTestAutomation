@@ -121,8 +121,7 @@ namespace UnitTestNDBProject.Tests
 
             _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
             _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
-
-            //TODO: Make Smarty Street pop-up dynamic--DONE
+            
             _EnterNewCustomerPage.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
             
             Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
@@ -130,11 +129,8 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
-            //TODO--DONE
             Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
-            //TODO--DONE
             Assert.True(_EnterNewCustomerPage.VerifyAddress());
-
         }
         [Test, Order(6), Category("Smoke"), Ignore("yy"), Description("Enter Customer Card Details and create new customer")]
         public void A6_VerifyCustomerUpdate()
@@ -147,6 +143,7 @@ namespace UnitTestNDBProject.Tests
             List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
             List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
 
+<<<<<<< HEAD
             _EnterNewCustomerPage.ClickEditSaveButton();
 
             //  _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
@@ -165,8 +162,13 @@ namespace UnitTestNDBProject.Tests
 
         }
 
+=======
+        /// <summary>
+        /// Tear Down function
+        /// </summary>
+>>>>>>> 6240de23cfea02b7c77b781fa0e0ce166d656485
         [TearDown]
-        public void teardown()
+        public void Teardown()
         {
             var status = TestContext.CurrentContext.Result.Outcome.Status;
             var stacktrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
