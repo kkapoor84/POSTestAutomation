@@ -31,8 +31,8 @@
       {
         "Key": "customer1",
         "Value": {
-          "FirstName": "AutomationPOS_FN",
-          "LastName": "AutomationPOS_LN",
+          "FirstName": "POS_FN",
+          "LastName": "POS_LN",
           "Phones": [
             {
               "PhoneNumber": "85",
@@ -182,5 +182,19 @@
         }
       }
     ]
-  }
+  },
+  {
+   "Feature": "InternalInfoScreen",
+     "Data": [
+	 {
+	    "Key": "InternalInfoSection",
+        "Value": {
+		"NickName": "AutomationQuote",
+		"StoreCode": "S7",
+	     "Sidemark": "JSONSidemark"
+		}
+	 }
+	 ]
+	 
+	 }
 ]

@@ -883,14 +883,14 @@ namespace UnitTestNDBProject.Pages
             }
 
             return IsLastName;
-        }        
+        }
 
         public static NewCustomerData GetCustomerData(ParsedTestData featureData)
         {
             object newCustomerFeatureData = DataAccess.GetKeyJsonData(featureData, "customer1");
             return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
         }
-       
+
         /// <summary>
         /// Function to add customer emails
         /// </summary>

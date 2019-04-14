@@ -20,7 +20,9 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
+        private static ParsedTestData internalInfoParsedData;
         NewCustomerData newCustomerData;
+        InternalInfoData internalInforData;
 
         [OneTimeSetUp]
         public void BeforeClass()
@@ -34,8 +36,11 @@ namespace UnitTestNDBProject.Tests
             newCustomerFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "NewCustomerScreen");
             //Get product line feature data
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
+            //Get data for Internal Infor Section
+            internalInfoParsedData = DataAccess.GetFeatureData("InternalInfoScreen");
 
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
+            internalInforData = QuotePage.GetInternalInfoData(internalInfoParsedData);
         }
 
         [SetUp]
@@ -135,14 +140,34 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyAddress());
         }
 
-        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        public void A6_VerifyProductCreation()
+        //[Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        //public void A6_VerifyProductCreation()
+        //{
+        //    //TODO: Create a new Quote for newly created customer rather than serahcing it. This is just a temporary arrangement
+        //    Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
+        //    _QuotePage.SearchFunction().ClickOnAddNewQuote();
+
+        //    _QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);            
+        //}
+
+        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        public void A7_VerifyProductCreation()
         {
             //TODO: Create a new Quote for newly created customer rather than serahcing it. This is just a temporary arrangement
-            Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
-            _QuotePage.SearchFunction().ClickOnAddNewQuote();
+            //Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
+            _QuotePage.SearchFunction().ClickOnAddNewQuote().SaveQuoteButton();
 
-            _QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);            
+            //Assert.True(_QuotePage.VerifyErrorPopup());
+
+            _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark)
+                .ApplyInternalInfoUpdates().AddMultipleProducts(productLineFeatureParsedData.Data);
+
+           // Assert.True(_QuotePage.VerifyQuoteCreation());
+            Assert.True(_QuotePage.VerifyTotalProducts());
+
+            //_SelectStoreCode(internalInforData.StoreCode).ApplyInternalInfoUpdates();
+
+            //_QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);
         }
 
         /// <summary>
