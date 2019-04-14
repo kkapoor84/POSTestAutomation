@@ -62,8 +62,9 @@ namespace UnitTestNDBProject.Pages
         public IWebElement AddProductLineButton { get; set; }
 
         [FindsBy(How = How.Id, Using = "idBtnOK")]
-        public IWebElement OkButton { get; set; }        
+        public IWebElement OkButton { get; set; }
 
+        //I believe we should keep all search related fucntion in SearchPage instead of QuotePage
         public QuotePage SearchFunction()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
@@ -92,6 +93,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
         public QuotePage EnterWidth(string WidthEntered)
         {
             //Do not remove below Wait. This is essential to ensure that page has loaded
@@ -102,6 +104,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
         public QuotePage EnterHeight(string HeightEntered)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Height, 10000);
@@ -110,6 +113,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
         public QuotePage EnterRoomLocation(string RoomLocation)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(roomlocation, 10000);
@@ -119,6 +123,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
         public QuotePage SelectProduct(string ProductType)
         {
             //Do not remove below Wait. This is essential to ensure that products have loaded as per updated dimensions
@@ -131,6 +136,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
         public void GetProductDetails()
         {
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
@@ -139,7 +145,8 @@ namespace UnitTestNDBProject.Pages
 
             productDetails = AddProductDetails(productLine.ProductDetails);
         }
-        
+       
+        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
         public QuotePage SelectProductOptions(List<ProductDetail> productDetails)
         {
             GetProductDetails();
