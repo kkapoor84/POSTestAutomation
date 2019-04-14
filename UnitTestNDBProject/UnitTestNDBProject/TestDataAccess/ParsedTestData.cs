@@ -39,6 +39,18 @@ namespace UnitTestNDBProject.TestDataAccess
         public List<Address> Addresses { get; set; }
         public List<TaxNumber> TaxNumbers { get; set; }
     }
+   
+      
+    public class UpdateCustomerData
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public List<Phone> Phones { get; set; }
+        public List<Email> Emails { get; set; }
+        public List<Address> Addresses { get; set; }
+        public List<TaxNumber> TaxNumbers { get; set; }
+    }
+    
 
     public class Phone
     {

@@ -8,6 +8,10 @@ using System.Threading;
 using UnitTestNDBProject.TestDataAccess;
 using UnitTestNDBProject.Utils;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
+using SeleniumExtras.PageObjects;
+using PageFactory = SeleniumExtras.PageObjects.PageFactory;
+using FindsByAttribute = SeleniumExtras.PageObjects.FindsByAttribute;
+using How = SeleniumExtras.PageObjects.How;
 
 namespace UnitTestNDBProject.Pages
 {

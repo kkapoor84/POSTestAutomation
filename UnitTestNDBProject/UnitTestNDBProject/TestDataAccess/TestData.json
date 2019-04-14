@@ -53,7 +53,7 @@
           ],
           "Addresses": [
             {
-              "AddressLine1": "1499 Massachusetts Ave NW",
+              "AddressLine1": "1499 Massachusetts Ave NW 123",
               "AddressLine2": "",
               "City": "Washington",
               "State": "DC",
@@ -68,6 +68,55 @@
             {
               "TaxIdNumber": "111111111",
               "TaxState": "DC"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "Feature": "UpdateCustomerScreen",
+    "Data": [
+      {
+        "Key": "customer1",
+        "Value": {
+          "FirstName": "AutomationPOS_FN",
+          "LastName": "AutomationPOS_LN",
+          "Phones": [
+            {
+              "PhoneNumber": "45",
+              "PhoneType": "Home"
+            },
+            {
+              "PhoneNumber": "91",
+              "PhoneType": "Mobile"
+            }
+          ],
+          "Emails": [
+            {
+              "EmailText": "pos"
+            },
+            {
+              "EmailText": "auto"
+            }
+          ],
+          "Addresses": [
+            {
+              "AddressLine1": "30 Lavina Trl",
+              "AddressLine2": "Test",
+              "City": "Oak Ridge",
+              "State": "NJ",
+              "ZipCode": "07438"
+            }
+          ],
+          "TaxNumbers": [
+            {
+              "TaxIdNumber": "987654321",
+              "TaxState": "NJ"
+            },
+            {
+              "TaxIdNumber": "222222222",
+              "TaxState": "NJ"
             }
           ]
         }
