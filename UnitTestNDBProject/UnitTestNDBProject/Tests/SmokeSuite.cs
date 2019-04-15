@@ -65,7 +65,7 @@ namespace UnitTestNDBProject.Tests
             LoginData loginData = LoginPage.GetSAHUserLoginData(loginFeatureParsedData);
 
             _LoginPage.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
-            _HomePage.ClickShopAtHomeTab();            
+            _HomePage.ClickShopAtHomeTab();
 
             Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
@@ -109,7 +109,7 @@ namespace UnitTestNDBProject.Tests
 
             _EnterNewCustomerPage.ClickEditSaveButton();
 
-            Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
+            // Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
             Assert.True(_EnterNewCustomerPage.VerifyFirstName(newCustomerData.FirstName));
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
@@ -120,6 +120,7 @@ namespace UnitTestNDBProject.Tests
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
             string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
 
+
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);
             List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
             List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
@@ -129,7 +130,7 @@ namespace UnitTestNDBProject.Tests
             _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
             _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
 
-            _EnterNewCustomerPage.ClickSaveButton().ClickOnUserAddressAsEnteredButtonOnSmartyStreet().ContinueNewCustomerCreation();
+            _EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
 
             Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
             Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
@@ -137,37 +138,31 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
             Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
             Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
+            Assert.True(_EnterNewCustomerPage.VerifyEmailAddress());
+            Assert.True(_EnterNewCustomerPage.VerifyAddressine2());
             Assert.True(_EnterNewCustomerPage.VerifyAddress());
+            Assert.True(_EnterNewCustomerPage.VerifyTaxidNumberAndState());
         }
 
-        //[Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        //public void A6_VerifyProductCreation()
-        //{
-        //    //TODO: Create a new Quote for newly created customer rather than serahcing it. This is just a temporary arrangement
-        //    Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
-        //    _QuotePage.SearchFunction().ClickOnAddNewQuote();
+      
 
-        //    _QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);            
-        //}
 
-        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        public void A7_VerifyProductCreation()
+
+        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        public void A6_VerifyProductCreation()
         {
-            //TODO: Create a new Quote for newly created customer rather than serahcing it. This is just a temporary arrangement
-            //Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
-            _QuotePage.SearchFunction().ClickOnAddNewQuote().SaveQuoteButton();
+                
+             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
 
-            //Assert.True(_QuotePage.VerifyErrorPopup());
+            Assert.True(_QuotePage.VerifyErrorPopup());
 
             _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark)
                 .ApplyInternalInfoUpdates().AddMultipleProducts(productLineFeatureParsedData.Data);
 
-           // Assert.True(_QuotePage.VerifyQuoteCreation());
+            Assert.True(_QuotePage.VerifyQuoteCreation());
+
             Assert.True(_QuotePage.VerifyTotalProducts());
 
-            //_SelectStoreCode(internalInforData.StoreCode).ApplyInternalInfoUpdates();
-
-            //_QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);
         }
 
         /// <summary>
