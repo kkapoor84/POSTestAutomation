@@ -16,7 +16,7 @@ namespace UnitTestNDBProject.Tests
     [Order(1)]
     public class SmokeSuite : BaseTestClass
     {        
-        private static List<ParsedTestData> fullParsedJsonData;
+       
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
@@ -28,22 +28,16 @@ namespace UnitTestNDBProject.Tests
         [OneTimeSetUp]
         public void BeforeClass()
         {
-            //Get complete json data
-            fullParsedJsonData = DataAccess.GetFullJsonData();
-
             //Get login screen data
-            loginFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "LoginScreen");
+            loginFeatureParsedData = DataAccess.GetFeatureData("LoginScreen");
             //Get data for customer screen
-            newCustomerFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "NewCustomerScreen");
-
+            newCustomerFeatureParsedData = DataAccess.GetFeatureData("NewCustomerScreen");
             //Get data for update customer screen
-            updateCustomerFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "UpdateCustomerScreen");
-
+            updateCustomerFeatureParsedData = DataAccess.GetFeatureData( "UpdateCustomerScreen");
             //Get product line feature data
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
 
-            
-
+            //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
 
 
@@ -71,9 +65,9 @@ namespace UnitTestNDBProject.Tests
             LoginData loginData = LoginPage.GetSAHUserLoginData(loginFeatureParsedData);
 
             _LoginPage.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
-            _HomePage.ClickShopAtHomeTab();            
-
-            Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
+           _HomePage.ClickShopAtHomeTab();            
+        
+           Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
         [Test, Order(3), Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
@@ -92,7 +86,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
 
-        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
+        [Test, Order(4), Category("Smoke"),Ignore(""), Description("Enter Customer Card Details and create new customer from customer suggestion")]
         public void A4_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
