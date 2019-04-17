@@ -149,7 +149,7 @@ namespace UnitTestNDBProject.Pages
         //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
         public QuotePage SelectProductOptions(List<ProductDetail> productDetails)
         {
-            GetProductDetails();
+            //GetProductDetails();
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
 
