@@ -1,25 +1,23 @@
 ﻿using NLog;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnitTestNDBProject.TestDataAccess;
+using SeleniumExtras.PageObjects;
 using UnitTestNDBProject.Utils;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
-using SeleniumExtras.PageObjects;
-using PageFactory = SeleniumExtras.PageObjects.PageFactory;
-using FindsByAttribute = SeleniumExtras.PageObjects.FindsByAttribute;
-using How = SeleniumExtras.PageObjects.How;
+
 
 namespace UnitTestNDBProject.Pages
 {
     public class QuotePage
     {
+
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private static ParsedTestData productLineFeatureParsedData; 
+        private static ParsedTestData productLineFeatureParsedData;
         List<Tuple<string, string>> productDetails;
 
         public QuotePage(IWebDriver driver)
@@ -27,6 +25,21 @@ namespace UnitTestNDBProject.Pages
             this.driver = driver;
             PageFactory.InitElements(driver, this);
         }
+
+        [FindsBy(How = How.XPath, Using = "//a[@id='focus-on-edit']")]
+        public IWebElement InternalInfo { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "//input[@id='text-undefined']")]
+        public IWebElement Sidemark { get; set; }
+
+        [FindsBy(How = How.Id, Using = "text-nickName")]
+        public IWebElement NickName { get; set; }
+
+
+
+        [FindsBy(How = How.Id, Using = "applyQuote")]
+        public IWebElement InternalInfoApply { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
@@ -64,36 +77,162 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "idBtnOK")]
         public IWebElement OkButton { get; set; }
 
-        //I believe we should keep all search related fucntion in SearchPage instead of QuotePage
-        public QuotePage SearchFunction()
+        [FindsBy(How = How.Id, Using = "save-quote")]
+        public IWebElement SaveButton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "scroll-quote-actions")]
+        public IWebElement QuoteActions { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "total-product")]
+        public IWebElement TotalProducts { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "//li[2]//div[3]")]
+        public IWebElement ProductNameOnScreen { get; set; }
+
+        /// <summary>
+        /// Function to parse internal info data.
+        /// </summary>
+        /// <param name="featureData"></param>
+        /// <returns></returns>
+
+        public static InternalInfoData GetInternalInfoData(ParsedTestData featureData)
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
-            Search.Clickme(driver);
-            SearchOrder.Clickme(driver);
-            EnterOrder.EnterText("2013047");
-            Enter.Clickme(driver);
+            object internalInfoFeatureData = DataAccess.GetKeyJsonData(featureData, "InternalInfoSection");
+            return JsonDataParser<InternalInfoData>.ParseData(internalInfoFeatureData);
+        }
+
+
+        /// <summary>
+        /// Function to click save quote button.
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage SaveQuoteButton()
+        {
+            Thread.Sleep(4000);
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, SaveButton, 120);
+            SaveButton.Clickme(driver);
+            _logger.Info($": Successfully clicked save quote button.");
             return this;
         }
 
+        /// <summary>
+        /// Warning popup Ok button click.
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage OkOnErrorMessage()
+        {
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, OkButton, 60);
+            OkButton.Clickme(driver);
+            return this;
+        }
+
+
+        /// <summary>
+        /// Verifying Error popup is displayed.
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyErrorPopup()
+        {
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, OkButton, 60);
+            bool errorPopup = false;
+            if (OkButton.Displayed)
+            {
+                errorPopup = true;
+                _logger.Info($" Error Popup Is Displayed.");
+            }
+
+            return errorPopup;
+
+        }
+
+        /// <summary>
+        /// Function to provide nickname
+        /// </summary>
+        /// <param name="nickname"></param>
+        /// <returns></returns>
+
+
+        public QuotePage UpdateNickname(String nickname)
+        {
+            Thread.Sleep(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(NickName, 10000);
+            NickName.EnterText(nickname);
+            _logger.Info($": Successfully added quote nickname as {nickname}");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to edit  inter info section.
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage UpdateInternalInfo()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, 10000);
+            InternalInfo.Clickme(driver);
+            _logger.Info($": Start Internal Information section update.");
+            return this;
+        }
+
+
+        /// <summary>
+        /// Function to provide updated sidemark.
+        /// </summary>
+        /// <param name="sidemark"></param>
+        /// <returns></returns>
+        public QuotePage UpdateSidemark(String sidemark)
+        {
+            Thread.Sleep(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Sidemark, 10000);
+            Sidemark.EnterText(sidemark);
+            _logger.Info($": Successfully updated sidemark as {sidemark}");
+            return this;
+        }
+
+        /// <summary>
+        ///  Function to apply inter info section changes.
+        /// </summary>
+        /// <returns></returns>
+
+        public QuotePage ApplyInternalInfoUpdates()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfoApply, 10000);
+            InternalInfoApply.Clickme(driver);
+            _logger.Info($": Apply Internal Info changes");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to click Add New Quote Button.
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickOnAddNewQuote()
         {
+            Thread.Sleep(4000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddNewQuote, 10000);
             AddNewQuote.Clickme(driver);
             _logger.Info($": NEW QUOTE button clicked");
             return this;
         }
 
+        /// <summary>
+        /// Function to Click on Add Product Button.
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickOnAddProduct()
         {
             //Do not remove below Wait. This is essential to ensure that spinner is gone on Quote/Order page and ADD PRODUCTS button is clickable
-            Thread.Sleep(5000);
+            Thread.Sleep(10000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddProductLine, 10000);
             AddProductLine.Clickme(driver);
             _logger.Info($": ADD PRODUCTS button clicked");
             return this;
         }
 
-        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
+        /// <summary>
+        /// Function to enter product width
+        /// </summary>
+        /// <param name="WidthEntered"></param>
+        /// <returns></returns>
         public QuotePage EnterWidth(string WidthEntered)
         {
             //Do not remove below Wait. This is essential to ensure that page has loaded
@@ -104,7 +243,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
+        /// <summary>
+        /// Function to enter product height.
+        /// </summary>
+        /// <param name="HeightEntered"></param>
+        /// <returns></returns>
         public QuotePage EnterHeight(string HeightEntered)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Height, 10000);
@@ -113,17 +256,24 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
+        /// <summary>
+        /// Function to enter product room location.
+        /// </summary>
+        /// <param name="RoomLocation"></param>
+        /// <returns></returns>
         public QuotePage EnterRoomLocation(string RoomLocation)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(roomlocation, 10000);
             roomlocation.EnterText(RoomLocation);
-            roomlocation.EnterText(Keys.Enter);
             _logger.Info($": Successfully entered room location {RoomLocation}");
             return this;
         }
 
-        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
+        /// <summary>
+        /// Function to select product to be configured
+        /// </summary>
+        /// <param name="ProductType"></param>
+        /// <returns></returns>
         public QuotePage SelectProduct(string ProductType)
         {
             //Do not remove below Wait. This is essential to ensure that products have loaded as per updated dimensions
@@ -136,7 +286,9 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
+        /// <summary>
+        /// Function to read options for configuring product.
+        /// </summary>
         public void GetProductDetails()
         {
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
@@ -145,8 +297,12 @@ namespace UnitTestNDBProject.Pages
 
             productDetails = AddProductDetails(productLine.ProductDetails);
         }
-       
-        //I believe we should keep all product add related fucntion in ProductPage instead of QuotePage
+
+        /// <summary>
+        /// Function to select options read from getproductdetails function for configuring product.
+        /// </summary>
+        /// <param name="productDetails"></param>
+        /// <returns></returns>
         public QuotePage SelectProductOptions(List<ProductDetail> productDetails)
         {
             GetProductDetails();
@@ -174,6 +330,10 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to click on add product line button on product page.
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickAddProductButton()
         {
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
@@ -183,6 +343,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to read option id and option from json
+        /// </summary>
+        /// <param name="ProductDetails"></param>
+        /// <returns></returns>
         public List<Tuple<string, string>> AddProductDetails(List<ProductDetail> ProductDetails)
         {
             List<Tuple<string, string>> addedProducts = new List<Tuple<string, string>>();
@@ -197,17 +362,76 @@ namespace UnitTestNDBProject.Pages
             }
 
             return addedProducts;
-        }    
-        
+        }
+
+        /// <summary>
+        /// Function to add multiple product lines.
+        /// </summary>
+        /// <param name="productLineData"></param>
         public void AddMultipleProducts(List<DataDictionary> productLineData)
         {
             foreach (DataDictionary data in productLineData)
             {
                 ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
-
+                Thread.Sleep(4000);
                 ClickOnAddProduct().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
                     .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton();
             }
+        }
+
+        /// <summary>
+        /// Function to verify quote creation.
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyQuoteCreation()
+        {
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, QuoteActions, 60);
+            bool quoteActions = false;
+            if (QuoteActions.Displayed)
+            {
+                quoteActions = true;
+                _logger.Info($" Verifying Quote Creation.");
+            }
+
+            return quoteActions;
+
+        }
+
+        /// <summary>
+        /// Function to count product lines added from JSON.
+        /// 
+        /// </summary>
+        /// <param name="productLineData"></param>
+        /// <returns></returns>
+        public string countproducts(List<DataDictionary> productLineData)
+        {
+            int count = 0;
+            foreach (DataDictionary data in productLineData)
+            {
+                count++;
+            }
+            String totalCount = "TOTAL PRODUCTS" + count.ToString();
+            return totalCount;
+        }
+
+        /// <summary>
+        /// Function to verify all products are added.
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyTotalProducts()
+        {
+            Thread.Sleep(5000);
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
+            String totalProductsOnScreen = TotalProducts.GetText(driver);
+            String totalproductsEntered = countproducts(productLineFeatureParsedData.Data);
+            bool productQuantity = false;
+            if (totalProductsOnScreen.Contains(totalproductsEntered))
+            {
+                productQuantity = true;
+                _logger.Info($"Verifying quantity Of Products Entered was {totalproductsEntered} and product quantity on screen is {totalProductsOnScreen}");
+            }
+            return productQuantity;
+
         }
     }
 }

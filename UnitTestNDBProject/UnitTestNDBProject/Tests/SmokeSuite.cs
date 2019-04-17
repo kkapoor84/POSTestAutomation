@@ -21,8 +21,9 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
         private static ParsedTestData updateCustomerFeatureParsedData;
+        private static ParsedTestData internalInfoParsedData;
         NewCustomerData newCustomerData;
-        
+        InternalInfoData internalInforData;
 
 
         [OneTimeSetUp]
@@ -36,10 +37,12 @@ namespace UnitTestNDBProject.Tests
             updateCustomerFeatureParsedData = DataAccess.GetFeatureData( "UpdateCustomerScreen");
             //Get product line feature data
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
+            //Get data for Internal Infor Section
+            internalInfoParsedData = DataAccess.GetFeatureData("InternalInfoScreen");
 
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
-
+            internalInforData = QuotePage.GetInternalInfoData(internalInfoParsedData);
 
         }
 
@@ -70,7 +73,7 @@ namespace UnitTestNDBProject.Tests
            Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
-        [Test, Order(3), Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
+        [Test, Order(3), Category("Smoke"),  Description("Validate all the Home Page tabs are clickable")]
         public void A3_VerifyHomePageTabs()
         {
             _HomePage.ClickDashBoardTab();
@@ -180,14 +183,19 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"),Ignore(""), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A7_VerifyProductCreation()
         {
-            //TODO: Create a new Quote for newly created customer rather than serahcing it. This is just a temporary arrangement
-            Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
-            _QuotePage.SearchFunction().ClickOnAddNewQuote();
+            _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
 
-            _QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);            
+            Assert.True(_QuotePage.VerifyErrorPopup());
+
+            _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark)
+                .ApplyInternalInfoUpdates().AddMultipleProducts(productLineFeatureParsedData.Data);
+
+            Assert.True(_QuotePage.VerifyQuoteCreation());
+
+            Assert.True(_QuotePage.VerifyTotalProducts());
         }
 
         /// <summary>
