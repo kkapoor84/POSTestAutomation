@@ -20,7 +20,6 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
-        private static ParsedTestData internalInfoParsedData;
         private static ParsedTestData updateCustomerFeatureParsedData;
         private static ParsedTestData internalInfoParsedData;
         NewCustomerData newCustomerData;
@@ -38,9 +37,6 @@ namespace UnitTestNDBProject.Tests
             updateCustomerFeatureParsedData = DataAccess.GetFeatureData("UpdateCustomerScreen");
             //Get product line feature data
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
-            //Get data for Internal Infor Section
-            internalInfoParsedData = DataAccess.GetFeatureData("InternalInfoScreen");
-
             //Get data for Internal Infor Section
             internalInfoParsedData = DataAccess.GetFeatureData("InternalInfoScreen");
 
