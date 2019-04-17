@@ -184,9 +184,11 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(7), Category("Smoke"), Description("Verify Product line addition and Creation of new quote")]
         public void A7_VerifyProductCreation()
         {
+            Assert.True(_QuotePage.VerifyEnterNewQuoteButtonIsEnabled());
+
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
 
             Assert.True(_QuotePage.VerifyErrorPopup());

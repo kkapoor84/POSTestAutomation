@@ -433,5 +433,23 @@ namespace UnitTestNDBProject.Pages
             return productQuantity;
 
         }
+
+        /// <summary>
+        /// Function to verify Enter New Quote Button is enabled.
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyEnterNewQuoteButtonIsEnabled()
+        {
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, AddNewQuote, 60);
+            bool addNewQuote = false;
+            if (AddNewQuote.Displayed)
+            {
+                addNewQuote = true;
+                _logger.Info($" Add New Quote button is enabled.");
+            }
+
+            return addNewQuote;
+
+        }
     }
 }
