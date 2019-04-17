@@ -563,9 +563,16 @@ namespace UnitTestNDBProject.Pages
                 string phoneType = phones[counter].PhoneType;
                 EnterPhone(phone, counter).SelectPhoneType(phoneType, counter);
 
-                if (counter < phones.Count - 1)
+                try
                 {
-                    AddPhone();
+                    if ((counter < phones.Count - 1) && saveButton.Displayed)
+                    {
+                        AddPhone();
+                    }
+                }
+                catch
+                {
+                    _logger.Info("User is updating the customer details");
                 }
 
                 newPhones.Add(new Tuple<string, string>(phone, phoneType));
@@ -1068,9 +1075,16 @@ namespace UnitTestNDBProject.Pages
                 string email = CommonFunctions.RandomizeEmail(emails[counter].EmailText);
                 EnterEmailAddress(email, counter);
 
-                if (counter < emails.Count - 1)
+                try
                 {
-                    AddEmailAddress();
+                    if ((counter < emails.Count - 1) && saveButton.Displayed)
+                    {
+                        AddEmailAddress();
+                    }
+                }
+                catch
+                {
+                    _logger.Info("User is updating the customer details");
                 }
 
                 newEmails.Add(email);
@@ -1098,10 +1112,18 @@ namespace UnitTestNDBProject.Pages
 
                 EnterAddressLine1(custAddLine1).EnterAddressLine2(custAddLine2).EnterCity(custCity).SelectState(custState).EnterZip(custZipCode);
 
-                if (counter < addresses.Count - 1)
+                try
                 {
-                    ClickOnAddAddressPlusButton();
+                    if ((counter < addresses.Count - 1) && saveButton.Displayed)
+                    {
+                        ClickOnAddAddressPlusButton();
+                    }
                 }
+                catch
+                {
+                    _logger.Info("User is updating the customer details");
+                }
+
                 newAddresses.Add(new Tuple<string, string, string, string, string>(custAddLine1, custAddLine2, custCity, custState, custZipCode));
             }
             return newAddresses;
@@ -1131,9 +1153,16 @@ namespace UnitTestNDBProject.Pages
 
                 EnterTaxIDNumber(taxId, counter + 1).SelectTaxState(taxState, counter + 1).ClickDoesntExpireCheckBox(counter + 1);
 
-                if (counter < taxNumbers.Count - 1)
+                try
                 {
-                    AddTax();
+                    if ((counter < taxNumbers.Count - 1) && saveButton.Displayed)
+                    {
+                        AddTax();
+                    }
+                }
+                catch
+                {
+                    _logger.Info("User is updating the customer details");
                 }
 
                 newTax.Add(new Tuple<string, string>(taxId, taxState));
