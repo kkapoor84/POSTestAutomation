@@ -21,7 +21,9 @@ namespace UnitTestNDBProject.Pages
     {
         public IWebDriver driver;
         public List<Tuple<string, string>> newPhones;
+        public List<Tuple<string, string>> newTax;
         public List<Tuple<string, string, string,string,string>> newAddresses;
+        public List<string> newEmails;
 
         public EnterNewCustomerPage(IWebDriver driver)
         {
@@ -138,6 +140,13 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "(//div[@class='row phone-data']//span[@class='form-value'])[1]")]
         public IWebElement PhoneNumberText { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "((//div[@class='row phone-data']//span[@class='form-value'])[5]")]
+        public IWebElement ViewOnlyTaxIdNumber { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "(//div[@class='row phone-data']//span[@class='form-value break-all'])[1]")]
+        public IWebElement EmailAddressVIewOnly { get; set; }
+
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Add Address')]")]
         public IWebElement AddAddress { get; set; }
 
@@ -216,17 +225,17 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
         /// <summary>
-        /// Enter Phone Number
+        /// Enter Phone Number 
         /// </summary>
         /// <param name="phone"></param>
         /// <param name="i"></param>
         /// <returns></returns>
         public EnterNewCustomerPage EnterPhone(string phone, int i)
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             string strMyXPath = "phoneLists[" + i + "].Phone";
             driver.FindElement(By.Id(strMyXPath)).EnterText(phone);
-            _logger.Info($": Successfully Entered Phone Number {phone}");
+            _logger.Info($": Successfully Entered Phone Number {phone}");            
             return this;
 
         }
@@ -258,13 +267,28 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Enter email address and uncheck the marketing email opt in checkbox if (checked) only
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public EnterNewCustomerPage EnterEmailAddress(string email, int i)
         {
              String strEmailAddress = "emailList[" + i + "].Email";
             driver.FindElement(By.Id(strEmailAddress)).Clear();
             Thread.Sleep(2000);
             driver.FindElement(By.Id(strEmailAddress)).EnterText(email);
-            _logger.Info($": Successfully Entered Email {email}");            
+            _logger.Info($": Successfully Entered Email {email}");
+
+            string strMarketMyXpath = "emailList[" + i + "].emailOptIn";
+            string strValueAttributeText = driver.FindElement(By.Name(strMarketMyXpath)).GetAttribute("value");
+            if (strValueAttributeText.Contains("true"))
+            {
+                driver.FindElement(By.Name(strMarketMyXpath)).Click();
+                _logger.Info($": Successfully Unchecked Marketing Email Opt In checkbox");
+            }
+
             return this;
         }
 
@@ -276,7 +300,7 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
-        /// Click on Save button
+        /// Click on Save button and handle the smarty street if it populates
         /// </summary>
         /// <returns></returns>
         public EnterNewCustomerPage ClickSaveButton()
@@ -284,6 +308,30 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButton, 10000);
             saveButton.Clickme(driver);
             _logger.Info($":Clicked on SAVE button of customer page");
+            try
+            {
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnUseEnteredAddress")));
+                UseAddressAsEntered.Clickme(driver);
+                _logger.Info($": Continue As Use address as entered on smarty street - If available");
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                    customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnCorrectAddress")));
+                    AddressIsCorrect.Clickme(driver);
+                    _logger.Info($": Continue As This address is correct on smarty street - If available");
+                }
+                catch (Exception e1)
+                {
+                    Console.WriteLine(e1.StackTrace);
+                }
+
+            }
+
+
             return this;
         }
 
@@ -342,15 +390,38 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
-        /// Functions to select Save button for existing customer
+        /// Functions to click Save button and handle the smarty street if it populates
         /// </summary>
         /// <returns></returns>
         public EnterNewCustomerPage ClickEditSaveButton()
         {
+            Thread.Sleep(2000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButtonEdit, 10000);
             saveButtonEdit.Clickme(driver);
-            Thread.Sleep(2000);
             _logger.Info($": Successfully clicked on SAVE button for existing customer");
+            try
+            {
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnUseEnteredAddress")));
+                 UseAddressAsEntered.Clickme(driver);
+                _logger.Info($": Continue As Use address as entered on smarty street - If available");
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                    customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnCorrectAddress")));
+                    AddressIsCorrect.Clickme(driver);
+                    _logger.Info($": Continue As This address is correct on smarty street - If available");
+                }
+                catch (Exception e1)
+                {
+                    Console.WriteLine(e1.StackTrace);
+                }
+
+            }
+
             return this;
 
         }
@@ -435,9 +506,13 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyFirstName(String firstNameOnFile)
         {
-            Thread.Sleep(3000);
-            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+
+            js.ExecuteScript("arguments[0].scrollIntoView();", FirstNameText);
+
+           // Thread.Sleep(3000);
+           // WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+           // customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
             String fName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
             Thread.Sleep(1000);
@@ -507,8 +582,9 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyPhoneNumberAndPhoneType ()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(PhoneNumberText, 10000);
-
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("(//div[@class='row phone-data']//span[@class='form-value'])[1]")));
+            
             bool PhoneNumberAndTypeValue = false;
 
             for (int counter = 0; counter < newPhones.Count; counter++)
@@ -544,15 +620,86 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        /// <summary>
-        /// Function to verify that customer is created with valid address
-        /// </summary>
-        /// <param name="ExpAddressline1"></param>
-        /// <param name="ExpCity"></param>
-        /// <param name="ExpState"></param>
-        /// <param name="ExpZipcode"></param>
-        /// <returns></returns>
-        public bool VerifCustomerIsCreatedWithValidBillingAddress(string expAddressline1, string expCity, string expState, string expZipcode)
+        public bool VerifyTaxidNumberAndState()
+        {
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("(//div[@class='row phone-data']//span[@class='form-value'])[5]")));
+
+
+            bool taxIdNumberAndStateValue = false;
+
+            for (int counter = 0; counter < newTax.Count; counter++)
+            {
+                var taxNumberCounter = counter + 5;
+
+                string taxNumberXpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + taxNumberCounter + "]";
+                string taxNumber = driver.FindElement(By.XPath(taxNumberXpath)).GetText(driver);
+             
+                string expectedTaxIdNumber = newTax[counter].Item1;
+
+                if (expectedTaxIdNumber.Contains(taxNumber))
+                {
+                    taxIdNumberAndStateValue = true;
+                    _logger.Info($" TaxidNumber Is Correct");
+                }
+
+                var taxStateCounter = taxNumberCounter + 1;
+
+                string taxStateXpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + taxStateCounter + "]";
+                string actaulTaxState = driver.FindElement(By.XPath(taxStateXpath)).GetText(driver);
+                string expectedTaxState = newTax[counter].Item2;
+
+                if (expectedTaxState.Contains(actaulTaxState))
+                {
+                    taxIdNumberAndStateValue = true;
+                    _logger.Info($"Tax state Is Correct");
+                }
+
+            }
+
+            return taxIdNumberAndStateValue;
+
+        }
+        
+
+        public bool VerifyEmailAddress()
+        {
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("(//div[@class='row phone-data']//span[@class='form-value break-all'])[1]")));
+
+            bool emailAddressValue = false;
+
+            for (int counter = 0; counter < newEmails.Count; counter++)
+            {
+                var emailCounter = counter + 1;
+
+                string emailXpath = "(//div[@class='row phone-data']//span[@class='form-value break-all'])[" + emailCounter + "]";
+                string actualEmailText = driver.FindElement(By.XPath(emailXpath)).GetText(driver);
+               
+
+                string ExpectedEmail = newEmails[counter];
+                if (ExpectedEmail.Contains(actualEmailText))
+                {
+                    emailAddressValue = true;
+                    _logger.Info($" Email Is Correct");
+                }
+
+            }
+            return emailAddressValue;
+
+
+        }
+
+
+            /// <summary>
+            /// Function to verify that customer is created with valid address
+            /// </summary>
+            /// <param name="ExpAddressline1"></param>
+            /// <param name="ExpCity"></param>
+            /// <param name="ExpState"></param>
+            /// <param name="ExpZipcode"></param>
+            /// <returns></returns>
+            public bool VerifCustomerIsCreatedWithValidBillingAddress(string expAddressline1, string expCity, string expState, string expZipcode)
         {
             bool isAddressCorrect = false;
             driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 2000);
@@ -574,7 +721,36 @@ namespace UnitTestNDBProject.Pages
         /// Verifies the address
         /// </summary>
         /// <returns></returns>
-        public bool VerifyAddress()
+        public bool VerifyAddressine2()
+        {
+            bool isaddressline2 = false;
+            for (int counter1 = 0; counter1 < newAddresses.Count; counter1++)
+            {
+                if (!newAddresses[counter1].Item2.Equals(""))
+                {
+                    for (int counter = 0; counter < newAddresses.Count; counter++)
+                    {
+                        string expectedAddressLine2 = newAddresses[counter].Item2;
+                        string actualAddressLine2 = viewOnlyAddressLine2.GetText(driver);
+
+                        if (expectedAddressLine2.Contains(actualAddressLine2))
+                        {
+                            isaddressline2 = true;
+                        }
+                    }
+                    return isaddressline2;
+                }
+
+                else
+                {
+                    _logger.Info("addressline2 is not present");
+                    isaddressline2 = true;
+                }
+            }
+            return isaddressline2;
+        }
+
+            public bool VerifyAddress()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 10000);
 
@@ -582,10 +758,11 @@ namespace UnitTestNDBProject.Pages
 
             for (int counter = 0; counter < newAddresses.Count; counter++)
             {
+              
                 string expectedAddressLine1 = newAddresses[counter].Item1;
                 string actualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
-                string expectedAddressLine2 = newAddresses[counter].Item2;
-                string actualAddressLine2 = viewOnlyAddressLine2.GetText(driver);
+               // string expectedAddressLine2 = newAddresses[counter].Item2;
+                //string actualAddressLine2 = viewOnlyAddressLine2.GetText(driver);
                 string expectedCity = newAddresses[counter].Item3;
                 string actualCity = viewOnlyCity.GetText(driver);
                 string expectedState = newAddresses[counter].Item4;
@@ -595,7 +772,7 @@ namespace UnitTestNDBProject.Pages
 
                 bool billingaddress = driver.FindElement(By.XPath("//span[contains(text(),'Billing Address')]")).Displayed;
 
-                if (expectedAddressLine1.Contains(actualAddressLine1) && expectedAddressLine2.Contains(actualAddressLine2) && expectedCity.Contains(actualCity) && expectedState.Contains(actualState.Substring(0, 1)) && expectedZip.Contains(actualZip) && billingaddress)
+                if (expectedAddressLine1.Contains(actualAddressLine1)  &&  expectedCity.Contains(actualCity) && expectedState.Contains(actualState.Substring(0, 1)) && expectedZip.Contains(actualZip) && billingaddress)
                 {
                     isAddressCorrect = true;
                 }
@@ -747,44 +924,14 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        /// <summary>
-        /// Function to click on corrected address button on smarty street
-        /// </summary>
-        /// <returns></returns>
-        public EnterNewCustomerPage ClickOnUserAddressAsEnteredButtonOnSmartyStreet()
-        {
-            try
-            {
-                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnUseEnteredAddress")));
-                UseAddressAsEntered.Clickme(driver);
-                _logger.Info($": Continue As Use address as entered on smarty street - If available");
-            }
-            catch (Exception e)
-            {
-                try
-                {
-                    WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                    customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnCorrectAddress")));
-                    AddressIsCorrect.Clickme(driver);
-                    _logger.Info($": Continue As This address is correct on smarty street - If available");
-                }
-                catch (Exception e1)
-                {
-                    Console.WriteLine(e1.StackTrace);
-                }
-               
-            }
-
-            return this;
-        }
-
+        
         /// <summary>
         /// Function to Clicking on tax exemption checkbox
         /// </summary>
         /// <returns></returns>
         public EnterNewCustomerPage ClickTaxExemptionCheckBox()
         {
+
             TaxCheckBox.Clickme(driver);
             _logger.Info($": Successfully Selected Tax Exemption checkbox");
             Thread.Sleep(1000);
@@ -826,10 +973,20 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage ClickDoesntExpireCheckBox(int i)
         {
-            String doesntexpirecheckbox = "//input[@id='doesNotExpire" + i + "']";
+            string doesntexpirecheckbox = "//input[@id='doesNotExpire" + i + "']";
+            IWebElement doesntExpireCheckBoxElement = driver.FindElement(By.XPath(doesntexpirecheckbox));
+            
+            if (!doesntExpireCheckBoxElement.Selected)
+            {
+                doesntExpireCheckBoxElement.Clickme(driver);
+                _logger.Info($": Successfully clicked Doesnt Expire CheckBox");
+            }
+            else
+            {
+                _logger.Info("TaxExemtion Checkbox is already selected in customer edit mode");
+            }
 
-            driver.FindElement(By.XPath(doesntexpirecheckbox)).Clickme(driver);
-            _logger.Info($": Successfully clicked Doesnt Expire CheckBox");
+            
             return this;
         }
 
@@ -890,7 +1047,13 @@ namespace UnitTestNDBProject.Pages
             object newCustomerFeatureData = DataAccess.GetKeyJsonData(featureData, "customer1");
             return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
         }
-       
+
+        public static UpdateCustomerData GetUpdateCustomerData(ParsedTestData featureData)
+        {
+            object updateCustomerFeatureData = DataAccess.GetKeyJsonData(featureData, "customer1");
+            return JsonDataParser<UpdateCustomerData>.ParseData(updateCustomerFeatureData);
+        }
+
         /// <summary>
         /// Function to add customer emails
         /// </summary>
@@ -898,7 +1061,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public List<string> AddCustomerEmails(List<Email> emails)
         {
-            List<string> newEmails = new List<string>();
+             newEmails = new List<string>();
 
             for (int counter = 0; counter < emails.Count; counter++)
             {
@@ -927,9 +1090,9 @@ namespace UnitTestNDBProject.Pages
             //Input addresses
             for (int counter = 0; counter < addresses.Count; counter++)
             {
-                string custAddLine1 = CommonFunctions.AppendInRangeRandomString(addresses[counter].AddressLine1);
-                string custAddLine2 = CommonFunctions.AppendInRangeRandomString(addresses[counter].AddressLine2);
-                string custCity = CommonFunctions.AppendInRangeRandomString(addresses[counter].City);
+                string custAddLine1 = addresses[counter].AddressLine1;
+                string custAddLine2 = addresses[counter].AddressLine2;
+                string custCity = addresses[counter].City;
                 string custState = addresses[counter].State;
                 string custZipCode = addresses[counter].ZipCode;
 
@@ -948,10 +1111,19 @@ namespace UnitTestNDBProject.Pages
         /// Function to add tax numbers
         /// </summary>
         /// <param name="taxNumbers"></param>
-        public void AddCustomerTaxNumbers(List<TaxNumber> taxNumbers)
+        public List<Tuple<string,string>> AddCustomerTaxNumbers(List<TaxNumber> taxNumbers)
         {
-            ClickTaxExemptionCheckBox();
+            newTax = new List<Tuple<string, string>>();
+            if (!TaxCheckBox.Selected)
+            {
+                ClickTaxExemptionCheckBox();
+            }
+            else
+            {
+                _logger.Info("TaxExemtion Checkbox is already selected in customer edit mode");
+            }
 
+            //Input Taxid and Tax state
             for (int counter = 0; counter < taxNumbers.Count; counter++)
             {
                 string taxId = CommonFunctions.AppendMaxRangeRandomString(taxNumbers[counter].TaxIdNumber);
@@ -963,7 +1135,10 @@ namespace UnitTestNDBProject.Pages
                 {
                     AddTax();
                 }
+
+                 newTax.Add(new Tuple<string, string>(taxId, taxState));
             }
+            return newTax;
         }
     }
 }

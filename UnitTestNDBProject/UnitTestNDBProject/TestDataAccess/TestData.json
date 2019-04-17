@@ -53,7 +53,7 @@
           ],
           "Addresses": [
             {
-              "AddressLine1": "1499 Massachusetts Ave NW",
+              "AddressLine1": "1499 Massachusetts Ave NW 123",
               "AddressLine2": "",
               "City": "Washington",
               "State": "DC",
@@ -75,16 +75,65 @@
     ]
   },
   {
+    "Feature": "UpdateCustomerScreen",
+    "Data": [
+      {
+        "Key": "customer1",
+        "Value": {
+          "FirstName": "AutomationPOS_FN",
+          "LastName": "AutomationPOS_LN",
+          "Phones": [
+            {
+              "PhoneNumber": "45",
+              "PhoneType": "Home"
+            },
+            {
+              "PhoneNumber": "91",
+              "PhoneType": "Mobile"
+            }
+          ],
+          "Emails": [
+            {
+              "EmailText": "pos"
+            },
+            {
+              "EmailText": "auto"
+            }
+          ],
+          "Addresses": [
+            {
+              "AddressLine1": "30 Lavina Trl",
+              "AddressLine2": "Test",
+              "City": "Oak Ridge",
+              "State": "NJ",
+              "ZipCode": "07438"
+            }
+          ],
+          "TaxNumbers": [
+            {
+              "TaxIdNumber": "987654321",
+              "TaxState": "NJ"
+            },
+            {
+              "TaxIdNumber": "222222222",
+              "TaxState": "NJ"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
     "Feature": "ProductLineScreen",
     "Data": [
       {
         "Key": "Product1",
         "Value": {
           "Width": "40",
-          "Height": "40",
-          "NDBRoomLocation": "Room",
+          "Height": "50",
+          "NDBRoomLocation": "Main Room",
           "Quantity": 1,
-          "ProductType": "Wood Blinds(NW), Faux Wood Blinds",
+          "ProductType": "Faux Wood Blinds",
           "ProductDetails": [
             {
               "OptionTypeId": "Mounting",
@@ -95,19 +144,19 @@
               "Option": "Cloud"
             },
             {
-              "OptionTypeId": "Number On Headrail",
+              "OptionTypeId": "NumberOnHeadrail",
               "Option": "Standard"
             },
             {
-              "OptionTypeId": "Lift System",
+              "OptionTypeId": "LiftSystem",
               "Option": "Cordlock"
             },
             {
-              "OptionTypeId": "Tilt Control",
+              "OptionTypeId": "TiltControl",
               "Option": "Cord Tilt"
             },
             {
-              "OptionTypeId": "Control Position",
+              "OptionTypeId": "ControlLocation",
               "Option": "Tilt Left/Lift Right"
             },
             {
@@ -120,26 +169,26 @@
       {
         "Key": "Product2",
         "Value": {
-          "Width": "40",
-          "Height": "40",
-          "NDBRoomLocation": "Room",
+          "Width": "50",
+          "Height": "60",
+          "NDBRoomLocation": "Bedroom",
           "Quantity": 1,
-          "ProductType": "Aluminium Blinds(MB), Deluxe Aluminium Blinds",
+          "ProductType": "Deluxe Aluminum Blinds",
           "ProductDetails": [
             {
               "OptionTypeId": "Mounting",
-              "Option": "Inside Mount"
+              "Option": "Outside Mount"
             },
             {
               "OptionTypeId": "Color",
               "Option": "Allure"
             },
             {
-              "OptionTypeId": "Lift System",
+              "OptionTypeId": "LiftSystem",
               "Option": "Cordlock"
             },
             {
-              "OptionTypeId": "Control Position",
+              "OptionTypeId": "ControlLocation",
               "Option": "Tilt Left/Lift Right"
             }
           ]
@@ -148,14 +197,14 @@
       {
         "Key": "Product3",
         "Value": {
-          "Width": "40",
-          "Height": "40",
-          "NDBRoomLocation": "Room",
+          "Width": "60",
+          "Height": "70",
+          "NDBRoomLocation": "Lobby",
           "Quantity": 1,
-          "ProductType": "Honeycomb Shades (CF), Room Darkening Honeycomb Shades",
+          "ProductType": "Room Darkening Honeycomb Shades",
           "ProductDetails": [
             {
-              "OptionTypeId": "Cell Size",
+              "OptionTypeId": "CellSize",
               "Option": "3/4\" Single Cell"
             },
             {
@@ -167,15 +216,15 @@
               "Option": "Adobe"
             },
             {
-              "OptionTypeId": "Number On Headrail",
+              "OptionTypeId": "NumberOnHeadrail",
               "Option": "Standard"
             },
             {
-              "OptionTypeId": "Lift System",
+              "OptionTypeId": "LiftSystem",
               "Option": "Premium Cordless Top Down/Bottom Up"
             },
             {
-              "OptionTypeId": "Swivel Brackets",
+              "OptionTypeId": "SwivelBrackets",
               "Option": "No"
             }
           ]

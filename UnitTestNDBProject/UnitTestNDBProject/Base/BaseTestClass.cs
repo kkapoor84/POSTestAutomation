@@ -73,6 +73,7 @@ namespace UnitTestNDBProject.Base
         public ScreenshotUtil _ScreenshotUtil { get; set; }
         public LoginPage _LoginPage { get; set; }        
         public EnterNewCustomerPage _EnterNewCustomerPage { get; set; }
+        public QuotePage _QuotePage { get; set; }
 
         /// <summary>
         /// This method would be called before execution of each class
@@ -93,17 +94,16 @@ namespace UnitTestNDBProject.Base
                 driver = new FirefoxDriver();
             }
 
+            _ScreenshotUtil = new ScreenshotUtil(driver);
             _LoginPage = new LoginPage(driver);
             _BasePageClass = new BasePageClass(driver);
-            _HomePage = new HomePage(driver);
-            _ScreenshotUtil = new ScreenshotUtil(driver);
-           
-
+            _HomePage = new HomePage(driver);            
             _EnterNewCustomerPage = new EnterNewCustomerPage(driver);
+            _QuotePage = new QuotePage(driver);
+
             _BasePageClass.OpenURL();
 
             _logger.Info($" :Successfully executed the BeforeClassInitialization() method for {this.GetType().Name}");
-
         }
 
         /// <summary>
