@@ -20,9 +20,10 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
+        private static ParsedTestData internalInfoParsedData;
         private static ParsedTestData updateCustomerFeatureParsedData;
         NewCustomerData newCustomerData;
-        
+        InternalInfoData internalInforData;
 
 
         [OneTimeSetUp]
@@ -33,14 +34,16 @@ namespace UnitTestNDBProject.Tests
             //Get data for customer screen
             newCustomerFeatureParsedData = DataAccess.GetFeatureData("NewCustomerScreen");
             //Get data for update customer screen
-            updateCustomerFeatureParsedData = DataAccess.GetFeatureData( "UpdateCustomerScreen");
+            updateCustomerFeatureParsedData = DataAccess.GetFeatureData("UpdateCustomerScreen");
             //Get product line feature data
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
 
+            //Get data for Internal Infor Section
+            internalInfoParsedData = DataAccess.GetFeatureData("InternalInfoScreen");
+
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
-
-
+            internalInforData = QuotePage.GetInternalInfoData(internalInfoParsedData);
         }
 
         [SetUp]
@@ -49,7 +52,7 @@ namespace UnitTestNDBProject.Tests
             GlobalSetup.test = GlobalSetup.extent.CreateTest(TestContext.CurrentContext.Test.Name);
         }
 
-        [Test, Order(1), Category("Smoke"),Description("Validate that error message populates once user enter invalid credentials")]
+        [Test, Order(1), Category("Smoke"), Description("Validate that error message populates once user enter invalid credentials")]
         public void A1_VerifyLoginWithInValidCredentails()
         {
             LoginData loginData = LoginPage.GetInvalidLoginData(loginFeatureParsedData);
@@ -65,9 +68,9 @@ namespace UnitTestNDBProject.Tests
             LoginData loginData = LoginPage.GetSAHUserLoginData(loginFeatureParsedData);
 
             _LoginPage.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
-           _HomePage.ClickShopAtHomeTab();            
-        
-           Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
+            _HomePage.ClickShopAtHomeTab();
+
+            Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
         [Test, Order(3), Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
@@ -109,7 +112,7 @@ namespace UnitTestNDBProject.Tests
 
             _EnterNewCustomerPage.ClickEditSaveButton();
 
-           // Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
+            // Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
             Assert.True(_EnterNewCustomerPage.VerifyFirstName(newCustomerData.FirstName));
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
@@ -120,7 +123,7 @@ namespace UnitTestNDBProject.Tests
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
             string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
 
-            
+
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);
             List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
             List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
@@ -180,14 +183,19 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"),Ignore(""), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A7_VerifyProductCreation()
         {
-            //TODO: Create a new Quote for newly created customer rather than serahcing it. This is just a temporary arrangement
-            Thread.Sleep(6000); // This SLEEP is added to ensure that the green notification bar of customer creation has gone
-            _QuotePage.SearchFunction().ClickOnAddNewQuote();
+            _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
 
-            _QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);            
+            Assert.True(_QuotePage.VerifyErrorPopup());
+
+            _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark)
+                .ApplyInternalInfoUpdates().AddMultipleProducts(productLineFeatureParsedData.Data);
+
+            Assert.True(_QuotePage.VerifyQuoteCreation());
+
+            Assert.True(_QuotePage.VerifyTotalProducts());
         }
 
         /// <summary>

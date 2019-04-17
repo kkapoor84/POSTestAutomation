@@ -99,4 +99,13 @@ namespace UnitTestNDBProject.TestDataAccess
     }
 
     #endregion
+
+    #region Internal Info data specific classes
+    public class InternalInfoData
+    {
+        public string StoreCode { get; set; }
+        public string Sidemark { get; set; }
+        public string Nickname { get; set; }
+    }
+    #endregion
 }
