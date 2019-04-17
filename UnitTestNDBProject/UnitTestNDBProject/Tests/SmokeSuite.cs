@@ -16,29 +16,32 @@ namespace UnitTestNDBProject.Tests
     [Order(1)]
     public class SmokeSuite : BaseTestClass
     {        
-        private static List<ParsedTestData> fullParsedJsonData;
+       
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
         private static ParsedTestData internalInfoParsedData;
+        private static ParsedTestData updateCustomerFeatureParsedData;
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
+
 
         [OneTimeSetUp]
         public void BeforeClass()
         {
-            //Get complete json data
-            fullParsedJsonData = DataAccess.GetFullJsonData();
-
             //Get login screen data
-            loginFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "LoginScreen");
+            loginFeatureParsedData = DataAccess.GetFeatureData("LoginScreen");
             //Get data for customer screen
-            newCustomerFeatureParsedData = DataAccess.GetFeatureDataFromJson(fullParsedJsonData, "NewCustomerScreen");
+            newCustomerFeatureParsedData = DataAccess.GetFeatureData("NewCustomerScreen");
+            //Get data for update customer screen
+            updateCustomerFeatureParsedData = DataAccess.GetFeatureData("UpdateCustomerScreen");
             //Get product line feature data
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
+
             //Get data for Internal Infor Section
             internalInfoParsedData = DataAccess.GetFeatureData("InternalInfoScreen");
 
+            //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
             internalInforData = QuotePage.GetInternalInfoData(internalInfoParsedData);
         }
@@ -144,15 +147,46 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyTaxidNumberAndState());
         }
 
-      
-
-
 
         [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
-        public void A6_VerifyProductCreation()
+        public void A6_VerifyCustomerUpdate()
         {
-                
-             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
+            UpdateCustomerData updateCustomerData = EnterNewCustomerPage.GetUpdateCustomerData(updateCustomerFeatureParsedData);
+
+            string firstNameUnique = CommonFunctions.AppendInRangeRandomString(updateCustomerData.FirstName);
+            string lastNameUnique = CommonFunctions.AppendInRangeRandomString(updateCustomerData.LastName);
+
+            //Updating Information of Customer Information Section
+            _EnterNewCustomerPage.ClickEditButton("contactEdit");
+            _EnterNewCustomerPage.EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);
+            List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(updateCustomerData.Phones);
+            List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(updateCustomerData.Emails);
+            _EnterNewCustomerPage.ClickEditSaveButton();
+
+            //Updating Information of Address Section
+            _EnterNewCustomerPage.ClickEditButton("addressEdit");
+            _EnterNewCustomerPage.AddCustomerAddresses(updateCustomerData.Addresses);
+            _EnterNewCustomerPage.ClickEditSaveButton();
+
+            //Updating Information of Tax Section
+            _EnterNewCustomerPage.ClickEditButton("exemptionEdit");
+            _EnterNewCustomerPage.AddCustomerTaxNumbers(updateCustomerData.TaxNumbers);
+            _EnterNewCustomerPage.ClickEditSaveButton();
+
+            Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
+            Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
+            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
+            Assert.True(_EnterNewCustomerPage.VerifyEmailAddress());
+            Assert.True(_EnterNewCustomerPage.VerifyAddressine2());
+            Assert.True(_EnterNewCustomerPage.VerifyAddress());
+            Assert.True(_EnterNewCustomerPage.VerifyTaxidNumberAndState());
+        }
+
+
+        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        public void A7_VerifyProductCreation()
+        {
+            _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
 
             Assert.True(_QuotePage.VerifyErrorPopup());
 
@@ -162,7 +196,6 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyQuoteCreation());
 
             Assert.True(_QuotePage.VerifyTotalProducts());
-
         }
 
         /// <summary>

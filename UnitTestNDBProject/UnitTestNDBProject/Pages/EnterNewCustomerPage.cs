@@ -145,7 +145,7 @@ namespace UnitTestNDBProject.Pages
 
 
         [FindsBy(How = How.XPath, Using = "(//div[@class='row phone-data']//span[@class='form-value break-all'])[1]")]
-        public IWebElement EmailAddressVIewOnly { get; set; }
+        public IWebElement EmailAddressViewOnly { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Add Address')]")]
         public IWebElement AddAddress { get; set; }
@@ -1048,11 +1048,11 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<NewCustomerData>.ParseData(newCustomerFeatureData);
         }
 
-        //public static UpdateCustomerData GetUpdateCustomerData(ParsedTestData featureData)
-        //{
-        //    object updateCustomerFeatureData = DataAccess.GetKeyJsonData(featureData, "customer1");
-        //    return JsonDataParser<UpdateCustomerData>.ParseData(updateCustomerFeatureData);
-        //}
+        public static UpdateCustomerData GetUpdateCustomerData(ParsedTestData featureData)
+        {
+            object updateCustomerFeatureData = DataAccess.GetKeyJsonData(featureData, "customer1");
+            return JsonDataParser<UpdateCustomerData>.ParseData(updateCustomerFeatureData);
+        }
 
         /// <summary>
         /// Function to add customer emails

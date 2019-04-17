@@ -14,7 +14,7 @@ namespace UnitTestNDBProject.Pages
 {
     public class QuotePage
     {
-        
+
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private static ParsedTestData productLineFeatureParsedData;
@@ -94,8 +94,8 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="featureData"></param>
         /// <returns></returns>
-       
-            public static InternalInfoData GetInternalInfoData(ParsedTestData featureData)
+
+        public static InternalInfoData GetInternalInfoData(ParsedTestData featureData)
         {
             object internalInfoFeatureData = DataAccess.GetKeyJsonData(featureData, "InternalInfoSection");
             return JsonDataParser<InternalInfoData>.ParseData(internalInfoFeatureData);
@@ -108,8 +108,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage SaveQuoteButton()
         {
-            Thread.Sleep(2000);
-            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, SaveButton, 60);
+            Thread.Sleep(4000);
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, SaveButton, 120);
             SaveButton.Clickme(driver);
             _logger.Info($": Successfully clicked save quote button.");
             return this;
@@ -150,7 +150,7 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="nickname"></param>
         /// <returns></returns>
-       
+
 
         public QuotePage UpdateNickname(String nickname)
         {
@@ -207,7 +207,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage ClickOnAddNewQuote()
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(4000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddNewQuote, 10000);
             AddNewQuote.Clickme(driver);
             _logger.Info($": NEW QUOTE button clicked");
@@ -390,7 +390,7 @@ namespace UnitTestNDBProject.Pages
             if (QuoteActions.Displayed)
             {
                 quoteActions = true;
-                _logger.Info($"Verifying Quote Creation.");
+                _logger.Info($" Verifying Quote Creation.");
             }
 
             return quoteActions;
@@ -420,7 +420,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyTotalProducts()
         {
-            Thread.Sleep(4000);
+            Thread.Sleep(5000);
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
             String totalProductsOnScreen = TotalProducts.GetText(driver);
             String totalproductsEntered = countproducts(productLineFeatureParsedData.Data);

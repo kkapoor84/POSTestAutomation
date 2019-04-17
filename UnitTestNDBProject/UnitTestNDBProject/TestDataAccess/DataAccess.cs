@@ -22,15 +22,18 @@ namespace UnitTestNDBProject.TestDataAccess
 
         public static ParsedTestData GetFeatureData(string feature)
         {
+            //Get complete json data
             List<ParsedTestData> fullParsedJsonData = GetFullJsonData();
             
             return fullParsedJsonData.FirstOrDefault(x => x.Feature == feature);           
         }
 
-        public static ParsedTestData GetFeatureDataFromJson(List<ParsedTestData> json, string feature)
-        {
-            return json.FirstOrDefault(x => x.Feature == feature);
-        }
+        //Repretetive function below hence commented out,we are using "GetFeatureData" fucntion for the same
+
+        //public static ParsedTestData GetFeatureDataFromJson(List<ParsedTestData> json, string feature)
+        //{
+        //    return json.FirstOrDefault(x => x.Feature == feature);
+        //}
 
         public static object GetKeyJsonData(ParsedTestData featureParsedData, string key)
         {
