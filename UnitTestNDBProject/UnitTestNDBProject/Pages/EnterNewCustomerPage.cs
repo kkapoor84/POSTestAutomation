@@ -145,7 +145,7 @@ namespace UnitTestNDBProject.Pages
 
 
         [FindsBy(How = How.XPath, Using = "(//div[@class='row phone-data']//span[@class='form-value break-all'])[1]")]
-        public IWebElement EmailAddressVIewOnly { get; set; }
+        public IWebElement EmailAddressViewOnly { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Add Address')]")]
         public IWebElement AddAddress { get; set; }
