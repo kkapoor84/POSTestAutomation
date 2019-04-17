@@ -13,7 +13,7 @@ using UnitTestNDBProject.Utils;
 namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
-    [Order(1)]
+    
     public class SmokeSuite : BaseTestClass
     {        
        
@@ -86,7 +86,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
 
-        [Test, Order(4), Category("Smoke"),Ignore(""), Description("Enter Customer Card Details and create new customer from customer suggestion")]
+        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
         public void A4_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
