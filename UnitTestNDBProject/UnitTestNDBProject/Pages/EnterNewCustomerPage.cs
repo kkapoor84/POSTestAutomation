@@ -22,7 +22,7 @@ namespace UnitTestNDBProject.Pages
         public IWebDriver driver;
         public List<Tuple<string, string>> newPhones;
         public List<Tuple<string, string>> newTax;
-        public List<Tuple<string, string, string,string,string>> newAddresses;
+        public List<Tuple<string, string, string, string, string>> newAddresses;
         public List<string> newEmails;
 
         public EnterNewCustomerPage(IWebDriver driver)
@@ -152,9 +152,9 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.Id, Using = "btnUseEnteredAddress")]
         public IWebElement UseAddressAsEntered { get; set; }
-        
 
-       [FindsBy(How = How.Id, Using = "btnCorrectAddress")]
+
+        [FindsBy(How = How.Id, Using = "btnCorrectAddress")]
         public IWebElement AddressIsCorrect { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "#checkbox-TaxExempt")]
@@ -235,7 +235,7 @@ namespace UnitTestNDBProject.Pages
             Thread.Sleep(2000);
             string strMyXPath = "phoneLists[" + i + "].Phone";
             driver.FindElement(By.Id(strMyXPath)).EnterText(phone);
-            _logger.Info($": Successfully Entered Phone Number {phone}");            
+            _logger.Info($": Successfully Entered Phone Number {phone}");
             return this;
 
         }
@@ -275,7 +275,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage EnterEmailAddress(string email, int i)
         {
-             String strEmailAddress = "emailList[" + i + "].Email";
+            String strEmailAddress = "emailList[" + i + "].Email";
             driver.FindElement(By.Id(strEmailAddress)).Clear();
             Thread.Sleep(2000);
             driver.FindElement(By.Id(strEmailAddress)).EnterText(email);
@@ -403,7 +403,7 @@ namespace UnitTestNDBProject.Pages
             {
                 WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
                 customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnUseEnteredAddress")));
-                 UseAddressAsEntered.Clickme(driver);
+                UseAddressAsEntered.Clickme(driver);
                 _logger.Info($": Continue As Use address as entered on smarty street - If available");
             }
             catch (Exception e)
@@ -510,9 +510,9 @@ namespace UnitTestNDBProject.Pages
 
             js.ExecuteScript("arguments[0].scrollIntoView();", FirstNameText);
 
-           // Thread.Sleep(3000);
-           // WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-           // customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
+            // Thread.Sleep(3000);
+            // WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            // customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
             String fName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
             Thread.Sleep(1000);
@@ -580,11 +580,11 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="EnteredPhone"></param>
         /// <returns></returns>
-        public bool VerifyPhoneNumberAndPhoneType ()
+        public bool VerifyPhoneNumberAndPhoneType()
         {
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("(//div[@class='row phone-data']//span[@class='form-value'])[1]")));
-            
+
             bool PhoneNumberAndTypeValue = false;
 
             for (int counter = 0; counter < newPhones.Count; counter++)
@@ -634,7 +634,7 @@ namespace UnitTestNDBProject.Pages
 
                 string taxNumberXpath = "(//div[@class='row phone-data']//span[@class='form-value'])[" + taxNumberCounter + "]";
                 string taxNumber = driver.FindElement(By.XPath(taxNumberXpath)).GetText(driver);
-             
+
                 string expectedTaxIdNumber = newTax[counter].Item1;
 
                 if (expectedTaxIdNumber.Contains(taxNumber))
@@ -660,7 +660,7 @@ namespace UnitTestNDBProject.Pages
             return taxIdNumberAndStateValue;
 
         }
-        
+
 
         public bool VerifyEmailAddress()
         {
@@ -675,7 +675,7 @@ namespace UnitTestNDBProject.Pages
 
                 string emailXpath = "(//div[@class='row phone-data']//span[@class='form-value break-all'])[" + emailCounter + "]";
                 string actualEmailText = driver.FindElement(By.XPath(emailXpath)).GetText(driver);
-               
+
 
                 string ExpectedEmail = newEmails[counter];
                 if (ExpectedEmail.Contains(actualEmailText))
@@ -691,15 +691,15 @@ namespace UnitTestNDBProject.Pages
         }
 
 
-            /// <summary>
-            /// Function to verify that customer is created with valid address
-            /// </summary>
-            /// <param name="ExpAddressline1"></param>
-            /// <param name="ExpCity"></param>
-            /// <param name="ExpState"></param>
-            /// <param name="ExpZipcode"></param>
-            /// <returns></returns>
-            public bool VerifCustomerIsCreatedWithValidBillingAddress(string expAddressline1, string expCity, string expState, string expZipcode)
+        /// <summary>
+        /// Function to verify that customer is created with valid address
+        /// </summary>
+        /// <param name="ExpAddressline1"></param>
+        /// <param name="ExpCity"></param>
+        /// <param name="ExpState"></param>
+        /// <param name="ExpZipcode"></param>
+        /// <returns></returns>
+        public bool VerifCustomerIsCreatedWithValidBillingAddress(string expAddressline1, string expCity, string expState, string expZipcode)
         {
             bool isAddressCorrect = false;
             driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 2000);
@@ -750,7 +750,7 @@ namespace UnitTestNDBProject.Pages
             return isaddressline2;
         }
 
-            public bool VerifyAddress()
+        public bool VerifyAddress()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(viewOnlyAddressLine1, 10000);
 
@@ -758,10 +758,10 @@ namespace UnitTestNDBProject.Pages
 
             for (int counter = 0; counter < newAddresses.Count; counter++)
             {
-              
+
                 string expectedAddressLine1 = newAddresses[counter].Item1;
                 string actualAddressLine1 = viewOnlyAddressLine1.GetText(driver);
-               // string expectedAddressLine2 = newAddresses[counter].Item2;
+                // string expectedAddressLine2 = newAddresses[counter].Item2;
                 //string actualAddressLine2 = viewOnlyAddressLine2.GetText(driver);
                 string expectedCity = newAddresses[counter].Item3;
                 string actualCity = viewOnlyCity.GetText(driver);
@@ -772,7 +772,7 @@ namespace UnitTestNDBProject.Pages
 
                 bool billingaddress = driver.FindElement(By.XPath("//span[contains(text(),'Billing Address')]")).Displayed;
 
-                if (expectedAddressLine1.Contains(actualAddressLine1)  &&  expectedCity.Contains(actualCity) && expectedState.Contains(actualState.Substring(0, 1)) && expectedZip.Contains(actualZip) && billingaddress)
+                if (expectedAddressLine1.Contains(actualAddressLine1) && expectedCity.Contains(actualCity) && expectedState.Contains(actualState.Substring(0, 1)) && expectedZip.Contains(actualZip) && billingaddress)
                 {
                     isAddressCorrect = true;
                 }
@@ -780,7 +780,7 @@ namespace UnitTestNDBProject.Pages
 
             return isAddressCorrect;
         }
-        
+
 
         /// <summary>
         /// Verify that phone numbers are appended in existing customer.
@@ -892,7 +892,7 @@ namespace UnitTestNDBProject.Pages
         /// <param name="statevalue"></param>
         /// <returns></returns>
         public EnterNewCustomerPage SelectState(String statevalue)
-        {            
+        {
             Actions actions_ = new Actions(driver);
             actions_.SendKeys(this.state, statevalue).Build().Perform();
             state.SendKeys(Keys.Enter);
@@ -924,7 +924,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        
+
         /// <summary>
         /// Function to Clicking on tax exemption checkbox
         /// </summary>
@@ -975,7 +975,7 @@ namespace UnitTestNDBProject.Pages
         {
             string doesntexpirecheckbox = "//input[@id='doesNotExpire" + i + "']";
             IWebElement doesntExpireCheckBoxElement = driver.FindElement(By.XPath(doesntexpirecheckbox));
-            
+
             if (!doesntExpireCheckBoxElement.Selected)
             {
                 doesntExpireCheckBoxElement.Clickme(driver);
@@ -986,7 +986,7 @@ namespace UnitTestNDBProject.Pages
                 _logger.Info("TaxExemtion Checkbox is already selected in customer edit mode");
             }
 
-            
+
             return this;
         }
 
@@ -1040,7 +1040,7 @@ namespace UnitTestNDBProject.Pages
             }
 
             return IsLastName;
-        }        
+        }
 
         public static NewCustomerData GetCustomerData(ParsedTestData featureData)
         {
@@ -1061,7 +1061,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public List<string> AddCustomerEmails(List<Email> emails)
         {
-             newEmails = new List<string>();
+            newEmails = new List<string>();
 
             for (int counter = 0; counter < emails.Count; counter++)
             {
@@ -1079,14 +1079,14 @@ namespace UnitTestNDBProject.Pages
             return newEmails;
         }
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="addresses"></param>
-/// <returns></returns>
-        public List<Tuple<string, string,string,string,string>> AddCustomerAddresses(List<Address> addresses)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="addresses"></param>
+        /// <returns></returns>
+        public List<Tuple<string, string, string, string, string>> AddCustomerAddresses(List<Address> addresses)
         {
-            newAddresses = new List<Tuple<string, string,string,string,string>>();
+            newAddresses = new List<Tuple<string, string, string, string, string>>();
             //Input addresses
             for (int counter = 0; counter < addresses.Count; counter++)
             {
@@ -1102,7 +1102,7 @@ namespace UnitTestNDBProject.Pages
                 {
                     ClickOnAddAddressPlusButton();
                 }
-                newAddresses.Add(new Tuple<string, string,string,string,string>(custAddLine1, custAddLine2, custCity,custState,custZipCode));
+                newAddresses.Add(new Tuple<string, string, string, string, string>(custAddLine1, custAddLine2, custCity, custState, custZipCode));
             }
             return newAddresses;
         }
@@ -1111,7 +1111,7 @@ namespace UnitTestNDBProject.Pages
         /// Function to add tax numbers
         /// </summary>
         /// <param name="taxNumbers"></param>
-        public List<Tuple<string,string>> AddCustomerTaxNumbers(List<TaxNumber> taxNumbers)
+        public List<Tuple<string, string>> AddCustomerTaxNumbers(List<TaxNumber> taxNumbers)
         {
             newTax = new List<Tuple<string, string>>();
             if (!TaxCheckBox.Selected)
@@ -1136,7 +1136,7 @@ namespace UnitTestNDBProject.Pages
                     AddTax();
                 }
 
-                 newTax.Add(new Tuple<string, string>(taxId, taxState));
+                newTax.Add(new Tuple<string, string>(taxId, taxState));
             }
             return newTax;
         }
