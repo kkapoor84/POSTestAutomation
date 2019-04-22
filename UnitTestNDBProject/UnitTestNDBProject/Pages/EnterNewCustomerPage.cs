@@ -572,7 +572,7 @@ namespace UnitTestNDBProject.Pages
                 }
                 catch
                 {
-                    _logger.Info("User is updating the customer details");
+                    _logger.Info("Save button is not displayed and User is updating the phone number of customer details");
                 }
 
                 newPhones.Add(new Tuple<string, string>(phone, phoneType));
@@ -1084,7 +1084,7 @@ namespace UnitTestNDBProject.Pages
                 }
                 catch
                 {
-                    _logger.Info("User is updating the customer details");
+                    _logger.Info("Save button is not displayed and User is updating the email address of customer details");
                 }
 
                 newEmails.Add(email);
@@ -1121,7 +1121,7 @@ namespace UnitTestNDBProject.Pages
                 }
                 catch
                 {
-                    _logger.Info("User is updating the customer details");
+                    _logger.Info("Save button is not displayed and User is updating the  address of customer details");
                 }
 
                 newAddresses.Add(new Tuple<string, string, string, string, string>(custAddLine1, custAddLine2, custCity, custState, custZipCode));
@@ -1162,7 +1162,7 @@ namespace UnitTestNDBProject.Pages
                 }
                 catch
                 {
-                    _logger.Info("User is updating the customer details");
+                    _logger.Info("Save button is not displayed and User is updating the tax number of customer details");
                 }
 
                 newTax.Add(new Tuple<string, string>(taxId, taxState));

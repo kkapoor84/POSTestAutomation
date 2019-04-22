@@ -286,18 +286,6 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        /// <summary>
-        /// Function to read options for configuring product.
-        /// </summary>
-        //Not using this function hence can be removed
-        //public void GetProductDetails()
-        //{
-        //    productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
-        //    object productLineData = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
-        //    ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(productLineData);
-
-        //    productDetails = AddProductDetails(productLine.ProductDetails);
-        //}
 
         /// <summary>
         /// Function to select options read from getproductdetails function for configuring product.
@@ -306,8 +294,6 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage SelectProductOptions(List<ProductDetail> productDetails)
         {
-            // As we already discused this function is not required to call here as we are picking all the products from the parameter passsed in this function instead of single product hence commenting it
-           // GetProductDetails();
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
 
@@ -399,38 +385,16 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        /// <summary>
-        /// Function to count product lines added from JSON.
-        /// 
-        /// </summary>
-        /// <param name="productLineData"></param>
-        /// <returns></returns>
-        //This function is not required as we have inbuild function to get the list count
-        //public string countproducts(List<DataDictionary> productLineData)
-        //{
-        //    int count = 0;
-        //    foreach (DataDictionary data in productLineData)
-        //    {
-        //        count++;
-        //    }
-        //    String totalCount = "TOTAL PRODUCTS" + count.ToString();
-        //    return totalCount;
-        //}
 
         /// <summary>
         /// Function to verify all products are added.
         /// </summary>
         /// <returns></returns>
-        //Passed the expected count of Product in the form of parameter
         public bool VerifyTotalProducts(List<DataDictionary> productLineData)
         {
             Thread.Sleep(5000);
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
             String totalProductsOnScreen = TotalProducts.GetText(driver);
-            //productLineFeatureParsedData.Data used in below statement will pass the null value now as function GetProductDetails() which is not required and commented was passing the value into this
-            //  String totalproductsEntered = countproducts(productLineFeatureParsedData.Data);
-            
-             //Instead of above, we can get the count of list directly (All these comments are added for PR purpose to let the reviwer know the reason of changin/deleting/updating the code after/before PR merege will remove all)
             int totalCountOfProducts = productLineData.Count;
             String totalProductsEntered = "TOTAL PRODUCTS" + totalCountOfProducts.ToString();
             bool productQuantity = false;
