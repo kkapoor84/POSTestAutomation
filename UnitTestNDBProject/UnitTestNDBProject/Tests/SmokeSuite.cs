@@ -89,7 +89,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
 
-        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion"), Ignore("")]
+        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
         public void A4_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
@@ -117,7 +117,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
 
-        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer"), Ignore("")]
+        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A5_VerifyCustomerCreation()
         {
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
@@ -149,7 +149,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer"), Ignore("")]
+        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A6_VerifyCustomerUpdate()
         {
             UpdateCustomerData updateCustomerData = EnterNewCustomerPage.GetUpdateCustomerData(updateCustomerFeatureParsedData);
@@ -184,7 +184,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer"), Ignore("")]
+        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A7_VerifyProductCreation()
         {
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
