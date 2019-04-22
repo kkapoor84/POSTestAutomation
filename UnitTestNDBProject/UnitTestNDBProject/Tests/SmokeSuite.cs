@@ -62,7 +62,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_LoginPage.VerifyInvalidCredentialsAreDisplayed("User ID or Password are incorrect. Please try again or contact the NDB helpdesk"));
         }
 
-        [Test, Order(2), Category("Smoke"), Description("Validate that user is able to navigate to Home page using valid credentials")]
+        [Test, Order(2), Category("Smoke"), Description("Validate that user is able to navigate to Home page using valid credentials"), Ignore("")]
         public void A2_VerifyLoginWithValidCrdentails()
         {
             LoginData loginData = LoginPage.GetSAHUserLoginData(loginFeatureParsedData);
@@ -73,7 +73,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
-        [Test, Order(3), Category("Smoke"),  Description("Validate all the Home Page tabs are clickable")]
+        [Test, Order(3), Category("Smoke"),  Description("Validate all the Home Page tabs are clickable"), Ignore("")]
         public void A3_VerifyHomePageTabs()
         {
             _HomePage.ClickDashBoardTab();
@@ -89,7 +89,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
 
-        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
+        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion"), Ignore("")]
         public void A4_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
@@ -117,7 +117,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
 
-        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer"), Ignore("")]
         public void A5_VerifyCustomerCreation()
         {
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
@@ -149,7 +149,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer"), Ignore("")]
         public void A6_VerifyCustomerUpdate()
         {
             UpdateCustomerData updateCustomerData = EnterNewCustomerPage.GetUpdateCustomerData(updateCustomerFeatureParsedData);
@@ -184,7 +184,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer"), Ignore("")]
         public void A7_VerifyProductCreation()
         {
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
