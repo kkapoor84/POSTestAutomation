@@ -14,9 +14,19 @@ namespace UnitTestNDBProject.TestDataAccess
     {
         public static List<ParsedTestData> GetFullJsonData()
         {
-            //TODO: Modify path in AppConfig file 
-            var fileName = ConfigurationManager.AppSettings["TestDataPath"];            
-            string json = File.ReadAllText(fileName);
+            var fileName = ConfigurationManager.AppSettings["TestDataPath"];
+
+            #region Commented Code - DO NOT REMOVE
+            //var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            //path = path.Substring(6);
+            //var path1 = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+            //string solution_dir = Path.GetDirectoryName( Path.GetDirectoryName(TestContext.CurrentContext.TestDirectory));
+            #endregion
+
+            var applicationDirectoryPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            var fullFileName = Path.Combine(applicationDirectoryPath, fileName);
+
+            string json = File.ReadAllText(fullFileName);
             return (List<ParsedTestData>)JsonConvert.DeserializeObject(json, typeof(List<ParsedTestData>));
         }
 
