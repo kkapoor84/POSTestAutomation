@@ -112,11 +112,11 @@ namespace UnitTestNDBProject.Base
         /// This method would be called after execution of each class
         /// </summary>
         [OneTimeTearDown]
-        public void AfterClassCLoseDriver()
+        public void AfterClassCloseDriver()
         {
            driver.Quit();
 
-            _logger.Info($" :Successfully executed the AfterClassCLoseDriver() method for {this.GetType().Name}");
+            _logger.Info($" :Successfully executed the AfterClassCloseDriver() method for {this.GetType().Name}");
         }
 
 

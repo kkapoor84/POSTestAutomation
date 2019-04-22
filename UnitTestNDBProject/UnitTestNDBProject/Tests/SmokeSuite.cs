@@ -62,7 +62,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_LoginPage.VerifyInvalidCredentialsAreDisplayed("User ID or Password are incorrect. Please try again or contact the NDB helpdesk"));
         }
 
-        [Test, Order(2), Category("Smoke"), Description("Validate that user is able to navigate to Home page using valid credentials"), Ignore("")]
+        [Test, Order(2), Category("Smoke"), Description("Validate that user is able to navigate to Home page using valid credentials")]
         public void A2_VerifyLoginWithValidCrdentails()
         {
             LoginData loginData = LoginPage.GetSAHUserLoginData(loginFeatureParsedData);
@@ -73,7 +73,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
-        [Test, Order(3), Category("Smoke"),  Description("Validate all the Home Page tabs are clickable"), Ignore("")]
+        [Test, Order(3), Category("Smoke"),  Description("Validate all the Home Page tabs are clickable")]
         public void A3_VerifyHomePageTabs()
         {
             _HomePage.ClickDashBoardTab();
