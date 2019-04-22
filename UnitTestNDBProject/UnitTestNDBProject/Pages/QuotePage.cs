@@ -436,7 +436,7 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElementToBecomeVisibleWithinTimeout(CopyProductLine, 600);
             Thread.Sleep(2000);
             CopyProductLine.Clickme(driver);
-            _logger.Info($" Clicked on Copy Quote.");
+            _logger.Info($" Clicked on Copy Product Line.");
             return this;
         }
 
@@ -456,10 +456,11 @@ namespace UnitTestNDBProject.Pages
             if (totalProductsOnScreen.Contains(totalProductsEntered))
             {
                 productQuantity = true;
-                _logger.Info($"Verifying quantity Of Products Entered was {totalProductsEntered} and product quantity on screen is {totalProductsOnScreen}");
+                _logger.Info($"Verifying quantity Of Products After Copy was {totalProductsEntered} and product quantity on screen is {totalProductsOnScreen}");
             }
             return productQuantity;
 
         }
+
     }
 }
