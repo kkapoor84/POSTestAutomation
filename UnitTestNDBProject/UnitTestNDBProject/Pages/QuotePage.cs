@@ -95,16 +95,6 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "(//ul[@class='action-popup']//span[text()='COPY'])[1]")]
         public IWebElement CopyProductLine { get; set; }
 
-        public QuotePage SearchFunction()
-        {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
-            Search.Clickme(driver);
-            SearchOrder.Clickme(driver);
-            EnterOrder.EnterText("2013047");
-            Enter.Clickme(driver);
-            return this;
-        }
-
 
         /// <summary>
         /// Function to parse internal info data.
