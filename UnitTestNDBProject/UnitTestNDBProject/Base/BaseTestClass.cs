@@ -86,7 +86,9 @@ namespace UnitTestNDBProject.Base
 
             if (ConfigurationManager.AppSettings["Browser"] == "Chrome")
             {
-                driver = new ChromeDriver();
+                var co = new ChromeOptions();
+                co.AddArgument("no-sandbox");
+                driver = new ChromeDriver(co);
               
             }
             else if (ConfigurationManager.AppSettings["Browser"] == "Firefox")
