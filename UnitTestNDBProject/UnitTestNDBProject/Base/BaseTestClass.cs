@@ -82,11 +82,11 @@ namespace UnitTestNDBProject.Base
 
         public void BeforeClassInitialization()
         {
-        
-
             if (ConfigurationManager.AppSettings["Browser"] == "Chrome")
             {
-                driver = new ChromeDriver();
+                var co = new ChromeOptions();
+                co.AddArgument("no-sandbox");
+                driver = new ChromeDriver(co);
               
             }
             else if (ConfigurationManager.AppSettings["Browser"] == "Firefox")
@@ -110,11 +110,11 @@ namespace UnitTestNDBProject.Base
         /// This method would be called after execution of each class
         /// </summary>
         [OneTimeTearDown]
-        public void AfterClassCLoseDriver()
+        public void AfterClassCloseDriver()
         {
            driver.Quit();
 
-            _logger.Info($" :Successfully executed the AfterClassCLoseDriver() method for {this.GetType().Name}");
+            _logger.Info($" :Successfully executed the AfterClassCloseDriver() method for {this.GetType().Name}");
         }
 
 
