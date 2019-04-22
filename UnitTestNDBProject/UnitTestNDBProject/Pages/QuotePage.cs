@@ -286,17 +286,6 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        /// <summary>
-        /// Function to read options for configuring product.
-        /// </summary>
-        public void GetProductDetails()
-        {
-            productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
-            object productLineData = DataAccess.GetKeyJsonData(productLineFeatureParsedData, "Product1");
-            ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(productLineData);
-
-            productDetails = AddProductDetails(productLine.ProductDetails);
-        }
 
         /// <summary>
         /// Function to select options read from getproductdetails function for configuring product.
@@ -305,7 +294,6 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage SelectProductOptions(List<ProductDetail> productDetails)
         {
-            GetProductDetails();
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
 
@@ -397,38 +385,23 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        /// <summary>
-        /// Function to count product lines added from JSON.
-        /// 
-        /// </summary>
-        /// <param name="productLineData"></param>
-        /// <returns></returns>
-        public string countproducts(List<DataDictionary> productLineData)
-        {
-            int count = 0;
-            foreach (DataDictionary data in productLineData)
-            {
-                count++;
-            }
-            String totalCount = "TOTAL PRODUCTS" + count.ToString();
-            return totalCount;
-        }
 
         /// <summary>
         /// Function to verify all products are added.
         /// </summary>
         /// <returns></returns>
-        public bool VerifyTotalProducts()
+        public bool VerifyTotalProducts(List<DataDictionary> productLineData)
         {
             Thread.Sleep(5000);
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
             String totalProductsOnScreen = TotalProducts.GetText(driver);
-            String totalproductsEntered = countproducts(productLineFeatureParsedData.Data);
+            int totalCountOfProducts = productLineData.Count;
+            String totalProductsEntered = "TOTAL PRODUCTS" + totalCountOfProducts.ToString();
             bool productQuantity = false;
-            if (totalProductsOnScreen.Contains(totalproductsEntered))
+            if (totalProductsOnScreen.Contains(totalProductsEntered))
             {
                 productQuantity = true;
-                _logger.Info($"Verifying quantity Of Products Entered was {totalproductsEntered} and product quantity on screen is {totalProductsOnScreen}");
+                _logger.Info($"Verifying quantity Of Products Entered was {totalProductsEntered} and product quantity on screen is {totalProductsOnScreen}");
             }
             return productQuantity;
 

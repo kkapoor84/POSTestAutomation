@@ -196,7 +196,7 @@ namespace UnitTestNDBProject.Tests
 
             Assert.True(_QuotePage.VerifyQuoteCreation());
 
-            Assert.True(_QuotePage.VerifyTotalProducts());
+            Assert.True(_QuotePage.VerifyTotalProducts(productLineFeatureParsedData.Data));
         }
 
         /// <summary>
