@@ -89,6 +89,23 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.ClassName, Using = "//li[2]//div[3]")]
         public IWebElement ProductNameOnScreen { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "(//div[@class='dot-btn'])[1]")]
+        public IWebElement HamburgerClick { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//ul[@class='action-popup']//span[text()='COPY'])[1]")]
+        public IWebElement CopyProductLine { get; set; }
+
+        public QuotePage SearchFunction()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            SearchOrder.Clickme(driver);
+            EnterOrder.EnterText("2013047");
+            Enter.Clickme(driver);
+            return this;
+        }
+
+
         /// <summary>
         /// Function to parse internal info data.
         /// </summary>
@@ -324,7 +341,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage ClickAddProductButton()
         {
-            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            Thread.Sleep(5000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
             AddProductLineButton.Clickme(driver);
             _logger.Info($": ADD LINE button clicked");
@@ -396,6 +414,53 @@ namespace UnitTestNDBProject.Pages
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
             String totalProductsOnScreen = TotalProducts.GetText(driver);
             int totalCountOfProducts = productLineData.Count;
+            String totalProductsEntered = "TOTAL PRODUCTS" + totalCountOfProducts.ToString();
+            bool productQuantity = false;
+            if (totalProductsOnScreen.Contains(totalProductsEntered))
+            {
+                productQuantity = true;
+                _logger.Info($"Verifying quantity Of Products Entered was {totalProductsEntered} and product quantity on screen is {totalProductsOnScreen}");
+            }
+            return productQuantity;
+
+        }
+
+        /// <summary>
+        /// Function to Click on Hamburger
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnhamburgerButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 600);
+            HamburgerClick.Clickme(driver);
+            _logger.Info($" Click on hamburger.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to Click on Copy To Quote Button
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnCopyButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CopyProductLine, 600);
+            Thread.Sleep(2000);
+            CopyProductLine.Clickme(driver);
+            _logger.Info($" Clicked on Copy Quote.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to Verify copy Quote
+        /// </summary>
+        /// <param name="productLineData"></param>
+        /// <returns></returns>
+        public bool VerifyTotalProductsAfterCopy(List<DataDictionary> productLineData)
+        {
+            Thread.Sleep(5000);
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
+            String totalProductsOnScreen = TotalProducts.GetText(driver);
+            int totalCountOfProducts = productLineData.Count+1;
             String totalProductsEntered = "TOTAL PRODUCTS" + totalCountOfProducts.ToString();
             bool productQuantity = false;
             if (totalProductsOnScreen.Contains(totalProductsEntered))

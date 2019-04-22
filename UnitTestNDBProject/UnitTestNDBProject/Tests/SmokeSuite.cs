@@ -184,7 +184,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(7), Category("Smoke"), Description("Verify Product Copy")]
         public void A7_VerifyProductCreation()
         {
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
@@ -197,6 +197,22 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyQuoteCreation());
 
             Assert.True(_QuotePage.VerifyTotalProducts(productLineFeatureParsedData.Data));
+        }
+
+        [Test, Order(8), Category("Smoke"), Description("Verify Product Copy")]
+        public void A8_VerifyCopyproductLine()
+        {
+
+           // _QuotePage.SearchFunction();
+
+
+
+            _QuotePage.ClickOnhamburgerButton().ClickOnCopyButton();
+                
+                _QuotePage.ClickAddProductButton();
+
+            Assert.True(_QuotePage.VerifyTotalProductsAfterCopy(productLineFeatureParsedData.Data));
+
         }
 
         /// <summary>
