@@ -184,7 +184,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"), Description("Verify Product Copy")]
+        [Test, Order(7), Category("Smoke"), Description("Verify Product and Quote Creation by adding 3 product lines.")]
         public void A7_VerifyProductCreation()
         {
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
