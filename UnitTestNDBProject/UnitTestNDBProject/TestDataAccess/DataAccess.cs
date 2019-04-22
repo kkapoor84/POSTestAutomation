@@ -15,8 +15,20 @@ namespace UnitTestNDBProject.TestDataAccess
         public static List<ParsedTestData> GetFullJsonData()
         {
             //TODO: Modify path in AppConfig file 
-            var fileName = ConfigurationManager.AppSettings["TestDataPath"];            
-            string json = File.ReadAllText(fileName);
+            var fileName = ConfigurationManager.AppSettings["TestDataPath"];
+
+            //var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            //path = path.Substring(6);
+
+            //var path1 = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+
+            var aa = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+
+            var aca = Path.Combine(aa, fileName);
+
+            //string solution_dir = Path.GetDirectoryName( Path.GetDirectoryName(TestContext.CurrentContext.TestDirectory));
+
+            string json = File.ReadAllText(aca);
             return (List<ParsedTestData>)JsonConvert.DeserializeObject(json, typeof(List<ParsedTestData>));
         }
 
