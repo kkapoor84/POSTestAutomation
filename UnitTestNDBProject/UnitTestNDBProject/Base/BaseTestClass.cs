@@ -82,8 +82,6 @@ namespace UnitTestNDBProject.Base
 
         public void BeforeClassInitialization()
         {
-        
-
             if (ConfigurationManager.AppSettings["Browser"] == "Chrome")
             {
                 var co = new ChromeOptions();
