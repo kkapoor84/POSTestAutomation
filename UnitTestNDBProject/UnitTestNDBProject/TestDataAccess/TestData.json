@@ -245,5 +245,28 @@
 	 }
 	 ]
 	 
+	 },
+
+	 {
+   "Feature": "EditProductLine",
+     "Data": [
+	 {
+	    "Key": "EditProductScreen",
+        "Value": {
+		 "NDBRoomLocation": "Living Room",
+		 "ProductDetails": [
+		  {
+              "OptionTypeId": "Mounting",
+              "Option": "Inside Mount"
+            },
+            {
+              "OptionTypeId": "Color",
+              "Option": "Dune"
+            }
+		 ]
+		}
+	 }
+	 ]
+	 
 	 }
 ]

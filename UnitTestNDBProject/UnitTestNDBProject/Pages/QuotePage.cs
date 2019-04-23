@@ -89,6 +89,30 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.ClassName, Using = "//li[2]//div[3]")]
         public IWebElement ProductNameOnScreen { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "(//div[@class='dot-btn'])[1]")]
+        public IWebElement HamburgerClick { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//ul[@class='action-popup']//span[text()='COPY'])[1]")]
+        public IWebElement CopyProductLine { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//ul[@class='action-popup']//span[text()='EDIT'])[1]")]
+        public IWebElement EditProductLine { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//li[contains(text(),'You cannot delete all products.')]")]
+        public IWebElement DeleteAllProductLine { get; set; }
+
+
+        public QuotePage SearchFunction()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            SearchOrder.Clickme(driver);
+            EnterOrder.EnterText("2013047");
+            Enter.Clickme(driver);
+            return this;
+        }
+
+
         /// <summary>
         /// Function to parse internal info data.
         /// </summary>
@@ -324,7 +348,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage ClickAddProductButton()
         {
-            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            Thread.Sleep(5000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
             AddProductLineButton.Clickme(driver);
             _logger.Info($": ADD LINE button clicked");
@@ -356,15 +381,18 @@ namespace UnitTestNDBProject.Pages
         /// Function to add multiple product lines.
         /// </summary>
         /// <param name="productLineData"></param>
-        public void AddMultipleProducts(List<DataDictionary> productLineData)
+        public int AddMultipleProducts(List<DataDictionary> productLineData)
         {
+            int count = 0;
             foreach (DataDictionary data in productLineData)
             {
                 ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
                 Thread.Sleep(4000);
                 ClickOnAddProduct().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
                     .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton();
+                count++;
             }
+            return count;
         }
 
         /// <summary>
@@ -390,21 +418,133 @@ namespace UnitTestNDBProject.Pages
         /// Function to verify all products are added.
         /// </summary>
         /// <returns></returns>
-        public bool VerifyTotalProducts(List<DataDictionary> productLineData)
+
+        public int CountProductLineEntered()
         {
-            Thread.Sleep(5000);
-            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
-            String totalProductsOnScreen = TotalProducts.GetText(driver);
+            Thread.Sleep(10000);
+            int count = 0;
+            int j = 2;
+            while ((By.XPath("//li["+j+"]//div[3]")).isPresent(driver))
+                {
+                count++;
+                j++;
+                Thread.Sleep(10000);
+            }
+            _logger.Info($"Count{count}");
+            return count;
+
+        }
+
+        public bool VerifyProductsEntered(List<DataDictionary> productLineData)
+        {
+            Thread.Sleep(10000);
+            //WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
+            int totalProductsOnScreen = CountProductLineEntered();
             int totalCountOfProducts = productLineData.Count;
-            String totalProductsEntered = "TOTAL PRODUCTS" + totalCountOfProducts.ToString();
+            //String totalProductsEntered = "TOTAL PRODUCTS" + totalCountOfProducts.ToString();
             bool productQuantity = false;
-            if (totalProductsOnScreen.Contains(totalProductsEntered))
+            if (totalProductsOnScreen.Equals(totalCountOfProducts))
             {
                 productQuantity = true;
-                _logger.Info($"Verifying quantity Of Products Entered was {totalProductsEntered} and product quantity on screen is {totalProductsOnScreen}");
+                _logger.Info($"Verifying quantity Of Products Entered was {totalCountOfProducts} and product quantity on screen is {totalProductsOnScreen}");
             }
             return productQuantity;
 
         }
+
+
+       
+        /// <summary>
+        /// Function to Click on Hamburger
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnhamburgerButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 600);
+            HamburgerClick.Clickme(driver);
+            _logger.Info($" Click on hamburger.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to Click on Copy To Quote Button
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnCopyButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CopyProductLine, 600);
+            Thread.Sleep(2000);
+            CopyProductLine.Clickme(driver);
+            _logger.Info($" Clicked on Copy Product Line.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to Verify copy Quote
+        /// </summary>
+        /// <param name="productLineData"></param>
+        /// <returns></returns>
+        public bool VerifyTotalProductsAfterCopy(List<DataDictionary> productLineData)
+        {
+
+            Thread.Sleep(5000);
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
+            int totalProductsOnScreen = CountProductLineEntered();
+            int totalCountOfProducts = productLineData.Count+1;
+           // String totalProductsEntered = "TOTAL PRODUCTS" + totalCountOfProducts.ToString();
+            bool productQuantity = false;
+            if (totalProductsOnScreen.Equals(totalCountOfProducts))
+            {
+                productQuantity = true;
+                _logger.Info($"Verifying quantity Of Products After Copy was {totalCountOfProducts} and product quantity on screen is {totalProductsOnScreen}");
+            }
+            return productQuantity;
+
+        }
+
+        public void DeleteMultipleProducts()
+        {
+            int i = 2;
+            Thread.Sleep(10000);
+            //  driver.FindElement(By.XPath("(//div[@class='dot-btn'])[2]"));
+            //  driver.FindElement(By.XPath("//li[3]//div[3]");
+                while ((By.XPath("(//div[@class='dot-btn'])["+i+"]")).isPresent(driver))
+
+                {
+                Thread.Sleep(5000);
+                driver.FindElement(By.XPath("(//div[@class='dot-btn'])["+ i+ "]")).Clickme(driver);
+                driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])["+i+"]")).Clickme(driver);
+                    _logger.Info($" Clicked on Delete Product Line.");
+                    OkButton.Clickme(driver);
+                WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
+            }
+            i = 1;
+            if ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
+            {
+                Thread.Sleep(10000);
+                driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")).Clickme(driver);
+                driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
+                _logger.Info($" Tried to Delete Last Product Line.");
+
+              //  OkButton.Clickme(driver);
+            }
+        }
+
+      
+
+        public bool VeriyUserNotAbleToDeleteAllProductLines()
+        {
+           // DeleteMultipleProducts(productLineFeatureParsedData.Data);
+            bool lastProductLine = false;
+            if (DeleteAllProductLine.Displayed)
+            {
+                lastProductLine = true;
+            }
+
+            return lastProductLine;
+        }
+
+       
+
     }
 }
