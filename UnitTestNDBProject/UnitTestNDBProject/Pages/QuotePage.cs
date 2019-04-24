@@ -18,7 +18,9 @@ namespace UnitTestNDBProject.Pages
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private static ParsedTestData productLineFeatureParsedData;
+        private static ParsedTestData productLineEditFeatureParsedData;
         List<Tuple<string, string>> productDetails;
+        List<Tuple<string, string>> editProductDetails;
 
         public QuotePage(IWebDriver driver)
         {
@@ -44,10 +46,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
         public IWebElement SearchOrder { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='orderNumber']")]
+        [FindsBy(How = How.XPath, Using = "//input[@id='quoteNumber']")]
         public IWebElement EnterOrder { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
@@ -102,12 +104,14 @@ namespace UnitTestNDBProject.Pages
         public IWebElement DeleteAllProductLine { get; set; }
 
 
+
+
         public QuotePage SearchFunction()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
             Search.Clickme(driver);
             SearchOrder.Clickme(driver);
-            EnterOrder.EnterText("2013047");
+            EnterOrder.EnterText("703478");
             Enter.Clickme(driver);
             return this;
         }
@@ -125,6 +129,11 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<InternalInfoData>.ParseData(internalInfoFeatureData);
         }
 
+        public static EditProductLineData GetEditProductData(ParsedTestData featureData)
+        {
+            object editProductFeatureData = DataAccess.GetKeyJsonData(featureData, "EditProductScreen");
+            return JsonDataParser<EditProductLineData>.ParseData(editProductFeatureData);
+        }
 
         /// <summary>
         /// Function to click save quote button.
@@ -342,6 +351,27 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+
+        /// <summary>
+        /// Function to select options read from getproductdetails function for configuring product.
+        /// </summary>
+        /// <param name="editProductDetails"></param>
+        /// <returns></returns>
+        public QuotePage SelectProductOptionsEdit(List<EditProductDetail> editProductDetails)
+        {
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
+
+            foreach (EditProductDetail editProduct in editProductDetails)
+            {
+                driver.FindElement(By.Id(editProduct.OptionTypeId)).EnterText(editProduct.Option);
+                driver.FindElement(By.Id(editProduct.OptionTypeId)).SendKeys(Keys.Enter);
+                _logger.Info($": Successfully updated Option {editProduct.Option} for Option Type {editProduct.OptionTypeId}");
+                Thread.Sleep(500);
+            }
+            return this;
+        }
+
         /// <summary>
         /// Function to click on add product line button on product page.
         /// </summary>
@@ -377,23 +407,22 @@ namespace UnitTestNDBProject.Pages
             return addedProducts;
         }
 
+
         /// <summary>
         /// Function to add multiple product lines.
         /// </summary>
         /// <param name="productLineData"></param>
-        public int AddMultipleProducts(List<DataDictionary> productLineData)
+        public void AddMultipleProducts(List<DataDictionary> productLineData)
         {
-            int count = 0;
             foreach (DataDictionary data in productLineData)
             {
                 ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
                 Thread.Sleep(4000);
                 ClickOnAddProduct().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
                     .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton();
-                count++;
             }
-            return count;
         }
+       
 
         /// <summary>
         /// Function to verify quote creation.
@@ -478,7 +507,7 @@ namespace UnitTestNDBProject.Pages
             _logger.Info($" Clicked on Copy Product Line.");
             return this;
         }
-
+    
         /// <summary>
         /// Function to Verify copy Quote
         /// </summary>
@@ -501,6 +530,111 @@ namespace UnitTestNDBProject.Pages
             return productQuantity;
 
         }
+
+        public QuotePage ClickOnEditButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditProductLine, 600);
+            EditProductLine.Clickme(driver);
+            _logger.Info($" Clicked on Edit Product Line.");
+            return this;
+        }
+
+        public List<Tuple<string, string>> EditProductDetails(List<EditProductDetail> EditProductDetails)
+        {
+            List<Tuple<string, string>> editProducts = new List<Tuple<string, string>>();
+
+            //Input product details
+            for (int counter = 0; counter < EditProductDetails.Count; counter++)
+            {
+                string optiontype = EditProductDetails[counter].OptionTypeId;
+                string option = EditProductDetails[counter].Option;
+
+                editProducts.Add(new Tuple<string, string>(optiontype, option));
+            }
+
+            return editProducts;
+        }
+
+        public void EditProductLineConfiguration(List<DataDictionary> editproductLineData)
+        {
+            foreach (DataDictionary data in editproductLineData)
+            {
+                EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
+                Thread.Sleep(8000);
+                EnterRoomLocation(editProductLine.NDBRoomLocation)
+                    .SelectProductOptionsEdit(editProductLine.EditProductDetails).ClickAddProductButton();
+            }
+        }
+
+        public List<Tuple<string>> ReadProductLineData(List<EditProductDetail> EditProductDetails)
+        {
+            List<Tuple<string>> edditedProducts = new List<Tuple<string>>();
+            for (int counter = 0; counter < EditProductDetails.Count; counter++)
+            {
+                string option = EditProductDetails[counter].Option;
+
+                edditedProducts.Add(new Tuple<string>(option));
+            }
+
+            return edditedProducts;
+
+        }
+
+        public bool VerifyProductDataAfterEdit(String EditProductDetails)
+        {
+            Thread.Sleep(4000);
+            int i = 2;
+            int count = 0;
+            string[] productLineDataArray = new string[100];
+            do
+            {
+                string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
+                // string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
+                productLineDataArray[count] = productColumn;
+                i++;
+                _logger.Info(productLineDataArray[count]);
+            } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+
+            int j = 0;
+            bool dataIsValid = false;
+            do
+            {
+                if ((EditProductDetails.Contains(productLineDataArray[j])))
+                {
+                    dataIsValid = true;
+                    _logger.Info($" Data " + EditProductDetails + " Is Valid.");
+                    break;
+                }
+                j++;
+            } while (productLineDataArray[j] != null);
+            return dataIsValid;
+        }
+
+        //public bool VerifyProduct()
+        //{
+        //    WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        //    customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//li[2]//div[3]")));
+
+        //    bool productEnteredIsCorrect = false;
+
+        //    for (int counter = 2; counter < editProductDetails.Count; counter++)
+        //    {
+
+        //        string productDataXpath = ("//li[2]//div[" + counter + "]");
+        //        string productDataEntered = driver.FindElement(By.XPath(productDataXpath)).GetText(driver);
+        //        string ExpectedPhone = editProductDetails[counter].Item1;
+        //        if (ExpectedPhone.Contains(productDataEntered))
+        //        {
+        //            productEnteredIsCorrect = true;
+        //            _logger.Info($" Correct Color Updated");
+        //        }
+
+        //    }
+
+        //    return productEnteredIsCorrect;
+
+        //}
+
 
         public void DeleteMultipleProducts()
         {

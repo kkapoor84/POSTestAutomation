@@ -20,10 +20,12 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
+        private static ParsedTestData productLineEditFeatureParsedData;
         private static ParsedTestData updateCustomerFeatureParsedData;
         private static ParsedTestData internalInfoParsedData;
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
+     //   EditProductLineData editProductData;
 
 
         [OneTimeSetUp]
@@ -37,12 +39,16 @@ namespace UnitTestNDBProject.Tests
             updateCustomerFeatureParsedData = DataAccess.GetFeatureData("UpdateCustomerScreen");
             //Get product line feature data
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
+            //Get product line Edit feature data
+            productLineEditFeatureParsedData = DataAccess.GetFeatureData("EditProductScreen");
             //Get data for Internal Infor Section
             internalInfoParsedData = DataAccess.GetFeatureData("InternalInfoScreen");
 
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
             internalInforData = QuotePage.GetInternalInfoData(internalInfoParsedData);
+
+           // editProductData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
 
         }
 
@@ -73,7 +79,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
-        [Test, Order(3), Category("Smoke"),  Description("Validate all the Home Page tabs are clickable")]
+        [Test, Order(3), Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
         public void A3_VerifyHomePageTabs()
         {
             _HomePage.ClickDashBoardTab();
@@ -128,24 +134,24 @@ namespace UnitTestNDBProject.Tests
             List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
             List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
 
+            _EnterNewCustomerPage.ClickOnAddressLine1().ContinueNewCustomerCreation();
+
+            _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
+            _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
+
             _EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
 
-            //_EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
-            //_EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
-
-            //_EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
-
             //commenting this assertion because if somehow CUsotmer suggetion popup is not displayed then it takes time 30 sec to wait for the popup till than greenbar gets disappear and assertion gets failed 
-           // Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
-            //Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
-            //Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
-            //Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
-            //Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
-            //Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
-            //Assert.True(_EnterNewCustomerPage.VerifyEmailAddress());
-            //Assert.True(_EnterNewCustomerPage.VerifyAddressine2());
-            //Assert.True(_EnterNewCustomerPage.VerifyAddress());
-            //Assert.True(_EnterNewCustomerPage.VerifyTaxidNumberAndState());
+            // Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
+            Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
+            Assert.True(_EnterNewCustomerPage.VerifyEditButtonAvailable());
+            Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidFirstName(firstNameUnique));
+            Assert.True(_EnterNewCustomerPage.VerifCustomerIsCreatedWithValidLastName(lastNameUnique));
+            Assert.True(_EnterNewCustomerPage.VerifyPhoneNumberAndPhoneType());
+            Assert.True(_EnterNewCustomerPage.VerifyEmailAddress());
+            Assert.True(_EnterNewCustomerPage.VerifyAddressine2());
+            Assert.True(_EnterNewCustomerPage.VerifyAddress());
+            Assert.True(_EnterNewCustomerPage.VerifyTaxidNumberAndState());
         }
 
 
@@ -214,20 +220,41 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(9), Category("Smoke"), Description("Verify Product Deletion")]
-        public void A9_VerifyDeleteproductLine()
+        [Test, Order(9), Category("Smoke"), Description("Verify Product Line Edit Functionality")]
+        public void A9_VerifyEditproductLine()
         {
-           // _QuotePage.SearchFunction();
-          //  _QuotePage.ClickOnhamburgerButton().ClickOnDeleteButton();
+           // EditProductLineData updateCustomerData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
+            ///Thread.Sleep(2000);
+            //_QuotePage.SearchFunction();
+            _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
+            Thread.Sleep(5000);
+            _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
+            Thread.Sleep(5000);
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Living Room"));
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Dune"));
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("OB"));
 
-           // _QuotePage.ClickAddProductButton();
+            //List<Tuple<string, string>> enteredData = _QuotePage
+            //List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(updateCustomerData.Phones);
 
-         //   Assert.True(_QuotePage.VerifyTotalProductsAfterDeletion(productLineFeatureParsedData.Data));
-
-            _QuotePage.DeleteMultipleProducts();
-            Assert.True(_QuotePage.VeriyUserNotAbleToDeleteAllProductLines());
+            //   Assert.True(_QuotePage.VerifyTotalProductsAfterCopy(productLineFeatureParsedData.Data));
 
         }
+
+        //[Test, Order(9), Category("Smoke"), Description("Verify Product Deletion")]
+        //public void A9_VerifyDeleteproductLine()
+        //{
+        //   // _QuotePage.SearchFunction();
+        //  //  _QuotePage.ClickOnhamburgerButton().ClickOnDeleteButton();
+
+        //   // _QuotePage.ClickAddProductButton();
+
+        // //   Assert.True(_QuotePage.VerifyTotalProductsAfterDeletion(productLineFeatureParsedData.Data));
+
+        //    _QuotePage.DeleteMultipleProducts();
+        //    Assert.True(_QuotePage.VeriyUserNotAbleToDeleteAllProductLines());
+
+        //}
 
 
         /// <summary>

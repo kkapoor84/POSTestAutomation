@@ -248,16 +248,16 @@
 	 },
 
 	 {
-   "Feature": "EditProductLine",
+   "Feature": "EditProductScreen",
      "Data": [
 	 {
-	    "Key": "EditProductScreen",
+	    "Key": "Product1",
         "Value": {
 		 "NDBRoomLocation": "Living Room",
-		 "ProductDetails": [
+		 "EditProductDetails": [
 		  {
               "OptionTypeId": "Mounting",
-              "Option": "Inside Mount"
+              "Option": "Outside Mount"
             },
             {
               "OptionTypeId": "Color",
