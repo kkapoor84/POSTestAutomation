@@ -8,7 +8,7 @@ using UnitTestNDBProject.TestDataAccess;
 using SeleniumExtras.PageObjects;
 using UnitTestNDBProject.Utils;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
-
+using OpenQA.Selenium.Interactions;
 
 namespace UnitTestNDBProject.Pages
 {
@@ -17,8 +17,8 @@ namespace UnitTestNDBProject.Pages
 
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private static ParsedTestData productLineFeatureParsedData;
-        List<Tuple<string, string>> productDetails;
+        //private static ParsedTestData productLineFeatureParsedData;
+        //List<Tuple<string, string>> productDetails;
 
         public QuotePage(IWebDriver driver)
         {
@@ -89,6 +89,66 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.ClassName, Using = "//li[2]//div[3]")]
         public IWebElement ProductNameOnScreen { get; set; }
 
+        [FindsBy(How = How.Id, Using = "addressAndContact")]
+        public IWebElement EditButtonOfAddress { get; set; }
+
+
+
+        [FindsBy(How = How.XPath, Using = "(//span[@class='user-info'])[2]")]
+        public IWebElement DirectionText { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnDone")]
+        public IWebElement AdjustmentsDoneButton { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//li[@class='row'])[2]//span[2]")]
+        public IWebElement AdditionalCostView { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnAdjustments")]
+        public IWebElement AdjustmentsLink { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='row full-height']//li[2]//span")]
+        public IWebElement AdjustmentVIew { get; set; }
+
+        
+
+
+        [FindsBy(How = How.Id, Using = "btnTax")]
+        public IWebElement TaxButton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "Tax-Exempt")]
+        public IWebElement TaxExemptCheckBox { get; set; }
+
+        [FindsBy(How = How.Id, Using = "ddlTaxId")]
+        public IWebElement TaxNumberDropDown { get; set; }
+
+        [FindsBy(How = How.Id, Using = "idBtnOK")]
+        public IWebElement DoneButton { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "//span[@class='has-error-message']")]
+        public IWebElement TaxErrorMessage { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='row full-height']//li[3]//span[1]")]
+        public IWebElement TaxView { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnConvertToOrder")]
+        public IWebElement ConvertToOrderButton { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "//button[@class='btn-outline']")]
+        public IWebElement ContinueButton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "radio-btn-convert")]
+        public IWebElement ConvertToPOS { get; set; }
+
+        [FindsBy(How = How.Id, Using = "idBtnContinueConvertToOrder")]
+        public IWebElement ContinueConvertToOrder { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'PAYMENT TYPE')]")]
+        public IWebElement PaymentScreenText { get; set; }
+        
+
         /// <summary>
         /// Function to parse internal info data.
         /// </summary>
@@ -100,6 +160,25 @@ namespace UnitTestNDBProject.Pages
             object internalInfoFeatureData = DataAccess.GetKeyJsonData(featureData, "InternalInfoSection");
             return JsonDataParser<InternalInfoData>.ParseData(internalInfoFeatureData);
         }
+
+        public static AdjustmentData GetAdjustmentsData(ParsedTestData featureData)
+        {
+            object adjustmentPopData = DataAccess.GetKeyJsonData(featureData, "AdjustmentKey");
+            return JsonDataParser<AdjustmentData>.ParseData(adjustmentPopData);
+        }
+
+        public static TaxExemptionData GetValidTaxExemptionData(ParsedTestData featureData)
+        {
+            object validTaxData = DataAccess.GetKeyJsonData(featureData, "ValidTax");
+            return JsonDataParser<TaxExemptionData>.ParseData(validTaxData);
+        }
+
+        public static TaxExemptionData GetInvalidTaxExemptionData(ParsedTestData featureData)
+        {
+            object validTaxData = DataAccess.GetKeyJsonData(featureData, "InvalidTax");
+            return JsonDataParser<TaxExemptionData>.ParseData(validTaxData);
+        }
+
 
 
         /// <summary>
@@ -406,5 +485,249 @@ namespace UnitTestNDBProject.Pages
             return productQuantity;
 
         }
+
+
+
+        public QuotePage ClickOnEditButtonOfMeasurementAndInstallation()
+        {
+            driver.WaitForElement(EditButtonOfAddress);
+            EditButtonOfAddress.Clickme(driver);
+            return this;
+        }
+
+
+
+        public bool VerifyDirectionIsAdded(String ExpectedDirectionText)
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditButtonOfAddress, 5000);
+            bool ifDirectionAdded = false;
+            String ActualValue = DirectionText.GetText(driver);
+            if (ActualValue.Contains(ExpectedDirectionText))
+            {
+                ifDirectionAdded = true;
+                _logger.Info($" Direction is Added");
+            }
+            return ifDirectionAdded;
+        }
+
+        public bool VerifyAdditionalCost(Boolean SelectCost, String ExpectedCostAmount)
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditButtonOfAddress, 5000);
+            bool isCostAdded = false;
+            if (SelectCost is true)
+            {
+                String ActualAmount = AdditionalCostView.GetText(driver);
+                String ExpectedAmount = "$" + ExpectedCostAmount;
+                if (ActualAmount.Equals(ExpectedAmount))
+                {
+                    isCostAdded = true;
+                    _logger.Info($" Cost is added and same as entered");
+                }
+            }
+            else if (SelectCost is false)
+            {
+                isCostAdded = true;
+                _logger.Info($" Cost is not selected");
+            }
+
+
+            return isCostAdded;
+        }
+
+        public QuotePage ClickOnAdjustmentsLink()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(10000);
+            driver.WaitForElement(AdjustmentsLink);
+            AdjustmentsLink.Clickme(driver);
+            return this;
+        }
+
+            
+
+        public QuotePage AddAdjustments(List<Adjustment> adjustments)
+        {
+            for (int counter = 0; counter < adjustments.Count; counter++)
+
+            {
+                string adjustmentType = adjustments[counter].AdjustmentType;
+                string adjustmentCode = adjustments[counter].AdjustmentCode;
+                string amount = adjustments[counter].Amount;
+
+                SelectAdjustmentType(adjustmentType, counter).SelectAdjustmentCode(adjustmentCode, counter).AddAmount(amount, counter);
+
+            }
+            AdjustmentsDoneButton.Clickme(driver);
+            return this;
+
+        }
+
+
+        [FindsBy(How = How.Id, Using = "adjustmentOption0")]
+        public IWebElement state { get; set; }
+
+        public QuotePage SelectAdjustmentType(String type, int i)
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            string MyID = "adjustmentOption" + i;
+            string AdjustmentXpath = "//input[@id='adjustmentOption" + i + "']/ancestor::div[@class='Select-control']/following-sibling::div/div[1]";
+           // driver.WaitForElement(driver.FindElement(By.Id(MyID)));
+            Actions actions_ = new Actions(driver);
+            actions_.SendKeys(driver.FindElement(By.Id(MyID)), type).Build().Perform();
+            driver.FindElement(By.XPath(AdjustmentXpath)).Clickme(driver);
+
+
+            _logger.Info($": Successfully Selected Adjustment Type {type}");
+
+            return this;
+
+        }
+
+        public QuotePage SelectAdjustmentCode(String code, int i)
+        {
+           // Thread.Sleep(2000);
+            string MyID = "adjustmentType" + i;
+            driver.WaitForElement(driver.FindElement(By.Id(MyID)));        
+            Actions actions = new Actions(driver);
+            actions.SendKeys(driver.FindElement(By.Id(MyID)), code).Build().Perform();
+            driver.FindElement(By.Id(MyID)).SendKeys(Keys.Enter);
+            _logger.Info($": Successfully Selected Adjustment Code {code}");
+            return this;
+
+        }
+
+        public QuotePage AddAmount(String amount, int i)
+        {
+            string MyID = "adjustmentAmount" + i;
+            driver.WaitForElement(driver.FindElement(By.Id(MyID)));
+            driver.FindElement(By.Id(MyID)).EnterText(amount);
+            _logger.Info($": Successfully Entered Amount {amount}");
+            return this;
+
+        }
+
+        public QuotePage ClickOnTaxLink()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElement(TaxButton);
+            TaxButton.Clickme(driver);
+            return this;
+        }
+
+        public QuotePage SelectNonApplicableTax(bool SelectTaxExempt,String TaxIdNumber)
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElement(driver.FindElement(By.XPath("//h2[contains(text(),'Taxes')]")));
+            if (SelectTaxExempt is true) 
+            {
+              //  driver.WaitForElement(TaxExemptCheckBox);
+                TaxExemptCheckBox.Clickme(driver);
+                Actions actions = new Actions(driver);
+                actions.SendKeys(TaxNumberDropDown, TaxIdNumber).Build().Perform();
+                TaxNumberDropDown.SendKeys(Keys.Enter);
+                _logger.Info($": Select {TaxIdNumber} not applicable for the given customer address");
+
+            }
+            else if (SelectTaxExempt is false)
+            {
+                DoneButton.Clickme(driver);
+            }
+
+           return this;
+        }
+
+        public QuotePage SelectApplicableTax(String TaxIdNumber)
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            Actions actions = new Actions(driver);
+            actions.SendKeys(TaxNumberDropDown, TaxIdNumber).Build().Perform();
+            TaxNumberDropDown.SendKeys(Keys.Enter);
+            _logger.Info($": Select {TaxIdNumber} applicable for the given customer address");
+            DoneButton.Clickme(driver);
+            return this;
+        }
+        public QuotePage ClickOnConvertToQuote()
+        {
+            ConvertToOrderButton.Clickme(driver);
+            driver.WaitForElement(ContinueButton);
+            ContinueButton.Clickme(driver);
+            return this;
+        }
+
+        public QuotePage SelectConvertToPOS()
+        {
+            ConvertToPOS.Clickme(driver);
+            ContinueConvertToOrder.Clickme(driver);
+            return this;
+        }
+
+        public bool VerifyUserIsNavigatedToPaymentPage()
+        {
+            driver.WaitForElement(PaymentScreenText);
+            bool isPaymentPageDisplayed = false;
+            if (PaymentScreenText.Displayed)
+            {
+                isPaymentPageDisplayed = true;
+                _logger.Info($" User is navigated to payment page");
+
+            }
+
+           return isPaymentPageDisplayed;
+        }
+
+        
+        public bool VerifyTaxErrorMessage(String ExpetectedErrorMessage)
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElement(TaxErrorMessage);
+            bool isMessageCorrect = false;
+            String ActualErrorMessage = TaxErrorMessage.GetText(driver);
+
+            if (ActualErrorMessage.Equals(ExpetectedErrorMessage))
+            {
+                isMessageCorrect = true;
+                _logger.Info($" Tax Exempt Error message is verified");
+            }
+            return isMessageCorrect;
+
+        }
+
+
+        public bool VerifyAdjustmentTotalAmount(String expectedTotalAmountOfAddedAdjustments)
+        {
+            driver.WaitForElement(AdjustmentVIew);
+            bool isAdjustmentAmountCorrect = false;
+            String ActualAmount = AdjustmentVIew.GetText(driver);
+
+            if (ActualAmount.Equals(expectedTotalAmountOfAddedAdjustments))
+            {
+                isAdjustmentAmountCorrect = true;
+                _logger.Info($" Adjustment amount is verified and populated correctly");
+            }
+            return isAdjustmentAmountCorrect;
+
+        }
+
+        public bool VerifyTaxExemptionIsApplied(String expectedTotalTaxExempt)
+        {
+
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElement(TaxView);
+            bool isTaxExempt = false;
+            String ActualTaxExempt = TaxView.GetText(driver);
+
+            if (ActualTaxExempt.Equals(expectedTotalTaxExempt))
+            {
+                isTaxExempt = true;
+                _logger.Info($" Tax Exemption is applied succesfully");
+            }
+            return isTaxExempt;
+
+        }
+
+
+        
+
+
+
     }
 }

@@ -67,7 +67,7 @@
             },
             {
               "TaxIdNumber": "111111111",
-              "TaxState": "DC"
+              "TaxState": "CT"
             }
           ]
         }
@@ -112,11 +112,11 @@
           "TaxNumbers": [
             {
               "TaxIdNumber": "987654321",
-              "TaxState": "NJ"
+              "TaxState": "DC"
             },
             {
               "TaxIdNumber": "222222222",
-              "TaxState": "NJ"
+              "TaxState": "CT"
             }
           ]
         }
@@ -165,7 +165,7 @@
             }
           ]
         }
-      },
+	  },
       {
         "Key": "Product2",
         "Value": {
@@ -230,6 +230,7 @@
           ]
         }
       }
+      
     ]
   },
   {
@@ -245,5 +246,70 @@
 	 }
 	 ]
 	 
-	 }
+	 },
+	   {
+    "Feature": "MeasurementAndInstallationScreen",
+    "Data": [
+      {
+        "Key": "MeasurementAndInstallationScreenKey",
+        "Value": {
+          "Directions": "TAKE RT 123 TOWARDS LORTON",
+		  "SelectLadder":"True",
+          "MeasurementNotes": "Measurement Notes",
+		  "AddAdditionalCost":"True",
+		  "AdditionalCostAmount": "50.00",
+		  "AdditionalCostReason": "Additional Cost Reason",
+		  "AddAdditionalMin":"True",
+		  "AdditionalMinAmount": "50.00",
+		  "AdditionalMinReason": "Additional Minute Reason",
+		  "InstallerNotes": "Installer Notes:Please call 30 minutes before",
+          }
+		}
+		]
+		},
+		{  
+   "Feature":"AddAdjustmentsPopup",
+   "Data":[  
+      {  
+         "Key":"AdjustmentKey",
+         "Value":{  
+            "Adjustments":[  
+               {  
+                  "AdjustmentType":"Adjustment",
+                  "AdjustmentCode":"CONSIDERATION CHECK",
+				  "Amount":"50"
+               },
+               {  
+                  "AdjustmentType":"Adjustment",
+                  "AdjustmentCode":"CS-ORDER ERROR",
+				  "Amount":"50"
+               }
+            ],
+			"AdjustmentTotalAmount":"- $100.00"
+         }
+      }
+   ]
+},
+	 {
+    "Feature": "TaxExemptionPopup",
+    "Data": [
+      {
+        "Key": "ValidTax",
+        "Value": {
+          "TaxIdNumber": "DC",
+		  "ExemptTax" : "$0.00"
+        }
+      },
+      {
+        "Key": "InvalidTax",
+        "Value": {
+          "TaxIdNumber": "CT",
+		   "ApplyTaxExempt": "True"
+        }
+      }
+    ]
+  }
+
 ]
+		
+
