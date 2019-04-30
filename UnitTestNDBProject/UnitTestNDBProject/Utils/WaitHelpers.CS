@@ -15,17 +15,17 @@ namespace UnitTestNDBProject.Utils
 {
     public static class WaitHelpers
     {
-        public static void WaitForElement1(this IWebDriver driver, IWebElement element)
-        {
-            // int timeOut = 12000;
+        //public static void WaitForElement1(this IWebDriver driver, IWebElement element)
+        //{
+        //    // int timeOut = 12000;
 
-            DefaultWait<IWebDriver> fluentWait = new DefaultWait<IWebDriver>(driver);
-            fluentWait.Timeout = TimeSpan.FromSeconds(30);
-            fluentWait.PollingInterval = TimeSpan.FromMilliseconds(250);
-            fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
-            IWebElement searchResult = fluentWait.Until(x => element);
+        //    DefaultWait<IWebDriver> fluentWait = new DefaultWait<IWebDriver>(driver);
+        //    fluentWait.Timeout = TimeSpan.FromSeconds(30);
+        //    fluentWait.PollingInterval = TimeSpan.FromMilliseconds(250);
+        //    fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+        //    IWebElement searchResult = fluentWait.Until(x => element);
 
-        }
+        //}
 
         public static void WaitForElementToBecomeVisibleWithinTimeout(this IWebDriver driver, IWebElement element, int timeout)
         {

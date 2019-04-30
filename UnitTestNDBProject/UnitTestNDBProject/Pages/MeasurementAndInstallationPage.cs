@@ -160,8 +160,8 @@ namespace UnitTestNDBProject.Pages
             SaveChangesButtonOnInstallationPage.Clickme(driver);
             try
             {
-                WebDriverWait customWait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(1));
-                customWait2.Until(ExpectedConditions.ElementIsVisible(By.Id("idBtnOK")));
+                WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(1));
+                customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("idBtnOK")));
                 OkButton.Clickme(driver);
             }
             catch (Exception e)
