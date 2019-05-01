@@ -315,7 +315,7 @@ namespace UnitTestNDBProject.Pages
         {
             //Do not remove below Wait. This is essential to ensure that spinner is gone on Quote/Order page and ADD PRODUCTS button is clickable
            // Thread.Sleep(10000);
-            driver.WaitForElementToBecomeVisibleWithinTimeout(AddProductLine, 10000);
+            driver.WaitForElement(AddProductLine, 10000);
             AddProductLine.Clickme(driver);
             _logger.Info($": ADD PRODUCTS button clicked");
             return this;
@@ -329,7 +329,7 @@ namespace UnitTestNDBProject.Pages
 
         public QuotePage WaitUntilPageload()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[@class='loader-overlay-section']")));
             return this;
         }
@@ -338,7 +338,8 @@ namespace UnitTestNDBProject.Pages
     public QuotePage EnterWidth(string WidthEntered)
         {
             //Do not remove below Wait. This is essential to ensure that page has loaded
-           new System.Threading.ManualResetEvent(false).WaitOne(4000);
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Width, 10000);
             Width.EnterText(WidthEntered);
             _logger.Info($": Successfully entered width {WidthEntered}");
             return this;
