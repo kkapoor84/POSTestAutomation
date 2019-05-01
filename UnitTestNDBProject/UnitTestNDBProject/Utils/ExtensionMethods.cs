@@ -13,7 +13,7 @@ namespace UnitTestNDBProject.Utils
     {
         public static void EnterText(this IWebElement element, string value)
         {
-            element.Clear();
+           element.Clear();
             element.SendKeys(value);
         }
 
