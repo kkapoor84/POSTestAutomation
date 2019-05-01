@@ -39,8 +39,8 @@ namespace UnitTestNDBProject.TestDataAccess
         public List<Address> Addresses { get; set; }
         public List<TaxNumber> TaxNumbers { get; set; }
     }
-   
-      
+
+
     public class UpdateCustomerData
     {
         public string FirstName { get; set; }
@@ -50,7 +50,7 @@ namespace UnitTestNDBProject.TestDataAccess
         public List<Address> Addresses { get; set; }
         public List<TaxNumber> TaxNumbers { get; set; }
     }
-    
+
 
     public class Phone
     {
@@ -125,4 +125,53 @@ namespace UnitTestNDBProject.TestDataAccess
 
     #endregion
 
+    #region Measurement and Installation data specific classes
+
+    public class MeasurementAndInstallationData
+    {
+        public string Directions { get; set; }
+        public Boolean SelectLadder { get; set; }
+        public string MeasurementNotes { get; set; }
+        public Boolean AddAdditionalCost { get; set; }
+        public string AdditionalCostAmount { get; set; }
+        public string AdditionalCostReason { get; set; }
+        public Boolean AddAdditionalMin { get; set; }
+        public string AdditionalMinAmount { get; set; }
+        public string AdditionalMinReason { get; set; }
+        public string InstallerNotes { get; set; }
+
+    }
+    #endregion
+
+    #region Adjustment data specific classes
+
+
+    public class AdjustmentData
+    {
+        public List<Adjustment> Adjustments { get; set; }
+        public string AdjustmentTotalAmount { get; set; }
+
+
+    }
+
+    public class Adjustment
+    {
+        public string AdjustmentType { get; set; }
+        public string AdjustmentCode { get; set; }
+        public string Amount { get; set; }
+    }
+
+    #endregion
+
+    #region Tax data specific classes
+
+    public class TaxExemptionData
+    {
+        public string TaxIdNumber { get; set; }
+        public Boolean ApplyTaxExempt { get; set; }
+        public string ExemptTax { get; set; }
+        
+    }
+
+    #endregion
 }

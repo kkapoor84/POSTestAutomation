@@ -15,17 +15,17 @@ namespace UnitTestNDBProject.Utils
 {
     public static class WaitHelpers
     {
-        public static void WaitForElement(this IWebDriver driver, IWebElement element)
-        {
-            // int timeOut = 12000;
+        //public static void WaitForElement1(this IWebDriver driver, IWebElement element)
+        //{
+        //    // int timeOut = 12000;
 
-            DefaultWait<IWebDriver> fluentWait = new DefaultWait<IWebDriver>(driver);
-            fluentWait.Timeout = TimeSpan.FromSeconds(30);
-            fluentWait.PollingInterval = TimeSpan.FromMilliseconds(250);
-            fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
-            IWebElement searchResult = fluentWait.Until(x => element);
+        //    DefaultWait<IWebDriver> fluentWait = new DefaultWait<IWebDriver>(driver);
+        //    fluentWait.Timeout = TimeSpan.FromSeconds(30);
+        //    fluentWait.PollingInterval = TimeSpan.FromMilliseconds(250);
+        //    fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+        //    IWebElement searchResult = fluentWait.Until(x => element);
 
-        }
+        //}
 
         public static void WaitForElementToBecomeVisibleWithinTimeout(this IWebDriver driver, IWebElement element, int timeout)
         {
@@ -52,7 +52,7 @@ namespace UnitTestNDBProject.Utils
         public static void ImplicitWaitMethod()
         {
            //PropertiesCollection.driver.Manage().Timeouts().ImplicitWait(new TimeSpan(0, 0, 0, 10));
-           // PropertiesCollection.driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromMilliseconds(10000));
+         // driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromMilliseconds(10000));
         }
 
 
@@ -62,6 +62,25 @@ namespace UnitTestNDBProject.Utils
         //    wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(bylocator));
         //    //	Log.info("element found..."+element.getText());
         //}
+
+        public static void WaitForElement( this IWebDriver driver,IWebElement element, int timeout = 1)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromMinutes(timeout));
+
+            wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+            wait.IgnoreExceptionTypes(typeof(StaleElementReferenceException));
+            wait.Until<bool>(IWebDriver =>
+            {
+                try
+                {
+                    return element.Displayed;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            });
+        }
 
     }
 }

@@ -13,16 +13,19 @@ using UnitTestNDBProject.Utils;
 namespace UnitTestNDBProject.Tests
 {
     [TestFixture]
-    
+
     public class SmokeSuite : BaseTestClass
-    {        
-       
+    {
+
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
         private static ParsedTestData productLineEditFeatureParsedData;
         private static ParsedTestData updateCustomerFeatureParsedData;
         private static ParsedTestData internalInfoParsedData;
+        private static ParsedTestData measurementAndInstallationParsedData;
+        private static ParsedTestData adjustmentParsedData;
+        private static ParsedTestData taxParsedData;
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
      //   EditProductLineData editProductData;
@@ -43,6 +46,12 @@ namespace UnitTestNDBProject.Tests
             productLineEditFeatureParsedData = DataAccess.GetFeatureData("EditProductScreen");
             //Get data for Internal Infor Section
             internalInfoParsedData = DataAccess.GetFeatureData("InternalInfoScreen");
+            //Get data for Measurement and Installation screen
+            measurementAndInstallationParsedData = DataAccess.GetFeatureData("MeasurementAndInstallationScreen");
+            adjustmentParsedData = DataAccess.GetFeatureData("AddAdjustmentsPopup");
+            taxParsedData = DataAccess.GetFeatureData("TaxExemptionPopup");
+
+
 
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
@@ -58,7 +67,7 @@ namespace UnitTestNDBProject.Tests
             GlobalSetup.test = GlobalSetup.extent.CreateTest(TestContext.CurrentContext.Test.Name);
         }
 
-        [Test, Order(1), Category("Smoke"), Description("Validate that error message populates once user enter invalid credentials")]
+        [Test, Order(1), Category("Smoke"), Ignore(""), Description("Validate that error message populates once user enter invalid credentials")]
         public void A1_VerifyLoginWithInValidCredentails()
         {
             LoginData loginData = LoginPage.GetInvalidLoginData(loginFeatureParsedData);
@@ -79,7 +88,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
-        [Test, Order(3), Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
+        [Test, Order(3), Category("Smoke"), Ignore(""), Description("Validate all the Home Page tabs are clickable")]
         public void A3_VerifyHomePageTabs()
         {
             _HomePage.ClickDashBoardTab();
@@ -95,7 +104,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
 
-        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
+        [Test, Order(4), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer from customer suggestion")]
         public void A4_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
@@ -131,8 +140,8 @@ namespace UnitTestNDBProject.Tests
 
 
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);
-            List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
-            List<string> emails = _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
+            _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
+            _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
 
             _EnterNewCustomerPage.ClickOnAddressLine1().ContinueNewCustomerCreation();
 
@@ -155,7 +164,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(6), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer")]
         public void A6_VerifyCustomerUpdate()
         {
             UpdateCustomerData updateCustomerData = EnterNewCustomerPage.GetUpdateCustomerData(updateCustomerFeatureParsedData);
@@ -220,26 +229,26 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        //[Test, Order(9), Category("Smoke"), Description("Verify Product Line Edit Functionality")]
-        //public void A9_VerifyEditproductLine()
-        //{
-        //   // EditProductLineData updateCustomerData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
-        //    ///Thread.Sleep(2000);
-        //    //_QuotePage.SearchFunction();
-        //    _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
-        //    Thread.Sleep(5000);
-        //    _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
-        //    Thread.Sleep(5000);
-        //    Assert.True(_QuotePage.VerifyProductDataAfterEdit("Living Room"));
-        //    Assert.True(_QuotePage.VerifyProductDataAfterEdit("Dune"));
-        //    Assert.True(_QuotePage.VerifyProductDataAfterEdit("OB"));
+        [Test, Order(9), Category("Smoke"), Description("Verify Product Line Edit Functionality")]
+        public void A9_VerifyEditproductLine()
+        {
+            // EditProductLineData updateCustomerData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
+            ///Thread.Sleep(2000);
+            //_QuotePage.SearchFunction();
+            _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
+            Thread.Sleep(5000);
+            _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
+            Thread.Sleep(5000);
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Living Room"));
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Dune"));
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("OB"));
 
-        //    //List<Tuple<string, string>> enteredData = _QuotePage
-        //    //List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(updateCustomerData.Phones);
+            //List<Tuple<string, string>> enteredData = _QuotePage
+            //List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(updateCustomerData.Phones);
 
-        //    //   Assert.True(_QuotePage.VerifyTotalProductsAfterCopy(productLineFeatureParsedData.Data));
+            //   Assert.True(_QuotePage.VerifyTotalProductsAfterCopy(productLineFeatureParsedData.Data));
 
-        //}
+        }
 
         [Test, Order(11), Category("Smoke"), Description("Verify Product Deletion")]
         public void B1_VerifyDeleteproductLine()
@@ -248,6 +257,58 @@ namespace UnitTestNDBProject.Tests
             _QuotePage.DeleteMultipleProducts();
             Assert.True(_QuotePage.VeriyUserNotAbleToDeleteAllProductLines());
             _QuotePage.ClickOkButton();
+
+        }
+
+
+        [Test, Category("Smoke"), Description("Add Information on Measurement and Installation Page")]
+        public void B2_VerifyMeasurementAndInstallationSection()
+        {
+            MeasurementAndInstallationData measurmentAIData = MeasurementAndInstallationPage.GetMeasurementAndInstallationData(measurementAndInstallationParsedData);
+            _QuotePage.ClickOnEditButtonOfMeasurementAndInstallation();
+            _MeasurementAndInstallationPage.AddDirections(measurmentAIData.Directions)
+                .ClickOnLadder(measurmentAIData.SelectLadder)
+                .AddMeasurerNotes(measurmentAIData.MeasurementNotes)
+                .AddAdditionalCost(measurmentAIData.AddAdditionalCost, measurmentAIData.AdditionalCostAmount, measurmentAIData.AdditionalCostReason)
+                .AddAdditionalMinutes(measurmentAIData.AddAdditionalMin, measurmentAIData.AdditionalMinAmount, measurmentAIData.AdditionalMinReason)
+                .AddInstallerNotes(measurmentAIData.InstallerNotes)
+                .ClickOnSaveChangesButton();
+
+            Assert.True(_QuotePage.VerifyDirectionIsAdded(measurmentAIData.Directions));
+            Assert.True(_QuotePage.VerifyAdditionalCost(measurmentAIData.AddAdditionalCost, measurmentAIData.AdditionalCostAmount));
+
+        }
+
+        [Test, Category("Smoke"), Description("Add Adjustments for Quote")]
+        public void B3_VerifyAddAdjustments()
+        {
+            AdjustmentData adjustmentData = QuotePage.GetAdjustmentsData(adjustmentParsedData);
+
+            _QuotePage.ClickOnAdjustmentsLink().AddAdjustments(adjustmentData.Adjustments);
+            Assert.True(_QuotePage.VerifyAdjustmentTotalAmount(adjustmentData.AdjustmentTotalAmount));
+
+        }
+        [Test, Category("Smoke"), Description("Apply tax exemption for Quote")]
+        public void B4_VerifyTaxExemption()
+        {
+            // Selcted Tax Exemption for different Install / Pickup State
+            TaxExemptionData invalidTaxExemptionData = QuotePage.GetInvalidTaxExemptionData(taxParsedData);
+            _QuotePage.ClickOnTaxLink().SelectNonApplicableTax(invalidTaxExemptionData.ApplyTaxExempt, invalidTaxExemptionData.TaxIdNumber);
+            Assert.True(_QuotePage.VerifyTaxErrorMessage("The selected Tax Exemption does not match the Install/Pickup State"));
+
+            //Selcted Tax Exemption for same Install/Pickup State
+            TaxExemptionData validTaxExemptionData = QuotePage.GetValidTaxExemptionData(taxParsedData);
+            _QuotePage.SelectApplicableTax(validTaxExemptionData.TaxIdNumber);
+            Assert.True(_QuotePage.VerifyTaxExemptionIsApplied(validTaxExemptionData.ExemptTax));
+
+        }
+
+        [Test, Category("Smoke"), Description("Quote Convert to Order")]
+        public void B5_VerifyQuoteConvertToOrder()
+        {
+            _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();
+            Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
+
 
         }
 
