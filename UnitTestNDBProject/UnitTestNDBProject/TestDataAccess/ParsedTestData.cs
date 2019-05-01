@@ -92,7 +92,21 @@ namespace UnitTestNDBProject.TestDataAccess
         public List<ProductDetail> ProductDetails { get; set; }
     }
 
+
     public class ProductDetail
+    {
+        public string OptionTypeId { get; set; }
+        public string Option { get; set; }
+    }
+
+
+    public class EditProductLineData
+    {
+        public string NDBRoomLocation { get; set; }
+        public List<EditProductDetail> EditProductDetails { get; set; }
+    }
+
+    public class EditProductDetail
     {
         public string OptionTypeId { get; set; }
         public string Option { get; set; }
@@ -107,6 +121,8 @@ namespace UnitTestNDBProject.TestDataAccess
         public string Sidemark { get; set; }
         public string Nickname { get; set; }
     }
+
+
     #endregion
 
     #region Measurement and Installation data specific classes

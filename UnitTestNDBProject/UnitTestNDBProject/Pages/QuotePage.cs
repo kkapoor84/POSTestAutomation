@@ -18,7 +18,9 @@ namespace UnitTestNDBProject.Pages
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         //private static ParsedTestData productLineFeatureParsedData;
+        private static ParsedTestData productLineEditFeatureParsedData;
         //List<Tuple<string, string>> productDetails;
+        List<Tuple<string, string>> editProductDetails;
 
         public QuotePage(IWebDriver driver)
         {
@@ -44,10 +46,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
         public IWebElement SearchOrder { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='orderNumber']")]
+        [FindsBy(How = How.XPath, Using = "//input[@id='quoteNumber']")]
         public IWebElement EnterOrder { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
@@ -88,6 +90,18 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.ClassName, Using = "//li[2]//div[3]")]
         public IWebElement ProductNameOnScreen { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//div[@class='dot-btn'])[1]")]
+        public IWebElement HamburgerClick { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//ul[@class='action-popup']//span[text()='COPY'])[1]")]
+        public IWebElement CopyProductLine { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//ul[@class='action-popup']//span[text()='EDIT'])[1]")]
+        public IWebElement EditProductLine { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//li[contains(text(),'You cannot delete all products.')]")]
+        public IWebElement DeleteAllProductLine { get; set; }
 
         [FindsBy(How = How.Id, Using = "addressAndContact")]
         public IWebElement EditButtonOfAddress { get; set; }
@@ -315,7 +329,7 @@ namespace UnitTestNDBProject.Pages
         public QuotePage EnterWidth(string WidthEntered)
         {
             //Do not remove below Wait. This is essential to ensure that page has loaded
-            Thread.Sleep(1000);
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(Width, 10000);
             Width.EnterText(WidthEntered);
             _logger.Info($": Successfully entered width {WidthEntered}");
@@ -329,6 +343,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage EnterHeight(string HeightEntered)
         {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(Height, 10000);
             Height.EnterText(HeightEntered);
             _logger.Info($": Successfully entered height {HeightEntered}");
@@ -397,13 +412,35 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+
+        /// <summary>
+        /// Function to select options read from getproductdetails function for configuring product.
+        /// </summary>
+        /// <param name="editProductDetails"></param>
+        /// <returns></returns>
+        public QuotePage SelectProductOptionsEdit(List<EditProductDetail> editProductDetails)
+        {
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
+
+            foreach (EditProductDetail editProduct in editProductDetails)
+            {
+                driver.FindElement(By.Id(editProduct.OptionTypeId)).EnterText(editProduct.Option);
+                driver.FindElement(By.Id(editProduct.OptionTypeId)).SendKeys(Keys.Enter);
+                _logger.Info($": Successfully updated Option {editProduct.Option} for Option Type {editProduct.OptionTypeId}");
+                Thread.Sleep(500);
+            }
+            return this;
+        }
+
         /// <summary>
         /// Function to click on add product line button on product page.
         /// </summary>
         /// <returns></returns>
         public QuotePage ClickAddProductButton()
         {
-            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            Thread.Sleep(7000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
             AddProductLineButton.Clickme(driver);
             _logger.Info($": ADD LINE button clicked");
@@ -431,6 +468,7 @@ namespace UnitTestNDBProject.Pages
             return addedProducts;
         }
 
+
         /// <summary>
         /// Function to add multiple product lines.
         /// </summary>
@@ -445,6 +483,7 @@ namespace UnitTestNDBProject.Pages
                     .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton();
             }
         }
+       
 
         /// <summary>
         /// Function to verify quote creation.
@@ -469,22 +508,279 @@ namespace UnitTestNDBProject.Pages
         /// Function to verify all products are added.
         /// </summary>
         /// <returns></returns>
-        public bool VerifyTotalProducts(List<DataDictionary> productLineData)
+
+        public int CountProductLineEntered()
         {
-            Thread.Sleep(5000);
-            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
-            String totalProductsOnScreen = TotalProducts.GetText(driver);
+            Thread.Sleep(10000);
+            int count = 0;
+            int j = 2;
+            while ((By.XPath("//li["+j+"]//div[3]")).isPresent(driver))
+                {
+                count++;
+                j++;
+                Thread.Sleep(10000);
+            }
+            _logger.Info($"Count{count}");
+            return count;
+
+        }
+
+        /// <summary>
+        /// Function to Verify Products Entered
+        /// </summary>
+        /// <param name="productLineData"></param>
+        /// <returns></returns>
+        public bool VerifyProductsEntered(List<DataDictionary> productLineData)
+        {
+            Thread.Sleep(10000);
+            int totalProductsOnScreen = CountProductLineEntered();
             int totalCountOfProducts = productLineData.Count;
-            String totalProductsEntered = "TOTAL PRODUCTS" + totalCountOfProducts.ToString();
             bool productQuantity = false;
-            if (totalProductsOnScreen.Contains(totalProductsEntered))
+            if (totalProductsOnScreen.Equals(totalCountOfProducts))
             {
                 productQuantity = true;
-                _logger.Info($"Verifying quantity Of Products Entered was {totalProductsEntered} and product quantity on screen is {totalProductsOnScreen}");
+                _logger.Info($"Verifying quantity Of Products Entered was {totalCountOfProducts} and product quantity on screen is {totalProductsOnScreen}");
             }
             return productQuantity;
 
         }
+
+      
+        /// <summary>
+        /// Function to Click on Hamburger
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnhamburgerButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 60);
+            HamburgerClick.Clickme(driver);
+            _logger.Info($" Click on hamburger.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to Click on Copy To Quote Button
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnCopyButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CopyProductLine, 60);
+            CopyProductLine.Clickme(driver);
+            _logger.Info($" Clicked on Copy Product Line.");
+            return this;
+        }
+    
+        /// <summary>
+        /// Function to Verify copy Quote
+        /// </summary>
+        /// <param name="productLineData"></param>
+        /// <returns></returns>
+        public bool VerifyTotalProductsAfterCopy(List<DataDictionary> productLineData)
+        {
+
+            Thread.Sleep(5000);
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
+            int totalProductsOnScreen = CountProductLineEntered();
+            int totalCountOfProducts = productLineData.Count+1;
+            bool productQuantity = false;
+            if (totalProductsOnScreen.Equals(totalCountOfProducts))
+            {
+                productQuantity = true;
+                _logger.Info($"Verifying quantity Of Products After Copy was {totalCountOfProducts} and product quantity on screen is {totalProductsOnScreen}");
+            }
+            return productQuantity;
+
+        }
+
+        /// <summary>
+        /// Function to click on Edit button.
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnEditButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditProductLine, 60);
+            EditProductLine.Clickme(driver);
+            _logger.Info($" Clicked on Edit Product Line.");
+            return this;
+        }
+
+
+        /// <summary>
+        /// Function to read option and option id while editing product configuration.
+        /// </summary>
+        /// <param name="EditProductDetails"></param>
+        /// <returns></returns>
+        public List<Tuple<string, string>> EditProductDetails(List<EditProductDetail> EditProductDetails)
+        {
+            List<Tuple<string, string>> editProducts = new List<Tuple<string, string>>();
+
+            //Input product details
+            for (int counter = 0; counter < EditProductDetails.Count; counter++)
+            {
+                string optiontype = EditProductDetails[counter].OptionTypeId;
+                string option = EditProductDetails[counter].Option;
+
+                editProducts.Add(new Tuple<string, string>(optiontype, option));
+            }
+
+            return editProducts;
+        }
+
+        /// <summary>
+        /// Function to edit product line configurations.
+        /// </summary>
+        /// <param name="editproductLineData"></param>
+        public void EditProductLineConfiguration(List<DataDictionary> editproductLineData)
+        {
+            foreach (DataDictionary data in editproductLineData)
+            {
+                EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
+                Thread.Sleep(8000);
+                EnterRoomLocation(editProductLine.NDBRoomLocation)
+                    .SelectProductOptionsEdit(editProductLine.EditProductDetails).ClickAddProductButton();
+            }
+        }
+
+        /// <summary>
+        /// Function to read product line data
+        /// </summary>
+        /// <param name="EditProductDetails"></param>
+        /// <returns></returns>
+        public List<Tuple<string>> ReadProductLineData(List<EditProductDetail> EditProductDetails)
+        {
+            List<Tuple<string>> edditedProducts = new List<Tuple<string>>();
+            for (int counter = 0; counter < EditProductDetails.Count; counter++)
+            {
+                string option = EditProductDetails[counter].Option;
+
+                edditedProducts.Add(new Tuple<string>(option));
+            }
+
+            return edditedProducts;
+
+        }
+
+        /// <summary>
+        /// Function to verify data in product summary after edit.
+        /// </summary>
+        /// <param name="EditProductDetails"></param>
+        /// <returns></returns>
+        public bool VerifyProductDataAfterEdit(String EditProductDetails)
+        {
+            Thread.Sleep(4000);
+            int i = 2;
+            int count = 0;
+            string[] productLineDataArray = new string[100];
+            do
+            {
+                string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
+                // string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
+                productLineDataArray[count] = productColumn;
+                i++;
+                _logger.Info(productLineDataArray[count]);
+            } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+
+            int j = 0;
+            bool dataIsValid = false;
+            do
+            {
+                if ((EditProductDetails.Contains(productLineDataArray[j])))
+                {
+                    dataIsValid = true;
+                    _logger.Info($" Data " + EditProductDetails + " Is Valid.");
+                    break;
+                }
+                j++;
+            } while (productLineDataArray[j] != null);
+            return dataIsValid;
+        }
+
+        /*
+        public bool VerifyProduct()
+        {
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//li[2]//div[3]")));
+
+            bool productEnteredIsCorrect = false;
+
+            for (int counter = 2; counter < editProductDetails.Count; counter++)
+            {
+
+                string productDataXpath = ("//li[2]//div[" + counter + "]");
+                string productDataEntered = driver.FindElement(By.XPath(productDataXpath)).GetText(driver);
+                string ExpectedPhone = editProductDetails[counter].Item1;
+                if (ExpectedPhone.Contains(productDataEntered))
+                {
+                    productEnteredIsCorrect = true;
+                    _logger.Info($" Correct Color Updated");
+                }
+
+            }
+
+            return productEnteredIsCorrect;
+
+        }*/
+
+            /// <summary>
+            /// Function to delete multiple product lines.
+            /// </summary>
+        public void DeleteMultipleProducts()
+        {
+            int i = 2;
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, 60);
+            while ((By.XPath("(//div[@class='dot-btn'])["+i+"]")).isPresent(driver))
+
+                {
+                driver.FindElement(By.XPath("(//div[@class='dot-btn'])["+ i+ "]")).Clickme(driver);
+                driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])["+i+"]")).Clickme(driver);
+                    _logger.Info($" Clicked on Delete Product Line.");
+                    OkButton.Clickme(driver);
+                WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
+                Thread.Sleep(10000);
+            }
+            Thread.Sleep(10000);
+            i = 1;
+            if ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
+            {
+                
+                WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")), 60);
+                driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")).Clickme(driver);
+                driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
+                _logger.Info($" Tried to Delete Last Product Line.");
+
+              //  OkButton.Clickme(driver);
+            }
+        }
+
+      
+        /// <summary>
+        /// Function to verify all product lines are deleted.
+        /// </summary>
+        /// <returns></returns>
+        public bool VeriyUserNotAbleToDeleteAllProductLines()
+        {
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, 60);
+            bool lastProductLine = false;
+            if (DeleteAllProductLine.Displayed)
+            {
+                lastProductLine = true;
+            }
+
+            return lastProductLine;
+        }
+        /// <summary>
+        /// Function to escape warning popup.
+        /// </summary>
+        /// <returns></returns>
+
+        public QuotePage ClickOkButton()
+        {
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, OkButton, 60);
+            OkButton.Clickme(driver);
+            return this;
+        }
+       
+
 
 
 
@@ -512,6 +808,7 @@ namespace UnitTestNDBProject.Pages
 
         public bool VerifyAdditionalCost(Boolean SelectCost, String ExpectedCostAmount)
         {
+            new System.Threading.ManualResetEvent(false).WaitOne(5000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(EditButtonOfAddress, 5000);
             bool isCostAdded = false;
             if (SelectCost is true)

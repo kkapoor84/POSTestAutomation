@@ -1,315 +1,304 @@
-﻿[
-  {
-    "Feature": "LoginScreen",
-    "Data": [
-      {
-        "Key": "InValidCredentials",
-        "Value": {
-          "UserName": "POS",
-          "Password": "N0tS3cur3!"
-        }
-      },
-      {
-        "Key": "SAHUserValidCredentails",
-        "Value": {
-          "UserName": "Pos-sahtest",
-          "Password": "N0tS3cur3!"
-        }
-      },
-      {
-        "Key": "AccountUserValidCredentails",
-        "Value": {
-          "UserName": "Pos-acctrec",
-          "Password": "N0tS3cur3!"
-        }
-      }
-    ]
-  },
-  {
-    "Feature": "NewCustomerScreen",
-    "Data": [
-      {
-        "Key": "customer1",
-        "Value": {
-          "FirstName": "Pos_fn",
-          "LastName": "Pos_ln",
-          "Phones": [
-            {
-              "PhoneNumber": "85",
-              "PhoneType": "Home"
-            },
-            {
-              "PhoneNumber": "98",
-              "PhoneType": "Mobile"
-            }
-          ],
-          "Emails": [
-            {
-              "EmailText": "pos"
-            },
-            {
-              "EmailText": "auto"
-            }
-          ],
-          "Addresses": [
-            {
-              "AddressLine1": "1499 Massachusetts Ave NW 123",
-              "AddressLine2": "",
-              "City": "Washington",
-              "State": "DC",
-              "ZipCode": "20005-2869"
-            }
-          ],
-          "TaxNumbers": [
-            {
-              "TaxIdNumber": "123456789",
-              "TaxState": "DC"
-            },
-            {
-              "TaxIdNumber": "111111111",
-              "TaxState": "CT"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "Feature": "UpdateCustomerScreen",
-    "Data": [
-      {
-        "Key": "customer1",
-        "Value": {
-          "FirstName": "Pos_fn",
-          "LastName": "Pos_ln",
-          "Phones": [
-            {
-              "PhoneNumber": "45",
-              "PhoneType": "Home"
-            },
-            {
-              "PhoneNumber": "91",
-              "PhoneType": "Mobile"
-            }
-          ],
-          "Emails": [
-            {
-              "EmailText": "pos"
-            },
-            {
-              "EmailText": "auto"
-            }
-          ],
-          "Addresses": [
-            {
-              "AddressLine1": "30 Lavina Trl",
-              "AddressLine2": "Test",
-              "City": "Oak Ridge",
-              "State": "NJ",
-              "ZipCode": "07438"
-            }
-          ],
-          "TaxNumbers": [
-            {
-              "TaxIdNumber": "987654321",
-              "TaxState": "DC"
-            },
-            {
-              "TaxIdNumber": "222222222",
-              "TaxState": "CT"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "Feature": "ProductLineScreen",
-    "Data": [
-      {
-        "Key": "Product1",
-        "Value": {
-          "Width": "40",
-          "Height": "50",
-          "NDBRoomLocation": "Main Room",
-          "Quantity": 1,
-          "ProductType": "Faux Wood Blinds",
-          "ProductDetails": [
-            {
-              "OptionTypeId": "Mounting",
-              "Option": "Inside Mount"
-            },
-            {
-              "OptionTypeId": "Color",
-              "Option": "Cloud"
-            },
-            {
-              "OptionTypeId": "NumberOnHeadrail",
-              "Option": "Standard"
-            },
-            {
-              "OptionTypeId": "LiftSystem",
-              "Option": "Cordlock"
-            },
-            {
-              "OptionTypeId": "TiltControl",
-              "Option": "Cord Tilt"
-            },
-            {
-              "OptionTypeId": "ControlLocation",
-              "Option": "Tilt Left/Lift Right"
-            },
-            {
-              "OptionTypeId": "Valance",
-              "Option": "Standard"
-            }
-          ]
-        }
-	  },
-      {
-        "Key": "Product2",
-        "Value": {
-          "Width": "50",
-          "Height": "60",
-          "NDBRoomLocation": "Bedroom",
-          "Quantity": 1,
-          "ProductType": "Deluxe Aluminum Blinds",
-          "ProductDetails": [
-            {
-              "OptionTypeId": "Mounting",
-              "Option": "Outside Mount"
-            },
-            {
-              "OptionTypeId": "Color",
-              "Option": "Allure"
-            },
-            {
-              "OptionTypeId": "LiftSystem",
-              "Option": "Cordlock"
-            },
-            {
-              "OptionTypeId": "ControlLocation",
-              "Option": "Tilt Left/Lift Right"
-            }
-          ]
-        }
-      },
-      {
-        "Key": "Product3",
-        "Value": {
-          "Width": "60",
-          "Height": "70",
-          "NDBRoomLocation": "Lobby",
-          "Quantity": 1,
-          "ProductType": "Room Darkening Honeycomb Shades",
-          "ProductDetails": [
-            {
-              "OptionTypeId": "CellSize",
-              "Option": "3/4\" Single Cell"
-            },
-            {
-              "OptionTypeId": "Mounting",
-              "Option": "Inside Mount"
-            },
-            {
-              "OptionTypeId": "Color",
-              "Option": "Adobe"
-            },
-            {
-              "OptionTypeId": "NumberOnHeadrail",
-              "Option": "Standard"
-            },
-            {
-              "OptionTypeId": "LiftSystem",
-              "Option": "Premium Cordless Top Down/Bottom Up"
-            },
-            {
-              "OptionTypeId": "SwivelBrackets",
-              "Option": "No"
-            }
-          ]
-        }
-      }
-      
-    ]
-  },
-  {
-   "Feature": "InternalInfoScreen",
-     "Data": [
-	 {
-	    "Key": "InternalInfoSection",
-        "Value": {
-		"NickName": "AutomationQuote",
-		"StoreCode": "S7",
-	     "Sidemark": "JSONSidemark"
-		}
-	 }
-	 ]
-	 
-	 },
-	   {
-    "Feature": "MeasurementAndInstallationScreen",
-    "Data": [
-      {
-        "Key": "MeasurementAndInstallationScreenKey",
-        "Value": {
-          "Directions": "TAKE RT 123 TOWARDS LORTON",
-		  "SelectLadder":"True",
-          "MeasurementNotes": "Measurement Notes",
-		  "AddAdditionalCost":"True",
-		  "AdditionalCostAmount": "50.00",
-		  "AdditionalCostReason": "Additional Cost Reason",
-		  "AddAdditionalMin":"True",
-		  "AdditionalMinAmount": "50.00",
-		  "AdditionalMinReason": "Additional Minute Reason",
-		  "InstallerNotes": "Installer Notes:Please call 30 minutes before",
-          }
-		}
+﻿[{
+		"Feature": "LoginScreen",
+		"Data": [{
+				"Key": "InValidCredentials",
+				"Value": {
+					"UserName": "POS",
+					"Password": "N0tS3cur3!"
+				}
+			},
+			{
+				"Key": "SAHUserValidCredentails",
+				"Value": {
+					"UserName": "Pos-sahtest",
+					"Password": "N0tS3cur3!"
+				}
+			},
+			{
+				"Key": "AccountUserValidCredentails",
+				"Value": {
+					"UserName": "Pos-acctrec",
+					"Password": "N0tS3cur3!"
+				}
+			}
 		]
-		},
-		{  
-   "Feature":"AddAdjustmentsPopup",
-   "Data":[  
-      {  
-         "Key":"AdjustmentKey",
-         "Value":{  
-            "Adjustments":[  
-               {  
-                  "AdjustmentType":"Adjustment",
-                  "AdjustmentCode":"CONSIDERATION CHECK",
-				  "Amount":"50"
-               },
-               {  
-                  "AdjustmentType":"Adjustment",
-                  "AdjustmentCode":"CS-ORDER ERROR",
-				  "Amount":"50"
-               }
-            ],
-			"AdjustmentTotalAmount":"- $100.00"
-         }
-      }
-   ]
-},
-	 {
-    "Feature": "TaxExemptionPopup",
-    "Data": [
-      {
-        "Key": "ValidTax",
-        "Value": {
-          "TaxIdNumber": "DC",
-		  "ExemptTax" : "$0.00"
-        }
-      },
-      {
-        "Key": "InvalidTax",
-        "Value": {
-          "TaxIdNumber": "CT",
-		   "ApplyTaxExempt": "True"
-        }
-      }
-    ]
-  }
+	},
+	{
+		"Feature": "NewCustomerScreen",
+		"Data": [{
+			"Key": "customer1",
+			"Value": {
+				"FirstName": "Pos_fn",
+				"LastName": "Pos_ln",
+				"Phones": [{
+						"PhoneNumber": "85",
+						"PhoneType": "Home"
+					},
+					{
+						"PhoneNumber": "98",
+						"PhoneType": "Mobile"
+					}
+				],
+				"Emails": [{
+						"EmailText": "pos"
+					},
+					{
+						"EmailText": "auto"
+					}
+				],
+				"Addresses": [{
+					"AddressLine1": "1499 Massachusetts Ave NW 123",
+					"AddressLine2": "",
+					"City": "Washington",
+					"State": "DC",
+					"ZipCode": "20005-2869"
+				}],
+				"TaxNumbers": [{
+						"TaxIdNumber": "123456789",
+						"TaxState": "DC"
+					},
+					{
+						"TaxIdNumber": "111111111",
+						"TaxState": "CT"
+					}
+				]
+			}
+		}]
+	},
+	{
+		"Feature": "UpdateCustomerScreen",
+		"Data": [{
+			"Key": "customer1",
+			"Value": {
+				"FirstName": "Pos_fn",
+				"LastName": "Pos_ln",
+				"Phones": [{
+						"PhoneNumber": "45",
+						"PhoneType": "Home"
+					},
+					{
+						"PhoneNumber": "91",
+						"PhoneType": "Mobile"
+					}
+				],
+				"Emails": [{
+						"EmailText": "pos"
+					},
+					{
+						"EmailText": "auto"
+					}
+				],
+				"Addresses": [{
+					"AddressLine1": "30 Lavina Trl",
+					"AddressLine2": "Test",
+					"City": "Oak Ridge",
+					"State": "NJ",
+					"ZipCode": "07438"
+				}],
+				"TaxNumbers": [{
+						"TaxIdNumber": "987654321",
+						"TaxState": "DC"
+					},
+					{
+						"TaxIdNumber": "222222222",
+						"TaxState": "CT"
+					}
+				]
+			}
+		}]
+	},
+	{
+		"Feature": "ProductLineScreen",
+		"Data": [{
+				"Key": "Product1",
+				"Value": {
+					"Width": "40",
+					"Height": "50",
+					"NDBRoomLocation": "Main Room",
+					"Quantity": 1,
+					"ProductType": "Faux Wood Blinds",
+					"ProductDetails": [{
+							"OptionTypeId": "Mounting",
+							"Option": "Inside Mount"
+						},
+						{
+							"OptionTypeId": "Color",
+							"Option": "Cloud"
+						},
+						{
+							"OptionTypeId": "NumberOnHeadrail",
+							"Option": "Standard"
+						},
+						{
+							"OptionTypeId": "LiftSystem",
+							"Option": "Cordlock"
+						},
+						{
+							"OptionTypeId": "TiltControl",
+							"Option": "Cord Tilt"
+						},
+						{
+							"OptionTypeId": "ControlLocation",
+							"Option": "Tilt Left/Lift Right"
+						},
+						{
+							"OptionTypeId": "Valance",
+							"Option": "Standard"
+						}
+					]
+				}
+			},
+			{
+				"Key": "Product2",
+				"Value": {
+					"Width": "50",
+					"Height": "60",
+					"NDBRoomLocation": "Bedroom",
+					"Quantity": 1,
+					"ProductType": "Deluxe Aluminum Blinds",
+					"ProductDetails": [{
+							"OptionTypeId": "Mounting",
+							"Option": "Outside Mount"
+						},
+						{
+							"OptionTypeId": "Color",
+							"Option": "Allure"
+						},
+						{
+							"OptionTypeId": "LiftSystem",
+							"Option": "Cordlock"
+						},
+						{
+							"OptionTypeId": "ControlLocation",
+							"Option": "Tilt Left/Lift Right"
+						}
+					]
+				}
+			},
+			{
+				"Key": "Product3",
+				"Value": {
+					"Width": "60",
+					"Height": "70",
+					"NDBRoomLocation": "Lobby",
+					"Quantity": 1,
+					"ProductType": "Room Darkening Honeycomb Shades",
+					"ProductDetails": [{
+							"OptionTypeId": "CellSize",
+							"Option": "3/4\" Single Cell"
+						},
+						{
+							"OptionTypeId": "Mounting",
+							"Option": "Inside Mount"
+						},
+						{
+							"OptionTypeId": "Color",
+							"Option": "Adobe"
+						},
+						{
+							"OptionTypeId": "NumberOnHeadrail",
+							"Option": "Standard"
+						},
+						{
+							"OptionTypeId": "LiftSystem",
+							"Option": "Premium Cordless Top Down/Bottom Up"
+						},
+						{
+							"OptionTypeId": "SwivelBrackets",
+							"Option": "No"
+						}
+					]
+				}
+			}
+
+		]
+	},
+	{
+		"Feature": "InternalInfoScreen",
+		"Data": [{
+			"Key": "InternalInfoSection",
+			"Value": {
+				"NickName": "AutomationQuote",
+				"StoreCode": "S7",
+				"Sidemark": "JSONSidemark"
+			}
+		}]
+
+	},
+
+	{
+		"Feature": "EditProductScreen",
+		"Data": [{
+			"Key": "Product1",
+			"Value": {
+				"NDBRoomLocation": "Living Room",
+				"EditProductDetails": [{
+						"OptionTypeId": "Mounting",
+						"Option": "Outside Mount"
+					},
+					{
+						"OptionTypeId": "Color",
+						"Option": "Dune"
+					}
+				]
+			}
+		}]
+
+	},
+
+	{
+		"Feature": "MeasurementAndInstallationScreen",
+		"Data": [{
+			"Key": "MeasurementAndInstallationScreenKey",
+			"Value": {
+				"Directions": "TAKE RT 123 TOWARDS LORTON",
+				"SelectLadder": "True",
+				"MeasurementNotes": "Measurement Notes",
+				"AddAdditionalCost": "True",
+				"AdditionalCostAmount": "50.00",
+				"AdditionalCostReason": "Additional Cost Reason",
+				"AddAdditionalMin": "True",
+				"AdditionalMinAmount": "50.00",
+				"AdditionalMinReason": "Additional Minute Reason",
+				"InstallerNotes": "Installer Notes:Please call 30 minutes before"
+			}
+		}]
+	}, {
+		"Feature": "AddAdjustmentsPopup",
+		"Data": [{
+			"Key": "AdjustmentKey",
+			"Value": {
+				"Adjustments": [{
+						"AdjustmentType": "Adjustment",
+						"AdjustmentCode": "CONSIDERATION CHECK",
+						"Amount": "50"
+					},
+					{
+						"AdjustmentType": "Adjustment",
+						"AdjustmentCode": "CS-ORDER ERROR",
+						"Amount": "50"
+					}
+				],
+				"AdjustmentTotalAmount": "- $100.00"
+			}
+		}]
+	}, {
+		"Feature": "TaxExemptionPopup",
+		"Data": [{
+				"Key": "ValidTax",
+				"Value": {
+					"TaxIdNumber": "DC",
+					"ExemptTax": "$0.00"
+				}
+			},
+			{
+				"Key": "InvalidTax",
+				"Value": {
+					"TaxIdNumber": "CT",
+					"ApplyTaxExempt": "True"
+				}
+			}
+		]
+	}
 
 ]
-		
-
