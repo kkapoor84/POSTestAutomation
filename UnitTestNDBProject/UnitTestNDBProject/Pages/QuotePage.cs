@@ -289,10 +289,7 @@ namespace UnitTestNDBProject.Pages
         public QuotePage ApplyInternalInfoUpdates()
         {
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-
-            js.ExecuteScript("arguments[0].scrollIntoView();", InternalInfoApply);
-            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfoApply, 10000);
+           driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfoApply, 10000);
             InternalInfoApply.Clickme(driver);
             _logger.Info($": Apply Internal Info changes");
             return this;
