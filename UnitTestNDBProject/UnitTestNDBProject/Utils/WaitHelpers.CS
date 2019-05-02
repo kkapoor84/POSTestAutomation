@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UnitTestNDBProject.Utils;
 using SeleniumExtras.PageObjects;
 using SeleniumExtras;
+using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 
 namespace UnitTestNDBProject.Utils
@@ -63,6 +64,25 @@ namespace UnitTestNDBProject.Utils
         //    //	Log.info("element found..."+element.getText());
         //}
 
+        public static String waitForElementNotVisible( this IWebDriver driver, String elementXPath)
+        {
+            if ((driver == null) || (elementXPath == null) )
+            {
+
+                return "Wrong usage of WaitforElementNotVisible()";
+            }
+            try
+            {
+             
+                (new WebDriverWait(driver, TimeSpan.FromSeconds(30))).Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath(elementXPath)));
+                return null;
+            }
+            catch (TimeoutException e)
+            {
+                return e.StackTrace;
+            }
+        }
+        //
         public static void WaitForElement( this IWebDriver driver,IWebElement element, int timeout = 1)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromMinutes(timeout));

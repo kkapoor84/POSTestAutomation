@@ -315,10 +315,11 @@ namespace UnitTestNDBProject.Pages
         public QuotePage ClickOnAddProduct()
         {
             //Do not remove below Wait. This is essential to ensure that spinner is gone on Quote/Order page and ADD PRODUCTS button is clickable
-            Thread.Sleep(10000);
-            driver.WaitForElementToBecomeVisibleWithinTimeout(AddProductLine, 10000);
+            // Thread.Sleep(10000);
+            driver.WaitForElement(AddProductLine, 10000);
             AddProductLine.Clickme(driver);
             _logger.Info($": ADD PRODUCTS button clicked");
+
             return this;
         }
 
@@ -327,10 +328,21 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="WidthEntered"></param>
         /// <returns></returns>
-        public QuotePage EnterWidth(string WidthEntered)
+
+        public QuotePage WaitUntilPageload()
+        {
+            //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            //wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[@class='loader-overlay-section']")));
+            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            return this;
+        }
+       
+
+    public QuotePage EnterWidth(string WidthEntered)
         {
             //Do not remove below Wait. This is essential to ensure that page has loaded
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
+
             driver.WaitForElementToBecomeVisibleWithinTimeout(Width, 10000);
             Width.EnterText(WidthEntered);
             _logger.Info($": Successfully entered width {WidthEntered}");
@@ -344,8 +356,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage EnterHeight(string HeightEntered)
         {
-            new System.Threading.ManualResetEvent(false).WaitOne(2000);
-            driver.WaitForElementToBecomeVisibleWithinTimeout(Height, 10000);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
+            driver.WaitForElement(Height, 10000);
             Height.EnterText(HeightEntered);
             _logger.Info($": Successfully entered height {HeightEntered}");
             return this;
@@ -358,6 +370,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage EnterRoomLocation(string RoomLocation)
         {
+
             driver.WaitForElementToBecomeVisibleWithinTimeout(roomlocation, 10000);
             roomlocation.EnterText(RoomLocation);
             _logger.Info($": Successfully entered room location {RoomLocation}");
@@ -479,9 +492,10 @@ namespace UnitTestNDBProject.Pages
             foreach (DataDictionary data in productLineData)
             {
                 ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
-                Thread.Sleep(4000);
-                ClickOnAddProduct().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
-                    .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton();
+                // Thread.Sleep(4000);
+                new System.Threading.ManualResetEvent(false).WaitOne(1000);
+                ClickOnAddProduct().WaitUntilPageload().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
+                    .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
             }
         }
        
@@ -787,6 +801,7 @@ namespace UnitTestNDBProject.Pages
 
         public QuotePage ClickOnEditButtonOfMeasurementAndInstallation()
         {
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
             driver.WaitForElement(EditButtonOfAddress);
             EditButtonOfAddress.Clickme(driver);
             return this;
