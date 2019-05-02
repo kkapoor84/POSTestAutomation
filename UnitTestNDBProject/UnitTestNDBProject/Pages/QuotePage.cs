@@ -747,6 +747,7 @@ namespace UnitTestNDBProject.Pages
 
                 {
                 driver.FindElement(By.XPath("(//div[@class='dot-btn'])["+ i+ "]")).Clickme(driver);
+                                Thread.Sleep(5000);
                 driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])["+i+"]")).Clickme(driver);
                     _logger.Info($" Clicked on Delete Product Line.");
                     OkButton.Clickme(driver);
