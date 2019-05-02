@@ -203,7 +203,12 @@ namespace UnitTestNDBProject.Tests
         public void A7_VerifyProductCreation()
         {
             // _QuotePage.SearchFunction();
-            _QuotePage.ClickOnAddNewQuote().AddMultipleProducts(productLineFeatureParsedData.Data);
+            _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
+
+            Assert.True(_QuotePage.VerifyErrorPopup());
+
+            _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark)
+                .ApplyInternalInfoUpdates().AddMultipleProducts(productLineFeatureParsedData.Data);
 
             Assert.True(_QuotePage.VerifyQuoteCreation());
 
