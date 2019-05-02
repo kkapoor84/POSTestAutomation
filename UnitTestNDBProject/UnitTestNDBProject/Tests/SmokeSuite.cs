@@ -207,8 +207,11 @@ namespace UnitTestNDBProject.Tests
 
             Assert.True(_QuotePage.VerifyErrorPopup());
 
-            _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark)
-                .ApplyInternalInfoUpdates().AddMultipleProducts(productLineFeatureParsedData.Data);
+            //_QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark)
+            //    .ApplyInternalInfoUpdates()
+            _QuotePage.OkOnErrorMessage();
+            Thread.Sleep(5000);
+            _QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);
 
             Assert.True(_QuotePage.VerifyQuoteCreation());
 
