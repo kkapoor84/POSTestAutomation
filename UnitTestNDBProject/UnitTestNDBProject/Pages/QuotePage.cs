@@ -314,10 +314,11 @@ namespace UnitTestNDBProject.Pages
         public QuotePage ClickOnAddProduct()
         {
             //Do not remove below Wait. This is essential to ensure that spinner is gone on Quote/Order page and ADD PRODUCTS button is clickable
-           // Thread.Sleep(10000);
+            // Thread.Sleep(10000);
             driver.WaitForElement(AddProductLine, 10000);
             AddProductLine.Clickme(driver);
             _logger.Info($": ADD PRODUCTS button clicked");
+
             return this;
         }
 
@@ -329,8 +330,9 @@ namespace UnitTestNDBProject.Pages
 
         public QuotePage WaitUntilPageload()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-            wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[@class='loader-overlay-section']")));
+            //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            //wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[@class='loader-overlay-section']")));
+            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
             return this;
         }
        
@@ -339,6 +341,7 @@ namespace UnitTestNDBProject.Pages
         {
             //Do not remove below Wait. This is essential to ensure that page has loaded
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
+
             driver.WaitForElementToBecomeVisibleWithinTimeout(Width, 10000);
             Width.EnterText(WidthEntered);
             _logger.Info($": Successfully entered width {WidthEntered}");
@@ -352,7 +355,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage EnterHeight(string HeightEntered)
         {
-            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
             driver.WaitForElement(Height, 10000);
             Height.EnterText(HeightEntered);
             _logger.Info($": Successfully entered height {HeightEntered}");
