@@ -2,6 +2,7 @@
 using NLog;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -202,16 +203,17 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(7), Category("Smoke"), Description("Verify Product and Quote Creation by adding 3 product lines.")]
         public void A7_VerifyProductCreation()
         {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             // _QuotePage.SearchFunction();
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
 
             Assert.True(_QuotePage.VerifyErrorPopup());
 
-            //_QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark)
-            //    .ApplyInternalInfoUpdates()
-            _QuotePage.OkOnErrorMessage();
-            Thread.Sleep(5000);
-            _QuotePage.AddMultipleProducts(productLineFeatureParsedData.Data);
+            _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateInternalInfo().UpdateSidemark(internalInforData.Sidemark);
+        
+            js.ExecuteScript("window.scrollBy(0,-200)");
+            _QuotePage.ApplyInternalInfoUpdates()
+            .AddMultipleProducts(productLineFeatureParsedData.Data);
 
             Assert.True(_QuotePage.VerifyQuoteCreation());
 
