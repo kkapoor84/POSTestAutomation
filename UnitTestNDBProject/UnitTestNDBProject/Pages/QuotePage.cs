@@ -288,6 +288,8 @@ namespace UnitTestNDBProject.Pages
 
         public QuotePage ApplyInternalInfoUpdates()
         {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,-200)");
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfoApply, 10000);
             InternalInfoApply.Clickme(driver);
