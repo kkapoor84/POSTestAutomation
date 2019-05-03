@@ -455,7 +455,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public QuotePage ClickAddProductButton()
         {
-            Thread.Sleep(7000);
+            Thread.Sleep(5000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
             AddProductLineButton.Clickme(driver);
@@ -549,7 +549,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyProductsEntered(List<DataDictionary> productLineData)
         {
-            Thread.Sleep(10000);
+           // Thread.Sleep(10000);
             int totalProductsOnScreen = CountProductLineEntered();
             int totalCountOfProducts = productLineData.Count;
             bool productQuantity = false;
@@ -595,7 +595,6 @@ namespace UnitTestNDBProject.Pages
         public bool VerifyTotalProductsAfterCopy(List<DataDictionary> productLineData)
         {
 
-            Thread.Sleep(5000);
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
             int totalProductsOnScreen = CountProductLineEntered();
             int totalCountOfProducts = productLineData.Count+1;
@@ -652,7 +651,7 @@ namespace UnitTestNDBProject.Pages
             foreach (DataDictionary data in editproductLineData)
             {
                 EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
-                Thread.Sleep(8000);
+                Thread.Sleep(4000);
                 EnterRoomLocation(editProductLine.NDBRoomLocation)
                     .SelectProductOptionsEdit(editProductLine.EditProductDetails).ClickAddProductButton();
             }
@@ -684,7 +683,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyProductDataAfterEdit(String EditProductDetails)
         {
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
             int i = 2;
             int count = 0;
             string[] productLineDataArray = new string[100];
@@ -712,31 +711,6 @@ namespace UnitTestNDBProject.Pages
             return dataIsValid;
         }
 
-        /*
-        public bool VerifyProduct()
-        {
-            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//li[2]//div[3]")));
-
-            bool productEnteredIsCorrect = false;
-
-            for (int counter = 2; counter < editProductDetails.Count; counter++)
-            {
-
-                string productDataXpath = ("//li[2]//div[" + counter + "]");
-                string productDataEntered = driver.FindElement(By.XPath(productDataXpath)).GetText(driver);
-                string ExpectedPhone = editProductDetails[counter].Item1;
-                if (ExpectedPhone.Contains(productDataEntered))
-                {
-                    productEnteredIsCorrect = true;
-                    _logger.Info($" Correct Color Updated");
-                }
-
-            }
-
-            return productEnteredIsCorrect;
-
-        }*/
 
             /// <summary>
             /// Function to delete multiple product lines.
@@ -754,9 +728,9 @@ namespace UnitTestNDBProject.Pages
                     _logger.Info($" Clicked on Delete Product Line.");
                     OkButton.Clickme(driver);
                 WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
-                Thread.Sleep(10000);
+                Thread.Sleep(8000);
             }
-            Thread.Sleep(10000);
+            Thread.Sleep(8000);
             i = 1;
             if ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
             {

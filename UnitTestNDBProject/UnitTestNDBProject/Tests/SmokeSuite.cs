@@ -211,7 +211,6 @@ namespace UnitTestNDBProject.Tests
             _QuotePage.ApplyInternalInfoUpdates()
             .AddMultipleProducts(productLineFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyQuoteCreation());
-            Thread.Sleep(5000);
             Assert.True(_QuotePage.VerifyProductsEntered(productLineFeatureParsedData.Data));
         }
 
@@ -230,21 +229,11 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(9), Category("Smoke"), Description("Verify Product Line Edit Functionality")]
         public void A9_VerifyEditproductLine()
         {
-            // EditProductLineData updateCustomerData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
-            ///Thread.Sleep(2000);
-            //_QuotePage.SearchFunction();
             _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
-            Thread.Sleep(5000);
             _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
-            Thread.Sleep(5000);
             Assert.True(_QuotePage.VerifyProductDataAfterEdit("Living Room"));
             Assert.True(_QuotePage.VerifyProductDataAfterEdit("Dune"));
             Assert.True(_QuotePage.VerifyProductDataAfterEdit("OB"));
-
-            //List<Tuple<string, string>> enteredData = _QuotePage
-            //List<Tuple<string, string>> phones = _EnterNewCustomerPage.AddCustomerPhones(updateCustomerData.Phones);
-
-            //   Assert.True(_QuotePage.VerifyTotalProductsAfterCopy(productLineFeatureParsedData.Data));
 
         }
 
