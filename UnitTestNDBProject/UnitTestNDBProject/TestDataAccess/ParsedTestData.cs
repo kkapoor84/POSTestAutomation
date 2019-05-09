@@ -174,4 +174,14 @@ namespace UnitTestNDBProject.TestDataAccess
     }
 
     #endregion
+
+    #region Reasons specific classes
+
+    public class ReasonsData
+    {
+        public string CancelReasons { get; set; }
+
+    }
+
+    #endregion
 }

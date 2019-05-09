@@ -27,9 +27,11 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData measurementAndInstallationParsedData;
         private static ParsedTestData adjustmentParsedData;
         private static ParsedTestData taxParsedData;
+        private static ParsedTestData reasonsParser;
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
-     //   EditProductLineData editProductData;
+        ReasonsData cancelReasonData;
+        //   EditProductLineData editProductData;
 
 
         [OneTimeSetUp]
@@ -51,14 +53,16 @@ namespace UnitTestNDBProject.Tests
             measurementAndInstallationParsedData = DataAccess.GetFeatureData("MeasurementAndInstallationScreen");
             adjustmentParsedData = DataAccess.GetFeatureData("AddAdjustmentsPopup");
             taxParsedData = DataAccess.GetFeatureData("TaxExemptionPopup");
+            reasonsParser = DataAccess.GetFeatureData("Reasons");
 
 
 
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
             internalInforData = QuotePage.GetInternalInfoData(internalInfoParsedData);
+            cancelReasonData = QuotePage.ReadcancelReasonData(reasonsParser);
 
-           // editProductData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
+            // editProductData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
 
         }
 
@@ -297,6 +301,15 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
 
 
+        }
+
+        [Test, Category("Smoke"), Description("Cancelling order created.")]
+        public void B6_VerifyCancelOrder()
+        {
+            Thread.Sleep(2000);
+            _QuotePage.SearchFunction();
+            _QuotePage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
+            Assert.True(_QuotePage.VerifyCancelOrder());
         }
 
 

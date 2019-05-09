@@ -46,10 +46,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
         public IWebElement SearchOrder { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='quoteNumber']")]
+        [FindsBy(How = How.Id, Using = "orderNumber")]
         public IWebElement EnterOrder { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
@@ -161,7 +161,18 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'PAYMENT TYPE')]")]
         public IWebElement PaymentScreenText { get; set; }
-        
+
+        [FindsBy(How = How.Id, Using = "btnCancelOrder")]
+        public IWebElement CancelOrder { get; set; }
+
+        [FindsBy(How = How.Id, Using = "text-CancellationReason")]
+        public IWebElement CancelOrderReasons { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnPopupCancelOrder")]
+        public IWebElement CancelOrderPopup { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'CANCELLED')]")]
+        public IWebElement DisabledAnchorClass { get; set; }
 
         /// <summary>
         /// Function to parse internal info data.
@@ -193,7 +204,24 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<TaxExemptionData>.ParseData(validTaxData);
         }
 
+        public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
+        {
+            object cancelReasonData = DataAccess.GetKeyJsonData(featureData, "CancelOrderReasons");
+            return JsonDataParser<ReasonsData>.ParseData(cancelReasonData);
+        }
 
+
+        public QuotePage SearchFunction()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            Thread.Sleep(3000);
+            SearchOrder.Clickme(driver);
+            EnterOrder.EnterText("2013552");
+            Enter.Clickme(driver);
+            Thread.Sleep(3000);
+            return this;
+        }
 
         /// <summary>
         /// Function to click save quote button.
@@ -1014,10 +1042,58 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        public QuotePage ClickOnCancelOrderButton()
+        {
+           // new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrder, 10000);
+            CancelOrder.Clickme(driver);
+            return this;
+        }
 
-        
+        public QuotePage EnterCancelOrderReasons(string reasons)
+        {
+           // new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderReasons, 10000);
+            driver.WaitForElement(CancelOrderReasons);
+            CancelOrderReasons.EnterText(reasons);
+            return this;
+        }
 
+        public QuotePage ClickOnCancelOrderPopup()
+        {
+           // new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderPopup, 10000);
+            CancelOrderPopup.Clickme(driver);
+            return this;
+        }
 
+        public bool VerifyCancelOrder()
+        {
+            // new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,-200)");
+            driver.WaitForElementToBecomeVisibleWithinTimeout(DisabledAnchorClass, 10000);
+            bool isOrderCancelled = false;
+            String orderHeading = DisabledAnchorClass.GetText(driver);
+
+            if (orderHeading.Contains("CANCELLED"))
+            {
+                isOrderCancelled = true;
+                _logger.Info($"Verified order is cancelled.");
+            }
+
+            return isOrderCancelled;
+            //driver.WaitForElement(InternalInfo);
+            //bool isOrderCancelled = false;
+            //if (DisabledAnchorClass.Displayed)
+            //{
+            //    isOrderCancelled = true;
+            //    _logger.Info($"Verified order is cancelled.");
+
+            //}
+
+            //return isOrderCancelled;
+        }
 
     }
 }
