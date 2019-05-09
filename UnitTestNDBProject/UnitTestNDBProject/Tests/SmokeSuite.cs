@@ -304,10 +304,8 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Category("Smoke"), Description("Cancelling order created.")]
-        public void B6_VerifyCancelOrder()
+        public void B12_VerifyCancelOrder()
         {
-            Thread.Sleep(2000);
-            _QuotePage.SearchFunction();
             _QuotePage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
             Assert.True(_QuotePage.VerifyCancelOrder());
         }
