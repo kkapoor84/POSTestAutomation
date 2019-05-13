@@ -1150,8 +1150,12 @@ namespace UnitTestNDBProject.Page
         {
             IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
-          //  driver.WaitForElement(copytoquote);
+            //  driver.WaitForElement(copytoquote);
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,200)");
+            _logger.Info($"Scrolled down");
             copytoquote.Clickme(driver);
+            _logger.Info($"CLicked on copy to quote");
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             SaveButton.Clickme(driver);
             return this;
