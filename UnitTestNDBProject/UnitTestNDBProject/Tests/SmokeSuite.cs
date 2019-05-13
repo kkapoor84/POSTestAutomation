@@ -297,7 +297,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Category("Smoke"), Description("Quote Convert to Order")]
         public void B5_VerifyQuoteConvertToOrder()
         {
-            _QuotePage.SearchFunctionForQuote();
+            _QuotePage.SearchFunctionForOrder();
             _QuotePage.CopyQuoteAndSave();
             _QuotePage.WaitUntilPageload();
            _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();
