@@ -58,6 +58,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//div[@class='modal-space']/ul/li")]
         public IWebElement WarningText { get; set; }
 
+        /// <summary>
+        /// Function to verify that order is created
+        /// </summary>
+        /// <returns></returns>
         public Boolean VerifyOrderIsCreated()
 
         {
@@ -76,6 +80,10 @@ namespace UnitTestNDBProject.Pages
             return isOrderCreated;
            
         }
+        /// <summary>
+        /// Function to verify that correct number of row is added on payment grid after each successful payment
+        /// </summary>
+        /// <returns></returns>
         public Boolean VerifyCorrectNumberOfRowAddedInPaymentSection()
 
         {
@@ -92,8 +100,11 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-       
-
+        /// <summary>
+        /// Function to verifypayment grid data on order page
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
         public Boolean VerifyGridData(List<GridRecord> record)
 
         {
@@ -141,7 +152,10 @@ namespace UnitTestNDBProject.Pages
 
             return IsDataMatched;
         }
-
+        /// <summary>
+        /// Function to click on add detail button on order page
+        /// </summary>
+        /// <returns></returns>
         public OrderPage ClickOnAddDetailsButton()
         {
             
@@ -154,7 +168,10 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-
+        /// <summary>
+        ///Function to click on add new payment button on order page
+        /// </summary>
+        /// <returns></returns>
 
         public OrderPage ClickOnNewPaymentButton()
         {
@@ -165,7 +182,10 @@ namespace UnitTestNDBProject.Pages
             return this;
 
         }
-
+        /// <summary>
+        /// Function to click on hamberger on payment grid
+        /// </summary>
+        /// <returns></returns>
         public OrderPage ClickOnHamberger()
         {
             driver.WaitForElement(PaymentRowHamberger);
@@ -173,6 +193,10 @@ namespace UnitTestNDBProject.Pages
             return this;
 
         }
+        /// <summary>
+        /// Function to click on refund option on hamberger in payment grid record
+        /// </summary>
+        /// <returns></returns>
         public OrderPage ClickOnRefund()
         {
             driver.WaitForElement(Refund);
@@ -181,6 +205,11 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Function to verify max transaction warning text on clicking on payment button
+        /// </summary>
+        /// <param name="expWarningMessage"></param>
+        /// <returns></returns>
         public Boolean VerifyMaxTransWarningOnOrderScreen_PaymentButton (String expWarningMessage)
         {
             
@@ -207,6 +236,11 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Function to verify max transaction warning tax on clicking on refund link
+        /// </summary>
+        /// <param name="expWarningMessage"></param>
+        /// <returns></returns>
         public Boolean VerifyMaxTransWarningOnOrderScreen_RefundLink(String expWarningMessage)
         {
 

@@ -182,6 +182,12 @@ namespace UnitTestNDBProject.Page
         }
 
 
+        /// <summary>
+        /// Function to  make payment using gift card
+        /// </summary>
+        /// <param name="Number"></param>
+        /// <param name="Amount"></param>
+        /// <returns></returns>
         public PaymentPage MakeGiftCardPayment(String Number,String Amount)
         {
             driver.WaitForElement(GiftCardButton);
@@ -200,6 +206,10 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        /// <summary>
+        /// Function to  to close exit payment popup screen
+        /// </summary>
+        /// <returns></returns>
         public PaymentPage CloseExitPaymentPopup()
         {
             driver.waitForElementNotVisible("//div[@class='msg-container']");
@@ -210,6 +220,12 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Function to enter details in exit payment popup 
+        /// </summary>
+        /// <param name="exitreasonvalue"></param>
+        /// <param name="reasondetail"></param>
+        /// <returns></returns>
         public PaymentPage EnterDetailInExitPaymentPopup(String exitreasonvalue, String reasondetail)
         {
             driver.waitForElementNotVisible("//div[@class='msg-container']");
@@ -233,7 +249,11 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
-
+        /// <summary>
+        /// Function to click on exit payment screen button
+        /// </summary>
+        /// <param name="exitReason"></param>
+        /// <returns></returns>
         public PaymentPage ClickOnExitPaymentScreenButton(String exitReason)
         {
 
@@ -250,7 +270,11 @@ namespace UnitTestNDBProject.Page
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
             return this;
         }
-
+        /// <summary>
+        /// Function to make payment using finance payment mode
+        /// </summary>
+        /// <param name="CashAmount"></param>
+        /// <returns></returns>
         public PaymentPage MakeFinancePayment(String CashAmount)
         {
 
@@ -269,7 +293,17 @@ namespace UnitTestNDBProject.Page
 
         }
 
-
+        /// <summary>
+        /// Function to make payment using check payment mode
+        /// </summary>
+        /// <param name="actName"></param>
+        /// <param name="routingNo"></param>
+        /// <param name="actNo"></param>
+        /// <param name="checkNo"></param>
+        /// <param name="stateId"></param>
+        /// <param name="state"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public PaymentPage MakeCheckPayment(String actName, String routingNo, String actNo, String checkNo, String stateId, String state,String amount)
         {
 
@@ -303,6 +337,12 @@ namespace UnitTestNDBProject.Page
             AmountTextBox.EnterText(amount);
             return this;
         }
+        /// <summary>
+        /// Function to select verificattion for check and addd detail on popup
+        /// </summary>
+        /// <param name="skipReason"></param>
+        /// <param name="skipDetail"></param>
+        /// <returns></returns>
         public PaymentPage SelectSkipVerification(String skipReason, String skipDetail)
         { 
             CheckSkipVerification.Clickme(driver);
@@ -321,7 +361,16 @@ namespace UnitTestNDBProject.Page
             return this;
 
         }
-
+        /// <summary>
+        /// Function to make payment using manual credit card
+        /// </summary>
+        /// <param name="creditCardNo"></param>
+        /// <param name="expirationMonth"></param>
+        /// <param name="expirationYear"></param>
+        /// <param name="cVVCode"></param>
+        /// <param name="creditCardHolder"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public PaymentPage MakeCreditCardPayment(String creditCardNo, String expirationMonth, String expirationYear, String cVVCode, String creditCardHolder,String amount)
         {
 
@@ -365,7 +414,11 @@ namespace UnitTestNDBProject.Page
 
 
         }
-
+        /// <summary>
+        /// Function to make payment using saved credit card
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public PaymentPage MakeSavedCreditCardPayment(String amount)
         {
 
@@ -385,7 +438,11 @@ namespace UnitTestNDBProject.Page
 
 
         }
-
+        /// <summary>
+        /// Function to verify the max transaction warning tax popup on payment screen
+        /// </summary>
+        /// <param name="expWarningMessage"></param>
+        /// <returns></returns>
         public Boolean VerifyMaxTransWarningOnPaymentScreen(String expWarningMessage)
         {
 

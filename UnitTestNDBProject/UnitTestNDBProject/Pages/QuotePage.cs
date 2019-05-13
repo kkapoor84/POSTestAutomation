@@ -162,8 +162,15 @@ namespace UnitTestNDBProject.Page
 
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'PAYMENT TYPE')]")]
         public IWebElement PaymentScreenText { get; set; }
-        
 
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
+        public IWebElement SearchQuote { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
+        public IWebElement EnterOuote { get; set; }
+
+        [FindsBy(How = How.Id, Using = "adjustmentOption0")]
+        public IWebElement state { get; set; }
 
         /// <summary>
         /// Function to parse internal info data.
@@ -777,7 +784,10 @@ namespace UnitTestNDBProject.Page
 
 
 
-
+        /// <summary>
+        /// Click on edit button of measruement and installtion page
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickOnEditButtonOfMeasurementAndInstallation()
         {
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
@@ -787,7 +797,11 @@ namespace UnitTestNDBProject.Page
         }
 
 
-
+        /// <summary>
+        /// Function to asserting if direction is added
+        /// </summary>
+        /// <param name="ExpectedDirectionText"></param>
+        /// <returns></returns>
         public bool VerifyDirectionIsAdded(String ExpectedDirectionText)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(EditButtonOfAddress, 5000);
@@ -801,6 +815,12 @@ namespace UnitTestNDBProject.Page
             return ifDirectionAdded;
         }
 
+        /// <summary>
+        /// Function to Verify addtional cost on quote page
+        /// </summary>
+        /// <param name="SelectCost"></param>
+        /// <param name="ExpectedCostAmount"></param>
+        /// <returns></returns>
         public bool VerifyAdditionalCost(Boolean SelectCost, String ExpectedCostAmount)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(5000);
@@ -825,6 +845,10 @@ namespace UnitTestNDBProject.Page
 
             return isCostAdded;
         }
+        /// <summary>
+        /// Function to click on adjustment link
+        /// </summary>
+        /// <returns></returns>
 
         public QuotePage ClickOnAdjustmentsLink()
         {
@@ -834,8 +858,12 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
-            
 
+        /// <summary>
+        /// Function to Add adjustment main Fucntion
+        /// </summary>
+        /// <param name="adjustments"></param>
+        /// <returns></returns>
         public QuotePage AddAdjustments(List<Adjustment> adjustments)
         {
             for (int counter = 0; counter < adjustments.Count; counter++)
@@ -854,9 +882,13 @@ namespace UnitTestNDBProject.Page
         }
 
 
-        [FindsBy(How = How.Id, Using = "adjustmentOption0")]
-        public IWebElement state { get; set; }
 
+        /// <summary>
+        /// Function to select adjustment type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public QuotePage SelectAdjustmentType(String type, int i)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -874,6 +906,12 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        /// <summary>
+        /// Function to select adjustment code
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public QuotePage SelectAdjustmentCode(String code, int i)
         {
             string MyID = "adjustmentType" + i;
@@ -886,6 +924,12 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        /// <summary>
+        /// Function to Add ajustment amount on quote page
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public QuotePage AddAmount(String amount, int i)
         {
             string MyID = "adjustmentAmount" + i;
@@ -895,6 +939,10 @@ namespace UnitTestNDBProject.Page
             return this;
 
         }
+        /// <summary>
+        /// Function to Click on Tax Link
+        /// </summary>
+        /// <returns></returns>
 
         public QuotePage ClickOnTaxLink()
         {
@@ -904,6 +952,12 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Function to Select Non-applicable tax from drop down on tax popup
+        /// </summary>
+        /// <param name="SelectTaxExempt"></param>
+        /// <param name="TaxIdNumber"></param>
+        /// <returns></returns>
         public QuotePage SelectNonApplicableTax(bool SelectTaxExempt,String TaxIdNumber)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -926,6 +980,11 @@ namespace UnitTestNDBProject.Page
            return this;
         }
 
+        /// <summary>
+        /// Function to Select applcable tax from tax popup
+        /// </summary>
+        /// <param name="TaxIdNumber"></param>
+        /// <returns></returns>
         public QuotePage SelectApplicableTax(String TaxIdNumber)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -936,6 +995,10 @@ namespace UnitTestNDBProject.Page
             DoneButton.Clickme(driver);
             return this;
         }
+        /// <summary>
+        /// Function to click on convert to order  button and wait untill loders gets loaded
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickOnConvertToQuote()
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -946,6 +1009,10 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Function to Select Convert to POS on order page
+        /// </summary>
+        /// <returns></returns>
         public QuotePage SelectConvertToPOS()
         {
             ConvertToPOS.Clickme(driver);
@@ -953,6 +1020,10 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Function to  Verify that user is navigated to payment page
+        /// </summary>
+        /// <returns></returns>
         public bool VerifyUserIsNavigatedToPaymentPage()
         {
             driver.WaitForElement(PaymentScreenText);
@@ -967,7 +1038,12 @@ namespace UnitTestNDBProject.Page
            return isPaymentPageDisplayed;
         }
 
-        
+
+        /// <summary>
+        /// Function to  Verify error message while selecting invalid taxid for the given customer addres
+        /// </summary>
+        /// <param name="ExpetectedErrorMessage"></param>
+        /// <returns></returns>
         public bool VerifyTaxErrorMessage(String ExpetectedErrorMessage)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -984,7 +1060,11 @@ namespace UnitTestNDBProject.Page
 
         }
 
-
+        /// <summary>
+        /// Verifying total adjustment amount
+        /// </summary>
+        /// <param name="expectedTotalAmountOfAddedAdjustments"></param>
+        /// <returns></returns>
         public bool VerifyAdjustmentTotalAmount(String expectedTotalAmountOfAddedAdjustments)
         {
             driver.WaitForElement(AdjustmentVIew);
@@ -1000,6 +1080,11 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        /// <summary>
+        /// Function to verify tax exemption is applied
+        /// </summary>
+        /// <param name="expectedTotalTaxExempt"></param>
+        /// <returns></returns>
         public bool VerifyTaxExemptionIsApplied(String expectedTotalTaxExempt)
         {
 
@@ -1016,14 +1101,11 @@ namespace UnitTestNDBProject.Page
             return isTaxExempt;
 
         }
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
-        public IWebElement SearchQuote { get; set; }
 
-
-
-        [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
-        public IWebElement EnterOuote { get; set; }
-
+        /// <summary>
+        /// Function to Search function for quote
+        /// </summary>
+        /// <returns></returns>
         public QuotePage SearchFunctionForQuote()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
@@ -1037,6 +1119,10 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Function to  Search function for order
+        /// </summary>
+        /// <returns></returns>
         public QuotePage SearchFunctionForOrder()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
@@ -1050,6 +1136,11 @@ namespace UnitTestNDBProject.Page
             Thread.Sleep(1000);
             return this;
         }
+
+        /// <summary>
+        /// Fuunction to Click on copt to quote button and save it
+        /// </summary>
+        /// <returns></returns>
         public QuotePage CopyQuoteAndSave()
         {
             IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
