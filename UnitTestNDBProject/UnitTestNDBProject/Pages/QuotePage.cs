@@ -1149,7 +1149,8 @@ namespace UnitTestNDBProject.Page
         public QuotePage CopyQuoteAndSave()
         {
             IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
-            driver.WaitForElement(copytoquote);
+           // driver.WaitForElement(copytoquote);
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
             copytoquote.Clickme(driver);
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             SaveButton.Clickme(driver);
