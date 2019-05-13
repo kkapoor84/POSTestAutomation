@@ -34,6 +34,19 @@ namespace UnitTestNDBProject.Utils
             new WebDriverWait(driver, TimeSpan.FromSeconds(timeout)).Until(ActionHelper.ElementIsVisible(element));
         }
 
+        public static void WaitForElementToBeClickable(this IWebDriver driver, By locator, int timeout=30)
+        {
+            // Thread.Sleep(5000);
+            new WebDriverWait(driver, TimeSpan.FromSeconds(timeout)).Until(ExpectedConditions.ElementToBeClickable(locator));
+
+        }
+
+        public static void WaitForElementToBeVisible(this IWebDriver driver, By locator, int timeout = 30)
+        {
+            // Thread.Sleep(5000);
+            new WebDriverWait(driver, TimeSpan.FromSeconds(timeout)).Until(ExpectedConditions.ElementIsVisible(locator));
+
+        }
 
 
         // Explicit Wait
@@ -101,6 +114,8 @@ namespace UnitTestNDBProject.Utils
                 }
             });
         }
+
+
 
     }
 }

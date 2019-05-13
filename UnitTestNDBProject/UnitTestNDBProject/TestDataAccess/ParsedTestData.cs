@@ -174,4 +174,47 @@ namespace UnitTestNDBProject.TestDataAccess
     }
 
     #endregion
+
+    #region Payment data specific classes
+
+    public class PaymentData
+    {
+        public string Amount { get; set; }
+        public string GiftCardNumber { get; set; }
+      
+        public string ExitPaymentReason { get; set; }
+        public string ExitReasonDropDownValue { get; set; }
+        public string ReasonDetails { get; set; }
+        public string AccountName { get; set; }
+        public string RoutingNumber { get; set; }
+        public string AccountNumber { get; set; }
+        public string CheckNumber { get; set; }
+        public string StateId { get; set; }
+        public string State { get; set; }
+        public string SkippingReason { get; set; }
+        public string SkippingReasonDetail { get; set; }
+        public string CreditCardNumber { get; set; }
+        public string ExpirationMonth { get; set; }
+        public string ExpirationYear { get; set; }
+        public string CVVCode { get; set; }
+        public string CreditCardHolder { get; set; }
+        public string WarningMessageOnRefund { get; set; }
+        public string WarningMessageOnPayment { get; set; }
+
+        public List<GridRecord> GridData { get; set; }
+
+    }
+
+    public class GridRecord
+    {
+        public string Payment { get; set; }
+        public string PaymentMethod { get; set; }
+        public string OrderStatus { get; set; }
+        public string SalesPerson { get; set; }
+        public string AmountCollected { get; set; }
+        public string AmountPosted { get; set; }
+        public string BalanceDue { get; set; }
+
+    }
+    #endregion
 }

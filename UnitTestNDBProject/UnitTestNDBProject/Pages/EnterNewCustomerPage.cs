@@ -688,8 +688,10 @@ namespace UnitTestNDBProject.Pages
                 if (ExpectedEmail.Contains(actualEmailText))
                 {
                     emailAddressValue = true;
-                    _logger.Info($" Email Is Correct");
+                    _logger.Info($" Email Is Correct{emailCounter}");
                 }
+
+           
 
             }
             return emailAddressValue;

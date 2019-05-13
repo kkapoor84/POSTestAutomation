@@ -10,7 +10,7 @@ using UnitTestNDBProject.Utils;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 using OpenQA.Selenium.Interactions;
 
-namespace UnitTestNDBProject.Pages
+namespace UnitTestNDBProject.Page
 {
     public class QuotePage
     {
@@ -18,9 +18,9 @@ namespace UnitTestNDBProject.Pages
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         //private static ParsedTestData productLineFeatureParsedData;
-        private static ParsedTestData productLineEditFeatureParsedData;
+        //private static ParsedTestData productLineEditFeatureParsedData;
         //List<Tuple<string, string>> productDetails;
-        List<Tuple<string, string>> editProductDetails;
+       // List<Tuple<string, string>> editProductDetails;
 
         public QuotePage(IWebDriver driver)
         {
@@ -46,10 +46,11 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
         public IWebElement SearchOrder { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='quoteNumber']")]
+        [FindsBy(How = How.Id, Using = "orderNumber")]
         public IWebElement EnterOrder { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
@@ -162,6 +163,7 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'PAYMENT TYPE')]")]
         public IWebElement PaymentScreenText { get; set; }
         
+
 
         /// <summary>
         /// Function to parse internal info data.
@@ -874,7 +876,6 @@ namespace UnitTestNDBProject.Pages
 
         public QuotePage SelectAdjustmentCode(String code, int i)
         {
-           // Thread.Sleep(2000);
             string MyID = "adjustmentType" + i;
             driver.WaitForElement(driver.FindElement(By.Id(MyID)));        
             Actions actions = new Actions(driver);
@@ -937,6 +938,8 @@ namespace UnitTestNDBProject.Pages
         }
         public QuotePage ClickOnConvertToQuote()
         {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,500)");
             ConvertToOrderButton.Clickme(driver);
             driver.WaitForElement(ContinueButton);
             ContinueButton.Clickme(driver);
@@ -1013,10 +1016,49 @@ namespace UnitTestNDBProject.Pages
             return isTaxExempt;
 
         }
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
+        public IWebElement SearchQuote { get; set; }
 
 
-        
 
+        [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
+        public IWebElement EnterOuote { get; set; }
+
+        public QuotePage SearchFunctionForQuote()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            SearchQuote.Clickme(driver);
+            EnterOuote.EnterText("703895");
+            Enter.Clickme(driver);
+            WaitUntilPageload();
+           // Thread.Sleep(1000);
+
+            return this;
+        }
+
+        public QuotePage SearchFunctionForOrder()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            SearchOrder.Clickme(driver);
+          //  EnterOrder.EnterText("2013543");
+            EnterOrder.EnterText("2013563");
+            
+            Enter.Clickme(driver);
+            WaitUntilPageload();
+            Thread.Sleep(1000);
+            return this;
+        }
+        public QuotePage CopyQuoteAndSave()
+        {
+            IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
+            driver.WaitForElement(copytoquote);
+            copytoquote.Clickme(driver);
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+            SaveButton.Clickme(driver);
+            return this;
+        }
 
 
     }
