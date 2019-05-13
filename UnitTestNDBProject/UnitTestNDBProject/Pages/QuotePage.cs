@@ -1132,12 +1132,16 @@ namespace UnitTestNDBProject.Page
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
             Search.Clickme(driver);
+            _logger.Info($" User clicked on search button on top navigation panel");
             SearchOrder.Clickme(driver);
-          //  EnterOrder.EnterText("2013543");
+            _logger.Info($" User clicked on search for order tab on search page");
+            //  EnterOrder.EnterText("2013543");
             EnterOrder.EnterText("2013671");
-            
+            _logger.Info($" User entered quote{2013671}");
             Enter.Clickme(driver);
+            _logger.Info($" User clicked on search button");
             WaitUntilPageload();
+            _logger.Info($" Waited for loader gets loaded");
             Thread.Sleep(1000);
             return this;
         }
@@ -1159,7 +1163,7 @@ namespace UnitTestNDBProject.Page
             _logger.Info($"clicked action menu frist time");
             new System.Threading.ManualResetEvent(false).WaitOne(1000);
             driver.FindElement(By.XPath("//div[@id='scroll-quote-actions']//i")).Clickme(driver);
-            _logger.Info($"clicked action menu second time")
+            _logger.Info($"clicked action menu second time");
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
             driver.FindElement(By.XPath("//div[@id='scroll-quote-actions']//ul/li[5]/a")).Clickme(driver);
             _logger.Info($"CLicked on copy to quote");
@@ -1170,7 +1174,7 @@ namespace UnitTestNDBProject.Page
 
         public QuotePage CopyQuoteAndSave()
         {
-            IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
+//            IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             //  driver.WaitForElement(copytoquote);
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -1181,7 +1185,7 @@ namespace UnitTestNDBProject.Page
             _logger.Info($"clicked action menu frist time");
             new System.Threading.ManualResetEvent(false).WaitOne(1000);
             driver.FindElement(By.XPath("//div[@id='scroll-quote-actions']//i")).Clickme(driver);
-            _logger.Info($"clicked action menu second time")
+            _logger.Info($"clicked action menu second time");
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
             driver.FindElement(By.Id("btnCopyOrderToQuote")).Clickme(driver);
             _logger.Info($"CLicked on copy to quote");
