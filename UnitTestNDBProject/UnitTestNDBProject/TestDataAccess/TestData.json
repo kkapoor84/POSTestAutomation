@@ -332,7 +332,7 @@
 					"StateId": "1234567890",
 					"State": "AK - Alaska",
 					"SkippingReason": "Other",
-					"SkippingReasonDetail": "AK - Alaska",
+					"SkippingReasonDetail": "Some Technical Issue",
 					"ExitReasonDropDownValue": "Credit card declined",
 					"ReasonDetails": "Credit Card is not working currently"
 
