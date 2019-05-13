@@ -91,8 +91,10 @@ namespace UnitTestNDBProject.Pages
 
             if (precount + 1 == actualNoOfrecordInPaymentGrid)
             {
-                precount++;
+                int currentcount=precount++;
+                _logger.Info($" Totl record added in payment grid {currentcount}");
                 return true;
+
             }
             else {
                 return false;
@@ -164,6 +166,7 @@ namespace UnitTestNDBProject.Pages
             //This will scroll the page till the element is found		
             ex.ExecuteScript("arguments[0].scrollIntoView();", AddDetailButton);
             AddDetailButton.Clickme(driver);
+            _logger.Info($" User clicked on add detail button");
             return this;
 
         }
@@ -179,6 +182,7 @@ namespace UnitTestNDBProject.Pages
             //This will scroll the web page till end.		
             ex.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
             NewPaymentButton.Clickme(driver);
+            _logger.Info($" User clicked on new payment button");
             return this;
 
         }
@@ -227,7 +231,7 @@ namespace UnitTestNDBProject.Pages
             if (expWarningMessage.Equals(ActualWarningMessageForMaxiumumTransaction))
             {
                 isWarningPopulated = true;
-                _logger.Info($" Maximun transaction has been reached");
+                _logger.Info($" Maximun transaction has been reached verified on order scree by clicking on new payment button");
             }
             driver.WaitForElement(OkButton);
             OkButton.Clickme(driver);
@@ -256,7 +260,7 @@ namespace UnitTestNDBProject.Pages
             if (expWarningMessage.Equals(ActualWarningMessageForMaxiumumTransaction))
             {
                 isWarningPopulated = true;
-                _logger.Info($" Maximun transaction has been reached");
+                _logger.Info($" Maximun transaction has been reached verified on order screen by clicking on refund ");
             }
             driver.WaitForElement(OkButton);
             OkButton.Clickme(driver);

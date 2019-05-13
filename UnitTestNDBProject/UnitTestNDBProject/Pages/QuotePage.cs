@@ -345,6 +345,7 @@ namespace UnitTestNDBProject.Page
             //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             //wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[@class='loader-overlay-section']")));
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            _logger.Info($" Wait until loader is loaded");
             return this;
         }
        
@@ -1004,8 +1005,10 @@ namespace UnitTestNDBProject.Page
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("window.scrollBy(0,500)");
             ConvertToOrderButton.Clickme(driver);
+            _logger.Info($" User clicked on convert to order button");
             driver.WaitForElement(ContinueButton);
             ContinueButton.Clickme(driver);
+            _logger.Info($" User clicked on contiue button");
             return this;
         }
 
@@ -1016,7 +1019,9 @@ namespace UnitTestNDBProject.Page
         public QuotePage SelectConvertToPOS()
         {
             ConvertToPOS.Clickme(driver);
+            _logger.Info($" User clicked onconvert to POS button");
             ContinueConvertToOrder.Clickme(driver);
+            _logger.Info($" User clicked on contiue button");
             return this;
         }
 
@@ -1152,8 +1157,10 @@ namespace UnitTestNDBProject.Page
            // driver.WaitForElement(copytoquote);
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             copytoquote.Clickme(driver);
+            _logger.Info($" User clicked on copy to quote button");
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             SaveButton.Clickme(driver);
+            _logger.Info($" User clicked on save button");
             return this;
         }
 

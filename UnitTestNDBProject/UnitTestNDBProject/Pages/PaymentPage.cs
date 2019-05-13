@@ -193,14 +193,20 @@ namespace UnitTestNDBProject.Page
             driver.WaitForElement(GiftCardButton);
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
             GiftCardButton.Clickme(driver);
+            _logger.Info($" User clicked on gift card button");
             GiftCardNumber.EnterText(Number);
+            _logger.Info($" User entered gift card number");
             AmountTextBox.Clickme(driver);
+            _logger.Info($" User clicked on amount text box");
             driver.waitForElementNotVisible("//label[@class='form-value']/span");
             
             AmountTextBox.EnterText(Amount);
+            _logger.Info($" User entered amount in amount text box");
             ProcessPaymentButton.Clickme(driver);
+            _logger.Info($" User clicked on process payment button");
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
             driver.WaitForElement(OkButton);
+            _logger.Info($" User clicked on ok button");
             OkButton.Clickme(driver);
             return this;
 
@@ -215,8 +221,10 @@ namespace UnitTestNDBProject.Page
             driver.waitForElementNotVisible("//div[@class='msg-container']");
             driver.WaitForElement(HomeIcon);
             HomeIcon.Clickme(driver);
+            _logger.Info($" User clicked on ome icon");
             driver.WaitForElement(CancleButton);
             CancleButton.Clickme(driver);
+            _logger.Info($" User clicked on cancle button of exit payment popup");
             return this;
         }
 
@@ -238,11 +246,12 @@ namespace UnitTestNDBProject.Page
             Actions actions = new Actions(driver);
             actions.SendKeys(ExitReasonDropDown, exitreasonvalue).Build().Perform();
             ExitReasonDropDown.SendKeys(Keys.Enter);
-            _logger.Info($": Successfully Selected Adjustment Code {exitreasonvalue}");
+            _logger.Info($": Successfully Selected Aexist reason from drop down {exitreasonvalue}");
             ReasonDetailTextBox.EnterText(reasondetail);
-
+            _logger.Info($": Successfully Entered reason detail");
             driver.WaitForElement(ExitPaymentButtonOnPopUp);
             ExitPaymentButtonOnPopUp.Clickme(driver);
+            _logger.Info($": User clicked on exit payment button on popup");
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
 
 
@@ -260,12 +269,14 @@ namespace UnitTestNDBProject.Page
             driver.WaitForElement(ExitPaymentScreenButton);
             IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
             ex.ExecuteScript("arguments[0].click();", ExitPaymentScreenButton);
+            _logger.Info($" User clicked on ExitPaymentScreenButton");
             driver.WaitForElement(ExitReasonTextBox);
             ExitReasonTextBox.EnterText(exitReason);
-
+            _logger.Info($" User entered text in ExitReasonTextBox");
 
             driver.WaitForElement(ExitPopupContiueButton);
             ExitPopupContiueButton.Clickme(driver);
+            _logger.Info($" User clicked on contiue button");
 
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
             return this;
@@ -275,20 +286,25 @@ namespace UnitTestNDBProject.Page
         /// </summary>
         /// <param name="CashAmount"></param>
         /// <returns></returns>
-        public PaymentPage MakeFinancePayment(String CashAmount)
+        public PaymentPage MakeFinancePayment(String Amount)
         {
 
             driver.WaitForElement(FinanceButton);
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
             FinanceButton.Clickme(driver);
-
+            _logger.Info($" User clicked on finance button");
             AccountNo.EnterText(CommonFunctions.RandomString());
+            _logger.Info($" User entered account number");
             AuthorizationCode.EnterText(CommonFunctions.RandomString());
-            AmountTextBox.EnterText(CashAmount);
+            _logger.Info($" User entered authorization code");
+            AmountTextBox.EnterText(Amount);
+            _logger.Info($" User entered amount");
             ProcessPaymentButton.Clickme(driver);
+            _logger.Info($" Userclicked on process payment button");
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
             driver.WaitForElement(OkButton);
             OkButton.Clickme(driver);
+            _logger.Info($" User clicked on okay button");
             return this;
 
         }
@@ -310,7 +326,7 @@ namespace UnitTestNDBProject.Page
             driver.WaitForElement(CheckButton);
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
             CheckButton.Clickme(driver);
-
+            _logger.Info($": User clicked on check button");
 
             driver.WaitForElement(AccountName);
             AccountName.EnterText("Automation");
@@ -335,6 +351,7 @@ namespace UnitTestNDBProject.Page
             _logger.Info($": Successfully Entered State");
 
             AmountTextBox.EnterText(amount);
+            _logger.Info($": Successfully Entered Check amount{amount}");
             return this;
         }
         /// <summary>
@@ -377,16 +394,17 @@ namespace UnitTestNDBProject.Page
             driver.WaitForElement(CreditCardButton);
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
             CreditCardButton.Clickme(driver);
+            _logger.Info($": User clciked on credit card button");
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
 
             IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
             //This will scroll the page till the element is found		
             ex.ExecuteScript("arguments[0].scrollIntoView();", EnterNewCreditCardRadioButton);
             EnterNewCreditCardRadioButton.Clickme(driver);
-
+            _logger.Info($": User clciked on enter new credit card button");
             driver.WaitForElement(CreditCardNumber);
             CreditCardNumber.EnterText(creditCardNo);
-
+            _logger.Info($": User entered credit card number");
             Actions actions = new Actions(driver);
             driver.WaitForElement(CreditExpirationMonth);
             actions.SendKeys(CreditExpirationMonth, expirationMonth).Build().Perform();
@@ -401,15 +419,17 @@ namespace UnitTestNDBProject.Page
 
             driver.WaitForElement(CreditCVVCode);
             CreditCVVCode.EnterText(cVVCode);
-
+            _logger.Info($": User entered CVVCode ");
             driver.WaitForElement(CreditCardHolder);
             CreditCardHolder.EnterText(creditCardHolder);
-
+            _logger.Info($": User entered credit card holder name");
             AmountTextBox.EnterText(amount);
             ProcessPaymentButton.Clickme(driver);
+            _logger.Info($": User clicked on process payment button");
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
             driver.WaitForElement(OkButton);
             OkButton.Clickme(driver);
+            _logger.Info($": User clicked on Okay button");
             return this;
 
 
@@ -425,14 +445,18 @@ namespace UnitTestNDBProject.Page
             driver.WaitForElement(CreditCardButton);
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
             CreditCardButton.Clickme(driver);
+            _logger.Info($": User clicked on credit card button");
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
 
             IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
             //This will scroll the page till the element is found		
             ex.ExecuteScript("arguments[0].scrollIntoView();", SavedCreditCardRadioButton);
             SavedCreditCardRadioButton.Clickme(driver);
+            _logger.Info($": User selected saved credit card radio button");
             AmountTextBox.EnterText(amount);
+            _logger.Info($": User entered amount");
             ProcessPaymentButton.Clickme(driver);
+            _logger.Info($": User clicked on process payment button");
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
             return this;
 
@@ -454,7 +478,7 @@ namespace UnitTestNDBProject.Page
             if (expWarningMessage.Equals(ActualWarningMessageForMaxiumumTransaction))
             {
                 isWarningPopulated = true;
-                _logger.Info($" Maximun transaction has been reached");
+                _logger.Info($" Maximun transaction has been reached poup is verified on payment screen");
             }
             driver.WaitForElement(OkButton);
             OkButton.Clickme(driver);
