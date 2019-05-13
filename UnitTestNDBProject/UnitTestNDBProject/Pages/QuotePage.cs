@@ -1154,7 +1154,11 @@ namespace UnitTestNDBProject.Page
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("window.scrollBy(0,200)");
             _logger.Info($"Scrolled down");
-            copytoquote.Clickme(driver);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.FindElement(By.XPath("//div[@id='scroll-quote-actions']//i")).Clickme(driver);
+            driver.FindElement(By.XPath("//div[@id='scroll-quote-actions']//i")).Clickme(driver);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.FindElement(By.XPath("//div[@id='scroll-quote-actions']//ul/li[5]/a")).Clickme(driver);
             _logger.Info($"CLicked on copy to quote");
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             SaveButton.Clickme(driver);
