@@ -135,6 +135,8 @@
     <Compile Include="Base\BaseTestClass.cs" />
     <Compile Include="Base\BasePageClass.cs" />
     <Compile Include="Pages\MeasurementAndInstallationPage.cs" />
+    <Compile Include="Pages\OrderPage.cs" />
+    <Compile Include="Pages\PaymentPage.cs" />
     <Compile Include="Pages\QuotePage.cs" />
     <Compile Include="TestDataAccess\ParsedTestData.cs" />
     <Compile Include="Pages\EnterNewCustomerPage.cs" />
@@ -166,6 +168,7 @@
     </None>
     <None Include="TestDataAccess\TestData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
