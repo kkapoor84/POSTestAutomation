@@ -1118,8 +1118,8 @@ namespace UnitTestNDBProject.Page
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
             WaitUntilPageload();
-            _logger.Info($" Waited nder loader gets loaded");
-            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            _logger.Info($" Waited for loader gets loaded");
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
 
             return this;
         }
@@ -1149,7 +1149,8 @@ namespace UnitTestNDBProject.Page
         public QuotePage CopyQuoteAndSave()
         {
             IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
-            driver.WaitForElement(copytoquote);
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+          //  driver.WaitForElement(copytoquote);
             copytoquote.Clickme(driver);
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             SaveButton.Clickme(driver);
