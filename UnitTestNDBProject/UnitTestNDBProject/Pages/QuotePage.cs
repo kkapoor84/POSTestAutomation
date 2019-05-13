@@ -1110,11 +1110,16 @@ namespace UnitTestNDBProject.Page
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
             Search.Clickme(driver);
+            _logger.Info($" User clicked on search button on top navigation panel");
             SearchQuote.Clickme(driver);
+            _logger.Info($" User clicked on search for quote tab on search page");
             EnterOuote.EnterText("703895");
+            _logger.Info($" User entered quote{703895}");
             Enter.Clickme(driver);
+            _logger.Info($" User clicked on search button");
             WaitUntilPageload();
-           // Thread.Sleep(1000);
+            _logger.Info($" Waited nder loader gets loaded");
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
 
             return this;
         }
