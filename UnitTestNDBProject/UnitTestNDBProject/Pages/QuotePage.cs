@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Threading;
 using UnitTestNDBProject.TestDataAccess;
@@ -46,10 +47,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
         public IWebElement SearchOrder { get; set; }
 
-        [FindsBy(How = How.Id, Using = "orderNumber")]
+        [FindsBy(How = How.Id, Using = "quoteNumber")]
         public IWebElement EnterOrder { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
@@ -162,13 +163,16 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'PAYMENT TYPE')]")]
         public IWebElement PaymentScreenText { get; set; }
 
+        public List<Tuple<string, string>> editedDataForProductLine;
+
+        public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public QuotePage SearchFunction()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
             Search.Clickme(driver);
             Thread.Sleep(3000);
             SearchOrder.Clickme(driver);
-            EnterOrder.EnterText("2013698");
+            EnterOrder.EnterText("704083");
             Enter.Clickme(driver);
             Thread.Sleep(3000);
             return this;
@@ -669,6 +673,9 @@ namespace UnitTestNDBProject.Pages
             }
         }
 
+
+      
+
         /// <summary>
         /// Function to read product line data
         /// </summary>
@@ -688,39 +695,127 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        //public bool VerifyProductDataAfterEdit(String EditProductDetails)
+        //{
+        //    Thread.Sleep(2000);
+        //    int i = 2;
+        //    int count = 0;
+        //    string[] productLineDataArray = new string[100];
+        //    string DataProvided = editedDataForProductLine[i].Item1;
+        //    do
+        //    {
+        //        string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
+        //        // string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
+        //        productLineDataArray[count] = productColumn;
+        //        i++;
+        //        _logger.Info(productLineDataArray[count]);
+        //    } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+
+        //    int j = 0;
+        //    bool dataIsValid = false;
+        //    do
+        //    {
+        //        if ((EditProductDetails.Contains(productLineDataArray[j])))
+        //        {
+        //            dataIsValid = true;
+        //            _logger.Info($" Data " + EditProductDetails + " Is Valid.");
+        //            break;
+        //        }
+        //        j++;
+        //    } while (productLineDataArray[j] != null);
+        //    return dataIsValid;
+        //}
+
         /// <summary>
         /// Function to verify data in product summary after edit.
         /// </summary>
         /// <param name="EditProductDetails"></param>
         /// <returns></returns>
-        public bool VerifyProductDataAfterEdit(String EditProductDetails)
+
+       
+
+
+        public bool VerifyProductDataAfterEdit(List<DataDictionary> editproductLineData)
         {
+            //foreach (DataDictionary data in editproductLineData)
+            //{
+            //    EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
+            //    String ndbRoomLocationString = editProductLine.NDBRoomLocation;
+            //    List<EditProductDetail> editProductDetails = editProductLine.EditProductDetails;
+            //}
+
             Thread.Sleep(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
             int i = 2;
             int count = 0;
             string[] productLineDataArray = new string[100];
+            //string DataProvided = editedDataForProductLine[i].Item1;
             do
             {
                 string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
                 // string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
                 productLineDataArray[count] = productColumn;
-                i++;
+                i++; count++;
                 _logger.Info(productLineDataArray[count]);
             } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
 
-            int j = 0;
-            bool dataIsValid = false;
-            do
+           
+               bool dataIsValid1 = false;
+                bool dataIsValid2 = false;
+
+            foreach (DataDictionary data in editproductLineData)
             {
-                if ((EditProductDetails.Contains(productLineDataArray[j])))
+                EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
+                String ndbRoomLocationString = editProductLine.NDBRoomLocation;
+                List<EditProductDetail> editProductDetails = editProductLine.EditProductDetails;
+
+                int j = 0;
+             
+                do
                 {
-                    dataIsValid = true;
-                    _logger.Info($" Data " + EditProductDetails + " Is Valid.");
-                    break;
-                }
-                j++;
-            } while (productLineDataArray[j] != null);
-            return dataIsValid;
+                    if (ndbRoomLocationString.Contains(productLineDataArray[j]))
+                    {
+                        dataIsValid1 = true;
+                        //_logger.Info($" Data " + EditProductDetails + " Is Valid.");
+                        //break;
+                    }
+
+                    if (editProductLine.EditProductDetails[1].Option.Contains(productLineDataArray[j]))
+                    {
+
+                        dataIsValid2 = true;
+                            //_logger.Info($" Data " + EditProductDetails + " Is Valid.");
+                            break;
+                        
+                    }
+                    j++;
+                } while (productLineDataArray[j] != null);
+            
+            }
+            if (dataIsValid1 == true && dataIsValid2 == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+
+            //int j = 0;
+            //bool dataIsValid = false;
+            //do
+            //{
+            //    if ((EditProductDetails.Contains(productLineDataArray[j])))
+            //    {
+            //        dataIsValid = true;
+            //        _logger.Info($" Data " + EditProductDetails + " Is Valid.");
+            //        break;
+            //    }
+            //    j++;
+            //} while (productLineDataArray[j] != null);
+            //return dataIsValid;
         }
 
 

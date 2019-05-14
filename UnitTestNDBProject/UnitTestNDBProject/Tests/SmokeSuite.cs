@@ -229,11 +229,11 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(9), Category("Smoke"), Description("Verify Product Line Edit Functionality")]
         public void A9_VerifyEditproductLine()
         {
+            _QuotePage.SearchFunction();
             _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
             _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
-            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Living Room"));
-            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Dune"));
-            Assert.True(_QuotePage.VerifyProductDataAfterEdit("OB"));
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit(productLineEditFeatureParsedData.Data));
+
 
         }
 
@@ -317,9 +317,8 @@ namespace UnitTestNDBProject.Tests
            
             _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
             Thread.Sleep(6000);
-            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Living Room"));
-            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Dune"));
-            Assert.True(_QuotePage.VerifyProductDataAfterEdit("OB"));
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit(productLineEditFeatureParsedData.Data));
+
         }
 
         [Test, Category("Smoke"), Description("Edit Order Productline For Order")]
