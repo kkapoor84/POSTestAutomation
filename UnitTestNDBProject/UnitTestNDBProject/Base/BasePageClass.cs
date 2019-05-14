@@ -30,7 +30,8 @@ namespace UnitTestNDBProject.Base
         {
             driver.Navigate().GoToUrl(ConfigurationManager.AppSettings["AuthURL"]);
             driver.Navigate().GoToUrl(ConfigurationManager.AppSettings["URL"]);
-            driver.Manage().Window.Maximize();
+            driver.Manage().Window.Size = new System.Drawing.Size(1536, 824); //Set default window size for headless browser.
+            //driver.Manage().Window.Maximize();
 
         }
 
