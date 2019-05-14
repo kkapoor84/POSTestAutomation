@@ -46,10 +46,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
         public IWebElement SearchOrder { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='quoteNumber']")]
+        [FindsBy(How = How.Id, Using = "orderNumber")]
         public IWebElement EnterOrder { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
@@ -161,7 +161,19 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'PAYMENT TYPE')]")]
         public IWebElement PaymentScreenText { get; set; }
-        
+
+        public QuotePage SearchFunction()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            Thread.Sleep(3000);
+            SearchOrder.Clickme(driver);
+            EnterOrder.EnterText("2013698");
+            Enter.Clickme(driver);
+            Thread.Sleep(3000);
+            return this;
+        }
+
 
         /// <summary>
         /// Function to parse internal info data.
@@ -719,14 +731,14 @@ namespace UnitTestNDBProject.Pages
         {
             int i = 2;
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, 60);
-            while ((By.XPath("(//div[@class='dot-btn'])["+i+"]")).isPresent(driver))
+            while ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
 
-                {
-                driver.FindElement(By.XPath("(//div[@class='dot-btn'])["+ i+ "]")).Clickme(driver);
-                                Thread.Sleep(5000);
-                driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])["+i+"]")).Clickme(driver);
-                    _logger.Info($" Clicked on Delete Product Line.");
-                    OkButton.Clickme(driver);
+            {
+                driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")).Clickme(driver);
+                Thread.Sleep(5000);
+                driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
+                _logger.Info($" Clicked on Delete Product Line.");
+                OkButton.Clickme(driver);
                 WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
                 Thread.Sleep(8000);
             }
@@ -734,17 +746,23 @@ namespace UnitTestNDBProject.Pages
             i = 1;
             if ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
             {
-                
+
                 WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")), 60);
                 driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")).Clickme(driver);
                 driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
                 _logger.Info($" Tried to Delete Last Product Line.");
 
-              //  OkButton.Clickme(driver);
+                //  OkButton.Clickme(driver);
             }
         }
 
-      
+        public QuotePage DeleteProductLine()
+        {
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, driver.FindElement(By.XPath("(//div[@class='dot-btn'])[2]")), 60);
+            driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[2]")).Clickme(driver);
+            return this;
+        }
+
         /// <summary>
         /// Function to verify all product lines are deleted.
         /// </summary>

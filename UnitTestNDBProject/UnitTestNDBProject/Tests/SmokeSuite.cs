@@ -298,7 +298,38 @@ namespace UnitTestNDBProject.Tests
 
 
         }
+        [Test, Order(8), Category("Smoke"), Description("Verify Product Copy")]
+        public void B12_VerifyCopyproductLineForOrder()
+        {
+            _QuotePage.SearchFunction();
+            _QuotePage.ClickOnhamburgerButton().ClickOnCopyButton();
+            Thread.Sleep(6000);
+            _QuotePage.ClickAddProductButton();
+            Assert.True(_QuotePage.VerifyTotalProductsAfterCopy(productLineFeatureParsedData.Data));
 
+        }
+
+        [Test, Category("Smoke"), Description("Edit Order Productline For Order")]
+        public void B13_VerifyEditProductLineForOrder()
+        {
+
+            _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
+           
+            _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
+            Thread.Sleep(6000);
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Living Room"));
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("Dune"));
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit("OB"));
+        }
+
+        [Test, Category("Smoke"), Description("Edit Order Productline For Order")]
+        public void B14_VerifyDeleteproductLineForOrder()
+        {
+            //_QuotePage.SearchFunction();
+            _QuotePage.ClickOnhamburgerButton();
+            _QuotePage.DeleteProductLine();
+
+        }
 
         /// <summary>
         /// Tear Down function
