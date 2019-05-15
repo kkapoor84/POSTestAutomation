@@ -203,7 +203,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(7), Category("Smoke"), Description("Verify Product and Quote Creation by adding 3 product lines.")]
         public void A7_VerifyProductCreation()
         {
-
+            _QuotePage.SearchFunction();
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
             Assert.True(_QuotePage.VerifyErrorPopup());
 
@@ -212,6 +212,7 @@ namespace UnitTestNDBProject.Tests
             .AddMultipleProducts(productLineFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyQuoteCreation());
             Assert.True(_QuotePage.VerifyProductsEntered(productLineFeatureParsedData.Data));
+            Assert.True(_QuotePage.VerifyProductDataAfterAdd(productLineFeatureParsedData.Data));
         }
 
         [Test, Order(8), Category("Smoke"), Description("Verify Product Copy")]

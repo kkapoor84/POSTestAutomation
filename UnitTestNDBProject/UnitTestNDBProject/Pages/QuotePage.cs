@@ -172,7 +172,7 @@ namespace UnitTestNDBProject.Pages
             Search.Clickme(driver);
             Thread.Sleep(3000);
             SearchOrder.Clickme(driver);
-            EnterOrder.EnterText("704083");
+            EnterOrder.EnterText("704098");
             Enter.Clickme(driver);
             Thread.Sleep(3000);
             return this;
@@ -511,7 +511,7 @@ namespace UnitTestNDBProject.Pages
             {
                 ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
                 // Thread.Sleep(4000);
-                new System.Threading.ManualResetEvent(false).WaitOne(1000);
+                new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
                 ClickOnAddProduct().WaitUntilPageload().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
                     .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
             }
@@ -673,87 +673,25 @@ namespace UnitTestNDBProject.Pages
             }
         }
 
-
-      
-
-        /// <summary>
-        /// Function to read product line data
-        /// </summary>
-        /// <param name="EditProductDetails"></param>
-        /// <returns></returns>
-        public List<Tuple<string>> ReadProductLineData(List<EditProductDetail> EditProductDetails)
-        {
-            List<Tuple<string>> edditedProducts = new List<Tuple<string>>();
-            for (int counter = 0; counter < EditProductDetails.Count; counter++)
-            {
-                string option = EditProductDetails[counter].Option;
-
-                edditedProducts.Add(new Tuple<string>(option));
-            }
-
-            return edditedProducts;
-
-        }
-
-        //public bool VerifyProductDataAfterEdit(String EditProductDetails)
-        //{
-        //    Thread.Sleep(2000);
-        //    int i = 2;
-        //    int count = 0;
-        //    string[] productLineDataArray = new string[100];
-        //    string DataProvided = editedDataForProductLine[i].Item1;
-        //    do
-        //    {
-        //        string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
-        //        // string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
-        //        productLineDataArray[count] = productColumn;
-        //        i++;
-        //        _logger.Info(productLineDataArray[count]);
-        //    } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
-
-        //    int j = 0;
-        //    bool dataIsValid = false;
-        //    do
-        //    {
-        //        if ((EditProductDetails.Contains(productLineDataArray[j])))
-        //        {
-        //            dataIsValid = true;
-        //            _logger.Info($" Data " + EditProductDetails + " Is Valid.");
-        //            break;
-        //        }
-        //        j++;
-        //    } while (productLineDataArray[j] != null);
-        //    return dataIsValid;
-        //}
-
-        /// <summary>
-        /// Function to verify data in product summary after edit.
-        /// </summary>
-        /// <param name="EditProductDetails"></param>
-        /// <returns></returns>
-
        
 
+            /// <summary>
+            /// Function to verify data in product summary after edit.
+            /// </summary>
+            /// <param name="EditProductDetails"></param>
+            /// <returns></returns>
 
-        public bool VerifyProductDataAfterEdit(List<DataDictionary> editproductLineData)
+            public bool VerifyProductDataAfterEdit(List<DataDictionary> editproductLineData)
         {
-            //foreach (DataDictionary data in editproductLineData)
-            //{
-            //    EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
-            //    String ndbRoomLocationString = editProductLine.NDBRoomLocation;
-            //    List<EditProductDetail> editProductDetails = editProductLine.EditProductDetails;
-            //}
 
             Thread.Sleep(2000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
             int i = 2;
             int count = 0;
             string[] productLineDataArray = new string[100];
-            //string DataProvided = editedDataForProductLine[i].Item1;
             do
             {
                 string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
-                // string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
                 productLineDataArray[count] = productColumn;
                 i++; count++;
                 _logger.Info(productLineDataArray[count]);
@@ -776,7 +714,7 @@ namespace UnitTestNDBProject.Pages
                     if (ndbRoomLocationString.Contains(productLineDataArray[j]))
                     {
                         dataIsValid1 = true;
-                        //_logger.Info($" Data " + EditProductDetails + " Is Valid.");
+                        _logger.Info($" Room Location " + ndbRoomLocationString + " Is Valid.");
                         //break;
                     }
 
@@ -784,8 +722,8 @@ namespace UnitTestNDBProject.Pages
                     {
 
                         dataIsValid2 = true;
-                            //_logger.Info($" Data " + EditProductDetails + " Is Valid.");
-                            break;
+                        _logger.Info($" Color Entered " + editProductLine.EditProductDetails[1].Option + " is correct.");
+                        break;
                         
                     }
                     j++;
@@ -800,29 +738,75 @@ namespace UnitTestNDBProject.Pages
             {
                 return false;
             }
-
-
-
-            //int j = 0;
-            //bool dataIsValid = false;
-            //do
-            //{
-            //    if ((EditProductDetails.Contains(productLineDataArray[j])))
-            //    {
-            //        dataIsValid = true;
-            //        _logger.Info($" Data " + EditProductDetails + " Is Valid.");
-            //        break;
-            //    }
-            //    j++;
-            //} while (productLineDataArray[j] != null);
-            //return dataIsValid;
         }
 
+        public bool VerifyProductDataAfterAdd(List<DataDictionary> productLineData)
+        {
 
+            Thread.Sleep(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
+            int i = 2;
+            int count = 0;
+            string[] productLineDataArray = new string[100];
+            for (int j = 2; j < 4; j++)
+            {
+                do
+                {
+                    string productColumn = driver.FindElement(By.XPath("//li[" + j + "]//div[" + i + "]")).GetText(driver);
+                    productLineDataArray[count] = productColumn;
+                    i++; count++;
+                    _logger.Info(productLineDataArray[count]);
+                } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+                i = 2;
+            }
+
+
+            bool dataIsValid1 = false;
+            bool dataIsValid2 = false;
+
+
+            foreach (DataDictionary data in productLineData)
+            {
+                ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
+                String ndbRoomLocationString = productLine.NDBRoomLocation;
+                List<ProductDetail> addedProductDetails = productLine.ProductDetails;
+
+                int j = 0;
+
+                do
+                {
+                    if (ndbRoomLocationString.Contains(productLineDataArray[j]))
+                    {
+                        dataIsValid1 = true;
+                        _logger.Info($" Room Location " + ndbRoomLocationString + " Is Valid.");
+                        //break;
+                    }
+
+                    if (productLine.ProductDetails[1].Option.Contains(productLineDataArray[j]))
+                    {
+
+                        dataIsValid2 = true;
+                        _logger.Info($" Color Entered " + productLine.ProductDetails[1].Option + " is correct.");
+                        break;
+
+                    }
+                    j++;
+                } while (productLineDataArray[j] != null);
+
+            }
+            if (dataIsValid1 == true && dataIsValid2 == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
             /// <summary>
             /// Function to delete multiple product lines.
             /// </summary>
-        public void DeleteMultipleProducts()
+            public void DeleteMultipleProducts()
         {
             int i = 2;
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, 60);
