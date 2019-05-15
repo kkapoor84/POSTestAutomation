@@ -22,6 +22,13 @@ namespace UnitTestNDBProject.Utils
             return randomText;
         }
 
+        public static string RandomString()
+        {
+            String randomText = random.Next(1, 100000).ToString();
+            return randomText;
+        }
+
+
         public static string AppendMaxRangeRandomString(string text, int? range = null)
         {
             int finalRange = range != null ? (int)range : 1000000000;

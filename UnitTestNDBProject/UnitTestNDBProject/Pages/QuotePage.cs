@@ -11,7 +11,7 @@ using UnitTestNDBProject.Utils;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 using OpenQA.Selenium.Interactions;
 
-namespace UnitTestNDBProject.Pages
+namespace UnitTestNDBProject.Page
 {
     public class QuotePage
     {
@@ -19,9 +19,9 @@ namespace UnitTestNDBProject.Pages
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         //private static ParsedTestData productLineFeatureParsedData;
-        private static ParsedTestData productLineEditFeatureParsedData;
+        //private static ParsedTestData productLineEditFeatureParsedData;
         //List<Tuple<string, string>> productDetails;
-        List<Tuple<string, string>> editProductDetails;
+       // List<Tuple<string, string>> editProductDetails;
 
         public QuotePage(IWebDriver driver)
         {
@@ -47,10 +47,11 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
         public IWebElement SearchOrder { get; set; }
 
-        [FindsBy(How = How.Id, Using = "quoteNumber")]
+        [FindsBy(How = How.Id, Using = "orderNumber")]
         public IWebElement EnterOrder { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
@@ -163,6 +164,12 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'PAYMENT TYPE')]")]
         public IWebElement PaymentScreenText { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
+        public IWebElement SearchQuote { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
+        public IWebElement EnterOuote { get; set; }
+
         public List<Tuple<string, string>> editedDataForProductLine;
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
@@ -171,8 +178,8 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
             Search.Clickme(driver);
             Thread.Sleep(3000);
-            SearchOrder.Clickme(driver);
-            EnterOrder.EnterText("704098");
+            SearchQuote.Clickme(driver);
+            EnterOuote.EnterText("704098");
             Enter.Clickme(driver);
             Thread.Sleep(3000);
             return this;
@@ -352,6 +359,7 @@ namespace UnitTestNDBProject.Pages
             //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             //wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[@class='loader-overlay-section']")));
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            _logger.Info($" Wait until loader is loaded");
             return this;
         }
        
@@ -578,7 +586,7 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-      
+
         /// <summary>
         /// Function to Click on Hamburger
         /// </summary>
@@ -586,6 +594,7 @@ namespace UnitTestNDBProject.Pages
         public QuotePage ClickOnhamburgerButton()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 60);
+            Thread.Sleep(4000);
             HamburgerClick.Clickme(driver);
             _logger.Info($" Click on hamburger.");
             return this;
@@ -714,7 +723,7 @@ namespace UnitTestNDBProject.Pages
                     if (ndbRoomLocationString.Contains(productLineDataArray[j]))
                     {
                         dataIsValid1 = true;
-                        _logger.Info($" Room Location " + ndbRoomLocationString + " Is Valid.");
+                        _logger.Info($" Room Location " + ndbRoomLocationString + " After Edit Is Correct.");
                         //break;
                     }
 
@@ -722,7 +731,7 @@ namespace UnitTestNDBProject.Pages
                     {
 
                         dataIsValid2 = true;
-                        _logger.Info($" Color Entered " + editProductLine.EditProductDetails[1].Option + " is correct.");
+                        _logger.Info($" Color Entered " + editProductLine.EditProductDetails[1].Option + " After Edit Is Correct.");
                         break;
                         
                     }
@@ -748,7 +757,7 @@ namespace UnitTestNDBProject.Pages
             int i = 2;
             int count = 0;
             string[] productLineDataArray = new string[100];
-            for (int j = 2; j < 4; j++)
+            for (int j = 2; j <= 4; j++)
             {
                 do
                 {
@@ -761,8 +770,9 @@ namespace UnitTestNDBProject.Pages
             }
 
 
-            bool dataIsValid1 = false;
-            bool dataIsValid2 = false;
+            bool roomLocation = false;
+            bool color = false;
+            bool liftsystem = false;
 
 
             foreach (DataDictionary data in productLineData)
@@ -777,16 +787,25 @@ namespace UnitTestNDBProject.Pages
                 {
                     if (ndbRoomLocationString.Contains(productLineDataArray[j]))
                     {
-                        dataIsValid1 = true;
-                        _logger.Info($" Room Location " + ndbRoomLocationString + " Is Valid.");
+                        roomLocation = true;
+                        _logger.Info($"Added  Room Location " + ndbRoomLocationString + " Is Correct.");
                         //break;
                     }
 
                     if (productLine.ProductDetails[1].Option.Contains(productLineDataArray[j]))
                     {
 
-                        dataIsValid2 = true;
-                        _logger.Info($" Color Entered " + productLine.ProductDetails[1].Option + " is correct.");
+                        color = true;
+                        _logger.Info($"Added Color " + productLine.ProductDetails[1].Option + " Is Correct.");
+                      //  break;
+
+                    }
+
+                    if (productLine.ProductDetails[3].Option.Contains(productLineDataArray[j]))
+                    {
+
+                        liftsystem = true;
+                        _logger.Info($"Added  Lift System " + productLine.ProductDetails[1].Option + " Is Correct.");
                         break;
 
                     }
@@ -794,7 +813,7 @@ namespace UnitTestNDBProject.Pages
                 } while (productLineDataArray[j] != null);
 
             }
-            if (dataIsValid1 == true && dataIsValid2 == true)
+            if (roomLocation == true && color == true && liftsystem == true)
             {
                 return true;
             }
@@ -809,10 +828,11 @@ namespace UnitTestNDBProject.Pages
             public void DeleteMultipleProducts()
         {
             int i = 2;
-            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, 60);
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, implicitWait);
             while ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
 
             {
+                Thread.Sleep(5000);
                 driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")).Clickme(driver);
                 Thread.Sleep(5000);
                 driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
@@ -835,12 +855,7 @@ namespace UnitTestNDBProject.Pages
             }
         }
 
-        public QuotePage DeleteProductLine()
-        {
-            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, driver.FindElement(By.XPath("(//div[@class='dot-btn'])[2]")), 60);
-            driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[2]")).Clickme(driver);
-            return this;
-        }
+       
 
         /// <summary>
         /// Function to verify all product lines are deleted.
@@ -872,7 +887,10 @@ namespace UnitTestNDBProject.Pages
 
 
 
-
+        /// <summary>
+        /// Click on edit button of measruement and installtion page
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickOnEditButtonOfMeasurementAndInstallation()
         {
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
@@ -882,7 +900,11 @@ namespace UnitTestNDBProject.Pages
         }
 
 
-
+        /// <summary>
+        /// Function to asserting if direction is added
+        /// </summary>
+        /// <param name="ExpectedDirectionText"></param>
+        /// <returns></returns>
         public bool VerifyDirectionIsAdded(String ExpectedDirectionText)
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(EditButtonOfAddress, 5000);
@@ -896,6 +918,12 @@ namespace UnitTestNDBProject.Pages
             return ifDirectionAdded;
         }
 
+        /// <summary>
+        /// Function to Verify addtional cost on quote page
+        /// </summary>
+        /// <param name="SelectCost"></param>
+        /// <param name="ExpectedCostAmount"></param>
+        /// <returns></returns>
         public bool VerifyAdditionalCost(Boolean SelectCost, String ExpectedCostAmount)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(5000);
@@ -920,6 +948,10 @@ namespace UnitTestNDBProject.Pages
 
             return isCostAdded;
         }
+        /// <summary>
+        /// Function to click on adjustment link
+        /// </summary>
+        /// <returns></returns>
 
         public QuotePage ClickOnAdjustmentsLink()
         {
@@ -929,8 +961,12 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-            
 
+        /// <summary>
+        /// Function to Add adjustment main Fucntion
+        /// </summary>
+        /// <param name="adjustments"></param>
+        /// <returns></returns>
         public QuotePage AddAdjustments(List<Adjustment> adjustments)
         {
             for (int counter = 0; counter < adjustments.Count; counter++)
@@ -949,9 +985,13 @@ namespace UnitTestNDBProject.Pages
         }
 
 
-        [FindsBy(How = How.Id, Using = "adjustmentOption0")]
-        public IWebElement state { get; set; }
 
+        /// <summary>
+        /// Function to select adjustment type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public QuotePage SelectAdjustmentType(String type, int i)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -969,9 +1009,14 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Function to select adjustment code
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public QuotePage SelectAdjustmentCode(String code, int i)
         {
-           // Thread.Sleep(2000);
             string MyID = "adjustmentType" + i;
             driver.WaitForElement(driver.FindElement(By.Id(MyID)));        
             Actions actions = new Actions(driver);
@@ -982,6 +1027,12 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Function to Add ajustment amount on quote page
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public QuotePage AddAmount(String amount, int i)
         {
             string MyID = "adjustmentAmount" + i;
@@ -991,6 +1042,10 @@ namespace UnitTestNDBProject.Pages
             return this;
 
         }
+        /// <summary>
+        /// Function to Click on Tax Link
+        /// </summary>
+        /// <returns></returns>
 
         public QuotePage ClickOnTaxLink()
         {
@@ -1000,6 +1055,12 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to Select Non-applicable tax from drop down on tax popup
+        /// </summary>
+        /// <param name="SelectTaxExempt"></param>
+        /// <param name="TaxIdNumber"></param>
+        /// <returns></returns>
         public QuotePage SelectNonApplicableTax(bool SelectTaxExempt,String TaxIdNumber)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -1022,6 +1083,11 @@ namespace UnitTestNDBProject.Pages
            return this;
         }
 
+        /// <summary>
+        /// Function to Select applcable tax from tax popup
+        /// </summary>
+        /// <param name="TaxIdNumber"></param>
+        /// <returns></returns>
         public QuotePage SelectApplicableTax(String TaxIdNumber)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -1032,21 +1098,39 @@ namespace UnitTestNDBProject.Pages
             DoneButton.Clickme(driver);
             return this;
         }
+        /// <summary>
+        /// Function to click on convert to order  button and wait untill loders gets loaded
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickOnConvertToQuote()
         {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,500)");
             ConvertToOrderButton.Clickme(driver);
+            _logger.Info($" User clicked on convert to order button");
             driver.WaitForElement(ContinueButton);
             ContinueButton.Clickme(driver);
+            _logger.Info($" User clicked on contiue button");
             return this;
         }
 
+        /// <summary>
+        /// Function to Select Convert to POS on order page
+        /// </summary>
+        /// <returns></returns>
         public QuotePage SelectConvertToPOS()
         {
             ConvertToPOS.Clickme(driver);
+            _logger.Info($" User clicked onconvert to POS button");
             ContinueConvertToOrder.Clickme(driver);
+            _logger.Info($" User clicked on contiue button");
             return this;
         }
 
+        /// <summary>
+        /// Function to  Verify that user is navigated to payment page
+        /// </summary>
+        /// <returns></returns>
         public bool VerifyUserIsNavigatedToPaymentPage()
         {
             driver.WaitForElement(PaymentScreenText);
@@ -1061,7 +1145,12 @@ namespace UnitTestNDBProject.Pages
            return isPaymentPageDisplayed;
         }
 
-        
+
+        /// <summary>
+        /// Function to  Verify error message while selecting invalid taxid for the given customer addres
+        /// </summary>
+        /// <param name="ExpetectedErrorMessage"></param>
+        /// <returns></returns>
         public bool VerifyTaxErrorMessage(String ExpetectedErrorMessage)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -1078,7 +1167,11 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-
+        /// <summary>
+        /// Verifying total adjustment amount
+        /// </summary>
+        /// <param name="expectedTotalAmountOfAddedAdjustments"></param>
+        /// <returns></returns>
         public bool VerifyAdjustmentTotalAmount(String expectedTotalAmountOfAddedAdjustments)
         {
             driver.WaitForElement(AdjustmentVIew);
@@ -1094,6 +1187,11 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Function to verify tax exemption is applied
+        /// </summary>
+        /// <param name="expectedTotalTaxExempt"></param>
+        /// <returns></returns>
         public bool VerifyTaxExemptionIsApplied(String expectedTotalTaxExempt)
         {
 
@@ -1111,9 +1209,63 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// Function to Search function for quote
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage SearchFunctionForQuote()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            _logger.Info($" User clicked on search button on top navigation panel");
+            SearchQuote.Clickme(driver);
+            _logger.Info($" User clicked on search for quote tab on search page");
+            EnterOuote.EnterText("703895");
+            _logger.Info($" User entered quote{703895}");
+            Enter.Clickme(driver);
+            _logger.Info($" User clicked on search button");
+            WaitUntilPageload();
+            _logger.Info($" Waited for loader gets loaded");
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
 
-        
+            return this;
+        }
 
+        /// <summary>
+        /// Function to  Search function for order
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage SearchFunctionForOrder()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            _logger.Info($" User clicked on search button on top navigation panel");
+            SearchOrder.Clickme(driver);
+            _logger.Info($" User clicked on search for order tab on search page");
+            //  EnterOrder.EnterText("2013543");
+            EnterOrder.EnterText("2013671");
+            _logger.Info($" User entered quote{2013671}");
+            Enter.Clickme(driver);
+            _logger.Info($" User clicked on search button");
+            WaitUntilPageload();
+            _logger.Info($" Waited for loader gets loaded");
+            Thread.Sleep(1000);
+            return this;
+        }
+      
+
+        public QuotePage CopyQuoteAndSave()
+        {
+            IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
+           // driver.WaitForElement(copytoquote);
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+            copytoquote.Clickme(driver);
+            _logger.Info($" User clicked on copy to quote button");
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+            SaveButton.Clickme(driver);
+            _logger.Info($" User clicked on save button");
+            return this;
+        }
 
 
     }

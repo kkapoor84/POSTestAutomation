@@ -123,7 +123,7 @@
 						},
 						{
 							"OptionTypeId": "Color",
-							"Option": "Cloud"
+							"Option": "Dune"
 						},
 						{
 							"OptionTypeId": "NumberOnHeadrail",
@@ -231,14 +231,14 @@
 		"Data": [{
 			"Key": "Product1",
 			"Value": {
-				"NDBRoomLocation": "Living Room",
+				"NDBRoomLocation": "Balcony",
 				"EditProductDetails": [{
 						"OptionTypeId": "Mounting",
 						"Option": "Outside Mount"
 					},
 					{
 						"OptionTypeId": "Color",
-						"Option": "Dune"
+						"Option": "Cloud"
 					}
 				]
 			}
@@ -299,6 +299,123 @@
 				}
 			}
 		]
+	},
+
+	{
+		"Feature": "PaymentScreen",
+		"Data": [{
+				"Key": "GiftCardKey",
+				"Value": {
+					"Amount": "1",
+					"GiftCardNumber": "91887-1140",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently"
+					
+				}
+			},
+			{
+				"Key": "FinanceKey",
+				"Value": {
+					"Amount": "10",
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future"
+
+				}
+			},
+			{
+				"Key": "CheckKey",
+				"Value": {
+					"Amount": "10",
+					"AccountName": "Automation",
+					"RoutingNumber": "123456780",
+					"AccountNumber": "1234567890",
+					"CheckNumber": "1234567890",
+					"StateId": "1234567890",
+					"State": "AK - Alaska",
+					"SkippingReason": "Other",
+					"SkippingReasonDetail": "Some Technical Issue",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently"
+
+				}
+			},
+			{
+				"Key": "CreditCardKey",
+				"Value": {
+					"Amount": "10",
+					"CreditCardNumber": "4111111111111111",
+					"ExpirationMonth": "12",
+					"ExpirationYear": "2029",
+					"CVVCode": "1234",
+					"CreditCardHolder": "Automation_POS",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently"
+
+				}
+			},
+			{
+				"Key": "SavedCreditCardKey",
+				"Value": {
+					"Amount": "10",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently",
+					"WarningMessageOnPayment":"This order has reached the maximum number of financial transactions. Contact Accounting to process future payments.",
+					"WarningMessageOnRefund":"This order has reached the maximum number of financial transactions. Contact Accounting to refund this payment."
+
+
+
+				}
+			},
+			{
+			"Key": "PaymentGridKey",
+			"Value": {
+				"GridData": [{
+						"Payment": "PAYMENT",
+						"PaymentMethod": "VS1111",
+						"OrderStatus": "MEASUREMENT COMPLETE",
+						"SalesPerson": "DEBORAH MEADOWS - S1",
+						"AmountCollected": "$10.00",
+						"AmountPosted": "$10.00",
+						"BalanceDue":"$118.36"
+					},
+					{
+						"Payment": "PAYMENT",
+						"PaymentMethod": "VS1111",
+						"OrderStatus": "MEASUREMENT COMPLETE",
+						"SalesPerson": "DEBORAH MEADOWS - S1",
+						"AmountCollected": "$10.00",
+						"AmountPosted": "$10.00",
+						"BalanceDue":"$128.36"
+					},
+					{
+						"Payment": "PAYMENT",
+						"PaymentMethod": "CHECK",
+						"OrderStatus": "MEASUREMENT COMPLETE",
+						"SalesPerson": "DEBORAH MEADOWS - S1",
+						"AmountCollected": "$10.00",
+						"AmountPosted": "$10.00",
+						"BalanceDue":"$138.36"
+					},
+					{
+						"Payment": "PAYMENT",
+						"PaymentMethod": "GIFT CARD",
+						"OrderStatus": "MEASUREMENT COMPLETE",
+						"SalesPerson": "DEBORAH MEADOWS - S1",
+						"AmountCollected": "$1.00",
+						"AmountPosted": "$1.00",
+						"BalanceDue":"$148.36"
+					},
+					{
+						"Payment": "PAYMENT",
+						"PaymentMethod": "FINANCE",
+						"OrderStatus": "OPEN",
+						"SalesPerson": "DEBORAH MEADOWS - S1",
+						"AmountCollected": "$10.00",
+						"AmountPosted": "$10.00",
+						"BalanceDue":"$149.36"
+					}
+				]
+			}
+			}]
 	}
 
 ]

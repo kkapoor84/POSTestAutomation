@@ -17,6 +17,7 @@ using System.IO;
 using NLog;
 using UnitTestNDBProject.TestDataAccess;
 using OpenQA.Selenium.Interactions;
+using UnitTestNDBProject.Page;
 
 [SetUpFixture]
 public class GlobalSetup
@@ -74,6 +75,8 @@ namespace UnitTestNDBProject.Base
         public LoginPage _LoginPage { get; set; }        
         public EnterNewCustomerPage _EnterNewCustomerPage { get; set; }
         public QuotePage _QuotePage { get; set; }
+        public PaymentPage _PaymentPage { get; set; }
+        public OrderPage _OrderPage { get; set; }
 
         public MeasurementAndInstallationPage _MeasurementAndInstallationPage { get; set; }
 
@@ -86,9 +89,14 @@ namespace UnitTestNDBProject.Base
         {
             if (ConfigurationManager.AppSettings["Browser"] == "Chrome")
             {
-                var co = new ChromeOptions();
-                co.AddArgument("no-sandbox");
-                driver = new ChromeDriver(co);
+               // var co = new ChromeOptions();
+               // co.AddArgument("no-sandbox");
+               // co.AddArgument("--window-size=1920,1080");
+                //co.AddArgument("--disable-gpu");
+                //co.AddArgument("--disable-extensions");                
+                //co.AddArgument("--start-maximized");
+                //co.AddArgument("--headless");
+                driver = new ChromeDriver();
               
             }
             else if (ConfigurationManager.AppSettings["Browser"] == "Firefox")
@@ -102,6 +110,8 @@ namespace UnitTestNDBProject.Base
             _HomePage = new HomePage(driver);            
             _EnterNewCustomerPage = new EnterNewCustomerPage(driver);
             _QuotePage = new QuotePage(driver);
+            _PaymentPage = new PaymentPage(driver);
+            _OrderPage = new OrderPage(driver);
             _MeasurementAndInstallationPage = new MeasurementAndInstallationPage(driver);
             _BasePageClass.OpenURL();
 
