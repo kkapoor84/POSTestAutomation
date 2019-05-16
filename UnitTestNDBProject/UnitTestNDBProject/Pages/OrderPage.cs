@@ -486,7 +486,7 @@ namespace UnitTestNDBProject.Pages
         /// Click On Cancel Order Button
         /// </summary>
         /// <returns></returns>
-        public QuotePage ClickOnCancelOrderButton()
+        public OrderPage ClickOnCancelOrderButton()
         {
             WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrder, 10000);
@@ -499,7 +499,7 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="reasons"></param>
         /// <returns></returns>
-        public QuotePage EnterCancelOrderReasons(string reasons)
+        public OrderPage EnterCancelOrderReasons(string reasons)
         {
             WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderReasons, 10000);
@@ -512,7 +512,7 @@ namespace UnitTestNDBProject.Pages
         /// Click On Cancel Popup
         /// </summary>
         /// <returns></returns>
-        public QuotePage ClickOnCancelOrderPopup()
+        public OrderPage ClickOnCancelOrderPopup()
         {
             WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderPopup, 10000);
