@@ -550,8 +550,8 @@ namespace UnitTestNDBProject.Pages
             SearchOrder.Clickme(driver);
             _logger.Info($" User clicked on search for order tab on search page");
             //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2013671");
-            _logger.Info($" User entered quote{2013671}");
+            EnterOrder.EnterText("2013804");
+            _logger.Info($" User entered quote{2013804}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
             WaitUntilPageload();

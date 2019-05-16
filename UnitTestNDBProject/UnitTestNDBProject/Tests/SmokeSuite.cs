@@ -373,7 +373,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(21), Category("Smoke"), Description("Verify Product Copy")]
         public void C3_VerifyCopyproductLineForOrder()
         {
-           //   _OrderPage.SearchFunctionForOrder();
+           _OrderPage.SearchFunctionForOrder();
            _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
             _OrderPage.ClickOnhamburgerButton1().ClickOnCopyButton();
             _OrderPage.ClickAddProductButton();
