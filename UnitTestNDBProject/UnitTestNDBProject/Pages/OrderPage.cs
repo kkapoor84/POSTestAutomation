@@ -14,6 +14,7 @@ using System.Globalization;
 using UnitTestNDBProject.TestDataAccess;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 using OpenQA.Selenium.Support.UI;
+using System.Configuration;
 
 namespace UnitTestNDBProject.Pages
 {
@@ -102,6 +103,19 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.ClassName, Using = "product-line-summary")]
         public IWebElement sizeOfProductLine { get; set; }
 
+        [FindsBy(How = How.Id, Using = "btnCancelOrder")]
+        public IWebElement CancelOrder { get; set; }
+
+        [FindsBy(How = How.Id, Using = "text-CancellationReason")]
+        public IWebElement CancelOrderReasons { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnPopupCancelOrder")]
+        public IWebElement CancelOrderPopup { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'CANCELLED')]")]
+        public IWebElement DisabledAnchorClass { get; set; }
+
+        public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
         {
             object cancelReasonData = DataAccess.GetKeyJsonData(featureData, "CancelOrderReasons");
@@ -394,7 +408,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage ClickOnEditButton()
         {
             WaitUntilPageload();
-            driver.WaitForElementToBecomeVisibleWithinTimeout(EditProductLine, 10000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditProductLine,implicitWait);
             EditProductLine.Clickme(driver);
             _logger.Info($" Clicked on Edit Product Line.");
             return this;
@@ -403,7 +417,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage EnterRoomLocation(string RoomLocation)
         {
 
-            driver.WaitForElementToBecomeVisibleWithinTimeout(roomlocation, 10000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(roomlocation, implicitWait);
             roomlocation.EnterText(RoomLocation);
             _logger.Info($": Successfully entered room location {RoomLocation}");
             return this;
@@ -468,6 +482,66 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Click On Cancel Order Button
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnCancelOrderButton()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrder, 10000);
+            CancelOrder.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Enter Cancel Reasons
+        /// </summary>
+        /// <param name="reasons"></param>
+        /// <returns></returns>
+        public QuotePage EnterCancelOrderReasons(string reasons)
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderReasons, 10000);
+            driver.WaitForElement(CancelOrderReasons);
+            CancelOrderReasons.EnterText(reasons);
+            return this;
+        }
+
+        /// <summary>
+        /// Click On Cancel Popup
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnCancelOrderPopup()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderPopup, 10000);
+            CancelOrderPopup.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Verify cancel Order
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyCancelOrder()
+        {
+            WaitUntilPageload();
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,-200)");
+            driver.WaitForElementToBecomeVisibleWithinTimeout(DisabledAnchorClass, 10000);
+            bool isOrderCancelled = false;
+            String orderHeading = DisabledAnchorClass.GetText(driver);
+
+            if (orderHeading.Contains("CANCELLED"))
+            {
+                isOrderCancelled = true;
+                _logger.Info($"Verified order is cancelled.");
+            }
+
+            return isOrderCancelled;
+
+        }
         public OrderPage SearchFunctionForOrder()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);

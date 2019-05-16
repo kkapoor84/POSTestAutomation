@@ -378,8 +378,8 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(21), Category("Smoke"), Description("Cancel Order Verification")]
         public void C3_VerifyCancelOrder()
         {
-            _QuotePage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
-            Assert.True(_QuotePage.VerifyCancelOrder());
+            _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
+            Assert.True(_OrderPage.VerifyCancelOrder());
         }
 
         /// <summary>

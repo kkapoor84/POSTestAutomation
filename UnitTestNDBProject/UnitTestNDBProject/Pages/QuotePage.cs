@@ -170,17 +170,7 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
         public IWebElement EnterOuote { get; set; }
 
-        [FindsBy(How = How.Id, Using = "btnCancelOrder")]
-        public IWebElement CancelOrder { get; set; }
-
-        [FindsBy(How = How.Id, Using = "text-CancellationReason")]
-        public IWebElement CancelOrderReasons { get; set; }
-
-        [FindsBy(How = How.Id, Using = "btnPopupCancelOrder")]
-        public IWebElement CancelOrderPopup { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'CANCELLED')]")]
-        public IWebElement DisabledAnchorClass { get; set; }
+       
 
 
         public List<Tuple<string, string>> editedDataForProductLine;
@@ -1290,65 +1280,6 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
-        /// <summary>
-        /// Click On Cancel Order Button
-        /// </summary>
-        /// <returns></returns>
-        public QuotePage ClickOnCancelOrderButton()
-        {
-            WaitUntilPageload();
-            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrder, 10000);
-            CancelOrder.Clickme(driver);
-            return this;
-        }
-
-        /// <summary>
-        /// Enter Cancel Reasons
-        /// </summary>
-        /// <param name="reasons"></param>
-        /// <returns></returns>
-        public QuotePage EnterCancelOrderReasons(string reasons)
-        {
-            WaitUntilPageload();
-            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderReasons, 10000);
-            driver.WaitForElement(CancelOrderReasons);
-            CancelOrderReasons.EnterText(reasons);
-            return this;
-        }
-
-        /// <summary>
-        /// Click On Cancel Popup
-        /// </summary>
-        /// <returns></returns>
-        public QuotePage ClickOnCancelOrderPopup()
-        {
-            WaitUntilPageload();
-            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderPopup, 10000);
-            CancelOrderPopup.Clickme(driver);
-            return this;
-        }
-
-        /// <summary>
-        /// Verify cancel Order
-        /// </summary>
-        /// <returns></returns>
-        public bool VerifyCancelOrder()
-        {
-            WaitUntilPageload();
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-            js.ExecuteScript("window.scrollBy(0,-200)");
-            driver.WaitForElementToBecomeVisibleWithinTimeout(DisabledAnchorClass, 10000);
-            bool isOrderCancelled = false;
-            String orderHeading = DisabledAnchorClass.GetText(driver);
-
-            if (orderHeading.Contains("CANCELLED"))
-            {
-                isOrderCancelled = true;
-                _logger.Info($"Verified order is cancelled.");
-            }
-
-            return isOrderCancelled;
-            
-        }
+       
     }
 }
