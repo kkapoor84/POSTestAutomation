@@ -89,14 +89,14 @@ namespace UnitTestNDBProject.Base
         {
             if (ConfigurationManager.AppSettings["Browser"] == "Chrome")
             {
-               // var co = new ChromeOptions();
-               // co.AddArgument("no-sandbox");
-               // co.AddArgument("--window-size=1920,1080");
-                //co.AddArgument("--disable-gpu");
-                //co.AddArgument("--disable-extensions");                
-                //co.AddArgument("--start-maximized");
-                //co.AddArgument("--headless");
-                driver = new ChromeDriver();
+                var co = new ChromeOptions();
+                co.AddArgument("no-sandbox");
+                co.AddArgument("--window-size=1920,1080");
+                co.AddArgument("--disable-gpu");
+                co.AddArgument("--disable-extensions");
+                co.AddArgument("--start-maximized");
+                co.AddArgument("--headless");
+                driver = new ChromeDriver(co);
               
             }
             else if (ConfigurationManager.AppSettings["Browser"] == "Firefox")

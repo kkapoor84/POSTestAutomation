@@ -102,6 +102,14 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.ClassName, Using = "product-line-summary")]
         public IWebElement sizeOfProductLine { get; set; }
 
+        public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
+        {
+            object cancelReasonData = DataAccess.GetKeyJsonData(featureData, "CancelOrderReasons");
+            return JsonDataParser<ReasonsData>.ParseData(cancelReasonData);
+        }
+
+
+
         /// <summary>
         /// Function to verify that order is created
         /// </summary>
@@ -342,6 +350,7 @@ namespace UnitTestNDBProject.Pages
              int i=2;
             do
             {
+                WaitUntilPageload();
                 driver.FindElement(By.XPath("//li["+i+"]//div[2]//span[1]//div[1]"));
                 beforeCount++;
                 i++;

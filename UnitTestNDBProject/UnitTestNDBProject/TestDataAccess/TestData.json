@@ -416,6 +416,17 @@
 				]
 			}
 			}]
-	}
+	},
+
+	{
+		"Feature": "Reasons",
+		"Data": [{
+				"Key": "CancelOrderReasons",
+				"Value": {
+					"CancelReasons": "This is an automation order. So, cancelling it to verify Cancel order functionality."
+				}
+			}
+		]
+}
 
 ]

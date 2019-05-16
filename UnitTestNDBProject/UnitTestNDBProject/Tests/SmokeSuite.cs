@@ -29,10 +29,12 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData adjustmentParsedData;
         private static ParsedTestData taxParsedData;
         private static ParsedTestData paymentParsedData;
+        private static ParsedTestData reasonsParser;
 
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
-     //   EditProductLineData editProductData;
+        ReasonsData cancelReasonData;
+        //   EditProductLineData editProductData;
 
 
         [OneTimeSetUp]
@@ -55,14 +57,14 @@ namespace UnitTestNDBProject.Tests
             adjustmentParsedData = DataAccess.GetFeatureData("AddAdjustmentsPopup");
             taxParsedData = DataAccess.GetFeatureData("TaxExemptionPopup");
             paymentParsedData = DataAccess.GetFeatureData("PaymentScreen");
-
-
+            reasonsParser = DataAccess.GetFeatureData("Reasons");
 
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
             internalInforData = QuotePage.GetInternalInfoData(internalInfoParsedData);
+            cancelReasonData = OrderPage.ReadcancelReasonData(reasonsParser);
 
-           // editProductData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
+            // editProductData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
 
         }
 
@@ -305,7 +307,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
 
         }
-        [Test, Order(15), Category("Smoke"), Description("Payment via finance and order is created")]
+        [Test, Order(15), Ignore(""), Category("Smoke"), Description("Payment via finance and order is created")]
         public void B6_VerifyOrderIsCreatedWithFinancialPayment()
         {
             PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(paymentParsedData);
@@ -314,7 +316,7 @@ namespace UnitTestNDBProject.Tests
                 .ClickOnExitPaymentScreenButton(financePaymentData.ExitPaymentReason);
             Assert.True(_OrderPage.VerifyOrderIsCreated());
             _OrderPage.ClickOnAddDetailsButton();
-           // Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
         [Test, Order(16), Ignore(""), Category("Smoke"), Description("Payment via gift card")]
@@ -324,7 +326,7 @@ namespace UnitTestNDBProject.Tests
             _OrderPage.ClickOnNewPaymentButton();
             _PaymentPage.MakeGiftCardPayment(giftCardPaymentData.GiftCardNumber,giftCardPaymentData.Amount)
                             .EnterDetailInExitPaymentPopup(giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
-          //  Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
        
         [Test, Order(17), Category("Smoke"), Description("Payment via Check-Skip Verification")]
@@ -335,13 +337,13 @@ namespace UnitTestNDBProject.Tests
             _PaymentPage.MakeCheckPayment(checkPaymentData.AccountName,checkPaymentData.RoutingNumber,checkPaymentData.AccountNumber,checkPaymentData.CheckNumber,checkPaymentData.StateId,checkPaymentData.State,checkPaymentData.Amount)
                 .SelectSkipVerification(checkPaymentData.SkippingReason,checkPaymentData.SkippingReasonDetail) 
                 .EnterDetailInExitPaymentPopup(checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
-           // Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
         [Test, Order(18), Category("Smoke"), Description("Verify Product Copy")]
-        public void B12_VerifyCopyproductLineForOrder()
+        public void B9_VerifyCopyproductLineForOrder()
         {
-              _OrderPage.SearchFunctionForOrder();
+           //   _OrderPage.SearchFunctionForOrder();
            _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
             _OrderPage.ClickOnhamburgerButton1().ClickOnCopyButton();
             _OrderPage.ClickAddProductButton();
@@ -352,8 +354,9 @@ namespace UnitTestNDBProject.Tests
 
 
         [Test, Order(19), Category("Smoke"), Description("Edit Order Productline For Order")]
-        public void B13_VerifyEditProductLineForOrder()
+        public void C1_VerifyEditProductLineForOrder()
         {
+            _OrderPage.SearchFunctionForOrder();
             _OrderPage.ClickOnhamburgerButton2().ClickOnEditButton();
             _OrderPage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyProductDataAfterEdit(productLineEditFeatureParsedData.Data));
@@ -361,7 +364,7 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Order(20), Category("Smoke"), Description("Edit Order Productline For Order")]
-        public void B14_VerifyDeleteproductLineForOrder()
+        public void C2_VerifyDeleteproductLineForOrder()
         {
            // _OrderPage.SearchFunctionForOrder();
             _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
@@ -370,6 +373,13 @@ namespace UnitTestNDBProject.Tests
             _OrderPage.CalculateNumberOfProductLinesAfterOperation();
             Assert.True(_OrderPage.VerifyTotalProductsAfterDelete());
 
+        }
+
+        [Test, Order(21), Category("Smoke"), Description("Cancel Order Verification")]
+        public void C3_VerifyCancelOrder()
+        {
+            _QuotePage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
+            Assert.True(_QuotePage.VerifyCancelOrder());
         }
 
         /// <summary>

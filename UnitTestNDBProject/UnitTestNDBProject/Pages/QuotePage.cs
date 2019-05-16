@@ -170,9 +170,23 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
         public IWebElement EnterOuote { get; set; }
 
+        [FindsBy(How = How.Id, Using = "btnCancelOrder")]
+        public IWebElement CancelOrder { get; set; }
+
+        [FindsBy(How = How.Id, Using = "text-CancellationReason")]
+        public IWebElement CancelOrderReasons { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnPopupCancelOrder")]
+        public IWebElement CancelOrderPopup { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'CANCELLED')]")]
+        public IWebElement DisabledAnchorClass { get; set; }
+
+
         public List<Tuple<string, string>> editedDataForProductLine;
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
+
         public QuotePage SearchFunction()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
@@ -517,6 +531,7 @@ namespace UnitTestNDBProject.Page
         {
             foreach (DataDictionary data in productLineData)
             {
+                WaitUntilPageload();
                 ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
                 // Thread.Sleep(4000);
                 new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
@@ -692,7 +707,7 @@ namespace UnitTestNDBProject.Page
 
             public bool VerifyProductDataAfterEdit(List<DataDictionary> editproductLineData)
         {
-
+            WaitUntilPageload();
             Thread.Sleep(2000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
             int i = 2;
@@ -700,15 +715,17 @@ namespace UnitTestNDBProject.Page
             string[] productLineDataArray = new string[100];
             do
             {
+                WaitUntilPageload();
                 string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
                 productLineDataArray[count] = productColumn;
                 i++; count++;
                 _logger.Info(productLineDataArray[count]);
             } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
 
-           
-               bool dataIsValid1 = false;
-                bool dataIsValid2 = false;
+
+            bool roomLocation = false;
+            bool color = false;
+            int returnedTrue = 0;
 
             foreach (DataDictionary data in editproductLineData)
             {
@@ -717,21 +734,23 @@ namespace UnitTestNDBProject.Page
                 List<EditProductDetail> editProductDetails = editProductLine.EditProductDetails;
 
                 int j = 0;
-             
+                
                 do
                 {
                     if (ndbRoomLocationString.Contains(productLineDataArray[j]))
                     {
-                        dataIsValid1 = true;
+                        roomLocation = true;
                         _logger.Info($" Room Location " + ndbRoomLocationString + " After Edit Is Correct.");
+                        returnedTrue++;
                         //break;
                     }
 
                     if (editProductLine.EditProductDetails[1].Option.Contains(productLineDataArray[j]))
                     {
 
-                        dataIsValid2 = true;
+                        color = true;
                         _logger.Info($" Color Entered " + editProductLine.EditProductDetails[1].Option + " After Edit Is Correct.");
+                        returnedTrue++;
                         break;
                         
                     }
@@ -739,7 +758,7 @@ namespace UnitTestNDBProject.Page
                 } while (productLineDataArray[j] != null);
             
             }
-            if (dataIsValid1 == true && dataIsValid2 == true)
+            if (roomLocation == true && color == true)
             {
                 return true;
             }
@@ -748,12 +767,17 @@ namespace UnitTestNDBProject.Page
                 return false;
             }
         }
-
+        /// <summary>
+        /// Verifying data entered on product summary grid is correct.
+        /// </summary>
+        /// <param name="productLineData"></param>
+        /// <returns></returns>
         public bool VerifyProductDataAfterAdd(List<DataDictionary> productLineData)
         {
 
             Thread.Sleep(2000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
+            WaitUntilPageload();
             int i = 2;
             int count = 0;
             string[] productLineDataArray = new string[100];
@@ -773,7 +797,6 @@ namespace UnitTestNDBProject.Page
             bool roomLocation = false;
             bool color = false;
             bool liftsystem = false;
-
 
             foreach (DataDictionary data in productLineData)
             {
@@ -797,7 +820,7 @@ namespace UnitTestNDBProject.Page
 
                         color = true;
                         _logger.Info($"Added Color " + productLine.ProductDetails[1].Option + " Is Correct.");
-                      //  break;
+                        //  break;
 
                     }
 
@@ -805,7 +828,7 @@ namespace UnitTestNDBProject.Page
                     {
 
                         liftsystem = true;
-                        _logger.Info($"Added  Lift System " + productLine.ProductDetails[1].Option + " Is Correct.");
+                        _logger.Info($"Added  Lift System " + productLine.ProductDetails[3].Option + " Is Correct.");
                         break;
 
                     }
@@ -832,14 +855,15 @@ namespace UnitTestNDBProject.Page
             while ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
 
             {
-                Thread.Sleep(5000);
+                //Thread.Sleep(5000);
+                WaitUntilPageload();
                 driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")).Clickme(driver);
-                Thread.Sleep(5000);
+                WaitUntilPageload();
                 driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
                 _logger.Info($" Clicked on Delete Product Line.");
                 OkButton.Clickme(driver);
                 WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
-                Thread.Sleep(8000);
+                WaitUntilPageload();
             }
             Thread.Sleep(8000);
             i = 1;
@@ -851,7 +875,6 @@ namespace UnitTestNDBProject.Page
                 driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
                 _logger.Info($" Tried to Delete Last Product Line.");
 
-                //  OkButton.Clickme(driver);
             }
         }
 
@@ -1267,6 +1290,65 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Click On Cancel Order Button
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnCancelOrderButton()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrder, 10000);
+            CancelOrder.Clickme(driver);
+            return this;
+        }
 
+        /// <summary>
+        /// Enter Cancel Reasons
+        /// </summary>
+        /// <param name="reasons"></param>
+        /// <returns></returns>
+        public QuotePage EnterCancelOrderReasons(string reasons)
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderReasons, 10000);
+            driver.WaitForElement(CancelOrderReasons);
+            CancelOrderReasons.EnterText(reasons);
+            return this;
+        }
+
+        /// <summary>
+        /// Click On Cancel Popup
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ClickOnCancelOrderPopup()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CancelOrderPopup, 10000);
+            CancelOrderPopup.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Verify cancel Order
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyCancelOrder()
+        {
+            WaitUntilPageload();
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,-200)");
+            driver.WaitForElementToBecomeVisibleWithinTimeout(DisabledAnchorClass, 10000);
+            bool isOrderCancelled = false;
+            String orderHeading = DisabledAnchorClass.GetText(driver);
+
+            if (orderHeading.Contains("CANCELLED"))
+            {
+                isOrderCancelled = true;
+                _logger.Info($"Verified order is cancelled.");
+            }
+
+            return isOrderCancelled;
+            
+        }
     }
 }
