@@ -12,6 +12,10 @@ using UnitTestNDBProject.Page;
 using System.Threading;
 using System.Globalization;
 using UnitTestNDBProject.TestDataAccess;
+using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
+using OpenQA.Selenium.Support.UI;
+using System.Configuration;
+using UnitTestNDBProject.Tests;
 
 namespace UnitTestNDBProject.Pages
 {
@@ -27,6 +31,9 @@ namespace UnitTestNDBProject.Pages
             PageFactory.InitElements(driver, this);
 
         }
+
+        public static int beforeCount = 0;
+        public static int afterCount = 0;
 
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'ORDER')]")]
         private IWebElement OrderPageText { get; set; }
@@ -57,6 +64,64 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//div[@class='modal-space']/ul/li")]
         public IWebElement WarningText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//div[@class='dot-btn'])[1]")]
+        public IWebElement HamburgerClick { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//div[@class='dot-btn'])[2]")]
+        public IWebElement HamburgerClick2 { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//ul[@class='action-popup']//span[text()='COPY'])[1]")]
+        public IWebElement CopyProductLine { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "(//ul[@class='action-popup']//span[text()='EDIT'])[2]")]
+        public IWebElement EditProductLine { get; set; }
+
+        [FindsBy(How = How.Id, Using = "doneProductLine")]
+        public IWebElement AddProductLineButton { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "total-product")]
+        public IWebElement TotalProducts { get; set; }
+
+        [FindsBy(How = How.Id, Using = "roomlocation")]
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
+        public IWebElement Search { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
+        public IWebElement SearchOrder { get; set; }
+
+        [FindsBy(How = How.Id, Using = "orderNumber")]
+        public IWebElement EnterOrder { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
+        public IWebElement Enter { get; set; }
+
+        [FindsBy(How = How.Id, Using = "roomlocation")]
+        public IWebElement roomlocation { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "product-line-summary")]
+        public IWebElement sizeOfProductLine { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnCancelOrder")]
+        public IWebElement CancelOrder { get; set; }
+
+        [FindsBy(How = How.Id, Using = "text-CancellationReason")]
+        public IWebElement CancelOrderReasons { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnPopupCancelOrder")]
+        public IWebElement CancelOrderPopup { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'CANCELLED')]")]
+        public IWebElement DisabledAnchorClass { get; set; }
+
+        public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
+        public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
+        {
+            object cancelReasonData = DataAccess.GetKeyJsonData(featureData, "CancelOrderReasons");
+            return JsonDataParser<ReasonsData>.ParseData(cancelReasonData);
+        }
 
         /// <summary>
         /// Function to verify that order is created
@@ -102,12 +167,30 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+
+        public List<PaymentData> ExpectedDataForGridVerification()
+        {
+            List<PaymentData> ActualFilteredLosit = new List<PaymentData>();
+
+            PaymentData savedCreditCardPaymentData = PaymentPage.GetSavedCreditCardPaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(savedCreditCardPaymentData);
+            PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(creditCardPaymentData);
+            PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(checkPaymentData);
+            PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(giftCardPaymentData);
+            PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(financePaymentData);
+            return ActualFilteredLosit;
+        }
+
         /// <summary>
         /// Function to verifypayment grid data on order page
         /// </summary>
         /// <param name="record"></param>
         /// <returns></returns>
-        public Boolean VerifyGridData(List<GridRecord> record)
+        public Boolean VerifyGridData(List<PaymentData> record)
 
         {
             new System.Threading.ManualResetEvent(false).WaitOne(1000);
@@ -121,7 +204,7 @@ namespace UnitTestNDBProject.Pages
                 IWebElement gridRecord = driver.FindElement(By.XPath("//div[contains(@class,'row gutter-top gutter-sm-bottom')]//li[" + rowno + "]"));
                 string RowValue = gridRecord.GetText(driver);
                 string[] RowLosit = RowValue.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                List<string> ExpectedFilteredLosit = new List<string>();
+                List<string> ActualFilteredLosit = new List<string>();
 
                 int count = 0;
                 bool isCredit = RowLosit.ToList().Exists(x => x.Equals("••••"));
@@ -129,16 +212,17 @@ namespace UnitTestNDBProject.Pages
                 {
                     if (count== 3 && isCredit)
                     {
-                        ExpectedFilteredLosit[1] += x;
+                        ActualFilteredLosit[1] += x;
                     }
                     else if (!x.Equals("••••") && !x.Equals(DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
                     {
-                        ExpectedFilteredLosit.Add(x);
+                        ActualFilteredLosit.Add(x);
                     }
                     count++;
                 });
+                record[counter].Amount = "$" + record[counter].Amount;
 
-                if ((record[counter].Payment.Equals(ExpectedFilteredLosit[0])) && (record[counter].PaymentMethod.Equals(ExpectedFilteredLosit[1])) && (record[counter].OrderStatus.Equals(ExpectedFilteredLosit[2])) && (record[counter].SalesPerson.Equals(ExpectedFilteredLosit[3])) && (record[counter].AmountCollected.Equals(ExpectedFilteredLosit[4])) && (record[counter].AmountPosted.Equals(ExpectedFilteredLosit[5])) && (record[counter].BalanceDue.Equals(ExpectedFilteredLosit[6])))
+                if (((record[counter].PaymentMethod.Equals(ActualFilteredLosit[1])) && (record[counter].Amount.Equals(ActualFilteredLosit[4])) && (record[counter].Amount.Equals(ActualFilteredLosit[5]))))
                 {
                     IsDataMatched = true;
                     _logger.Info($" Grid Data is populating correctly and matched with expected record");
@@ -170,6 +254,7 @@ namespace UnitTestNDBProject.Pages
             return this;
 
         }
+
 
         /// <summary>
         ///Function to click on add new payment button on order page
@@ -240,6 +325,8 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+
+
         /// <summary>
         /// Function to verify max transaction warning tax on clicking on refund link
         /// </summary>
@@ -265,8 +352,85 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElement(OkButton);
             OkButton.Clickme(driver);
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
-            ClickOnHamberger();
+           // ClickOnHamberger();
             return isWarningPopulated;
+
+        }
+        public OrderPage WaitUntilPageload()
+        {
+            //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            //wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//div[@class='loader-overlay-section']")));
+            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            _logger.Info($" Wait until loader is loaded");
+            return this;
+        }
+
+        public void CalculateNumberOfProductLinesBeforeOperation()
+        {
+            beforeCount = 0;
+            int i = 2;
+            do
+            {
+                WaitUntilPageload();
+                driver.FindElement(By.XPath("//li[" + i + "]//div[2]//span[1]//div[1]"));
+                beforeCount++;
+                i++;
+            } while (By.XPath("//li[" + i + "]//div[2]//span[1]//div[1]").isPresent(driver));
+
+        }
+
+        public OrderPage ClickOnhamburgerButton1()
+        {
+            //int count = CalculateNumberOfProductLinesBeforeCopy();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 60);
+            WaitUntilPageload();
+            Thread.Sleep(8000);
+            HamburgerClick.Clickme(driver);
+            _logger.Info($" Click on hamburger.");
+            return this;
+        }
+
+        public OrderPage ClickOnCopyButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(CopyProductLine, 60);
+            CopyProductLine.Clickme(driver);
+            _logger.Info($" Clicked on Copy Product Line.");
+            return this;
+        }
+
+        public OrderPage ClickAddProductButton()
+        {
+            Thread.Sleep(8000);
+            WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
+            AddProductLineButton.Clickme(driver);
+            _logger.Info($": ADD LINE button clicked");
+            return this;
+        }
+
+
+        public void CalculateNumberOfProductLinesAfterOperation()
+        {
+            afterCount = 0;
+            //afterCount = Convert.ToInt32(sizeOfProductLine.) - 1;
+            int i = 2;
+            do
+            {
+                WaitUntilPageload();
+                driver.FindElement(By.XPath("//li[" + i + "]//div[2]//span[1]//div[1]"));
+                afterCount++;
+                i++;
+            } while (By.XPath("//li[" + i + "]//div[2]//span[1]//div[1]").isPresent(driver));
+
+        }
+
+        public bool VerifyTotalProductsAfterCopy()
+        {
+
+            if ((afterCount - beforeCount) == 1)
+                return true;
+            else
+                return false;
 
         }
 

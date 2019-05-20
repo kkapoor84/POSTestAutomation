@@ -303,28 +303,39 @@
 
 	{
 		"Feature": "PaymentScreen",
-		"Data": [{
-				"Key": "GiftCardKey",
+		"Data": [
+			{
+				"Key": "SavedCreditCardKey",
 				"Value": {
-					"Amount": "1",
-					"GiftCardNumber": "91887-1140",
+					"Amount": "10.00",
 					"ExitReasonDropDownValue": "Credit card declined",
-					"ReasonDetails": "Credit Card is not working currently"
-					
-				}
+					"ReasonDetails": "Credit Card is not working currently",
+					"WarningMessageOnPayment":"This order has reached the maximum number of financial transactions. Contact Accounting to process future payments.",
+					"WarningMessageOnRefund":"This order has reached the maximum number of financial transactions. Contact Accounting to refund this payment.",
+					"PaymentMethod": "VS1111"
+
+
+						}
 			},
 			{
-				"Key": "FinanceKey",
+				"Key": "CreditCardKey",
 				"Value": {
-					"Amount": "10",
-					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future"
+					"Amount": "10.00",
+					"CreditCardNumber": "4111111111111111",
+					"ExpirationMonth": "12",
+					"ExpirationYear": "2029",
+					"CVVCode": "1234",
+					"CreditCardHolder": "Automation_POS",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently",
+					"PaymentMethod": "VS1111"
 
 				}
 			},
 			{
 				"Key": "CheckKey",
 				"Value": {
-					"Amount": "10",
+					"Amount": "10.00",
 					"AccountName": "Automation",
 					"RoutingNumber": "123456780",
 					"AccountNumber": "1234567890",
@@ -334,37 +345,34 @@
 					"SkippingReason": "Other",
 					"SkippingReasonDetail": "AK - Alaska",
 					"ExitReasonDropDownValue": "Credit card declined",
-					"ReasonDetails": "Credit Card is not working currently"
+					"ReasonDetails": "Credit Card is not working currently",
+					"PaymentMethod": "CHECK"
 
 				}
 			},
+		
 			{
-				"Key": "CreditCardKey",
+				"Key": "GiftCardKey",
 				"Value": {
-					"Amount": "10",
-					"CreditCardNumber": "4111111111111111",
-					"ExpirationMonth": "12",
-					"ExpirationYear": "2029",
-					"CVVCode": "1234",
-					"CreditCardHolder": "Automation_POS",
-					"ExitReasonDropDownValue": "Credit card declined",
-					"ReasonDetails": "Credit Card is not working currently"
-
-				}
-			},
-			{
-				"Key": "SavedCreditCardKey",
-				"Value": {
-					"Amount": "10",
+					"Amount": "1.00",
+					"GiftCardNumber": "91887-1140",
 					"ExitReasonDropDownValue": "Credit card declined",
 					"ReasonDetails": "Credit Card is not working currently",
-					"WarningMessageOnPayment":"This order has reached the maximum number of financial transactions. Contact Accounting to process future payments.",
-					"WarningMessageOnRefund":"This order has reached the maximum number of financial transactions. Contact Accounting to refund this payment."
-
-
+					"PaymentMethod": "GIFT CARD"
+					
+				}
+			},
+			{
+				"Key": "FinanceKey",
+				"Value": {
+					"Amount": "10.00",
+					"PaymentMethod": "FINANCE",
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future"
 
 				}
 			},
+		
+		
 			{
 			"Key": "PaymentGridKey",
 			"Value": {
@@ -416,6 +424,18 @@
 				]
 			}
 			}]
-	}
+	},
+	
+	{
+		"Feature": "Reasons",
+		"Data": [{
+				"Key": "CancelOrderReasons",
+				"Value": {
+					"CancelReasons": "This is an automation order. So, cancelling it to verify Cancel order functionality."
+				}
+			}
+		]
+}
 
 ]
+

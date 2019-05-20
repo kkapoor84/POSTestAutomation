@@ -201,6 +201,9 @@ namespace UnitTestNDBProject.TestDataAccess
         public string WarningMessageOnRefund { get; set; }
         public string WarningMessageOnPayment { get; set; }
 
+        public string PaymentMethod { get; set; }
+        
+
         public List<GridRecord> GridData { get; set; }
 
     }
@@ -216,5 +219,15 @@ namespace UnitTestNDBProject.TestDataAccess
         public string BalanceDue { get; set; }
 
     }
+    #endregion
+
+    #region Reasons specific classes
+
+    public class ReasonsData
+    {
+        public string CancelReasons { get; set; }
+
+    }
+
     #endregion
 }

@@ -28,7 +28,7 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData measurementAndInstallationParsedData;
         private static ParsedTestData adjustmentParsedData;
         private static ParsedTestData taxParsedData;
-        private static ParsedTestData paymentParsedData;
+        public static ParsedTestData paymentParsedData;
 
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
@@ -307,7 +307,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Category("Smoke"), Description("Payment via finance and order is created")]
         public void B6_VerifyOrderIsCreatedWithFinancialPayment()
         {
-            PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(paymentParsedData);
+          PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(paymentParsedData);
             _PaymentPage.MakeFinancePayment(financePaymentData.Amount)
               .CloseExitPaymentPopup()
                 .ClickOnExitPaymentScreenButton(financePaymentData.ExitPaymentReason);
@@ -361,10 +361,24 @@ namespace UnitTestNDBProject.Tests
         [Test, Category("Smoke"), Description("Payment grid data verification")]
         public void C2_VerifyPaymentGridData()
         {
-            PaymentData paymentGridData = PaymentPage.GetPaymentGridData(paymentParsedData);
-            Assert.True(_OrderPage.VerifyGridData(paymentGridData.GridData));
+         //   PaymentData paymentGridData = PaymentPage.GetPaymentGridData(paymentParsedData);
+            Assert.True(_OrderPage.VerifyGridData(_OrderPage.ExpectedDataForGridVerification()));
 
         }
+
+        [Test, Category("Smoke"), Description("Verify Product Copy")]
+        public void C3_VerifyCopyproductLineForOrder()
+        {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,-1500)");
+            //  _QuotePage.SearchFunctionForOrder();
+            _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
+            _OrderPage.ClickOnhamburgerButton1().ClickOnCopyButton();
+            _OrderPage.ClickAddProductButton();
+            _OrderPage.CalculateNumberOfProductLinesAfterOperation();
+            Assert.True(_OrderPage.VerifyTotalProductsAfterCopy());
+        }
+
         /// <summary>
         /// Tear Down function
         /// </summary>
