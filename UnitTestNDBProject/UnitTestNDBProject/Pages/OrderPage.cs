@@ -275,6 +275,16 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        public OrderPage NavigateToTopOfTheOrderPage()
+        {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,-1500)");
+            return this;
+
+        }
+
+
+
         /// <summary>
         /// Function to verify max transaction warning text on clicking on payment button
         /// </summary>
@@ -331,7 +341,7 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElement(OkButton);
             OkButton.Clickme(driver);
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
-            ClickOnHamberger();
+           // ClickOnHamberger();
             return isWarningPopulated;
 
         }

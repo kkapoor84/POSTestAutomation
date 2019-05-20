@@ -373,8 +373,8 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(21), Category("Smoke"), Description("Verify Product Copy")]
         public void C3_VerifyCopyproductLineForOrder()
         {
-           _OrderPage.SearchFunctionForOrder();
-           _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
+            _OrderPage.NavigateToTopOfTheOrderPage();
+            _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
             _OrderPage.ClickOnhamburgerButton1().ClickOnCopyButton();
             _OrderPage.ClickAddProductButton();
             _OrderPage.CalculateNumberOfProductLinesAfterOperation();
@@ -386,8 +386,8 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(22), Category("Smoke"), Description("Edit Order Productline For Order")]
         public void C4_VerifyEditProductLineForOrder()
         {
-            _OrderPage.SearchFunctionForOrder();
-            _OrderPage.ClickOnhamburgerButton2().ClickOnEditButton();
+
+           _OrderPage.ClickOnhamburgerButton2().ClickOnEditButton();
             _OrderPage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyProductDataAfterEdit(productLineEditFeatureParsedData.Data));
 
@@ -396,7 +396,6 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(23), Category("Smoke"), Description("Edit Order Productline For Order")]
         public void C5_VerifyDeleteproductLineForOrder()
         {
-           // _OrderPage.SearchFunctionForOrder();
             _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
             _OrderPage.ClickOnhamburgerButton2();
             _OrderPage.DeleteProductLine();
