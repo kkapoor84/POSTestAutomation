@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Threading;
 using UnitTestNDBProject.TestDataAccess;
@@ -169,8 +170,25 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
         public IWebElement EnterOuote { get; set; }
 
-        [FindsBy(How = How.Id, Using = "adjustmentOption0")]
-        public IWebElement state { get; set; }
+       
+
+
+        public List<Tuple<string, string>> editedDataForProductLine;
+
+        public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
+
+        public QuotePage SearchFunction()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            Search.Clickme(driver);
+            Thread.Sleep(3000);
+            SearchQuote.Clickme(driver);
+            EnterOuote.EnterText("704098");
+            Enter.Clickme(driver);
+            Thread.Sleep(3000);
+            return this;
+        }
+
 
         /// <summary>
         /// Function to parse internal info data.
@@ -503,9 +521,10 @@ namespace UnitTestNDBProject.Page
         {
             foreach (DataDictionary data in productLineData)
             {
+                WaitUntilPageload();
                 ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
                 // Thread.Sleep(4000);
-                new System.Threading.ManualResetEvent(false).WaitOne(1000);
+                new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
                 ClickOnAddProduct().WaitUntilPageload().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
                     .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
             }
@@ -572,7 +591,7 @@ namespace UnitTestNDBProject.Page
 
         }
 
-      
+
         /// <summary>
         /// Function to Click on Hamburger
         /// </summary>
@@ -580,6 +599,7 @@ namespace UnitTestNDBProject.Page
         public QuotePage ClickOnhamburgerButton()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 60);
+            Thread.Sleep(4000);
             HamburgerClick.Clickme(driver);
             _logger.Info($" Click on hamburger.");
             return this;
@@ -667,94 +687,189 @@ namespace UnitTestNDBProject.Page
             }
         }
 
-        /// <summary>
-        /// Function to read product line data
-        /// </summary>
-        /// <param name="EditProductDetails"></param>
-        /// <returns></returns>
-        public List<Tuple<string>> ReadProductLineData(List<EditProductDetail> EditProductDetails)
+       
+
+            /// <summary>
+            /// Function to verify data in product summary after edit.
+            /// </summary>
+            /// <param name="EditProductDetails"></param>
+            /// <returns></returns>
+
+            public bool VerifyProductDataAfterEdit(List<DataDictionary> editproductLineData)
         {
-            List<Tuple<string>> edditedProducts = new List<Tuple<string>>();
-            for (int counter = 0; counter < EditProductDetails.Count; counter++)
-            {
-                string option = EditProductDetails[counter].Option;
-
-                edditedProducts.Add(new Tuple<string>(option));
-            }
-
-            return edditedProducts;
-
-        }
-
-        /// <summary>
-        /// Function to verify data in product summary after edit.
-        /// </summary>
-        /// <param name="EditProductDetails"></param>
-        /// <returns></returns>
-        public bool VerifyProductDataAfterEdit(String EditProductDetails)
-        {
+            WaitUntilPageload();
             Thread.Sleep(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
             int i = 2;
             int count = 0;
             string[] productLineDataArray = new string[100];
             do
             {
+                WaitUntilPageload();
                 string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
-                // string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
                 productLineDataArray[count] = productColumn;
-                i++;
+                i++; count++;
                 _logger.Info(productLineDataArray[count]);
             } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
 
-            int j = 0;
-            bool dataIsValid = false;
-            do
+
+            bool roomLocation = false;
+            bool color = false;
+            int returnedTrue = 0;
+
+            foreach (DataDictionary data in editproductLineData)
             {
-                if ((EditProductDetails.Contains(productLineDataArray[j])))
+                EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
+                String ndbRoomLocationString = editProductLine.NDBRoomLocation;
+                List<EditProductDetail> editProductDetails = editProductLine.EditProductDetails;
+
+                int j = 0;
+                
+                do
                 {
-                    dataIsValid = true;
-                    _logger.Info($" Data " + EditProductDetails + " Is Valid.");
-                    break;
-                }
-                j++;
-            } while (productLineDataArray[j] != null);
-            return dataIsValid;
+                    if (ndbRoomLocationString.Contains(productLineDataArray[j]))
+                    {
+                        roomLocation = true;
+                        _logger.Info($" Room Location " + ndbRoomLocationString + " After Edit Is Correct.");
+                        returnedTrue++;
+                        //break;
+                    }
+
+                    if (editProductLine.EditProductDetails[1].Option.Contains(productLineDataArray[j]))
+                    {
+
+                        color = true;
+                        _logger.Info($" Color Entered " + editProductLine.EditProductDetails[1].Option + " After Edit Is Correct.");
+                        returnedTrue++;
+                        break;
+                        
+                    }
+                    j++;
+                } while (productLineDataArray[j] != null);
+            
+            }
+            if (roomLocation == true && color == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
+        /// <summary>
+        /// Verifying data entered on product summary grid is correct.
+        /// </summary>
+        /// <param name="productLineData"></param>
+        /// <returns></returns>
+        public bool VerifyProductDataAfterAdd(List<DataDictionary> productLineData)
+        {
+
+            Thread.Sleep(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
+            WaitUntilPageload();
+            int i = 2;
+            int count = 0;
+            string[] productLineDataArray = new string[100];
+            for (int j = 2; j <= 4; j++)
+            {
+                do
+                {
+                    string productColumn = driver.FindElement(By.XPath("//li[" + j + "]//div[" + i + "]")).GetText(driver);
+                    productLineDataArray[count] = productColumn;
+                    i++; count++;
+                    _logger.Info(productLineDataArray[count]);
+                } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+                i = 2;
+            }
 
 
+            bool roomLocation = false;
+            bool color = false;
+            bool liftsystem = false;
+
+            foreach (DataDictionary data in productLineData)
+            {
+                ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
+                String ndbRoomLocationString = productLine.NDBRoomLocation;
+                List<ProductDetail> addedProductDetails = productLine.ProductDetails;
+
+                int j = 0;
+
+                do
+                {
+                    if (ndbRoomLocationString.Contains(productLineDataArray[j]))
+                    {
+                        roomLocation = true;
+                        _logger.Info($"Added  Room Location " + ndbRoomLocationString + " Is Correct.");
+                        //break;
+                    }
+
+                    if (productLine.ProductDetails[1].Option.Contains(productLineDataArray[j]))
+                    {
+
+                        color = true;
+                        _logger.Info($"Added Color " + productLine.ProductDetails[1].Option + " Is Correct.");
+                        //  break;
+
+                    }
+
+                    if (productLine.ProductDetails[3].Option.Contains(productLineDataArray[j]))
+                    {
+
+                        liftsystem = true;
+                        _logger.Info($"Added  Lift System " + productLine.ProductDetails[3].Option + " Is Correct.");
+                        break;
+
+                    }
+                    j++;
+                } while (productLineDataArray[j] != null);
+
+            }
+            if (roomLocation == true && color == true && liftsystem == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
             /// <summary>
             /// Function to delete multiple product lines.
             /// </summary>
-        public void DeleteMultipleProducts()
+            public void DeleteMultipleProducts()
         {
             int i = 2;
-            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, 60);
-            while ((By.XPath("(//div[@class='dot-btn'])["+i+"]")).isPresent(driver))
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, implicitWait);
+            while ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
 
-                {
-                driver.FindElement(By.XPath("(//div[@class='dot-btn'])["+ i+ "]")).Clickme(driver);
-                                Thread.Sleep(5000);
-                driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])["+i+"]")).Clickme(driver);
-                    _logger.Info($" Clicked on Delete Product Line.");
-                    OkButton.Clickme(driver);
+            {
+                //Thread.Sleep(5000);
+                WaitUntilPageload();
+                driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")).Clickme(driver);
+                WaitUntilPageload();
+                driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
+                _logger.Info($" Clicked on Delete Product Line.");
+                OkButton.Clickme(driver);
                 WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, TotalProducts, 60);
-                Thread.Sleep(8000);
+                WaitUntilPageload();
             }
             Thread.Sleep(8000);
             i = 1;
             if ((By.XPath("(//div[@class='dot-btn'])[" + i + "]")).isPresent(driver))
             {
-                
+
                 WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")), 60);
                 driver.FindElement(By.XPath("(//div[@class='dot-btn'])[" + i + "]")).Clickme(driver);
                 driver.FindElement(By.XPath("(//ul[@class='action-popup']//span[text()='DELETE'])[" + i + "]")).Clickme(driver);
                 _logger.Info($" Tried to Delete Last Product Line.");
 
-              //  OkButton.Clickme(driver);
             }
         }
 
-      
+       
+
         /// <summary>
         /// Function to verify all product lines are deleted.
         /// </summary>
@@ -1150,6 +1265,7 @@ namespace UnitTestNDBProject.Page
             Thread.Sleep(1000);
             return this;
         }
+      
 
         public QuotePage CopyQuoteAndSave()
         {
@@ -1164,6 +1280,6 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
-
+       
     }
 }

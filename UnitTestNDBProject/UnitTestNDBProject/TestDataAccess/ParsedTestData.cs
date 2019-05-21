@@ -203,6 +203,7 @@ namespace UnitTestNDBProject.TestDataAccess
 
         public List<GridRecord> GridData { get; set; }
 
+
     }
 
     public class GridRecord
@@ -216,5 +217,15 @@ namespace UnitTestNDBProject.TestDataAccess
         public string BalanceDue { get; set; }
 
     }
+    #endregion
+
+    #region Reasons specific classes
+
+    public class ReasonsData
+    {
+        public string CancelReasons { get; set; }
+
+    }
+
     #endregion
 }

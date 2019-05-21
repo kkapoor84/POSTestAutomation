@@ -30,7 +30,7 @@ namespace UnitTestNDBProject.Base
         {
             driver.Navigate().GoToUrl(ConfigurationManager.AppSettings["AuthURL"]);
             driver.Navigate().GoToUrl(ConfigurationManager.AppSettings["URL"]);
-            //driver.Manage().Window.Maximize();
+            driver.Manage().Window.Maximize();
 
         }
 

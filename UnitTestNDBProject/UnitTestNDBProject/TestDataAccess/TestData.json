@@ -123,7 +123,7 @@
 						},
 						{
 							"OptionTypeId": "Color",
-							"Option": "Cloud"
+							"Option": "Dune"
 						},
 						{
 							"OptionTypeId": "NumberOnHeadrail",
@@ -231,14 +231,14 @@
 		"Data": [{
 			"Key": "Product1",
 			"Value": {
-				"NDBRoomLocation": "Living Room",
+				"NDBRoomLocation": "Balcony",
 				"EditProductDetails": [{
 						"OptionTypeId": "Mounting",
 						"Option": "Outside Mount"
 					},
 					{
 						"OptionTypeId": "Color",
-						"Option": "Dune"
+						"Option": "Cloud"
 					}
 				]
 			}
@@ -416,6 +416,17 @@
 				]
 			}
 			}]
-	}
+	},
+
+	{
+		"Feature": "Reasons",
+		"Data": [{
+				"Key": "CancelOrderReasons",
+				"Value": {
+					"CancelReasons": "This is an automation order. So, cancelling it to verify Cancel order functionality."
+				}
+			}
+		]
+}
 
 ]
