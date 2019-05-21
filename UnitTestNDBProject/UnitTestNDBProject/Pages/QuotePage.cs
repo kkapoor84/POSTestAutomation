@@ -170,8 +170,13 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
         public IWebElement EnterOuote { get; set; }
 
-       
+        [FindsBy(How = How.Id, Using = "quoteGrp")]
+        public IWebElement QuoteGroup { get; set; }
 
+        [FindsBy(How = How.Id, Using = "leadNumberInput")]
+        public IWebElement LeadNo { get; set; }
+
+        
 
         public List<Tuple<string, string>> editedDataForProductLine;
 
@@ -280,6 +285,33 @@ namespace UnitTestNDBProject.Page
             _logger.Info($": Successfully added quote nickname as {nickname}");
             return this;
         }
+
+        /// <summary>
+        /// Function to provide quote group
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+
+        public QuotePage UpdateGroup(String group)
+        {
+
+            driver.WaitForElement(QuoteGroup);
+            Actions actions = new Actions(driver);
+            actions.SendKeys(QuoteGroup, group).Build().Perform();
+            QuoteGroup.SendKeys(Keys.Enter);
+            _logger.Info($": Successfully Selected Quote Group {group}");
+            return this;
+        }
+
+        public QuotePage AddLeadNumber(String leadno)
+        {
+
+            driver.WaitForElement(LeadNo);
+            LeadNo.SendKeys(leadno);
+            _logger.Info($": Successfully Entered Lead Number {leadno}");
+            return this;
+        }
+
 
         /// <summary>
         /// Function to edit  inter info section.
