@@ -303,6 +303,11 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Function to add lead number
+        /// </summary>
+        /// <param name="leadno"></param>
+        /// <returns></returns>
         public QuotePage AddLeadNumber(String leadno)
         {
 
