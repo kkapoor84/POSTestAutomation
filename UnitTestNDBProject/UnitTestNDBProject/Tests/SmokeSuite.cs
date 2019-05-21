@@ -411,6 +411,16 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCancelOrder());
         }
 
+        [Test, Order(25), Category("Smoke"), Description("ChangeDeliveryType")]
+        public void C7_VerifyUpdateDeliveryType()
+        {
+            _QuotePage.SearchFunctionForOrder();
+            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
+            //Assert.True(_OrderPage.VerifyDeliveryOptionsPopulated());
+            //_OrderPage.SaveChangesToshippingOption();
+            _OrderPage.UpdateDeliveryTypeToShipping();
+        }
+
         /// <summary>
         /// Tear Down function
         /// </summary>

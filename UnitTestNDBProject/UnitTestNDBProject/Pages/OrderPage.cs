@@ -15,6 +15,8 @@ using UnitTestNDBProject.TestDataAccess;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 using OpenQA.Selenium.Support.UI;
 using System.Configuration;
+using OpenQA.Selenium.Interactions;
+using NUnit.Framework;
 
 namespace UnitTestNDBProject.Pages
 {
@@ -33,6 +35,8 @@ namespace UnitTestNDBProject.Pages
 
         public static int beforeCount = 0;
         public static int afterCount = 0;
+        public static String ShippingDeliveryType = "SHIPPING";
+        public static String StorePickupDeliveryType = "Store";
 
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'ORDER')]")]
         private IWebElement OrderPageText { get; set; }
@@ -114,6 +118,27 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'CANCELLED')]")]
         public IWebElement DisabledAnchorClass { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='Select default-select-dropdown has-value is-clearable is-searchable Select--single']")]
+        public IWebElement UpdateDeliveryType { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//input[@id='deliveryType']")]
+        public IWebElement UpdateDeliveryTypeIsFocused { get; set; }
+
+        [FindsBy(How = How.Id, Using = "save-quote")]
+        public IWebElement SaveOrder { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnShipmentEdit")]
+        public IWebElement EditShipmentDetails { get; set; }
+
+        [FindsBy(How = How.Id, Using = "shippingOption-0")]
+        public IWebElement ShipmentDetailsOptions { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnDone")]
+        public IWebElement DoneOnShippingPopup { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h2[@class='gutter-sm-top']")]
+        public IWebElement SectionName { get; set; }
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
@@ -570,5 +595,91 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        public OrderPage UpdateDeliveryTypeFromDropDown()
+        {
+
+            WaitUntilPageload();
+            UpdateDeliveryType.Clickme(driver);
+            return this;
+        }
+
+        public OrderPage SetDeliveryTypeToShipping()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(UpdateDeliveryTypeIsFocused, implicitWait);
+            UpdateDeliveryTypeIsFocused.EnterText(ShippingDeliveryType);
+            Thread.Sleep(200);
+            UpdateDeliveryTypeIsFocused.SendKeys(Keys.Enter);
+            return this;
+        }
+
+        public OrderPage EditDeliveryOptions()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditShipmentDetails, implicitWait);
+            EditShipmentDetails.Clickme(driver);
+            return this;
+        }
+
+        public Boolean VerifyDeliveryOptionsPopulated()
+        {
+            WaitUntilPageload();
+            //driver.WaitForElementToBecomeVisibleWithinTimeout(ShipmentDetailsOptions, implicitWait);
+            Boolean deliveryOptionsPopulated = false;
+            Thread.Sleep(200);
+            if (By.Id("shippingOption-0").isPresent(driver))
+            {
+                deliveryOptionsPopulated = true;
+            }
+            return deliveryOptionsPopulated;
+
+        }
+
+        public OrderPage SaveChangesToshippingOption()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(DoneOnShippingPopup, implicitWait);
+            //Thread.Sleep(200);
+            DoneOnShippingPopup.Clickme(driver);
+            WaitUntilPageload();
+            return this;
+        }
+
+        public OrderPage SaveOrderButton()
+        {
+            WaitUntilPageload();         
+            driver.WaitForElementToBecomeVisibleWithinTimeout(SaveOrder, implicitWait);
+            SaveOrder.Clickme(driver);
+            return this;
+        }
+
+        public Boolean VerifyShippingSection()
+        {
+            WaitUntilPageload();
+            Boolean shippingSectionIsAvailable = false;
+            String sectionNameOnScreen = SectionName.GetText(driver);
+            if (sectionNameOnScreen.Contains(ShippingDeliveryType))
+            {
+                shippingSectionIsAvailable = true;
+            }
+            return shippingSectionIsAvailable;
+        }
+
+        public OrderPage UpdateDeliveryTypeToShipping()
+        {
+            WaitUntilPageload();
+            if (By.Id("idBtnOK").isPresent(driver))
+            {
+                OkButton.Clickme(driver);                
+            }
+            else
+            {
+                EditDeliveryOptions();
+                Assert.True(VerifyDeliveryOptionsPopulated());
+                SaveChangesToshippingOption();
+                Assert.True(VerifyShippingSection());
+            }               
+            return this;
+        }
     }
 }
