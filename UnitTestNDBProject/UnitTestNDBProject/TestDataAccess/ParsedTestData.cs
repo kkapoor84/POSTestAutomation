@@ -205,6 +205,8 @@ namespace UnitTestNDBProject.TestDataAccess
         public string CreditCardHolder { get; set; }
         public string WarningMessageOnRefund { get; set; }
         public string WarningMessageOnPayment { get; set; }
+        public string PaymentMethod { get; set; }
+        
 
         public List<GridRecord> GridData { get; set; }
 
