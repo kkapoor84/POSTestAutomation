@@ -296,7 +296,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(14), Category("Smoke"), Ignore(""),Description("Quote Convert to Order")]
+        [Test, Order(14), Category("Smoke"),Description("Quote Convert to Order")]
         public void B5_VerifyQuoteConvertToOrder()
         {
             _QuotePage.SearchFunctionForQuote();
@@ -307,7 +307,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
 
         }
-        [Test, Order(15), Category("Smoke"), Ignore(""), Description("Payment via finance and order is created")]
+        [Test, Order(15), Category("Smoke"), Description("Payment via finance and order is created")]
         public void B6_VerifyOrderIsCreatedWithFinancialPayment()
         {
             PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(paymentParsedData);
@@ -319,7 +319,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
-        [Test, Order(16),  Category("Smoke"), Ignore(""), Description("Payment via gift card")]
+        [Test, Order(16),  Category("Smoke"), Description("Payment via gift card")]
         public void B7_VerifyGiftCardPayment()
         {
             PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(paymentParsedData);
@@ -329,7 +329,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
        
-        [Test, Order(17), Category("Smoke"), Ignore(""), Description("Payment via Check-Skip Verification")]
+        [Test, Order(17), Category("Smoke"), Description("Payment via Check-Skip Verification")]
         public void B8_VerifyCheckSkipVerificationPayment()
         {
             PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
@@ -340,7 +340,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
-        [Test, Order(18), Category("Smoke"), Ignore(""), Description("Payment via Manual Credit Card")]
+        [Test, Order(18), Category("Smoke"), Description("Payment via Manual Credit Card")]
         public void B9_VerifyManualCreditCardPayment()
         {
             PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(paymentParsedData);
@@ -350,7 +350,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
-        [Test, Order(19), Category("Smoke"), Ignore(""), Description("Payment via Saved Credit Card")]
+        [Test, Order(19), Category("Smoke"),Description("Payment via Saved Credit Card")]
         public void C1_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
         {
 
@@ -369,7 +369,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(21), Category("Smoke"), Ignore(""), Description("Verify Product Copy")]
+        [Test, Order(21), Category("Smoke"), Description("Verify Product Copy")]
         public void C3_VerifyCopyproductLineForOrder()
         {
             _OrderPage.NavigateToTopOfTheOrderPage();
@@ -382,7 +382,7 @@ namespace UnitTestNDBProject.Tests
 
 
 
-        [Test, Order(22), Category("Smoke"), Ignore(""), Description("Edit Order Productline For Order")]
+        [Test, Order(22), Category("Smoke"), Description("Edit Order Productline For Order")]
         public void C4_VerifyEditProductLineForOrder()
         {
 
@@ -392,13 +392,14 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(23), Category("Smoke"), Ignore(""), Description("Edit Order Productline For Order")]
+        [Test, Order(23), Category("Smoke"), Description("Edit Order Productline For Order")]
         public void C5_VerifyDeleteproductLineForOrder()
         {
             _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
             _OrderPage.ClickOnhamburgerButton2();
             _OrderPage.DeleteProductLine();
             _OrderPage.CalculateNumberOfProductLinesAfterOperation();
+            _OrderPage.GetProductTotalBeforeCopyingQuote();
             Assert.True(_OrderPage.VerifyTotalProductsAfterDelete());
 
         }
@@ -406,9 +407,20 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(24), Category("Smoke"), Description("Copy to Quote functionality from order page")]
         public void C6_VerifyCopyToQuoteFromOrderPage()
         {
-            _QuotePage.SearchFunctionForOrder();
-            _QuotePage.CopyQuote().UpdateInternalInfo();
-
+            _QuotePage.CopyToQuoteFromOrderPage().UpdateInternalInfo()
+                .UpdateStoreCode(internalInforData.StoreCode)
+                .UpdatePrimarySalesPerson(internalInforData.SalesPerson)
+                .UpdateSidemark(internalInforData.Sidemark)
+                .ApplyInternalInfoUpdates()
+                .SaveChanges();
+            Assert.True(_QuotePage.VerifyQuoteGroupIsNotUpdated());
+            Assert.True(_QuotePage.VerifyQuoteStatus());
+            Assert.True(_QuotePage.VerifyQuoteDate());
+            Assert.True(_QuotePage.VerifyStoreCode(internalInforData.StoreCode));
+            Assert.True(_QuotePage.VerifyPrimarySalesPerson(internalInforData.SalesPerson));
+            Assert.True(_QuotePage.VerifyLeadNumberIsNotUpdated());
+            Assert.True(_QuotePage.VerifySideMark(internalInforData.Sidemark));
+            Assert.True(_QuotePage.VerifyTotalProductsAfterCopyQuote());
         }
 
         [Test, Order(25), Category("Smoke"), Description("ChangeDeliveryType")]
@@ -418,8 +430,8 @@ namespace UnitTestNDBProject.Tests
             _OrderPage.UpdateDeliveryTypeToShipping();
         }
 
-        [Test, Order(26), Category("Smoke"), Ignore(""), Description("Cancel Order Verification")]
-        public void C8_VerifyCancelOrder()
+        [Test, Order(27), Category("Smoke"), Description("Cancel Order Verification")]
+        public void C9_VerifyCancelOrder()
         {
 
             _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
