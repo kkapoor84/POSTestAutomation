@@ -15,6 +15,9 @@ using UnitTestNDBProject.TestDataAccess;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 using OpenQA.Selenium.Support.UI;
 using System.Configuration;
+using OpenQA.Selenium.Interactions;
+using NUnit.Framework;
+using UnitTestNDBProject.Base;
 using UnitTestNDBProject.Tests;
 
 namespace UnitTestNDBProject.Pages
@@ -34,8 +37,11 @@ namespace UnitTestNDBProject.Pages
 
         public static int beforeCount = 0;
         public static int afterCount = 0;
+       // Constants objectConstant = new Constants();
 
-        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'ORDER')]")]
+        
+
+       [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'ORDER')]")]
         private IWebElement OrderPageText { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//span[@class='select-value-trancate']")]
@@ -116,6 +122,27 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'CANCELLED')]")]
         public IWebElement DisabledAnchorClass { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//div[@class='Select default-select-dropdown has-value is-clearable is-searchable Select--single']")]
+        public IWebElement UpdateDeliveryType { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//input[@id='deliveryType']")]
+        public IWebElement UpdateDeliveryTypeIsFocused { get; set; }
+
+        [FindsBy(How = How.Id, Using = "save-quote")]
+        public IWebElement SaveOrder { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnShipmentEdit")]
+        public IWebElement EditShipmentDetails { get; set; }
+
+        [FindsBy(How = How.Id, Using = "shippingOption-0")]
+        public IWebElement ShipmentDetailsOptions { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnDone")]
+        public IWebElement DoneOnShippingPopup { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//h2[@class='gutter-sm-top']")]
+        public IWebElement SectionName { get; set; }
+
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
         {
@@ -123,7 +150,8 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<ReasonsData>.ParseData(cancelReasonData);
         }
 
-
+        
+        
 
         /// <summary>
         /// Function to verify that order is created
@@ -176,7 +204,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage ClickOnAddDetailsButton()
         {
             
-
+            
             IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
             //This will scroll the page till the element is found		
             ex.ExecuteScript("arguments[0].scrollIntoView();", AddDetailButton);
@@ -501,6 +529,7 @@ namespace UnitTestNDBProject.Pages
             return isOrderCancelled;
 
         }
+
         public OrderPage SearchFunctionForOrder()
         {
             driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
@@ -519,6 +548,138 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Updating delivery type from delivery type dropdown
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage UpdateDeliveryTypeFromDropDown()
+        {
+            WaitUntilPageload();
+            UpdateDeliveryType.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Function to set delivery type to shipping
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage SetDeliveryTypeToShipping()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(UpdateDeliveryTypeIsFocused, implicitWait);
+            UpdateDeliveryTypeIsFocused.EnterText(Constants.ShippingDeliveryType);
+            UpdateDeliveryTypeIsFocused.SendKeys(Keys.Enter);
+            return this;
+        }
+
+        /// <summary>
+        /// function to click on Edit button of shipping options
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage EditDeliveryOptions()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditShipmentDetails, implicitWait);
+            EditShipmentDetails.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Function to verify atleast one delivery type is populated
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyDeliveryOptionsPopulated()
+        {
+            WaitUntilPageload();
+            //driver.WaitForElementToBecomeVisibleWithinTimeout(ShipmentDetailsOptions, implicitWait);
+            Boolean deliveryOptionsPopulated = false;
+            if (By.Id("shippingOption-0").isPresent(driver))
+            {
+                deliveryOptionsPopulated = true;
+            }
+            return deliveryOptionsPopulated;
+
+        }
+
+        /// <summary>
+        /// function to save changes after updating delivery type
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage SaveChangesToshippingOption()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(DoneOnShippingPopup, implicitWait);
+            DoneOnShippingPopup.Clickme(driver);
+            WaitUntilPageload();
+            return this;
+        }
+
+        /// <summary>
+        /// Function to click on Save Order Button
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage SaveOrderButton()
+        {
+            WaitUntilPageload();         
+            driver.WaitForElementToBecomeVisibleWithinTimeout(SaveOrder, implicitWait);
+            SaveOrder.Clickme(driver);
+            return this;
+        }
+
+
+        /// <summary>
+        /// Function to verify shipping details
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyShippingSection()
+        {
+            WaitUntilPageload();
+            Boolean shippingSectionIsAvailable = false;
+            String sectionNameOnScreen = SectionName.GetText(driver);
+            if (sectionNameOnScreen.Contains(Constants.ShippingDeliveryType))
+            {
+                shippingSectionIsAvailable = true;
+            }
+            return shippingSectionIsAvailable;
+        }
+
+
+    /// <summary>
+    /// Function to verify shipping option Edit button is enabled.
+    /// </summary>
+    /// <returns></returns>
+        public Boolean VerifyShippingSectionEditButtonIsEnabled()
+        {
+            WaitUntilPageload();
+            Boolean editShippingButton = false;
+            if (By.Id("btnShipmentEdit").isPresent(driver))
+            {
+                editShippingButton = true;
+            }
+            return editShippingButton;
+        }
+
+        /// <summary>
+        /// Function to verify if products are not install only only then to update the delivery options
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage UpdateDeliveryTypeToShipping()
+        {
+            WaitUntilPageload();
+            if (By.Id("idBtnOK").isPresent(driver))
+            {
+                OkButton.Clickme(driver);                
+            }
+            else
+            {
+                Assert.True(VerifyShippingSectionEditButtonIsEnabled());
+                EditDeliveryOptions();
+                Assert.True(VerifyDeliveryOptionsPopulated());
+                SaveChangesToshippingOption();
+                Assert.True(VerifyShippingSection());
+            }               
+            return this;
+        }
         /// <summary>
         /// Function to verifypayment grid data on order page
         /// </summary>
