@@ -645,7 +645,6 @@ namespace UnitTestNDBProject.Pages
             WaitUntilPageload();
             //driver.WaitForElementToBecomeVisibleWithinTimeout(ShipmentDetailsOptions, implicitWait);
             Boolean deliveryOptionsPopulated = false;
-            Thread.Sleep(200);
             if (By.Id("shippingOption-0").isPresent(driver))
             {
                 deliveryOptionsPopulated = true;
@@ -662,7 +661,6 @@ namespace UnitTestNDBProject.Pages
         {
             WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(DoneOnShippingPopup, implicitWait);
-            //Thread.Sleep(200);
             DoneOnShippingPopup.Clickme(driver);
             WaitUntilPageload();
             return this;
