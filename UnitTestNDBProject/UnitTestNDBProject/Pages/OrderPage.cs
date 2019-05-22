@@ -619,7 +619,6 @@ namespace UnitTestNDBProject.Pages
             WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(UpdateDeliveryTypeIsFocused, implicitWait);
             UpdateDeliveryTypeIsFocused.EnterText(Constants.ShippingDeliveryType);
-            Thread.Sleep(200);
             UpdateDeliveryTypeIsFocused.SendKeys(Keys.Enter);
             return this;
         }
