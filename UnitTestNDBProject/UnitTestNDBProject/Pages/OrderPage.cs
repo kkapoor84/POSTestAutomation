@@ -36,7 +36,7 @@ namespace UnitTestNDBProject.Pages
 
         public static int beforeCount = 0;
         public static int afterCount = 0;
-        Constants objectConstant = new Constants();
+       // Constants objectConstant = new Constants();
 
         
 
@@ -618,7 +618,7 @@ namespace UnitTestNDBProject.Pages
         {
             WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(UpdateDeliveryTypeIsFocused, implicitWait);
-            UpdateDeliveryTypeIsFocused.EnterText(objectConstant.ShippingDetails());
+            UpdateDeliveryTypeIsFocused.EnterText(Constants.ShippingDeliveryType);
             Thread.Sleep(200);
             UpdateDeliveryTypeIsFocused.SendKeys(Keys.Enter);
             return this;
@@ -690,7 +690,7 @@ namespace UnitTestNDBProject.Pages
             WaitUntilPageload();
             Boolean shippingSectionIsAvailable = false;
             String sectionNameOnScreen = SectionName.GetText(driver);
-            if (sectionNameOnScreen.Contains(objectConstant.ShippingDetails()))
+            if (sectionNameOnScreen.Contains(Constants.ShippingDeliveryType))
             {
                 shippingSectionIsAvailable = true;
             }

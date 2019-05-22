@@ -9,19 +9,10 @@ namespace UnitTestNDBProject.TestDataAccess
 {
     public class Constants
     {
-        static String ShippingDeliveryType;
         private IWebDriver driver;
+        public static String ShippingDeliveryType = "SHIPPING";
+        
 
-        //public Constants(IWebDriver driver)
-        //{
-        //    this.driver = driver;
-        //}
-
-        public string  ShippingDetails()
-        {
-            ShippingDeliveryType = "SHIPPING";
-            return ShippingDeliveryType;
-    }
        
     }
 }

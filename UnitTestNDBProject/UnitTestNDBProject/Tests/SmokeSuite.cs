@@ -414,7 +414,6 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(25), Category("Smoke"), Description("ChangeDeliveryType")]
         public void C7_VerifyUpdateDeliveryType()
         {
-            _QuotePage.SearchFunctionForOrder();
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
             _OrderPage.UpdateDeliveryTypeToShipping();
         }
