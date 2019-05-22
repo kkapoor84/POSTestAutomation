@@ -405,7 +405,7 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Order(24), Category("Smoke"), Description("Copy to Quote functionality from order page")]
-        public void C6_VerifyCopyToQuoteFromOrdderPage()
+        public void C6_VerifyCopyToQuoteFromOrderPage()
         {
             _QuotePage.SearchFunctionForOrder();
             _QuotePage.CopyQuote().UpdateInternalInfo();
