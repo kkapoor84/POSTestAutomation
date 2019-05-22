@@ -1233,8 +1233,8 @@ namespace UnitTestNDBProject.Page
             _logger.Info($" User clicked on search button on top navigation panel");
             SearchQuote.Clickme(driver);
             _logger.Info($" User clicked on search for quote tab on search page");
-            EnterOuote.EnterText("703895");
-            _logger.Info($" User entered quote{703895}");
+            EnterOuote.EnterText("704316");
+            _logger.Info($" User entered quote{704316}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
             WaitUntilPageload();
@@ -1256,8 +1256,8 @@ namespace UnitTestNDBProject.Page
             SearchOrder.Clickme(driver);
             _logger.Info($" User clicked on search for order tab on search page");
             //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2013671");
-            _logger.Info($" User entered quote{2013671}");
+            EnterOrder.EnterText("2013906");
+            _logger.Info($" User entered quote{2013906}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
             WaitUntilPageload();
@@ -1267,7 +1267,7 @@ namespace UnitTestNDBProject.Page
         }
       
 
-        public QuotePage CopyQuoteAndSave()
+        public QuotePage CopyQuote()
         {
             IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
            // driver.WaitForElement(copytoquote);
@@ -1280,6 +1280,14 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
-       
+        public QuotePage SaveChanges()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+            SaveButton.Clickme(driver);
+            _logger.Info($" User clicked on save button");
+            return this;
+        }
+
+
     }
 }
