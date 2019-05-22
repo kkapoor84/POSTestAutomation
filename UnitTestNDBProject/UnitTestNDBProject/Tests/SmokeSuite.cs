@@ -404,11 +404,19 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(24), Category("Smoke"), Description("Cancel Order Verification")]
+        [Test, Order(24), Category("Smoke"), Ignore(""),Description("Cancel Order Verification")]
         public void C6_VerifyCancelOrder()
         {
+            
             _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
             Assert.True(_OrderPage.VerifyCancelOrder());
+        }
+
+        [Test, Order(25), Category("Smoke"), Description("ChangeDeliveryType")]
+        public void C7_VerifyUpdateDeliveryType()
+        {
+            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
+            _OrderPage.UpdateDeliveryTypeToShipping();
         }
 
         /// <summary>

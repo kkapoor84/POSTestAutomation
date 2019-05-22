@@ -1256,8 +1256,8 @@ namespace UnitTestNDBProject.Page
             SearchOrder.Clickme(driver);
             _logger.Info($" User clicked on search for order tab on search page");
             //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2013671");
-            _logger.Info($" User entered quote{2013671}");
+            EnterOrder.EnterText("2013915");
+            _logger.Info($" User entered quote{2013894}"); // InstallOnly
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
             WaitUntilPageload();
