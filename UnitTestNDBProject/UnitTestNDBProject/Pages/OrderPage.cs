@@ -18,6 +18,7 @@ using System.Configuration;
 using OpenQA.Selenium.Interactions;
 using NUnit.Framework;
 using UnitTestNDBProject.Base;
+using UnitTestNDBProject.Tests;
 
 namespace UnitTestNDBProject.Pages
 {
@@ -196,58 +197,6 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        /// <summary>
-        /// Function to verifypayment grid data on order page
-        /// </summary>
-        /// <param name="record"></param>
-        /// <returns></returns>
-        public Boolean VerifyGridData(List<GridRecord> record)
-
-        {
-            new System.Threading.ManualResetEvent(false).WaitOne(1000);
-            Boolean IsDataMatched = false;
-            int rowno = 2;
-            
-
-            for (int counter = 0; counter < record.Count; counter++)
-            {
-                IsDataMatched = false;
-                IWebElement gridRecord = driver.FindElement(By.XPath("//div[contains(@class,'row gutter-top gutter-sm-bottom')]//li[" + rowno + "]"));
-                string RowValue = gridRecord.GetText(driver);
-                string[] RowLosit = RowValue.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                List<string> ExpectedFilteredLosit = new List<string>();
-
-                int count = 0;
-                bool isCredit = RowLosit.ToList().Exists(x => x.Equals("••••"));
-                RowLosit.ToList().ForEach(x =>
-                {
-                    if (count== 3 && isCredit)
-                    {
-                        ExpectedFilteredLosit[1] += x;
-                    }
-                    else if (!x.Equals("••••") && !x.Equals(DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
-                    {
-                        ExpectedFilteredLosit.Add(x);
-                    }
-                    count++;
-                });
-
-                if ((record[counter].Payment.Equals(ExpectedFilteredLosit[0])) && (record[counter].PaymentMethod.Equals(ExpectedFilteredLosit[1])) && (record[counter].OrderStatus.Equals(ExpectedFilteredLosit[2])) && (record[counter].SalesPerson.Equals(ExpectedFilteredLosit[3])) && (record[counter].AmountCollected.Equals(ExpectedFilteredLosit[4])) && (record[counter].AmountPosted.Equals(ExpectedFilteredLosit[5])) && (record[counter].BalanceDue.Equals(ExpectedFilteredLosit[6])))
-                {
-                    IsDataMatched = true;
-                    _logger.Info($" Grid Data is populating correctly and matched with expected record");
-                }
-                else
-                {
-                    break;
-                }
-
-                rowno++;
-            }
-
-
-            return IsDataMatched;
-        }
         /// <summary>
         /// Function to click on add detail button on order page
         /// </summary>
@@ -731,5 +680,81 @@ namespace UnitTestNDBProject.Pages
             }               
             return this;
         }
+        /// <summary>
+        /// Function to verifypayment grid data on order page
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        public Boolean VerifyGridData(List<PaymentData> record)
+
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
+            Boolean IsDataMatched = false;
+            int rowno = 2;
+
+
+            for (int counter = 0; counter < record.Count; counter++)
+            {
+                IsDataMatched = false;
+                IWebElement gridRecord = driver.FindElement(By.XPath("//div[contains(@class,'row gutter-top gutter-sm-bottom')]//li[" + rowno + "]"));
+                string RowValue = gridRecord.GetText(driver);
+                string[] RowLosit = RowValue.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                List<string> ActualFilteredLosit = new List<string>();
+
+                int count = 0;
+                bool isCredit = RowLosit.ToList().Exists(x => x.Equals("••••"));
+                RowLosit.ToList().ForEach(x =>
+                {
+                    if (count == 3 && isCredit)
+                    {
+                        ActualFilteredLosit[1] += x;
+                    }
+                    else if (!x.Equals("••••") && !x.Equals(DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
+                    {
+                        ActualFilteredLosit.Add(x);
+                    }
+                    count++;
+                });
+                record[counter].Amount = "$" + record[counter].Amount;
+
+                if (((record[counter].PaymentMethod.Equals(ActualFilteredLosit[1])) && (record[counter].Amount.Equals(ActualFilteredLosit[4])) && (record[counter].Amount.Equals(ActualFilteredLosit[5]))))
+                {
+                    IsDataMatched = true;
+                    _logger.Info($" Grid Data is populating correctly and matched with expected record");
+                }
+                else
+                {
+                    break;
+                }
+
+                rowno++;
+            }
+
+
+            return IsDataMatched;
+        }
+
+        /// <summary>
+        /// Listing All the key data of PaymentScreen
+        /// </summary>
+        /// <returns></returns>
+        public List<PaymentData> ExpectedDataForGridVerification()
+        {
+            List<PaymentData> ActualFilteredLosit = new List<PaymentData>();
+
+            PaymentData savedCreditCardPaymentData = PaymentPage.GetSavedCreditCardPaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(savedCreditCardPaymentData);
+            PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(creditCardPaymentData);
+            PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(checkPaymentData);
+            PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(giftCardPaymentData);
+            PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(SmokeSuite.paymentParsedData);
+            ActualFilteredLosit.Add(financePaymentData);
+            return ActualFilteredLosit;
+        }
+
+
     }
 }

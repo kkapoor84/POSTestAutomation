@@ -28,7 +28,7 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData measurementAndInstallationParsedData;
         private static ParsedTestData adjustmentParsedData;
         private static ParsedTestData taxParsedData;
-        private static ParsedTestData paymentParsedData;
+        public static ParsedTestData paymentParsedData;
         private static ParsedTestData reasonsParser;
 
         NewCustomerData newCustomerData;
@@ -362,11 +362,10 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_RefundLink(savedCreditCardPaymentData.WarningMessageOnRefund));
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
-        [Test,  Order(20), Category("Smoke"), Ignore(""), Description("Payment grid data verification")]
+        [Test, Category("Smoke"), Description("Payment grid data verification")]
         public void C2_VerifyPaymentGridData()
         {
-            PaymentData paymentGridData = PaymentPage.GetPaymentGridData(paymentParsedData);
-            Assert.True(_OrderPage.VerifyGridData(paymentGridData.GridData));
+             Assert.True(_OrderPage.VerifyGridData(_OrderPage.ExpectedDataForGridVerification()));
 
         }
 
