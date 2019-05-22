@@ -219,8 +219,10 @@
 			"Key": "InternalInfoSection",
 			"Value": {
 				"NickName": "AutomationQuote",
+				"Group":"B",
 				"StoreCode": "S7",
-				"Sidemark": "JSONSidemark"
+				"Sidemark": "JSONSidemark",
+				"Leadnumber":"12345"
 			}
 		}]
 

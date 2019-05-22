@@ -120,6 +120,11 @@ namespace UnitTestNDBProject.TestDataAccess
         public string StoreCode { get; set; }
         public string Sidemark { get; set; }
         public string Nickname { get; set; }
+        public string Group { get; set; }
+
+        public string Leadnumber { get; set; }
+        
+
     }
 
 
