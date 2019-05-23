@@ -118,21 +118,27 @@ namespace UnitTestNDBProject.TestDataAccess
     public class InternalInfoData
     {
         public string StoreCode { get; set; }
-        public string Sidemark { get; set; }
+        public List<SideMark> Sidemark { get; set; }
         public string Nickname { get; set; }
         public string Group { get; set; }
 
+        public string SalesPerson { get; set; }
+        
         public string Leadnumber { get; set; }
         
 
     }
+    public class SideMark
+    {
+        public string SidemarkText { get; set; }
+    }
 
 
-    #endregion
+        #endregion
 
-    #region Measurement and Installation data specific classes
+        #region Measurement and Installation data specific classes
 
-    public class MeasurementAndInstallationData
+        public class MeasurementAndInstallationData
     {
         public string Directions { get; set; }
         public Boolean SelectLadder { get; set; }

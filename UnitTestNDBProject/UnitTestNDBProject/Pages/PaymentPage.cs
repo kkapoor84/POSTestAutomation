@@ -220,6 +220,7 @@ namespace UnitTestNDBProject.Page
         {
             driver.waitForElementNotVisible("//div[@class='msg-container']");
             driver.WaitForElement(HomeIcon);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
             HomeIcon.Clickme(driver);
             _logger.Info($" User clicked on ome icon");
             driver.WaitForElement(CancleButton);

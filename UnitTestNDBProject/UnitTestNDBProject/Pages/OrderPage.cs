@@ -143,6 +143,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//h2[@class='gutter-sm-top']")]
         public IWebElement SectionName { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//span[@class='total-product']")]
+        public IWebElement ProductTotal { get; set; }
+
+
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
         {
@@ -454,6 +458,12 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
+
         public OrderPage DeleteProductLine()
         {
             WaitUntilPageload();
@@ -755,6 +765,18 @@ namespace UnitTestNDBProject.Pages
             return ActualFilteredLosit;
         }
 
+        /// <summary>
+        /// Function to get the total product number before copying quote from order page
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage GetProductTotalBeforeCopyingQuote()
+        {
+            driver.WaitForElement(ProductTotal);
+
+            String Value = ProductTotal.GetText(driver);
+            Constants.ProductTotal = Value;
+            return this;
+        }
 
     }
 }
