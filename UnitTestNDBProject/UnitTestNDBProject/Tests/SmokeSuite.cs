@@ -296,11 +296,11 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(14), Category("Smoke"), Ignore(""), Description("Quote Convert to Order")]
+        [Test, Order(14), Category("Smoke"),Description("Quote Convert to Order")]
         public void B5_VerifyQuoteConvertToOrder()
         {
             _QuotePage.SearchFunctionForQuote();
-            _QuotePage.CopyQuoteAndSave();
+            _QuotePage.CopyQuote().SaveChanges();
             //Thread.Sleep(2000);
             _QuotePage.WaitUntilPageload();
            _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();
@@ -350,7 +350,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
-        [Test, Order(19), Category("Smoke"), Ignore(""), Description("Payment via Saved Credit Card")]
+        [Test, Order(19), Category("Smoke"),Description("Payment via Saved Credit Card")]
         public void C1_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
         {
 
@@ -399,16 +399,28 @@ namespace UnitTestNDBProject.Tests
             _OrderPage.ClickOnhamburgerButton2();
             _OrderPage.DeleteProductLine();
             _OrderPage.CalculateNumberOfProductLinesAfterOperation();
+            _OrderPage.GetProductTotalBeforeCopyingQuote();
             Assert.True(_OrderPage.VerifyTotalProductsAfterDelete());
 
         }
 
-        [Test, Order(24), Category("Smoke"), Ignore(""),Description("Cancel Order Verification")]
-        public void C6_VerifyCancelOrder()
+        [Test, Order(24), Category("Smoke"), Description("Copy to Quote functionality from order page")]
+        public void C6_VerifyCopyToQuoteFromOrderPage()
         {
-            
-            _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
-            Assert.True(_OrderPage.VerifyCancelOrder());
+            _QuotePage.CopyToQuoteFromOrderPage().UpdateInternalInfo()
+                .UpdateStoreCode(internalInforData.StoreCode)
+                .UpdatePrimarySalesPerson(internalInforData.SalesPerson)
+                .UpdateSidemark(internalInforData.Sidemark)
+                .ApplyInternalInfoUpdates()
+                .SaveChanges();
+            Assert.True(_QuotePage.VerifyQuoteGroupIsNotUpdated());
+            Assert.True(_QuotePage.VerifyQuoteStatus());
+            Assert.True(_QuotePage.VerifyQuoteDate());
+            Assert.True(_QuotePage.VerifyStoreCode(internalInforData.StoreCode));
+            Assert.True(_QuotePage.VerifyPrimarySalesPerson(internalInforData.SalesPerson));
+            Assert.True(_QuotePage.VerifyLeadNumberIsNotUpdated());
+            Assert.True(_QuotePage.VerifySideMark(internalInforData.Sidemark));
+            Assert.True(_QuotePage.VerifyTotalProductsAfterCopyQuote());
         }
 
         [Test, Order(25), Category("Smoke"), Ignore(""), Description("ChangeDeliveryType")]
@@ -417,6 +429,16 @@ namespace UnitTestNDBProject.Tests
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
             _OrderPage.UpdateDeliveryTypeToShipping();
         }
+
+        [Test, Order(27), Category("Smoke"), Description("Cancel Order Verification")]
+        public void C9_VerifyCancelOrder()
+        {
+
+            _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
+            Assert.True(_OrderPage.VerifyCancelOrder());
+        }
+
+
 
         /// <summary>
         /// Tear Down function

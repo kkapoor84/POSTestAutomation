@@ -220,8 +220,15 @@
 			"Value": {
 				"NickName": "AutomationQuote",
 				"Group":"B",
-				"StoreCode": "S7",
-				"Sidemark": "JSONSidemark",
+				"StoreCode": "S7 - SAH #S7-LINDA LAMB",
+				"SalesPerson":"NORMAN MEYERS",
+				"Sidemark": [{
+						"SidemarkText": "JSONSidemark"
+					},
+					{
+						"SidemarkText": "UpdatedJSONSidemark"
+					}
+				],
 				"Leadnumber":"12345"
 			}
 		}]

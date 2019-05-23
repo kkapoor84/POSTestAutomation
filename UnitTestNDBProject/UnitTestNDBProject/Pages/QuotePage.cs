@@ -10,6 +10,7 @@ using SeleniumExtras.PageObjects;
 using UnitTestNDBProject.Utils;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 using OpenQA.Selenium.Interactions;
+using System.Globalization;
 
 namespace UnitTestNDBProject.Page
 {
@@ -18,6 +19,7 @@ namespace UnitTestNDBProject.Page
 
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        
         //private static ParsedTestData productLineFeatureParsedData;
         //private static ParsedTestData productLineEditFeatureParsedData;
         //List<Tuple<string, string>> productDetails;
@@ -176,7 +178,40 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.Id, Using = "leadNumberInput")]
         public IWebElement LeadNo { get; set; }
 
-        
+        [FindsBy(How = How.Id, Using = "storeCode")]
+        public IWebElement StoreCode { get; set; }
+
+        [FindsBy(How = How.Id, Using = "salesPerson")]
+        public IWebElement SalesPerson { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnCopyOrderToQuote")]
+        public IWebElement CopyToQuoteFromOrder { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//input[@name='quoteGrp']/parent::div//span[@class='Select-value-label']")]
+        public IWebElement QuoteGroupText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//span[@class='form-label text-uppercase remove-form-label']")]
+        public IWebElement QuoteStatusText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//label[text()='Quote Date']/following-sibling::span[@class='form-label']")]
+        public IWebElement QuoteDateText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//label[text()='Store Code']/following-sibling::span[@class='form-label']")]
+        public IWebElement StoreCodeText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//label[text()='Primary Salesperson']/following-sibling::span[@class='form-label']")]
+        public IWebElement PrimarySalesPersonText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//label[text()='Lead No.']/following-sibling::span[@class='form-label']")]
+        public IWebElement LeadNumberText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//label[text()='Sidemark']/following-sibling::span[@class='form-label break-big-word']")]
+        public IWebElement SideMarktext { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//span[@class='total-product']")]
+        public IWebElement ProductTotal { get; set; }
+
+
 
         public List<Tuple<string, string>> editedDataForProductLine;
 
@@ -304,6 +339,116 @@ namespace UnitTestNDBProject.Page
         }
 
         /// <summary>
+        /// Function to verify that quote group is not updated
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyQuoteGroupIsNotUpdated ()
+        {
+            QuoteGroupText.GetText(driver);
+
+            if (QuoteGroupText.GetText(driver).Equals(Constants.QuoteGroup))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Function to verify that quote status
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyQuoteStatus()
+        {
+            QuoteStatusText.GetText(driver);
+
+            if (QuoteStatusText.GetText(driver).Equals(Constants.QuoteStatus))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// Function to verify the store code
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyStoreCode(String scode)
+        {
+            StoreCodeText.GetText(driver);
+
+            if (StoreCodeText.GetText(driver).Equals(scode))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Function to verify primary sales person
+        /// </summary>
+        /// <param name="salesperson"></param>
+        /// <returns></returns>
+        public Boolean VerifyPrimarySalesPerson(String salesperson)
+        {
+            PrimarySalesPersonText.GetText(driver);
+
+            if (PrimarySalesPersonText.GetText(driver).Contains(salesperson))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Function to verify lead number is null
+        /// </summary>
+        /// <param name="scode"></param>
+        /// <returns></returns>
+        public Boolean VerifyLeadNumberIsNotUpdated()
+        {
+            if (LeadNumberText.GetText(driver).Equals(""))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Function to verify the sidemark
+        /// </summary>
+        /// <param name="sidemark"></param>
+        /// <returns></returns>
+        public Boolean VerifySideMark(List<SideMark> sidemark)
+        {
+            if (SideMarktext.GetText(driver).Equals(sidemark[1].SidemarkText))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Function to verify the quote date
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyQuoteDate()
+        {
+            if (QuoteDateText.GetText(driver).Equals(DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Function to add lead number
         /// </summary>
         /// <param name="leadno"></param>
@@ -324,6 +469,7 @@ namespace UnitTestNDBProject.Page
         /// <returns></returns>
         public QuotePage UpdateInternalInfo()
         {
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, 10000);
             InternalInfo.Clickme(driver);
             _logger.Info($": Start Internal Information section update.");
@@ -336,14 +482,53 @@ namespace UnitTestNDBProject.Page
         /// </summary>
         /// <param name="sidemark"></param>
         /// <returns></returns>
-        public QuotePage UpdateSidemark(String sidemark)
+        public QuotePage UpdateSidemark(List<SideMark> sm)
         {
-            Thread.Sleep(2000);
-            driver.WaitForElementToBecomeVisibleWithinTimeout(Sidemark, 10000);
-            Sidemark.EnterText(sidemark);
-            _logger.Info($": Successfully updated sidemark as {sidemark}");
+            driver.WaitForElement(Sidemark);
+            if (Sidemark.GetAttribute("value") == "")
+            {
+                 Sidemark.EnterText(sm[0].SidemarkText);
+                _logger.Info($": Successfully updated sidemark as {sm[0].SidemarkText}");
+            }
+            else
+            {
+                Sidemark.EnterText(sm[1].SidemarkText);
+                _logger.Info($": Successfully updated sidemark as {sm[1].SidemarkText}");
+            }
+
             return this;
         }
+
+        /// <summary>
+        /// Function to select store code
+        /// </summary>
+        /// <param name="storecode"></param>
+        /// <returns></returns>
+        public QuotePage UpdateStoreCode(String storecode)
+        {
+            driver.WaitForElement(StoreCode);
+            Actions actions = new Actions(driver);
+            actions.SendKeys(StoreCode, storecode).Build().Perform();
+            StoreCode.SendKeys(Keys.Enter);
+            _logger.Info($": Successfully Selected Store code Group {storecode}");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to update primary sales person
+        /// </summary>
+        /// <param name="storecode"></param>
+        /// <returns></returns>
+        public QuotePage UpdatePrimarySalesPerson(String salesperson)
+        {
+            driver.WaitForElement(SalesPerson);
+            Actions actions = new Actions(driver);
+            actions.SendKeys(SalesPerson, salesperson).Build().Perform();
+            SalesPerson.SendKeys(Keys.Enter);
+            _logger.Info($": Successfully Selected Store code Group {salesperson}");
+            return this;
+        }
+        
 
         /// <summary>
         ///  Function to apply inter info section changes.
@@ -674,6 +859,7 @@ namespace UnitTestNDBProject.Page
             return productQuantity;
 
         }
+
 
         /// <summary>
         /// Function to click on Edit button.
@@ -1270,8 +1456,8 @@ namespace UnitTestNDBProject.Page
             _logger.Info($" User clicked on search button on top navigation panel");
             SearchQuote.Clickme(driver);
             _logger.Info($" User clicked on search for quote tab on search page");
-            EnterOuote.EnterText("703895");
-            _logger.Info($" User entered quote{703895}");
+            EnterOuote.EnterText("704316");
+            _logger.Info($" User entered quote{704316}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
             WaitUntilPageload();
@@ -1293,8 +1479,8 @@ namespace UnitTestNDBProject.Page
             SearchOrder.Clickme(driver);
             _logger.Info($" User clicked on search for order tab on search page");
             //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2013915");
-            _logger.Info($" User entered quote{2013894}"); // InstallOnly
+            EnterOrder.EnterText("2013906");
+            _logger.Info($" User entered quote{2013906}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
             WaitUntilPageload();
@@ -1304,7 +1490,7 @@ namespace UnitTestNDBProject.Page
         }
       
 
-        public QuotePage CopyQuoteAndSave()
+        public QuotePage CopyQuote()
         {
             IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
            // driver.WaitForElement(copytoquote);
@@ -1317,6 +1503,43 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
-       
+        public QuotePage CopyToQuoteFromOrderPage()
+        {
+            WaitUntilPageload();
+            CopyToQuoteFromOrder.Clickme(driver);
+            _logger.Info($" User clicked on copy to quote button");
+             return this;
+        }
+
+        
+
+        public QuotePage SaveChanges()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+            SaveButton.Clickme(driver);
+            _logger.Info($" User clicked on save button");
+            WaitUntilPageload();
+            return this;
+        }
+
+
+
+        /// <summary>
+        /// Function to verify the total count of product after copy quote from order page
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyTotalProductsAfterCopyQuote()
+        {
+            if (ProductTotal.GetText(driver).Equals(Constants.ProductTotal))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
     }
+
 }
+
