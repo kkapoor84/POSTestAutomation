@@ -155,6 +155,9 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//div[contains(text(),'Change Store')][@class='Select-placeholder']")]
         public IWebElement UpdateStoreCodeDropDownOnPopup { get; set; }
 
+        [FindsBy(How = How.Id, Using = "idDone")]
+        public IWebElement DoneStoreChanges { get; set; }
+
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
@@ -580,6 +583,10 @@ namespace UnitTestNDBProject.Pages
         public OrderPage UpdateDeliveryTypeFromDropDown()
         {
             WaitUntilPageload();
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,-3000)");
             UpdateDeliveryType.Clickme(driver);
             return this;
         }
@@ -699,7 +706,7 @@ namespace UnitTestNDBProject.Pages
             else
             {
                 Assert.True(VerifyShippingSectionEditButtonIsEnabled());
-                EditStoreDeliveryOptions();
+                EditDeliveryOptions();
                 Assert.True(VerifyDeliveryOptionsPopulated());
                 SaveChangesToshippingOption();
                 Assert.True(VerifyShippingSection());
@@ -794,6 +801,10 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Assertion to verify edit button for store oickup is successful.
+        /// </summary>
+        /// <returns></returns>
         public Boolean VerifyStorePickupSectionEditButtonIsEnabled()
         {
             WaitUntilPageload();
@@ -805,6 +816,10 @@ namespace UnitTestNDBProject.Pages
             return editStorePickupButton;
         }
 
+        /// <summary>
+        /// Function to click Edit button on store section
+        /// </summary>
+        /// <returns></returns>
         public OrderPage EditStoreDeliveryOptions()
         {
             WaitUntilPageload();
@@ -813,6 +828,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to select required store code.
+        /// </summary>
+        /// <param name="storeData"></param>
+        /// <returns></returns>
         public OrderPage SelectRequiredStoreCode(string storeData)
         {
             WaitUntilPageload();
@@ -826,6 +846,41 @@ namespace UnitTestNDBProject.Pages
 
             return this;
         }
+
+        /// <summary>
+        /// Function to save selected store code on popup.
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage SaveSelectedStoreCode()
+        {
+            WaitUntilPageload();
+            DoneStoreChanges.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Function to verify correct store code is populated on order page.
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyCorrectStoreCodeIsPopulated()
+        {
+            StoreData storePickupData;
+            storeParser = DataAccess.GetFeatureData("StoreCode");
+            storePickupData = OrderPage.ReadStorePickupData(storeParser);
+            Boolean correctStoreCode = false;
+            string xpathOfStore = storePickupData.StoreCode;
+            String sectionNameOnScreen = driver.FindElement(By.XPath("//span[@class='user-info'][contains(text(),'"+ xpathOfStore + " - Georgetown')]")).GetText(driver);
+            if (sectionNameOnScreen.Contains(storePickupData.StoreCode))
+            {
+                correctStoreCode = true;
+            }
+            return correctStoreCode;
+        }
+
+        /// <summary>
+        /// Function to update delivery options to store pickup if order do not have any install only options.
+        /// </summary>
+        /// <returns></returns>
         public OrderPage UpdateDeliveryTypeToStorePickup()
         {
             WaitUntilPageload();
@@ -842,11 +897,16 @@ namespace UnitTestNDBProject.Pages
                 Assert.True(VerifyStorePickupSectionEditButtonIsEnabled());
                 EditStoreDeliveryOptions();
                 SelectRequiredStoreCode(storePickupData.StoreCode);
+                SaveSelectedStoreCode();
+                Assert.True(VerifyCorrectStoreCodeIsPopulated());
             }
             return this;
         }
 
-        
+        /// <summary>
+        /// Function to set delivery option to stote pickup.
+        /// </summary>
+        /// <returns></returns>
 
         public OrderPage SetDeliveryTypeToStorePickup()
         {

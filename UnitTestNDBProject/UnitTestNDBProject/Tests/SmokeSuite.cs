@@ -430,6 +430,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(25), Category("Smoke"), Description("Change Delivery Type To Shipping")]
         public void C7_VerifyUpdateDeliveryTypeToShipping()
         {
+            _OrderPage.SearchFunctionForOrder();
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
             _OrderPage.UpdateDeliveryTypeToShipping();
         }
@@ -437,7 +438,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(26), Category("Smoke"), Description("Change Delivery Type To Store Pickup")]
         public void C7_VerifyUpdateDeliveryTypeToStorePickup()
         {
-            _OrderPage.SearchFunctionForOrder();
+
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToStorePickup();
             _OrderPage.UpdateDeliveryTypeToStorePickup();
         }
