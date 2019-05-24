@@ -173,7 +173,7 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
 
-            Thread.Sleep(5000);
+          //  Thread.Sleep(5000);
             enterNewCustomer.Clickme(driver);
             _logger.Info($": Successfully clicked Enter New Custokmer button");
             return this;
@@ -232,7 +232,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage EnterPhone(string phone, int i)
         {
-            Thread.Sleep(2000);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
             string strMyXPath = "phoneLists[" + i + "].Phone";
             driver.FindElement(By.Id(strMyXPath)).EnterText(phone);
             _logger.Info($": Successfully Entered Phone Number {phone}");
@@ -277,7 +277,7 @@ namespace UnitTestNDBProject.Pages
         {
             String strEmailAddress = "emailList[" + i + "].Email";
             driver.FindElement(By.Id(strEmailAddress)).Clear();
-            Thread.Sleep(2000);
+            //new System.Threading.ManualResetEvent(false).WaitOne(2000);
             driver.FindElement(By.Id(strEmailAddress)).EnterText(email);
             _logger.Info($": Successfully Entered Email {email}");
 
@@ -341,7 +341,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage ClickOnAddressLine1()
         {
-            Thread.Sleep(2000);
+           // new System.Threading.ManualResetEvent(false).WaitOne(1000);
             addressLine1.Clickme(driver);
             _logger.Info($": Clicked on AddressLine1 text box");
             return this;
@@ -395,7 +395,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public EnterNewCustomerPage ClickEditSaveButton()
         {
-            Thread.Sleep(2000);
+            //new System.Threading.ManualResetEvent(false).WaitOne(1000);
             driver.WaitForElementToBecomeVisibleWithinTimeout(saveButtonEdit, 10000);
             saveButtonEdit.Clickme(driver);
             _logger.Info($": Successfully clicked on SAVE button for existing customer");
@@ -515,7 +515,7 @@ namespace UnitTestNDBProject.Pages
             // customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='col-sm-3 pad-left-none']//span[@class='form-value']")));
             String fName = FirstNameText.GetText(driver);
             bool firstNameValue = false;
-            Thread.Sleep(1000);
+          //  new System.Threading.ManualResetEvent(false).WaitOne(1000);
             if (fName.Contains(firstNameOnFile))
             {
                 firstNameValue = true;
@@ -537,7 +537,7 @@ namespace UnitTestNDBProject.Pages
 
             String LastName = LastNameText.GetText(driver);
             bool lastNameValue = false;
-            Thread.Sleep(1000);
+           // new System.Threading.ManualResetEvent(false).WaitOne(1000);
             if (LastName.Contains(lastNameOnFile))
             {
                 lastNameValue = true;
@@ -798,7 +798,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyExistingPhoneNumber(string EnteredPhone)
         {
-            Thread.Sleep(4000);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
             int i = 0;
             string[] phoneNumberArray = new string[100];
 
@@ -832,7 +832,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyExistingEmailAddress(string enteredEmail)
         {
-            Thread.Sleep(4000);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
             int i = 0;
             string[] emailAddressArray = new string[100];
             do
@@ -929,7 +929,7 @@ namespace UnitTestNDBProject.Pages
         {
             AddAddress.Clickme(driver);
             _logger.Info($": Successfully clicked Add Address button");
-            Thread.Sleep(2000);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
             return this;
         }
 
@@ -1003,7 +1003,7 @@ namespace UnitTestNDBProject.Pages
         {
             AddTaxButton.Clickme(driver);
             _logger.Info($": Successfully clicked on Add Tax button");
-            Thread.Sleep(2000);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
             return this;
         }
 

@@ -139,7 +139,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
 
-        [Test, Order(5), Category("Smoke"),Ignore(""), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(5), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer")]
         public void A5_VerifyCustomerCreation()
         {
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
@@ -307,7 +307,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
 
         }
-        [Test, Order(15), Category("Smoke"), Description("Payment via finance and order is created")]
+        [Test, Order(15), Category("Smoke"), Ignore(""), Description("Payment via finance and order is created")]
         public void B6_VerifyOrderIsCreatedWithFinancialPayment()
         {
             PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(paymentParsedData);
@@ -319,7 +319,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
-        [Test, Order(16),  Category("Smoke"), Description("Payment via gift card")]
+        [Test, Order(16),  Category("Smoke"), Ignore(""), Description("Payment via gift card")]
         public void B7_VerifyGiftCardPayment()
         {
             PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(paymentParsedData);
@@ -329,7 +329,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
        
-        [Test, Order(17), Category("Smoke"), Description("Payment via Check-Skip Verification")]
+        [Test, Order(17), Category("Smoke"), Ignore(""), Description("Payment via Check-Skip Verification")]
         public void B8_VerifyCheckSkipVerificationPayment()
         {
             PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
@@ -340,7 +340,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
-        [Test, Order(18), Category("Smoke"), Description("Payment via Manual Credit Card")]
+        [Test, Order(18), Category("Smoke"), Ignore(""), Description("Payment via Manual Credit Card")]
         public void B9_VerifyManualCreditCardPayment()
         {
             PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(paymentParsedData);
@@ -362,14 +362,14 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_RefundLink(savedCreditCardPaymentData.WarningMessageOnRefund));
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
-        [Test, Category("Smoke"), Description("Payment grid data verification")]
+        [Test, Category("Smoke"), Ignore(""), Description("Payment grid data verification")]
         public void C2_VerifyPaymentGridData()
         {
              Assert.True(_OrderPage.VerifyGridData(_OrderPage.ExpectedDataForGridVerification()));
 
         }
 
-        [Test, Order(21), Category("Smoke"), Description("Verify Product Copy")]
+        [Test, Order(21), Category("Smoke"), Ignore(""), Description("Verify Product Copy")]
         public void C3_VerifyCopyproductLineForOrder()
         {
             _OrderPage.NavigateToTopOfTheOrderPage();
@@ -382,7 +382,7 @@ namespace UnitTestNDBProject.Tests
 
 
 
-        [Test, Order(22), Category("Smoke"), Description("Edit Order Productline For Order")]
+        [Test, Order(22), Category("Smoke"), Ignore(""), Description("Edit Order Productline For Order")]
         public void C4_VerifyEditProductLineForOrder()
         {
 
@@ -392,7 +392,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(23), Category("Smoke"), Description("Edit Order Productline For Order")]
+        [Test, Order(23), Category("Smoke"), Ignore(""), Description("Edit Order Productline For Order")]
         public void C5_VerifyDeleteproductLineForOrder()
         {
             _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
@@ -423,7 +423,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyTotalProductsAfterCopyQuote());
         }
 
-        [Test, Order(25), Category("Smoke"), Description("ChangeDeliveryType")]
+        [Test, Order(25), Category("Smoke"), Ignore(""), Description("ChangeDeliveryType")]
         public void C7_VerifyUpdateDeliveryType()
         {
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
