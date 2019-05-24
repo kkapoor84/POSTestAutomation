@@ -1489,7 +1489,10 @@ namespace UnitTestNDBProject.Page
             return this;
         }
       
-
+        /// <summary>
+        /// Function to copy the quote from quote page
+        /// </summary>
+        /// <returns></returns>
         public QuotePage CopyQuote()
         {
             IWebElement copytoquote = driver.FindElement(By.XPath("//a[contains(text(),'Copy Quote')]"));
@@ -1497,12 +1500,13 @@ namespace UnitTestNDBProject.Page
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             copytoquote.Clickme(driver);
             _logger.Info($" User clicked on copy to quote button");
-            new System.Threading.ManualResetEvent(false).WaitOne(3000);
-            SaveButton.Clickme(driver);
-            _logger.Info($" User clicked on save button");
             return this;
         }
 
+        /// <summary>
+        /// Function to copy the quote from order page
+        /// </summary>
+        /// <returns></returns>
         public QuotePage CopyToQuoteFromOrderPage()
         {
             WaitUntilPageload();
@@ -1512,7 +1516,10 @@ namespace UnitTestNDBProject.Page
         }
 
         
-
+        /// <summary>
+        /// Function to click on save chnages after copy quote
+        /// </summary>
+        /// <returns></returns>
         public QuotePage SaveChanges()
         {
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
