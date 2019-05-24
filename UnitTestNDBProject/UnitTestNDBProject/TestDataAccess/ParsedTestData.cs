@@ -246,7 +246,7 @@ namespace UnitTestNDBProject.TestDataAccess
 
     public class StoreData
     {
-        public string StoreName { get; set; }
+        public string StoreCode { get; set; }
 
     }
 

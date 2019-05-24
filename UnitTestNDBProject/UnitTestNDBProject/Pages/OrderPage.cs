@@ -37,11 +37,11 @@ namespace UnitTestNDBProject.Pages
 
         public static int beforeCount = 0;
         public static int afterCount = 0;
-       // Constants objectConstant = new Constants();
+        // Constants objectConstant = new Constants();
 
-        
+        private static ParsedTestData storeParser;
 
-       [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'ORDER')]")]
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'ORDER')]")]
         private IWebElement OrderPageText { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//span[@class='select-value-trancate']")]
@@ -152,7 +152,7 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//div[@class='Select default-select-dropdown is-clearable is-searchable Select--single']")]
         public IWebElement StoreCodeDropDownOnPopup { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "Select default-select-dropdown is-clearable is-focused is-open is-searchable Select--single")]
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'Change Store')][@class='Select-placeholder']")]
         public IWebElement UpdateStoreCodeDropDownOnPopup { get; set; }
 
 
@@ -828,8 +828,10 @@ namespace UnitTestNDBProject.Pages
         }
         public OrderPage UpdateDeliveryTypeToStorePickup()
         {
+            WaitUntilPageload();
             StoreData storePickupData;
-            storePickupData= JsonDataParser<StoreData>.ParseData("StoreCode");
+            storeParser = DataAccess.GetFeatureData("StoreCode");
+            storePickupData = OrderPage.ReadStorePickupData(storeParser);
             WaitUntilPageload();
             if (By.Id("idBtnOK").isPresent(driver))
             {
@@ -839,10 +841,7 @@ namespace UnitTestNDBProject.Pages
             {
                 Assert.True(VerifyStorePickupSectionEditButtonIsEnabled());
                 EditStoreDeliveryOptions();
-                SelectRequiredStoreCode(storePickupData.StoreName);
-                Assert.True(VerifyDeliveryOptionsPopulated());
-                SaveChangesToshippingOption();
-                Assert.True(VerifyShippingSection());
+                SelectRequiredStoreCode(storePickupData.StoreCode);
             }
             return this;
         }
