@@ -37,11 +37,11 @@ namespace UnitTestNDBProject.Pages
 
         public static int beforeCount = 0;
         public static int afterCount = 0;
-       // Constants objectConstant = new Constants();
+        // Constants objectConstant = new Constants();
 
-        
+        private static ParsedTestData storeParser;
 
-       [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'ORDER')]")]
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'ORDER')]")]
         private IWebElement OrderPageText { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//span[@class='select-value-trancate']")]
@@ -134,6 +134,9 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "btnShipmentEdit")]
         public IWebElement EditShipmentDetails { get; set; }
 
+        [FindsBy(How = How.Id, Using = "addressAndContact")]
+        public IWebElement EditStoreDetails { get; set; }
+
         [FindsBy(How = How.Id, Using = "shippingOption-0")]
         public IWebElement ShipmentDetailsOptions { get; set; }
 
@@ -146,6 +149,15 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[@class='total-product']")]
         public IWebElement ProductTotal { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//div[@class='Select default-select-dropdown is-clearable is-searchable Select--single']")]
+        public IWebElement StoreCodeDropDownOnPopup { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'Change Store')][@class='Select-placeholder']")]
+        public IWebElement UpdateStoreCodeDropDownOnPopup { get; set; }
+
+        [FindsBy(How = How.Id, Using = "idDone")]
+        public IWebElement DoneStoreChanges { get; set; }
+
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
@@ -154,8 +166,14 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<ReasonsData>.ParseData(cancelReasonData);
         }
 
-        
-        
+
+        public static StoreData ReadStorePickupData(ParsedTestData featureData)
+        {
+            object StorePickupData = DataAccess.GetKeyJsonData(featureData, "StoreName");
+            return JsonDataParser<StoreData>.ParseData(StorePickupData);
+        }
+
+
 
         /// <summary>
         /// Function to verify that order is created
@@ -548,7 +566,7 @@ namespace UnitTestNDBProject.Pages
             SearchOrder.Clickme(driver);
             _logger.Info($" User clicked on search for order tab on search page");
             //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2013804");
+            EnterOrder.EnterText("2027401");
             _logger.Info($" User entered quote{2013804}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
@@ -565,6 +583,10 @@ namespace UnitTestNDBProject.Pages
         public OrderPage UpdateDeliveryTypeFromDropDown()
         {
             WaitUntilPageload();
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollBy(0,-3000)");
             UpdateDeliveryType.Clickme(driver);
             return this;
         }
@@ -669,6 +691,7 @@ namespace UnitTestNDBProject.Pages
             return editShippingButton;
         }
 
+       
         /// <summary>
         /// Function to verify if products are not install only only then to update the delivery options
         /// </summary>
@@ -775,6 +798,123 @@ namespace UnitTestNDBProject.Pages
 
             String Value = ProductTotal.GetText(driver);
             Constants.ProductTotal = Value;
+            return this;
+        }
+
+        /// <summary>
+        /// Assertion to verify edit button for store oickup is successful.
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyStorePickupSectionEditButtonIsEnabled()
+        {
+            WaitUntilPageload();
+            Boolean editStorePickupButton = false;
+            if (By.Id("addressAndContact").isPresent(driver))
+            {
+                editStorePickupButton = true;
+            }
+            return editStorePickupButton;
+        }
+
+        /// <summary>
+        /// Function to click Edit button on store section
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage EditStoreDeliveryOptions()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditStoreDetails, implicitWait);
+            EditStoreDetails.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Function to select required store code.
+        /// </summary>
+        /// <param name="storeData"></param>
+        /// <returns></returns>
+        public OrderPage SelectRequiredStoreCode(string storeData)
+        {
+            WaitUntilPageload();
+            StoreCodeDropDownOnPopup.Clickme(driver);
+            Actions action = new Actions(driver);
+            action.MoveToElement(UpdateStoreCodeDropDownOnPopup);
+            action.Click();
+            action.SendKeys(storeData);
+            action.SendKeys(Keys.Enter);
+            action.Build().Perform();
+
+            return this;
+        }
+
+        /// <summary>
+        /// Function to save selected store code on popup.
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage SaveSelectedStoreCode()
+        {
+            WaitUntilPageload();
+            DoneStoreChanges.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Function to verify correct store code is populated on order page.
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyCorrectStoreCodeIsPopulated()
+        {
+            StoreData storePickupData;
+            storeParser = DataAccess.GetFeatureData("StoreCode");
+            storePickupData = OrderPage.ReadStorePickupData(storeParser);
+            Boolean correctStoreCode = false;
+            string xpathOfStore = storePickupData.StoreCode;
+            String sectionNameOnScreen = driver.FindElement(By.XPath("//span[@class='user-info'][contains(text(),'"+ xpathOfStore + " - Georgetown')]")).GetText(driver);
+            if (sectionNameOnScreen.Contains(storePickupData.StoreCode))
+            {
+                correctStoreCode = true;
+            }
+            return correctStoreCode;
+        }
+
+        /// <summary>
+        /// Function to update delivery options to store pickup if order do not have any install only options.
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage UpdateDeliveryTypeToStorePickup()
+        {
+            WaitUntilPageload();
+            StoreData storePickupData;
+            storeParser = DataAccess.GetFeatureData("StoreCode");
+            storePickupData = OrderPage.ReadStorePickupData(storeParser);
+            WaitUntilPageload();
+            if (By.Id("idBtnOK").isPresent(driver))
+            {
+                OkButton.Clickme(driver);
+            }
+            else
+            {
+                Assert.True(VerifyStorePickupSectionEditButtonIsEnabled());
+                EditStoreDeliveryOptions();
+                SelectRequiredStoreCode(storePickupData.StoreCode);
+                SaveSelectedStoreCode();
+                Assert.True(VerifyCorrectStoreCodeIsPopulated());
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Function to set delivery option to stote pickup.
+        /// </summary>
+        /// <returns></returns>
+
+        public OrderPage SetDeliveryTypeToStorePickup()
+        {
+
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(UpdateDeliveryTypeIsFocused, implicitWait);
+            UpdateDeliveryTypeIsFocused.EnterText(Constants.StorePickup);
+            UpdateDeliveryTypeIsFocused.SendKeys(Keys.Enter);
             return this;
         }
 

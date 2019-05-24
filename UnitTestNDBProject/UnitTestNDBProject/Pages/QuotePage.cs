@@ -1456,7 +1456,7 @@ namespace UnitTestNDBProject.Page
             _logger.Info($" User clicked on search button on top navigation panel");
             SearchQuote.Clickme(driver);
             _logger.Info($" User clicked on search for quote tab on search page");
-            EnterOuote.EnterText("704316");
+            EnterOuote.EnterText("701953");
             _logger.Info($" User entered quote{704316}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");

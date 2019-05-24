@@ -393,6 +393,17 @@
 				}
 			}
 		]
+},
+
+{
+		"Feature": "StoreCode",
+		"Data": [{
+				"Key": "StoreName",
+				"Value": {
+					"StoreCode": "GN"
+				}
+			}
+		]
 }
 
 ]
