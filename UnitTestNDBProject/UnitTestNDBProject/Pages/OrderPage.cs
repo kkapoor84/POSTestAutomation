@@ -134,6 +134,9 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "btnShipmentEdit")]
         public IWebElement EditShipmentDetails { get; set; }
 
+        [FindsBy(How = How.Id, Using = "addressAndContact")]
+        public IWebElement EditStoreDetails { get; set; }
+
         [FindsBy(How = How.Id, Using = "shippingOption-0")]
         public IWebElement ShipmentDetailsOptions { get; set; }
 
@@ -146,6 +149,12 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[@class='total-product']")]
         public IWebElement ProductTotal { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//div[@class='Select default-select-dropdown is-clearable is-searchable Select--single']")]
+        public IWebElement StoreCodeDropDownOnPopup { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "Select default-select-dropdown is-clearable is-focused is-open is-searchable Select--single")]
+        public IWebElement UpdateStoreCodeDropDownOnPopup { get; set; }
+
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
@@ -154,8 +163,14 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<ReasonsData>.ParseData(cancelReasonData);
         }
 
-        
-        
+
+        public static StoreData ReadStorePickupData(ParsedTestData featureData)
+        {
+            object StorePickupData = DataAccess.GetKeyJsonData(featureData, "StoreName");
+            return JsonDataParser<StoreData>.ParseData(StorePickupData);
+        }
+
+
 
         /// <summary>
         /// Function to verify that order is created
@@ -548,7 +563,7 @@ namespace UnitTestNDBProject.Pages
             SearchOrder.Clickme(driver);
             _logger.Info($" User clicked on search for order tab on search page");
             //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2013804");
+            EnterOrder.EnterText("2027401");
             _logger.Info($" User entered quote{2013804}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
@@ -669,6 +684,7 @@ namespace UnitTestNDBProject.Pages
             return editShippingButton;
         }
 
+       
         /// <summary>
         /// Function to verify if products are not install only only then to update the delivery options
         /// </summary>
@@ -683,7 +699,7 @@ namespace UnitTestNDBProject.Pages
             else
             {
                 Assert.True(VerifyShippingSectionEditButtonIsEnabled());
-                EditDeliveryOptions();
+                EditStoreDeliveryOptions();
                 Assert.True(VerifyDeliveryOptionsPopulated());
                 SaveChangesToshippingOption();
                 Assert.True(VerifyShippingSection());
@@ -775,6 +791,71 @@ namespace UnitTestNDBProject.Pages
 
             String Value = ProductTotal.GetText(driver);
             Constants.ProductTotal = Value;
+            return this;
+        }
+
+        public Boolean VerifyStorePickupSectionEditButtonIsEnabled()
+        {
+            WaitUntilPageload();
+            Boolean editStorePickupButton = false;
+            if (By.Id("addressAndContact").isPresent(driver))
+            {
+                editStorePickupButton = true;
+            }
+            return editStorePickupButton;
+        }
+
+        public OrderPage EditStoreDeliveryOptions()
+        {
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditStoreDetails, implicitWait);
+            EditStoreDetails.Clickme(driver);
+            return this;
+        }
+
+        public OrderPage SelectRequiredStoreCode(string storeData)
+        {
+            WaitUntilPageload();
+            StoreCodeDropDownOnPopup.Clickme(driver);
+            Actions action = new Actions(driver);
+            action.MoveToElement(UpdateStoreCodeDropDownOnPopup);
+            action.Click();
+            action.SendKeys(storeData);
+            action.SendKeys(Keys.Enter);
+            action.Build().Perform();
+
+            return this;
+        }
+        public OrderPage UpdateDeliveryTypeToStorePickup()
+        {
+            StoreData storePickupData;
+            storePickupData= JsonDataParser<StoreData>.ParseData("StoreCode");
+            WaitUntilPageload();
+            if (By.Id("idBtnOK").isPresent(driver))
+            {
+                OkButton.Clickme(driver);
+            }
+            else
+            {
+                Assert.True(VerifyStorePickupSectionEditButtonIsEnabled());
+                EditStoreDeliveryOptions();
+                SelectRequiredStoreCode(storePickupData.StoreName);
+                Assert.True(VerifyDeliveryOptionsPopulated());
+                SaveChangesToshippingOption();
+                Assert.True(VerifyShippingSection());
+            }
+            return this;
+        }
+
+        
+
+        public OrderPage SetDeliveryTypeToStorePickup()
+        {
+
+            WaitUntilPageload();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(UpdateDeliveryTypeIsFocused, implicitWait);
+            UpdateDeliveryTypeIsFocused.EnterText(Constants.StorePickup);
+            UpdateDeliveryTypeIsFocused.SendKeys(Keys.Enter);
             return this;
         }
 

@@ -30,10 +30,12 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData taxParsedData;
         public static ParsedTestData paymentParsedData;
         private static ParsedTestData reasonsParser;
+        private static ParsedTestData storeParser;
 
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
         ReasonsData cancelReasonData;
+        StoreData storePickupData;
         //   EditProductLineData editProductData;
 
 
@@ -58,11 +60,13 @@ namespace UnitTestNDBProject.Tests
             taxParsedData = DataAccess.GetFeatureData("TaxExemptionPopup");
             paymentParsedData = DataAccess.GetFeatureData("PaymentScreen");
             reasonsParser = DataAccess.GetFeatureData("Reasons");
+            storeParser = DataAccess.GetFeatureData("StoreCode");
 
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
             internalInforData = QuotePage.GetInternalInfoData(internalInfoParsedData);
             cancelReasonData = OrderPage.ReadcancelReasonData(reasonsParser);
+            storePickupData = OrderPage.ReadStorePickupData(storeParser);
 
             // editProductData = QuotePage.GetEditProductData(productLineEditFeatureParsedData);
 
@@ -423,11 +427,19 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyTotalProductsAfterCopyQuote());
         }
 
-        [Test, Order(25), Category("Smoke"), Description("ChangeDeliveryType")]
-        public void C7_VerifyUpdateDeliveryType()
+        [Test, Order(25), Category("Smoke"), Description("Change Delivery Type To Shipping")]
+        public void C7_VerifyUpdateDeliveryTypeToShipping()
         {
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
             _OrderPage.UpdateDeliveryTypeToShipping();
+        }
+
+        [Test, Order(26), Category("Smoke"), Description("Change Delivery Type To Store Pickup")]
+        public void C7_VerifyUpdateDeliveryTypeToStorePickup()
+        {
+            _OrderPage.SearchFunctionForOrder();
+            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToStorePickup();
+            _OrderPage.UpdateDeliveryTypeToStorePickup();
         }
 
         [Test, Order(27), Category("Smoke"), Description("Cancel Order Verification")]

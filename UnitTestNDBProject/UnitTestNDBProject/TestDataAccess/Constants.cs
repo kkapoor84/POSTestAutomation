@@ -14,6 +14,7 @@ namespace UnitTestNDBProject.TestDataAccess
         public static String ShippingDeliveryType = "SHIPPING";
         public static String QuoteGroup = "A";
         public static String QuoteStatus = "OPEN";
+        public static String StorePickup = "STORE PICKUP";
 
 
 
