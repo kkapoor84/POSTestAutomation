@@ -229,7 +229,7 @@ namespace UnitTestNDBProject.Tests
             _QuotePage.ClickAddProductButton();
 
             Assert.True(_QuotePage.VerifyTotalProductsAfterCopy(productLineFeatureParsedData.Data));
-
+            Assert.True(_QuotePage.VerifyProductDataAfterAdd(productLineFeatureParsedData.Data));
         }
 
         [Test, Order(9), Category("Smoke"), Ignore(""), Description("Verify Product Line Edit Functionality")]
@@ -379,6 +379,7 @@ namespace UnitTestNDBProject.Tests
             _OrderPage.ClickAddProductButton();
             _OrderPage.CalculateNumberOfProductLinesAfterOperation();
             Assert.True(_OrderPage.VerifyTotalProductsAfterCopy());
+            Assert.True(_QuotePage.VerifyProductDataAfterEdit(productLineEditFeatureParsedData.Data));
         }
 
 
