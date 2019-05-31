@@ -256,8 +256,8 @@ namespace UnitTestNDBProject.TestDataAccess
 
     public class SearchData
     {
-        public string OrderNumberSearch { get; set; }
-        public string QuoteNumberSearch { get; set; }
+        public string OrderNumber { get; set; }
+        public string QuoteNumber { get; set; }
 
     }
 

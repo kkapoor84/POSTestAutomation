@@ -41,7 +41,7 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.Id, Using = "applyQuote")]
         public IWebElement InternalInfoApply { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
+        [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
         public IWebElement SearchButtonClick { get; set; }
 
 
@@ -167,6 +167,9 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
         public IWebElement EnterQuote { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'QUOTE')]")]
+        public IWebElement QuoteNumber { get; set; }
+
         [FindsBy(How = How.Id, Using = "quoteGrp")]
         public IWebElement QuoteGroup { get; set; }
 
@@ -205,7 +208,6 @@ namespace UnitTestNDBProject.Page
 
         [FindsBy(How = How.XPath, Using = "//span[@class='total-product']")]
         public IWebElement ProductTotal { get; set; }
-
 
 
         public List<Tuple<string, string>> editedDataForProductLine;
@@ -1446,26 +1448,9 @@ namespace UnitTestNDBProject.Page
         }
 
         /// <summary>
-        /// Function to Search function for quote
+        /// Click On search link
         /// </summary>
         /// <returns></returns>
-        //public QuotePage SearchFunctionForQuote()
-        //{
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
-        //    Search.Clickme(driver);
-        //    _logger.Info($" User clicked on search button on top navigation panel");
-        //    SearchQuote.Clickme(driver);
-        //    _logger.Info($" User clicked on search for quote tab on search page");
-        //    EnterOuote.EnterText("701953");
-        //    _logger.Info($" User entered quote{704316}");
-        //    Enter.Clickme(driver);
-        //    _logger.Info($" User clicked on search button");
-        //    WaitUntilPageload();
-        //    _logger.Info($" Waited for loader gets loaded");
-        //    new System.Threading.ManualResetEvent(false).WaitOne(3000);
-
-            
-        //}
 
         public QuotePage ClickOnSearchLink()
         {
@@ -1477,50 +1462,58 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Click On Quote Tab of search page
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickOnQuoteTab()
         {
+            WaitUntilPageload();
             SearchQuote.Clickme(driver);
             _logger.Info($" Clicked on search for quote tab successfully.");
             return this;
         }
 
+        /// <summary>
+        /// Enter the quote number to be searched.
+        /// </summary>
+        /// <param name="QuoteNumber"></param>
+        /// <returns></returns>
         public QuotePage EnterQuoteToSearch(String QuoteNumber)
         {
+            WaitUntilPageload();
             EnterQuote.EnterText(QuoteNumber);
             _logger.Info($" User entered quote{QuoteNumber}");
             return this;
         }
 
+        /// <summary>
+        /// Click On Enter Button to search required quote
+        /// </summary>
+        /// <returns></returns>
         public QuotePage ClickOnSearchButton()
         {
+            WaitUntilPageload();
             SearchButtonClick.Clickme(driver);
             _logger.Info($" User clicked on search button");
             return this;
         }
 
-
         /// <summary>
-        /// Function to  Search function for order
+        /// Verify User Navigated to correct page.
         /// </summary>
+        /// <param name="expectedQuoteNumber"></param>
         /// <returns></returns>
-        //public QuotePage SearchFunctionForOrder()
-        //{
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
-        //    Search.Clickme(driver);
-        //    _logger.Info($" User clicked on search button on top navigation panel");
-        //    SearchOrder.Clickme(driver);
-        //    _logger.Info($" User clicked on search for order tab on search page");
-        //    //  EnterOrder.EnterText("2013543");
-        //    EnterOrder.EnterText("2013906");
-        //    _logger.Info($" User entered quote{2013906}");
-        //    Enter.Clickme(driver);
-        //    _logger.Info($" User clicked on search button");
-        //    WaitUntilPageload();
-        //    _logger.Info($" Waited for loader gets loaded");
-        //    Thread.Sleep(1000);
-        //    return this;
-        //}
-      
+        public Boolean VerifyUserNavigatedToCorrectQuote(String expectedQuoteNumber)
+        {
+            WaitUntilPageload();
+            Boolean quoteNumberIsCorrect = false;
+            String quoteNumberOnScreen = QuoteNumber.GetText(driver);
+            if (quoteNumberOnScreen.Contains(expectedQuoteNumber))
+                quoteNumberIsCorrect = true;
+            return quoteNumberIsCorrect;
+        }
+       
 
         /// <summary>
         /// Function to copy the quote from quote page

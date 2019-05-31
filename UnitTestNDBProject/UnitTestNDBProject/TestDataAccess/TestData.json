@@ -407,7 +407,7 @@
 },
 
 {
-		"Feature": "OrderNumberSearch",
+		"Feature": "Search",
 		"Data": [
 		{
 				"Key": "OrderNumberForSearch",
@@ -418,7 +418,7 @@
 				{
 				"Key": "QuoteNumberForSearch",
 				"Value": {
-					"OrderNumber": "702213"
+					"QuoteNumber": "702213"
 				}
 			}
 		]

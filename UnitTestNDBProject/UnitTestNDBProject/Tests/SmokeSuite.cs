@@ -31,15 +31,14 @@ namespace UnitTestNDBProject.Tests
         public static ParsedTestData paymentParsedData;
         private static ParsedTestData reasonsParser;
         private static ParsedTestData storeParser;
-        private static ParsedTestData quoteNumberparser;
-        private static ParsedTestData orderNumberparser;
+        private static ParsedTestData searchParser;
 
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
         ReasonsData cancelReasonData;
         StoreData storePickupData;
-        SearchData searchQuoteNumber;
-        SearchData searchOrderNumber;
+        //SearchData searchQuoteNumber;
+        //SearchData searchOrderNumber;
         //   EditProductLineData editProductData;
 
 
@@ -65,6 +64,8 @@ namespace UnitTestNDBProject.Tests
             paymentParsedData = DataAccess.GetFeatureData("PaymentScreen");
             reasonsParser = DataAccess.GetFeatureData("Reasons");
             storeParser = DataAccess.GetFeatureData("StoreCode");
+            searchParser = DataAccess.GetFeatureData("Search");
+
 
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
@@ -459,8 +460,9 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(28), Category("Smoke"), Description("Search Quote Verification")]
         public void D1_VerifySearchQuote()
         {
-
-            _QuotePage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch(searchQuoteNumber.QuoteNumberSearch).ClickOnSearchButton();
+            SearchData quoteData = QuotePage.SearchQuoteData(searchParser);
+            _QuotePage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
+            Assert.True(_QuotePage.VerifyUserNavigatedToCorrectQuote(quoteData.QuoteNumber));
         }
 
 
