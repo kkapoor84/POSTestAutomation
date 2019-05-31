@@ -166,14 +166,17 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<ReasonsData>.ParseData(cancelReasonData);
         }
 
-
         public static StoreData ReadStorePickupData(ParsedTestData featureData)
         {
             object StorePickupData = DataAccess.GetKeyJsonData(featureData, "StoreName");
             return JsonDataParser<StoreData>.ParseData(StorePickupData);
         }
 
-
+        public static SearchData SearchOrderData(ParsedTestData featureData)
+        {
+            object orderNumber = DataAccess.GetKeyJsonData(featureData, "OrderNumberForSearch");
+            return JsonDataParser<SearchData>.ParseData(orderNumber);
+        }
 
         /// <summary>
         /// Function to verify that order is created

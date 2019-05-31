@@ -242,11 +242,22 @@ namespace UnitTestNDBProject.TestDataAccess
 
     #endregion
 
-    #region Reasons specific classes
+    #region Store specific classes
 
     public class StoreData
     {
         public string StoreCode { get; set; }
+
+    }
+
+    #endregion
+
+    #region Search specific classes
+
+    public class SearchData
+    {
+        public string OrderNumberSearch { get; set; }
+        public string QuoteNumberSearch { get; set; }
 
     }
 

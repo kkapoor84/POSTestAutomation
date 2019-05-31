@@ -19,11 +19,6 @@ namespace UnitTestNDBProject.Page
 
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        
-        //private static ParsedTestData productLineFeatureParsedData;
-        //private static ParsedTestData productLineEditFeatureParsedData;
-        //List<Tuple<string, string>> productDetails;
-       // List<Tuple<string, string>> editProductDetails;
 
         public QuotePage(IWebDriver driver)
         {
@@ -47,7 +42,7 @@ namespace UnitTestNDBProject.Page
         public IWebElement InternalInfoApply { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
-        public IWebElement Search { get; set; }
+        public IWebElement SearchButtonClick { get; set; }
 
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
@@ -56,8 +51,8 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.Id, Using = "orderNumber")]
         public IWebElement EnterOrder { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
-        public IWebElement Enter { get; set; }
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
+        public IWebElement Search { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[contains(@class,'btn-outline-big quote-btn enterNewQuote pointer')]")]
         public IWebElement AddNewQuote { get; set; }
@@ -170,7 +165,7 @@ namespace UnitTestNDBProject.Page
         public IWebElement SearchQuote { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
-        public IWebElement EnterOuote { get; set; }
+        public IWebElement EnterQuote { get; set; }
 
         [FindsBy(How = How.Id, Using = "quoteGrp")]
         public IWebElement QuoteGroup { get; set; }
@@ -217,17 +212,17 @@ namespace UnitTestNDBProject.Page
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
 
-        public QuotePage SearchFunction()
-        {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
-            Search.Clickme(driver);
-            Thread.Sleep(3000);
-            SearchQuote.Clickme(driver);
-            EnterOuote.EnterText("704098");
-            Enter.Clickme(driver);
-            Thread.Sleep(3000);
-            return this;
-        }
+        //public QuotePage SearchFunction()
+        //{
+        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+        //    Search.Clickme(driver);
+        //    Thread.Sleep(3000);
+        //    SearchQuote.Clickme(driver);
+        //    EnterOuote.EnterText("704098");
+        //    Enter.Clickme(driver);
+        //    Thread.Sleep(3000);
+        //    return this;
+        //}
 
 
         /// <summary>
@@ -260,6 +255,11 @@ namespace UnitTestNDBProject.Page
             return JsonDataParser<TaxExemptionData>.ParseData(validTaxData);
         }
 
+        public static SearchData SearchQuoteData(ParsedTestData featureData)
+        {
+            object quoteNumber = DataAccess.GetKeyJsonData(featureData, "QuoteNumberForSearch");
+            return JsonDataParser<SearchData>.ParseData(quoteNumber);
+        }
 
 
         /// <summary>
@@ -1449,45 +1449,77 @@ namespace UnitTestNDBProject.Page
         /// Function to Search function for quote
         /// </summary>
         /// <returns></returns>
-        public QuotePage SearchFunctionForQuote()
+        //public QuotePage SearchFunctionForQuote()
+        //{
+        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+        //    Search.Clickme(driver);
+        //    _logger.Info($" User clicked on search button on top navigation panel");
+        //    SearchQuote.Clickme(driver);
+        //    _logger.Info($" User clicked on search for quote tab on search page");
+        //    EnterOuote.EnterText("701953");
+        //    _logger.Info($" User entered quote{704316}");
+        //    Enter.Clickme(driver);
+        //    _logger.Info($" User clicked on search button");
+        //    WaitUntilPageload();
+        //    _logger.Info($" Waited for loader gets loaded");
+        //    new System.Threading.ManualResetEvent(false).WaitOne(3000);
+
+            
+        //}
+
+        public QuotePage ClickOnSearchLink()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            WaitUntilPageload();
             Search.Clickme(driver);
             _logger.Info($" User clicked on search button on top navigation panel");
-            SearchQuote.Clickme(driver);
-            _logger.Info($" User clicked on search for quote tab on search page");
-            EnterOuote.EnterText("701953");
-            _logger.Info($" User entered quote{704316}");
-            Enter.Clickme(driver);
-            _logger.Info($" User clicked on search button");
-            WaitUntilPageload();
-            _logger.Info($" Waited for loader gets loaded");
-            new System.Threading.ManualResetEvent(false).WaitOne(3000);
-
             return this;
         }
+
+        public QuotePage ClickOnQuoteTab()
+        {
+            SearchQuote.Clickme(driver);
+            _logger.Info($" Clicked on search for quote tab successfully.");
+            return this;
+        }
+
+        public QuotePage EnterQuoteToSearch(String QuoteNumber)
+        {
+            EnterQuote.EnterText(QuoteNumber);
+            _logger.Info($" User entered quote{QuoteNumber}");
+            return this;
+        }
+
+        public QuotePage ClickOnSearchButton()
+        {
+            SearchButtonClick.Clickme(driver);
+            _logger.Info($" User clicked on search button");
+            return this;
+        }
+
 
         /// <summary>
         /// Function to  Search function for order
         /// </summary>
         /// <returns></returns>
-        public QuotePage SearchFunctionForOrder()
-        {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
-            Search.Clickme(driver);
-            _logger.Info($" User clicked on search button on top navigation panel");
-            SearchOrder.Clickme(driver);
-            _logger.Info($" User clicked on search for order tab on search page");
-            //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2013906");
-            _logger.Info($" User entered quote{2013906}");
-            Enter.Clickme(driver);
-            _logger.Info($" User clicked on search button");
-            WaitUntilPageload();
-            _logger.Info($" Waited for loader gets loaded");
-            Thread.Sleep(1000);
-            return this;
-        }
+        //public QuotePage SearchFunctionForOrder()
+        //{
+        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
+        //    Search.Clickme(driver);
+        //    _logger.Info($" User clicked on search button on top navigation panel");
+        //    SearchOrder.Clickme(driver);
+        //    _logger.Info($" User clicked on search for order tab on search page");
+        //    //  EnterOrder.EnterText("2013543");
+        //    EnterOrder.EnterText("2013906");
+        //    _logger.Info($" User entered quote{2013906}");
+        //    Enter.Clickme(driver);
+        //    _logger.Info($" User clicked on search button");
+        //    WaitUntilPageload();
+        //    _logger.Info($" Waited for loader gets loaded");
+        //    Thread.Sleep(1000);
+        //    return this;
+        //}
       
 
         /// <summary>

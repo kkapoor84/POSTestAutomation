@@ -31,11 +31,15 @@ namespace UnitTestNDBProject.Tests
         public static ParsedTestData paymentParsedData;
         private static ParsedTestData reasonsParser;
         private static ParsedTestData storeParser;
+        private static ParsedTestData quoteNumberparser;
+        private static ParsedTestData orderNumberparser;
 
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
         ReasonsData cancelReasonData;
         StoreData storePickupData;
+        SearchData searchQuoteNumber;
+        SearchData searchOrderNumber;
         //   EditProductLineData editProductData;
 
 
@@ -303,7 +307,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(14), Category("Smoke"),Description("Quote Convert to Order")]
         public void B5_VerifyQuoteConvertToOrder()
         {
-            _QuotePage.SearchFunctionForQuote();
+            //_QuotePage.SearchFunctionForQuote();
             _QuotePage.CopyQuote().SaveChanges();
             //Thread.Sleep(2000);
             _QuotePage.WaitUntilPageload();
@@ -431,7 +435,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(25), Category("Smoke"), Description("Change Delivery Type To Shipping")]
         public void C7_VerifyUpdateDeliveryTypeToShipping()
         {
-            _OrderPage.SearchFunctionForOrder();
+            //_OrderPage.SearchFunctionForOrder();
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
             _OrderPage.UpdateDeliveryTypeToShipping();
         }
@@ -450,6 +454,13 @@ namespace UnitTestNDBProject.Tests
 
             _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
             Assert.True(_OrderPage.VerifyCancelOrder());
+        }
+
+        [Test, Order(28), Category("Smoke"), Description("Search Quote Verification")]
+        public void D1_VerifySearchQuote()
+        {
+
+            _QuotePage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch(searchQuoteNumber.QuoteNumberSearch).ClickOnSearchButton();
         }
 
 
