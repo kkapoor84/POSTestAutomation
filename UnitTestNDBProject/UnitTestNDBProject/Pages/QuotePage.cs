@@ -214,18 +214,6 @@ namespace UnitTestNDBProject.Page
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
 
-        //public QuotePage SearchFunction()
-        //{
-        //    driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
-        //    Search.Clickme(driver);
-        //    Thread.Sleep(3000);
-        //    SearchQuote.Clickme(driver);
-        //    EnterOuote.EnterText("704098");
-        //    Enter.Clickme(driver);
-        //    Thread.Sleep(3000);
-        //    return this;
-        //}
-
 
         /// <summary>
         /// Function to parse internal info data.
@@ -1500,7 +1488,7 @@ namespace UnitTestNDBProject.Page
         }
 
         /// <summary>
-        /// Verify User Navigated to correct page.
+        /// Verify User Navigated to correct page.  
         /// </summary>
         /// <param name="expectedQuoteNumber"></param>
         /// <returns></returns>
