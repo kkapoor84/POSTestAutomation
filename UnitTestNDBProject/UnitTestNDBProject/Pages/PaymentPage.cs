@@ -427,10 +427,10 @@ namespace UnitTestNDBProject.Page
             AmountTextBox.EnterText(amount);
             ProcessPaymentButton.Clickme(driver);
             _logger.Info($": User clicked on process payment button");
-            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
-            driver.WaitForElement(OkButton);
-            OkButton.Clickme(driver);
-            _logger.Info($": User clicked on Okay button");
+            //driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            //driver.WaitForElement(OkButton);
+            //OkButton.Clickme(driver);
+            //_logger.Info($": User clicked on Okay button");
             return this;
 
 

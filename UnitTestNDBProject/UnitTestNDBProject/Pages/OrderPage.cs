@@ -158,6 +158,24 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "idDone")]
         public IWebElement DoneStoreChanges { get; set; }
 
+        [FindsBy(How = How.Id, Using = "focus-on-edit")]
+        public IWebElement EditInternalInfo { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@id='idSignatureStatus']")]
+        public IWebElement EditSignatures { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "Select default-select-dropdown has-value is-clearable is-focused is-open is-searchable Select--single")]
+        public IWebElement EditSignaturesStatus { get; set; }
+
+        [FindsBy(How = How.Id, Using = "applyQuote")]
+        public IWebElement ApplyChangesToInternalInfo { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnTransferOrder")]
+        public IWebElement TransferToProductionButton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "idBtnOK")]
+        public IWebElement TransferConformation { get; set; }
+
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
@@ -566,8 +584,8 @@ namespace UnitTestNDBProject.Pages
             SearchOrder.Clickme(driver);
             _logger.Info($" User clicked on search for order tab on search page");
             //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2027401");
-            _logger.Info($" User entered quote{2013804}");
+            EnterOrder.EnterText("2027664");
+            _logger.Info($" User entered quote{2027664}");
             Enter.Clickme(driver);
             _logger.Info($" User clicked on search button");
             WaitUntilPageload();
@@ -588,6 +606,7 @@ namespace UnitTestNDBProject.Pages
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("window.scrollBy(0,-3000)");
             UpdateDeliveryType.Clickme(driver);
+            Thread.Sleep(200);
             return this;
         }
 
@@ -611,6 +630,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage EditDeliveryOptions()
         {
             WaitUntilPageload();
+            Thread.Sleep(200);
             driver.WaitForElementToBecomeVisibleWithinTimeout(EditShipmentDetails, implicitWait);
             EditShipmentDetails.Clickme(driver);
             return this;
@@ -640,6 +660,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage SaveChangesToshippingOption()
         {
             WaitUntilPageload();
+            Thread.Sleep(200);
             driver.WaitForElementToBecomeVisibleWithinTimeout(DoneOnShippingPopup, implicitWait);
             DoneOnShippingPopup.Clickme(driver);
             WaitUntilPageload();
@@ -896,7 +917,9 @@ namespace UnitTestNDBProject.Pages
             {
                 Assert.True(VerifyStorePickupSectionEditButtonIsEnabled());
                 EditStoreDeliveryOptions();
+                Thread.Sleep(200);
                 SelectRequiredStoreCode(storePickupData.StoreCode);
+                Thread.Sleep(200);
                 SaveSelectedStoreCode();
                 Assert.True(VerifyCorrectStoreCodeIsPopulated());
             }
@@ -918,5 +941,23 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        public OrderPage TransferToProduction()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            WaitUntilPageload();
+            EditInternalInfo.Clickme(driver);
+            autoEvent.WaitOne(4000);
+            Actions actions = new Actions(driver);
+            actions.SendKeys(EditSignatures, "Electronic").SendKeys(Keys.Enter).Build().Perform();
+            autoEvent.WaitOne(4000);
+            ApplyChangesToInternalInfo.Clickme(driver);
+            autoEvent.WaitOne(4000);
+            SaveOrder.Clickme(driver);
+            WaitUntilPageload();
+            TransferToProductionButton.Clickme(driver);
+            autoEvent.WaitOne(4000);
+            OkButton.Clickme(driver);
+            return this;
+        }
     }
 }

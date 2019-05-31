@@ -329,7 +329,7 @@
 			{
 				"Key": "CreditCardKey",
 				"Value": {
-					"Amount": "10.00",
+					"Amount": "59.36",
 					"CreditCardNumber": "4111111111111111",
 					"ExpirationMonth": "12",
 					"ExpirationYear": "2029",
