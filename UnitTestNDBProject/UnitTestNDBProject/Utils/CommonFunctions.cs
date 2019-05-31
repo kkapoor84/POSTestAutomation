@@ -42,6 +42,11 @@ namespace UnitTestNDBProject.Utils
             return randomText;
         }
 
+        public static string RandomizeQuote(string order)
+        {
+            string randomText = order + random.Next(10000);
+            return randomText;
+        }
         public static string GenerateRandomString()
         {
             int length = 10;

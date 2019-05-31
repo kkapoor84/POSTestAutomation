@@ -460,11 +460,22 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(28), Category("Smoke"), Description("Search Quote Verification")]
         public void D1_VerifySearchQuote()
         {
-            SearchData quoteData = QuotePage.SearchQuoteData(searchParser);
-            _QuotePage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
-            Assert.True(_QuotePage.VerifyUserNavigatedToCorrectQuote(quoteData.QuoteNumber));
+            SearchData quoteData = SearchPage.SearchQuoteData(searchParser);
+            _SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterInvalidQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyNoResultFoundForQuote());
+            _SearchPage.ClearTextOFQuote().EnterQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyUserNavigatedToCorrectQuote(quoteData.QuoteNumber));
         }
 
+        [Test, Order(29), Category("Smoke"), Description("Search Order Verification")]
+        public void D2_VerifySearchOrder()
+        {
+            SearchData orderData = SearchPage.SearchOrderData(searchParser);
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterInvalidOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyNoResultFoundForOrder());
+            _SearchPage.ClearTextOFOrder().EnterOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyUserNavigatedToCorrectOrder(orderData.OrderNumber));
+        }
 
 
         /// <summary>

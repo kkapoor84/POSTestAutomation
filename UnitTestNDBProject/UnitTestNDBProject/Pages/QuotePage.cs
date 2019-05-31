@@ -36,24 +36,9 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.Id, Using = "text-nickName")]
         public IWebElement NickName { get; set; }
 
-
-
         [FindsBy(How = How.Id, Using = "applyQuote")]
         public IWebElement InternalInfoApply { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
-        public IWebElement SearchButtonClick { get; set; }
-
-
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
-        public IWebElement SearchOrder { get; set; }
-
-        [FindsBy(How = How.Id, Using = "orderNumber")]
-        public IWebElement EnterOrder { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
-        public IWebElement Search { get; set; }
-
+       
         [FindsBy(How = How.XPath, Using = "//button[contains(@class,'btn-outline-big quote-btn enterNewQuote pointer')]")]
         public IWebElement AddNewQuote { get; set; }
 
@@ -161,14 +146,6 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'PAYMENT TYPE')]")]
         public IWebElement PaymentScreenText { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUOTE NUMBER')]")]
-        public IWebElement SearchQuote { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//input[@name='quoteNumber']")]
-        public IWebElement EnterQuote { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'QUOTE')]")]
-        public IWebElement QuoteNumber { get; set; }
 
         [FindsBy(How = How.Id, Using = "quoteGrp")]
         public IWebElement QuoteGroup { get; set; }
@@ -243,12 +220,6 @@ namespace UnitTestNDBProject.Page
         {
             object validTaxData = DataAccess.GetKeyJsonData(featureData, "InvalidTax");
             return JsonDataParser<TaxExemptionData>.ParseData(validTaxData);
-        }
-
-        public static SearchData SearchQuoteData(ParsedTestData featureData)
-        {
-            object quoteNumber = DataAccess.GetKeyJsonData(featureData, "QuoteNumberForSearch");
-            return JsonDataParser<SearchData>.ParseData(quoteNumber);
         }
 
 
@@ -1435,73 +1406,7 @@ namespace UnitTestNDBProject.Page
 
         }
 
-        /// <summary>
-        /// Click On search link
-        /// </summary>
-        /// <returns></returns>
-
-        public QuotePage ClickOnSearchLink()
-        {
-            AutoResetEvent autoEvent = new AutoResetEvent(false);
-            autoEvent.WaitOne(4000);
-            WaitUntilPageload();
-            Search.Clickme(driver);
-            _logger.Info($" User clicked on search button on top navigation panel");
-            return this;
-        }
-
-        /// <summary>
-        /// Click On Quote Tab of search page
-        /// </summary>
-        /// <returns></returns>
-        public QuotePage ClickOnQuoteTab()
-        {
-            WaitUntilPageload();
-            SearchQuote.Clickme(driver);
-            _logger.Info($" Clicked on search for quote tab successfully.");
-            return this;
-        }
-
-        /// <summary>
-        /// Enter the quote number to be searched.
-        /// </summary>
-        /// <param name="QuoteNumber"></param>
-        /// <returns></returns>
-        public QuotePage EnterQuoteToSearch(String QuoteNumber)
-        {
-            WaitUntilPageload();
-            EnterQuote.EnterText(QuoteNumber);
-            _logger.Info($" User entered quote{QuoteNumber}");
-            return this;
-        }
-
-        /// <summary>
-        /// Click On Enter Button to search required quote
-        /// </summary>
-        /// <returns></returns>
-        public QuotePage ClickOnSearchButton()
-        {
-            WaitUntilPageload();
-            SearchButtonClick.Clickme(driver);
-            _logger.Info($" User clicked on search button");
-            return this;
-        }
-
-        /// <summary>
-        /// Verify User Navigated to correct page.  
-        /// </summary>
-        /// <param name="expectedQuoteNumber"></param>
-        /// <returns></returns>
-        public Boolean VerifyUserNavigatedToCorrectQuote(String expectedQuoteNumber)
-        {
-            WaitUntilPageload();
-            Boolean quoteNumberIsCorrect = false;
-            String quoteNumberOnScreen = QuoteNumber.GetText(driver);
-            if (quoteNumberOnScreen.Contains(expectedQuoteNumber))
-                quoteNumberIsCorrect = true;
-            return quoteNumberIsCorrect;
-        }
-       
+ 
 
         /// <summary>
         /// Function to copy the quote from quote page

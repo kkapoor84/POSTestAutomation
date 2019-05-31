@@ -15,6 +15,8 @@ namespace UnitTestNDBProject.TestDataAccess
         public static String QuoteGroup = "A";
         public static String QuoteStatus = "OPEN";
         public static String StorePickup = "STORE PICKUP";
+        public static String NoQuoteMessage = "No quote found.";
+        public static String NoOrderMessage = "No order found.";
 
 
 
