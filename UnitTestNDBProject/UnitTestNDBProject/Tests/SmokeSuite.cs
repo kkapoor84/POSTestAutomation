@@ -31,11 +31,14 @@ namespace UnitTestNDBProject.Tests
         public static ParsedTestData paymentParsedData;
         private static ParsedTestData reasonsParser;
         private static ParsedTestData storeParser;
+        private static ParsedTestData searchParser;
 
         NewCustomerData newCustomerData;
         InternalInfoData internalInforData;
         ReasonsData cancelReasonData;
         StoreData storePickupData;
+        //SearchData searchQuoteNumber;
+        //SearchData searchOrderNumber;
         //   EditProductLineData editProductData;
 
 
@@ -61,6 +64,8 @@ namespace UnitTestNDBProject.Tests
             paymentParsedData = DataAccess.GetFeatureData("PaymentScreen");
             reasonsParser = DataAccess.GetFeatureData("Reasons");
             storeParser = DataAccess.GetFeatureData("StoreCode");
+            searchParser = DataAccess.GetFeatureData("Search");
+
 
             //parse data of NewCustomerScreen feature in NewCustomerData class
             newCustomerData = EnterNewCustomerPage.GetCustomerData(newCustomerFeatureParsedData);
@@ -303,7 +308,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(14), Category("Smoke"),Description("Quote Convert to Order")]
         public void B5_VerifyQuoteConvertToOrder()
         {
-            _QuotePage.SearchFunctionForQuote();
+            //_QuotePage.SearchFunctionForQuote();
             _QuotePage.CopyQuote().SaveChanges();
             //Thread.Sleep(2000);
             _QuotePage.WaitUntilPageload();
@@ -431,7 +436,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(25), Category("Smoke"), Description("Change Delivery Type To Shipping")]
         public void C7_VerifyUpdateDeliveryTypeToShipping()
         {
-            _OrderPage.SearchFunctionForOrder();
+            //_OrderPage.SearchFunctionForOrder();
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
             _OrderPage.UpdateDeliveryTypeToShipping();
         }
@@ -452,6 +457,25 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCancelOrder());
         }
 
+        [Test, Order(28), Category("Smoke"), Description("Search Quote Verification")]
+        public void D1_VerifySearchQuote()
+        {
+            SearchData quoteData = SearchPage.SearchQuoteData(searchParser);
+            _SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterInvalidQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyNoResultFoundForQuote());
+            _SearchPage.ClearTextOFQuote().EnterQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyUserNavigatedToCorrectQuote(quoteData.QuoteNumber));
+        }
+
+        [Test, Order(29), Category("Smoke"), Description("Search Order Verification")]
+        public void D2_VerifySearchOrder()
+        {
+            SearchData orderData = SearchPage.SearchOrderData(searchParser);
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterInvalidOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyNoResultFoundForOrder());
+            _SearchPage.ClearTextOFOrder().EnterOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyUserNavigatedToCorrectOrder(orderData.OrderNumber));
+        }
 
 
         /// <summary>

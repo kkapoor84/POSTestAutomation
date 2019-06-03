@@ -91,18 +91,9 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.Id, Using = "roomlocation")]
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
-        public IWebElement Search { get; set; }
-
-
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ORDER NUMBER')]")]
-        public IWebElement SearchOrder { get; set; }
-
         [FindsBy(How = How.Id, Using = "orderNumber")]
         public IWebElement EnterOrder { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Search')]")]
-        public IWebElement Enter { get; set; }
 
         [FindsBy(How = How.Id, Using = "roomlocation")]
         public IWebElement roomlocation { get; set; }
@@ -166,14 +157,13 @@ namespace UnitTestNDBProject.Pages
             return JsonDataParser<ReasonsData>.ParseData(cancelReasonData);
         }
 
-
         public static StoreData ReadStorePickupData(ParsedTestData featureData)
         {
             object StorePickupData = DataAccess.GetKeyJsonData(featureData, "StoreName");
             return JsonDataParser<StoreData>.ParseData(StorePickupData);
         }
 
-
+       
 
         /// <summary>
         /// Function to verify that order is created
@@ -558,23 +548,6 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        public OrderPage SearchFunctionForOrder()
-        {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(Search, 10000);
-            Search.Clickme(driver);
-            _logger.Info($" User clicked on search button on top navigation panel");
-            SearchOrder.Clickme(driver);
-            _logger.Info($" User clicked on search for order tab on search page");
-            //  EnterOrder.EnterText("2013543");
-            EnterOrder.EnterText("2027401");
-            _logger.Info($" User entered quote{2013804}");
-            Enter.Clickme(driver);
-            _logger.Info($" User clicked on search button");
-            WaitUntilPageload();
-            _logger.Info($" Waited for loader gets loaded");
-            Thread.Sleep(1000);
-            return this;
-        }
 
         /// <summary>
         /// Updating delivery type from delivery type dropdown
