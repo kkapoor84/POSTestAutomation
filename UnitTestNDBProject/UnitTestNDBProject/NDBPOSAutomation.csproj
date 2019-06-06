@@ -134,6 +134,7 @@
   <ItemGroup>
     <Compile Include="Base\BaseTestClass.cs" />
     <Compile Include="Base\BasePageClass.cs" />
+    <Compile Include="Pages\QuickConfig.cs" />
     <Compile Include="Pages\SearchPage.cs" />
     <Compile Include="TestDataAccess\Constants.cs" />
     <Compile Include="Pages\MeasurementAndInstallationPage.cs" />

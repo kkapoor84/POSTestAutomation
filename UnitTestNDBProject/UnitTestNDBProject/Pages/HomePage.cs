@@ -60,7 +60,10 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//div[contains(text(),'LEADS')]")]
         public IWebElement SAPLead { get; set; }
-                
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'QUICK CONFIG')]")]
+        public IWebElement QuickConfigLink { get; set; }
+
         public void ClickDashBoardTab()
         {
            DashBoardTab.Clickme(driver);
@@ -89,6 +92,16 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElementToBecomeVisibleWithinTimeout(SAPLead, 7000);
             return this;
         }
+
+
+        public HomePage ClickOnQuickConfig()
+        {
+            driver.WaitForElement(QuickConfigLink);
+            QuickConfigLink.Clickme(driver);
+            _logger.Info($": Successfully Clicked on QuickConfig link on homepage");
+            return this;
+        }
+
 
 
         public void ClickResourcesTab()

@@ -19,6 +19,7 @@ namespace UnitTestNDBProject.Page
 
         public IWebDriver driver;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        public List<string> Products;
 
         public QuotePage(IWebDriver driver)
         {
@@ -535,12 +536,11 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+ 
         /// <summary>
-        /// Function to enter product width
+        /// Wait until page is loaded
         /// </summary>
-        /// <param name="WidthEntered"></param>
         /// <returns></returns>
-
         public QuotePage WaitUntilPageload()
         {
             //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
@@ -555,7 +555,7 @@ namespace UnitTestNDBProject.Page
         {
             //Do not remove below Wait. This is essential to ensure that page has loaded
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
-
+            
             driver.WaitForElementToBecomeVisibleWithinTimeout(Width, 10000);
             Width.EnterText(WidthEntered);
             _logger.Info($": Successfully entered width {WidthEntered}");
@@ -1019,10 +1019,82 @@ namespace UnitTestNDBProject.Page
                 return false;
             }
         }
-            /// <summary>
-            /// Function to delete multiple product lines.
-            /// </summary>
-            public void DeleteMultipleProducts()
+
+
+        /// <summary>
+        /// function to verify the added product on quick config is same popualted on quote page
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool VerifyProductDetailsAreCorrect(ProductLineData data )
+        {
+            
+        Thread.Sleep(2000);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
+            WaitUntilPageload();
+            int i = 2;
+            int count = 0;
+            string[] productLineDataArray = new string[100];
+
+            do
+                {
+                    string productColumn = driver.FindElement(By.XPath("//li[2]//div[" + i + "]")).GetText(driver);
+                    productLineDataArray[count] = productColumn;
+                    i++; count++;
+                    _logger.Info(productLineDataArray[count]);
+                } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+     
+
+
+            bool roomLocation = false;
+            bool color = false;
+            bool liftsystem = false;
+
+          
+                String ndbRoomLocationString = data.NDBRoomLocation;
+                List<ProductDetail> addedProductDetails = data.ProductDetails;
+
+                int k = 0;
+
+                    if (ndbRoomLocationString.Contains(productLineDataArray[k]))
+                    {
+                        roomLocation = true;
+                        _logger.Info($"Added  Room Location " + ndbRoomLocationString + " Is Correct.");
+                        
+                    }
+
+                    if (data.ProductDetails[1].Option.Contains(productLineDataArray[k + 7].Substring(9, 4)))
+                    {
+
+                        color = true;
+                        _logger.Info($"Added Color " + data.ProductDetails[1].Option + " Is Correct.");
+                        
+                    }
+
+                    if (data.ProductDetails[3].Option.Contains(productLineDataArray[k+6]))
+                    {
+
+                        liftsystem = true;
+                        _logger.Info($"Added  Lift System " + data.ProductDetails[3].Option + " Is Correct.");
+                        
+                    }
+               
+            
+            if (roomLocation == true && color == true && liftsystem == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Function to delete multiple product lines.
+        /// </summary>
+        public void DeleteMultipleProducts()
         {
             int i = 2;
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, HamburgerClick, implicitWait);

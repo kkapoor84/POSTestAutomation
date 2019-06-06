@@ -9,7 +9,7 @@ namespace UnitTestNDBProject.TestDataAccess
 {
     public class Constants
     {
-        private IWebDriver driver;
+       
         public static String ProductTotal { get; set; }
         public static String ShippingDeliveryType = "SHIPPING";
         public static String QuoteGroup = "A";
@@ -17,6 +17,7 @@ namespace UnitTestNDBProject.TestDataAccess
         public static String StorePickup = "STORE PICKUP";
         public static String NoQuoteMessage = "No quote found.";
         public static String NoOrderMessage = "No order found.";
+        public static String AddQuoteToCustomer = "ADD QUOTE TO CUSTOMER";
 
 
 

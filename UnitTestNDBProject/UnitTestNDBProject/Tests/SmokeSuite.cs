@@ -218,7 +218,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(7), Category("Smoke"),Ignore(""), Description("Verify Product and Quote Creation by adding 3 product lines.")]
         public void A7_VerifyProductCreation()
         {
-         //   _QuotePage.SearchFunction();
+           // _QuotePage.SearchFunction();
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
             Assert.True(_QuotePage.VerifyErrorPopup());
             _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateGroup(internalInforData.Group).UpdateInternalInfo().AddLeadNumber(internalInforData.Leadnumber).UpdateSidemark(internalInforData.Sidemark);
@@ -475,6 +475,36 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_SearchPage.VerifyNoResultFoundForOrder());
             _SearchPage.ClearTextOFOrder().EnterOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
             Assert.True(_SearchPage.VerifyUserNavigatedToCorrectOrder(orderData.OrderNumber));
+        }
+
+        [Test, Order(30), Category("Smoke"), Description("Product creation on Quick COnfig Page")]
+        public void D3_VerifyQuickConfigScreen()
+        {
+            ProductLineData ProductLineData = QuickConfig.GetProductLine1Data(productLineFeatureParsedData);
+            _HomePage.ClickOnQuickConfig();
+            _QuickConfig.AddProduct(ProductLineData, _QuotePage);
+            Assert.True(_QuickConfig.VerifyUserNavigatedToCustomerPage());
+
+            string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
+            string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
+
+            _EnterNewCustomerPage.EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);
+            _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
+            _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
+
+            _EnterNewCustomerPage.ClickOnAddressLine1().ContinueNewCustomerCreation();
+
+            _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
+            _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
+
+            _EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
+            _QuotePage.WaitUntilPageload();
+            Assert.True(_QuotePage.VerifyQuoteCreation());
+            Assert.True(_QuotePage.VerifyProductDetailsAreCorrect(ProductLineData));
+
+
+
+
         }
 
 

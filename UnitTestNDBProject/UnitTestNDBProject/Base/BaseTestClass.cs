@@ -80,6 +80,8 @@ namespace UnitTestNDBProject.Base
         public SearchPage _SearchPage { get; set; }
         public MeasurementAndInstallationPage _MeasurementAndInstallationPage { get; set; }
 
+        public QuickConfig _QuickConfig  { get; set; }
+
         /// <summary>
         /// This method would be called before execution of each class
         /// </summary>
@@ -113,6 +115,7 @@ namespace UnitTestNDBProject.Base
             _PaymentPage = new PaymentPage(driver);
             _OrderPage = new OrderPage(driver);
             _SearchPage = new SearchPage(driver);
+            _QuickConfig = new QuickConfig(driver);
             _MeasurementAndInstallationPage = new MeasurementAndInstallationPage(driver);
             _BasePageClass.OpenURL();
             _logger.Info($" :Successfully executed the BeforeClassInitialization() method for {this.GetType().Name}");
