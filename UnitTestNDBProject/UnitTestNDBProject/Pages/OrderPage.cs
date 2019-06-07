@@ -264,6 +264,13 @@ namespace UnitTestNDBProject.Pages
 
         }
 
+        public OrderPage WaitUntilPageload()
+        {
+
+            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            _logger.Info($" Wait until loader is loaded");
+            return this;
+        }
         public OrderPage NavigateToTopOfTheOrderPage()
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -480,12 +487,7 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        public OrderPage WaitUntilPageload()
-        {
-            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
-            _logger.Info($" Wait until loader is loaded");
-            return this;
-        }
+
 
         /// <summary>
         /// Click On Cancel Order Button
