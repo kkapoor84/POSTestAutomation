@@ -506,10 +506,8 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(31), Category("Smoke"), Description("TransferToProduction")]
         public void D3_VerifyTransferToProduction()
         {
-            SearchData quoteData = SearchPage.SearchQuoteData(searchParser);
-            _SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch("702344").ClickOnSearchButton();
-            _QuotePage.WaitUntilPageload();
-            _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();
+            _OrderPage.UpdateDeliveryTypeToStorePickup();
+            _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();            
             _PaymentPage.cashPaymentForFullPayment().CalculateCashPayment().ProcessPaymentButtonClick();
             _OrderPage.NavigateToTopOfTheOrderPage().EditInternalInfoButton().UpdateSignature().ApplyChangesToInternalInfoSection().ClickOnSaveOrderButton().TransferToProduction();
             Assert.True(_OrderPage.CurrentDatePopupatedVerification());
