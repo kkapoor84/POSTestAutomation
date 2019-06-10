@@ -45,7 +45,8 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.Id, Using = "GiftCardNumber")]
         private IWebElement GiftCardNumber { get; set; }
 
-        
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'CASH')]")]
+        private IWebElement CashButtonOnPaymentPage { get; set; }
 
         [FindsBy(How = How.Id, Using = "amountPosting")]
         private IWebElement AmountTextBox { get; set; }
@@ -143,7 +144,11 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.XPath, Using = "//div[@class='modal-space']/ul/li")]
         public  IWebElement WarningText { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//span[@class='col-sm-6 head text-right pad-left-none text-word-break']")]
+        public IWebElement OrderTotal { get; set; }
+
         
+
 
         public static PaymentData GetGiftCardPaymentData (ParsedTestData featureData)
         {
@@ -490,6 +495,30 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        public PaymentPage cashPaymentForFullPayment()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            CashButtonOnPaymentPage.Clickme(driver);
+            return this;
+        }
         
+        public PaymentPage CalculateCashPayment()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            String CashToBePaid = OrderTotal.GetText(driver);
+            AmountTextBox.SendKeys(CashToBePaid);
+            return this;
+        }
+
+        public PaymentPage ProcessPaymentButtonClick()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            ProcessPaymentButton.Clickme(driver);
+            return this;
+        }
+
     }
 }
