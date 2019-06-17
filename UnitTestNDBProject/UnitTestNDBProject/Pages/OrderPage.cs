@@ -149,6 +149,31 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "idDone")]
         public IWebElement DoneStoreChanges { get; set; }
 
+        [FindsBy(How = How.Id, Using = "focus-on-edit")]
+        public IWebElement EditInternalInfo { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@id='idSignatureStatus']")]
+        public IWebElement EditSignatures { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "Select default-select-dropdown has-value is-clearable is-focused is-open is-searchable Select--single")]
+        public IWebElement EditSignaturesStatus { get; set; }
+
+        [FindsBy(How = How.Id, Using = "applyQuote")]
+        public IWebElement ApplyChangesToInternalInfo { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnTransferOrder")]
+        public IWebElement TransferToProductionButton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "idBtnOK")]
+        public IWebElement TransferConformation { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='gutter-sm-top']//div[2]//div[1]//div[1]//div[2]//span[1]")]
+        public IWebElement OrderTransferDate { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//span[@class='form-label text-uppercase remove-form-label']")]
+        public IWebElement OrderStatus { get; set; }
+
+
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
@@ -273,6 +298,7 @@ namespace UnitTestNDBProject.Pages
         }
         public OrderPage NavigateToTopOfTheOrderPage()
         {
+            WaitUntilPageload();
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("window.scrollBy(0,-1500)");
             return this;
@@ -885,7 +911,6 @@ namespace UnitTestNDBProject.Pages
 
         public OrderPage SetDeliveryTypeToStorePickup()
         {
-
             WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(UpdateDeliveryTypeIsFocused, implicitWait);
             UpdateDeliveryTypeIsFocused.EnterText(Constants.StorePickup);
@@ -893,5 +918,107 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function To Edit Internal Information section
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage EditInternalInfoButton()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            WaitUntilPageload();
+            EditInternalInfo.Clickme(driver);
+            _logger.Info($": User Clicked Edit Internal Info section.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to update signature to electronic.
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage UpdateSignature()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            Actions actions = new Actions(driver);
+            actions.SendKeys(EditSignatures, "Electronic").SendKeys(Keys.Enter).Build().Perform();
+            _logger.Info($": Signature set to signed signature for the order");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to Apply Changes To Internal Infor section.
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage ApplyChangesToInternalInfoSection()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            ApplyChangesToInternalInfo.Clickme(driver);
+            _logger.Info($": Changes to Internal Info section applied successfully.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function To Click On Save Order Function.
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage ClickOnSaveOrderButton()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            SaveOrder.Clickme(driver);
+            _logger.Info($": Order saved successfully after applying changes.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to click transfer to production button.
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage TransferToProduction()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            WaitUntilPageload();
+            autoEvent.WaitOne(4000);
+            TransferToProductionButton.Clickme(driver);
+            autoEvent.WaitOne(4000);
+            OkButton.Clickme(driver);
+            WaitUntilPageload();
+            _logger.Info($": Order Successfully Transferred To Production.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to verify order date.
+        /// </summary>
+        /// <returns></returns>
+        public bool CurrentDatePopupatedVerification()
+        {
+            bool correctdate = false;
+            DateTime dateTime = DateTime.UtcNow.Date;
+            _logger.Info("Current Data Time Calculated : " + dateTime);
+            String systemDate = dateTime.ToString("MM/dd/yyyy");
+            String orderDateOnScreen = OrderTransferDate.GetText(driver);
+            _logger.Info("Current Data Time On Screen : " + orderDateOnScreen);
+            if (systemDate.Equals(orderDateOnScreen))
+                correctdate = true;
+            _logger.Info(" : Verified Correct Transfer Date is Populated.");
+            return correctdate;
+        }
+
+        /// <summary>
+        /// Function To Verify status of order.
+        /// </summary>
+        /// <returns></returns>
+        public bool OrderStatusAfterTransferVerification()
+        {
+            bool correctStatus = false;
+            String expectedStatus = Constants.OrderStatusAfterTransfer;
+            String statusOnScreen = OrderStatus.GetText(driver);
+            if (expectedStatus.Contains(statusOnScreen))
+                correctStatus = true;
+            _logger.Info(" : Verified Correct Status Of Order is Updated.");
+            return correctStatus;
+        }
     }
 }

@@ -501,12 +501,18 @@ namespace UnitTestNDBProject.Tests
             _QuotePage.WaitUntilPageload();
             Assert.True(_QuotePage.VerifyQuoteCreation());
             Assert.True(_QuotePage.VerifyProductDetailsAreCorrect(ProductLineData));
-
-
-
-
         }
 
+        [Test, Order(31), Category("Smoke"), Description("TransferToProduction")]
+        public void D3_VerifyTransferToProduction()
+        {
+            _OrderPage.UpdateDeliveryTypeToStorePickup();
+            _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();            
+            _PaymentPage.cashPaymentForFullPayment().CalculateCashPayment().ProcessPaymentButtonClick();
+            _OrderPage.NavigateToTopOfTheOrderPage().EditInternalInfoButton().UpdateSignature().ApplyChangesToInternalInfoSection().ClickOnSaveOrderButton().TransferToProduction();
+            Assert.True(_OrderPage.CurrentDatePopupatedVerification());
+            Assert.True(_OrderPage.OrderStatusAfterTransferVerification());
+        }
 
         /// <summary>
         /// Tear Down function
