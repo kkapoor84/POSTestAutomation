@@ -236,6 +236,13 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Function to  to close exit payment popup screen
+        /// </summary>
+        /// <param name="exitReason"></param>
+        /// <param name="exitreasonvalue"></param>
+        /// <param name="reasondetail"></param>
+        /// <returns></returns>
         public PaymentPage ClickOnExitPayment(String exitReason,String exitreasonvalue, String reasondetail)
         {
 
