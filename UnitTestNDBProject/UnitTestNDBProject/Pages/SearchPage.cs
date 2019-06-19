@@ -24,7 +24,7 @@ namespace UnitTestNDBProject.Pages
             PageFactory.InitElements(driver, this);
         }
 
-
+        public List<Tuple<string, string>> newPhones;
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
@@ -52,6 +52,24 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//div[@class='no-result-text']")]
         public IWebElement NoResult { get; set; }
+
+        [FindsBy(How = How.Id, Using = "firstName")]
+        public IWebElement FirstName { get; set; }
+
+        [FindsBy(How = How.Id, Using = "lastName")]
+        public IWebElement LastName { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='search-results']/div[1]/div[1]/div[1]/div[1]/div[1]")]
+        public IWebElement ClickOnSearchResult { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='search-results']//div[1]//div[1]//div[1]//li[1]//span[2]")]
+        public IWebElement ReadPhoneNumber { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='search-results']//div[1]//div[1]//div[1]//li[2]//span[2]")]
+        public IWebElement ReadEmail { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "recent-search-link")]
+        public IWebElement recentSearch { get; set; }
 
         public static SearchData SearchQuoteData(ParsedTestData featureData)
         {
@@ -266,6 +284,67 @@ namespace UnitTestNDBProject.Pages
             WaitUntilPageload();
             EnterQuote.Clear();
             return this;
+        }
+
+        public SearchPage EnterFirstName(String fname)
+        {
+            FirstName.EnterText(fname);
+            return this;
+        }
+        public SearchPage EnterLastName(String lname)
+        {
+            LastName.EnterText(lname);
+            return this;
+        }
+
+        public SearchPage ClickOnSearchResultForCustomer()
+        {
+            WaitUntilPageload();
+            ClickOnSearchResult.Clickme(driver);
+            return this;
+        }
+
+        public bool VerifySearchLinkOfLastSearch()
+        {
+            WaitUntilPageload();
+            bool linkIsAvailable = false;
+            if (recentSearch.Displayed)
+                linkIsAvailable = true;
+            return linkIsAvailable;
+        }
+
+        public string ReadPhone()
+        {
+            string phone = ReadPhoneNumber.GetText(driver);
+            return phone;
+        }
+        public bool VerifyCorrectPhoneNumber()
+        {
+            WaitUntilPageload();
+            int i = 0;
+            String phoneNumberOnSearchPage = ReadPhone();
+            string[] phoneNumberArray = new string[100];
+            do
+            {
+                string phoneNumber = driver.FindElement(By.Id("phoneLists[" + i + "].Phone")).GetAttribute("value");
+                string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
+                phoneNumberArray[i] = actualPhoneNumber;
+                i++;
+            } while (By.Id("phoneLists[" + i + "].Phone").isPresent(driver));
+            bool phoneNumberIsCorrect = false;
+            int j = 0;
+            do
+            {
+                if (phoneNumberOnSearchPage.Contains((phoneNumberArray[j])))
+                {
+                    phoneNumberIsCorrect = true;
+                    _logger.Info($" Phone " + phoneNumberOnSearchPage + " exists for the customer");
+                    break;
+                }
+                j++;
+            } while (phoneNumberArray[j] != null);
+            return phoneNumberIsCorrect;
+
         }
     }
 }

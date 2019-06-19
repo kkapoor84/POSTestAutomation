@@ -477,8 +477,19 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_SearchPage.VerifyUserNavigatedToCorrectOrder(orderData.OrderNumber));
         }
 
-        [Test, Order(30), Category("Smoke"), Description("Product creation on Quick COnfig Page")]
-        public void D3_VerifyQuickConfigScreen()
+        [Test, Order(30), Category("Smoke"), Description("Search Order Verification")]
+        public void D3_VerifySearchCustomer()
+        {
+            SearchData orderData = SearchPage.SearchOrderData(searchParser);
+            _SearchPage.ClickOnSearchLink().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickOnSearchButton()
+                .ClickOnSearchResultForCustomer();
+            Assert.True(_SearchPage.VerifyCorrectPhoneNumber());
+            _SearchPage.ClickOnSearchLink();
+            Assert.True(_SearchPage.VerifySearchLinkOfLastSearch());
+        }
+
+        [Test, Order(31), Category("Smoke"), Description("Product creation on Quick COnfig Page")]
+        public void D4_VerifyQuickConfigScreen()
         {
             ProductLineData ProductLineData = QuickConfig.GetProductLine1Data(productLineFeatureParsedData);
             _HomePage.ClickOnQuickConfig();
@@ -503,8 +514,8 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyProductDetailsAreCorrect(ProductLineData));
         }
 
-        [Test, Order(31), Category("Smoke"), Description("TransferToProduction")]
-        public void D3_VerifyTransferToProduction()
+        [Test, Order(32), Category("Smoke"), Description("TransferToProduction")]
+        public void D4_VerifyTransferToProduction()
         {
             _OrderPage.UpdateDeliveryTypeToStorePickup();
             _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();            
