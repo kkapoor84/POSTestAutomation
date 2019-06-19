@@ -316,67 +316,81 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
 
         }
-        [Test, Order(15), Category("Smoke"), Ignore(""), Description("Payment via finance and order is created")]
+        [Test, Order(15), Category("Smoke"), Description("Payment via finance and order is created")]
         public void B6_VerifyOrderIsCreatedWithFinancialPayment()
         {
             PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(paymentParsedData);
+         
+            _OrderPage.ClickOnNewPaymentButton();
             _PaymentPage.MakeFinancePayment(financePaymentData.Amount)
               .CloseExitPaymentPopup()
-                .ClickOnExitPaymentScreenButton(financePaymentData.ExitPaymentReason);
+               .ClickOnExitPayment(financePaymentData.ExitPaymentReason, financePaymentData.ExitReasonDropDownValue, financePaymentData.ReasonDetails);
+            //  .ClickOnExitPaymentScreenButton(financePaymentData.ExitPaymentReason)
+
             Assert.True(_OrderPage.VerifyOrderIsCreated());
             _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyPaymentGridData(financePaymentData));
+
+
         }
 
-        [Test, Order(16),  Category("Smoke"), Ignore(""), Description("Payment via gift card")]
+        [Test, Order(16),  Category("Smoke"), Description("Payment via gift card")]
         public void B7_VerifyGiftCardPayment()
         {
             PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(paymentParsedData);
             _OrderPage.ClickOnNewPaymentButton();
             _PaymentPage.MakeGiftCardPayment(giftCardPaymentData.GiftCardNumber,giftCardPaymentData.Amount)
-                            .EnterDetailInExitPaymentPopup(giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
+                     .ClickOnExitPayment(giftCardPaymentData.ExitPaymentReason, giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
+                         //   .EnterDetailInExitPaymentPopup(giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
+            _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyPaymentGridData(giftCardPaymentData));
         }
        
-        [Test, Order(17), Category("Smoke"), Ignore(""), Description("Payment via Check-Skip Verification")]
+        [Test, Order(17), Category("Smoke"),Description("Payment via Check-Skip Verification")]
         public void B8_VerifyCheckSkipVerificationPayment()
         {
-            PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
+              PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
+
             _OrderPage.ClickOnNewPaymentButton();
             _PaymentPage.MakeCheckPayment(checkPaymentData.AccountName,checkPaymentData.RoutingNumber,checkPaymentData.AccountNumber,checkPaymentData.CheckNumber,checkPaymentData.StateId,checkPaymentData.State,checkPaymentData.Amount)
-                .SelectSkipVerification(checkPaymentData.SkippingReason,checkPaymentData.SkippingReasonDetail) 
-                .EnterDetailInExitPaymentPopup(checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
+                .SelectSkipVerification(checkPaymentData.SkippingReason,checkPaymentData.SkippingReasonDetail)
+                .ClickOnExitPayment(checkPaymentData.ExitPaymentReason, checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
+             //   .EnterDetailInExitPaymentPopup(checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
+            _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyPaymentGridData(checkPaymentData));
         }
 
-        [Test, Order(18), Category("Smoke"), Ignore(""), Description("Payment via Manual Credit Card")]
-        public void B9_VerifyManualCreditCardPayment()
-        {
-            PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(paymentParsedData);
-            _OrderPage.ClickOnNewPaymentButton();
-            _PaymentPage.MakeCreditCardPayment(creditCardPaymentData.CreditCardNumber, creditCardPaymentData.ExpirationMonth, creditCardPaymentData.ExpirationYear, creditCardPaymentData.CVVCode, creditCardPaymentData.CreditCardHolder, creditCardPaymentData.Amount)
-                 .EnterDetailInExitPaymentPopup(creditCardPaymentData.ExitReasonDropDownValue, creditCardPaymentData.ReasonDetails);
-            Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
-        }
+        //[Test, Order(18), Category("Smoke"),  Description("Payment via Manual Credit Card")]
+        //public void B9_VerifyManualCreditCardPayment()
+        //{
+        //    PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(paymentParsedData);
+        //    _OrderPage.ClickOnNewPaymentButton();
+        //    _PaymentPage.MakeCreditCardPayment(creditCardPaymentData.CreditCardNumber, creditCardPaymentData.ExpirationMonth, creditCardPaymentData.ExpirationYear, creditCardPaymentData.CVVCode, creditCardPaymentData.CreditCardHolder, creditCardPaymentData.Amount)
+        //         .EnterDetailInExitPaymentPopup(creditCardPaymentData.ExitReasonDropDownValue, creditCardPaymentData.ReasonDetails);
+        //    Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+        //}
 
-        [Test, Order(19), Category("Smoke"),Description("Payment via Saved Credit Card")]
-        public void C1_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
-        {
+        //[Test, Order(19), Category("Smoke"),Description("Payment via Saved Credit Card")]
+        //public void C1_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
+        //{
 
-            PaymentData savedCreditCardPaymentData = PaymentPage.GetSavedCreditCardPaymentData(paymentParsedData);
-            _OrderPage.ClickOnNewPaymentButton();
-            _PaymentPage.MakeSavedCreditCardPayment(savedCreditCardPaymentData.Amount);
-            Assert.True(_PaymentPage.VerifyMaxTransWarningOnPaymentScreen(savedCreditCardPaymentData.WarningMessageOnPayment));
-            Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_PaymentButton(savedCreditCardPaymentData.WarningMessageOnPayment));
-            Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_RefundLink(savedCreditCardPaymentData.WarningMessageOnRefund));
-            Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
-        }
-        [Test, Category("Smoke"), Ignore(""), Description("Payment grid data verification")]
-        public void C2_VerifyPaymentGridData()
-        {
-             Assert.True(_OrderPage.VerifyGridData(_OrderPage.ExpectedDataForGridVerification()));
+        //    PaymentData savedCreditCardPaymentData = PaymentPage.GetSavedCreditCardPaymentData(paymentParsedData);
+        //    _OrderPage.ClickOnNewPaymentButton();
+        //    _PaymentPage.MakeSavedCreditCardPayment(savedCreditCardPaymentData.Amount);
+        //    Assert.True(_PaymentPage.VerifyMaxTransWarningOnPaymentScreen(savedCreditCardPaymentData.WarningMessageOnPayment));
+        //    Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_PaymentButton(savedCreditCardPaymentData.WarningMessageOnPayment));
+        //    Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_RefundLink(savedCreditCardPaymentData.WarningMessageOnRefund));
+        //    Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+        //}
+        //[Test, Category("Smoke"), Ignore(""), Description("Payment grid data verification")]
+        //public void C2_VerifyPaymentGridData()
+        //{
+        //     Assert.True(_OrderPage.VerifyGridData(_OrderPage.ExpectedDataForGridVerification()));
 
-        }
+        //}
 
         [Test, Order(21), Category("Smoke"), Ignore(""), Description("Verify Product Copy")]
         public void C3_VerifyCopyproductLineForOrder()

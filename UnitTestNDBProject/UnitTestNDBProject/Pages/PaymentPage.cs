@@ -236,6 +236,58 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        public PaymentPage ClickOnExitPayment(String exitReason,String exitreasonvalue, String reasondetail)
+        {
+
+            driver.waitForElementNotVisible("//div[@class='msg-container']");
+
+            driver.WaitForElement(ExitPaymentScreenButton);
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
+            ex.ExecuteScript("arguments[0].click();", ExitPaymentScreenButton);
+            _logger.Info($" User clicked on ExitPaymentScreenButton");
+
+            try
+            {
+
+                new System.Threading.ManualResetEvent(false).WaitOne(2000);
+              //  driver.WaitForElement(ExitReasonDropDown);
+                Actions actions = new Actions(driver);
+                actions.SendKeys(ExitReasonDropDown, exitreasonvalue).Build().Perform();
+                ExitReasonDropDown.SendKeys(Keys.Enter);
+                _logger.Info($": Successfully Selected Aexist reason from drop down {exitreasonvalue}");
+                ReasonDetailTextBox.EnterText(reasondetail);
+                _logger.Info($": Successfully Entered reason detail");
+                driver.WaitForElement(ExitPaymentButtonOnPopUp);
+                ExitPaymentButtonOnPopUp.Clickme(driver);
+                _logger.Info($": User clicked on exit payment button on popup");
+                driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+
+            }
+
+            catch (Exception e)
+            {
+                try
+                {
+                    new System.Threading.ManualResetEvent(false).WaitOne(2000);
+                  //  driver.WaitForElement(ExitReasonTextBox);
+                    ExitReasonTextBox.EnterText(exitReason);
+                    _logger.Info($" User entered text in ExitReasonTextBox");
+                    driver.WaitForElement(ExitPopupContiueButton);
+                    ExitPopupContiueButton.Clickme(driver);
+                    _logger.Info($" User clicked on contiue button");
+
+                    driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+
+                }
+                catch (Exception e1)
+                {
+                    Console.WriteLine(e1.StackTrace);
+                }
+            }
+                return this;
+
+        }
+
         /// <summary>
         /// Function to enter details in exit payment popup 
         /// </summary>
