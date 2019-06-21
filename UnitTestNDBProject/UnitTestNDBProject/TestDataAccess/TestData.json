@@ -355,6 +355,7 @@
 					"SkippingReasonDetail": "AK - Alaska",
 					"ExitReasonDropDownValue": "Credit card declined",
 					"ReasonDetails": "Credit Card is not working currently",
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
 					"PaymentMethod": "CHECK"
 
 				}
@@ -365,6 +366,7 @@
 				"Value": {
 					"Amount": "1.00",
 					"GiftCardNumber": "91887-1140",
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
 					"ExitReasonDropDownValue": "Credit card declined",
 					"ReasonDetails": "Credit Card is not working currently",
 					"PaymentMethod": "GIFT CARD"
@@ -376,8 +378,9 @@
 				"Value": {
 					"Amount": "10.00",
 					"PaymentMethod": "FINANCE",
-					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future"
-
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently"
 				}
 			}
 		
