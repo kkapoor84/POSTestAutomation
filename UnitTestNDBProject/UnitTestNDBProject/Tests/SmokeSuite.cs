@@ -104,7 +104,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
-        [Test, Order(3), Category("Smoke"), Ignore(""), Description("Validate all the Home Page tabs are clickable")]
+        [Test, Order(3), Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
         public void A3_VerifyHomePageTabs()
         {
             _HomePage.ClickDashBoardTab();
@@ -120,7 +120,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
 
-        [Test, Order(4), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer from customer suggestion")]
+        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
         public void A4_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
@@ -148,7 +148,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
 
-        [Test, Order(5), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A5_VerifyCustomerCreation()
         {
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
@@ -164,7 +164,7 @@ namespace UnitTestNDBProject.Tests
             _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
             _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
 
-            _EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
+            _EnterNewCustomerPage.ClickSaveButton();
 
             //commenting this assertion because if somehow CUsotmer suggetion popup is not displayed then it takes time 30 sec to wait for the popup till than greenbar gets disappear and assertion gets failed 
             // Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
@@ -180,7 +180,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(6), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A6_VerifyCustomerUpdate()
         {
             UpdateCustomerData updateCustomerData = EnterNewCustomerPage.GetUpdateCustomerData(updateCustomerFeatureParsedData);
