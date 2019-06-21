@@ -89,11 +89,11 @@
 					}
 				],
 				"Addresses": [{
-					"AddressLine1": "30 Lavina Trl",
+					"AddressLine1": "3312 Fessenden St NW",
 					"AddressLine2": "Test",
-					"City": "Oak Ridge",
-					"State": "NJ",
-					"ZipCode": "07438"
+					"City": "Washington",
+					"State": "DC",
+					"ZipCode": "20008-2033"
 				}],
 				"TaxNumbers": [{
 						"TaxIdNumber": "987654321",
