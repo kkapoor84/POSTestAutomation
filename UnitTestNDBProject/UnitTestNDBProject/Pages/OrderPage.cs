@@ -190,6 +190,7 @@ namespace UnitTestNDBProject.Pages
 
        
 
+
         /// <summary>
         /// Function to verify that order is created
         /// </summary>
@@ -223,7 +224,7 @@ namespace UnitTestNDBProject.Pages
 
             if (precount + 1 == actualNoOfrecordInPaymentGrid)
             {
-                int currentcount=precount++;
+                int currentcount = precount++;
                 _logger.Info($" Totl record added in payment grid {currentcount}");
                 return true;
 
@@ -240,8 +241,8 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public OrderPage ClickOnAddDetailsButton()
         {
-            
-            
+
+
             IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
             //This will scroll the page till the element is found		
             ex.ExecuteScript("arguments[0].scrollIntoView();", AddDetailButton);
@@ -258,11 +259,19 @@ namespace UnitTestNDBProject.Pages
 
         public OrderPage ClickOnNewPaymentButton()
         {
-            IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
-            //This will scroll the web page till end.		
-            ex.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
-            NewPaymentButton.Clickme(driver);
-            _logger.Info($" User clicked on new payment button");
+
+            try
+            {
+                IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
+                //This will scroll the web page till end.		
+                ex.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+                NewPaymentButton.Clickme(driver);
+                _logger.Info($" User clicked on new payment button");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
             return this;
 
         }
@@ -312,9 +321,9 @@ namespace UnitTestNDBProject.Pages
         /// </summary>
         /// <param name="expWarningMessage"></param>
         /// <returns></returns>
-        public Boolean VerifyMaxTransWarningOnOrderScreen_PaymentButton (String expWarningMessage)
+        public Boolean VerifyMaxTransWarningOnOrderScreen_PaymentButton(String expWarningMessage)
         {
-            
+
 
             IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
             //This will scroll the web page till end.		
@@ -363,12 +372,12 @@ namespace UnitTestNDBProject.Pages
             driver.WaitForElement(OkButton);
             OkButton.Clickme(driver);
             driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
-           // ClickOnHamberger();
+            // ClickOnHamberger();
             return isWarningPopulated;
 
         }
 
-        public OrderPage  ClickOnhamburgerButton1()
+        public OrderPage ClickOnhamburgerButton1()
         {
             //int count = CalculateNumberOfProductLinesBeforeCopy();
             driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 60);
@@ -390,14 +399,14 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        public void  CalculateNumberOfProductLinesBeforeOperation()
+        public void CalculateNumberOfProductLinesBeforeOperation()
         {
             beforeCount = 0;
-             int i=2;
+            int i = 2;
             do
             {
                 WaitUntilPageload();
-                driver.FindElement(By.XPath("//li["+i+"]//div[2]//span[1]//div[1]"));
+                driver.FindElement(By.XPath("//li[" + i + "]//div[2]//span[1]//div[1]"));
                 beforeCount++;
                 i++;
             } while (By.XPath("//li[" + i + "]//div[2]//span[1]//div[1]").isPresent(driver));
@@ -440,7 +449,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage ClickOnEditButton()
         {
             WaitUntilPageload();
-            driver.WaitForElementToBecomeVisibleWithinTimeout(EditProductLine,implicitWait);
+            driver.WaitForElementToBecomeVisibleWithinTimeout(EditProductLine, implicitWait);
             EditProductLine.Clickme(driver);
             _logger.Info($" Clicked on Edit Product Line.");
             return this;
@@ -480,10 +489,10 @@ namespace UnitTestNDBProject.Pages
             }
         }
 
-            public bool VerifyTotalProductsAfterCopy()
+        public bool VerifyTotalProductsAfterCopy()
         {
 
-           if ((afterCount - beforeCount) == 1)
+            if ((afterCount - beforeCount) == 1)
                 return true;
             else
                 return false;
@@ -653,7 +662,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public OrderPage SaveOrderButton()
         {
-            WaitUntilPageload();         
+            WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(SaveOrder, implicitWait);
             SaveOrder.Clickme(driver);
             return this;
@@ -677,10 +686,10 @@ namespace UnitTestNDBProject.Pages
         }
 
 
-    /// <summary>
-    /// Function to verify shipping option Edit button is enabled.
-    /// </summary>
-    /// <returns></returns>
+        /// <summary>
+        /// Function to verify shipping option Edit button is enabled.
+        /// </summary>
+        /// <returns></returns>
         public Boolean VerifyShippingSectionEditButtonIsEnabled()
         {
             WaitUntilPageload();
@@ -692,7 +701,7 @@ namespace UnitTestNDBProject.Pages
             return editShippingButton;
         }
 
-       
+
         /// <summary>
         /// Function to verify if products are not install only only then to update the delivery options
         /// </summary>
@@ -702,7 +711,7 @@ namespace UnitTestNDBProject.Pages
             WaitUntilPageload();
             if (By.Id("idBtnOK").isPresent(driver))
             {
-                OkButton.Clickme(driver);                
+                OkButton.Clickme(driver);
             }
             else
             {
@@ -711,7 +720,7 @@ namespace UnitTestNDBProject.Pages
                 Assert.True(VerifyDeliveryOptionsPopulated());
                 SaveChangesToshippingOption();
                 Assert.True(VerifyShippingSection());
-            }               
+            }
             return this;
         }
         /// <summary>
@@ -767,6 +776,30 @@ namespace UnitTestNDBProject.Pages
 
             return IsDataMatched;
         }
+
+
+        public Boolean VerifyPaymentGridData(PaymentData record)
+        {
+            bool isGridDataCorrect = false;
+
+
+               String paymentMethod= driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[2]//span")).GetText(driver);
+               String amountCollected = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[6]//span")).GetText(driver);
+               String  amountPosted = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[7]//span")).GetText(driver);
+            String date = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[5]//span")).GetText(driver);
+
+            String ExpectedAmountCollected = "$" + record.Amount;
+           String ExpectedAmountPosted  = "$" + record.Amount;
+
+            if (paymentMethod == record.PaymentMethod && amountCollected == ExpectedAmountCollected && amountPosted == ExpectedAmountPosted && date == (DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
+                {
+                isGridDataCorrect = true;
+                }
+
+            return isGridDataCorrect;
+        }
+
+    
 
         /// <summary>
         /// Listing All the key data of PaymentScreen
