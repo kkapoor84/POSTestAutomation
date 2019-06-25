@@ -170,6 +170,8 @@ namespace UnitTestNDBProject.TestDataAccess
         public string AdjustmentType { get; set; }
         public string AdjustmentCode { get; set; }
         public string Amount { get; set; }
+
+        public string AdjustmentReason { get; set; }
     }
 
     #endregion

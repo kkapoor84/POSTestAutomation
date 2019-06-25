@@ -280,12 +280,14 @@
 				"Adjustments": [{
 						"AdjustmentType": "Adjustment",
 						"AdjustmentCode": "CONSIDERATION CHECK",
-						"Amount": "50"
+						"Amount": "50",
+						"AdjustmentReason":"Test"
 					},
 					{
 						"AdjustmentType": "Adjustment",
 						"AdjustmentCode": "CS-ORDER ERROR",
-						"Amount": "50"
+						"Amount": "50",
+						"AdjustmentReason":"Test"
 					}
 				],
 				"AdjustmentTotalAmount": "- $100.00"
