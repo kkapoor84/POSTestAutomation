@@ -66,10 +66,12 @@ namespace UnitTestNDBProject.Pages
         public IWebElement ReadPhoneNumber { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//div[@class='search-results']//div[1]//div[1]//div[1]//li[2]//span[2]")]
-        public IWebElement ReadEmail { get; set; }
+        public IWebElement ReadEmailAddress { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "recent-search-link")]
         public IWebElement recentSearch { get; set; }
+        public static string phoneNumberOnSearchPageStaticVariable = "";
+        public static string emailAddressOnSearchPageStaticVariable = "";
 
         public static SearchData SearchQuoteData(ParsedTestData featureData)
         {
@@ -300,6 +302,8 @@ namespace UnitTestNDBProject.Pages
         public SearchPage ClickOnSearchResultForCustomer()
         {
             WaitUntilPageload();
+            phoneNumberOnSearchPageStaticVariable =  ReadPhone();
+            emailAddressOnSearchPageStaticVariable = ReadEmail();
             ClickOnSearchResult.Clickme(driver);
             return this;
         }
@@ -318,19 +322,26 @@ namespace UnitTestNDBProject.Pages
             string phone = ReadPhoneNumber.GetText(driver);
             return phone;
         }
+
+        public string ReadEmail()
+        {
+            string email = ReadEmailAddress.GetText(driver);
+            return email;
+        }
+
         public bool VerifyCorrectPhoneNumber()
         {
             WaitUntilPageload();
-            int i = 0;
-            String phoneNumberOnSearchPage = ReadPhone();
+            int i = 1, k =0;
+            String phoneNumberOnSearchPage = phoneNumberOnSearchPageStaticVariable;
             string[] phoneNumberArray = new string[100];
             do
             {
-                string phoneNumber = driver.FindElement(By.Id("phoneLists[" + i + "].Phone")).GetAttribute("value");
-                string actualPhoneNumber = string.Concat(phoneNumber.Substring(1, 3), phoneNumber.Substring(6, 3), phoneNumber.Substring(10, 4));
-                phoneNumberArray[i] = actualPhoneNumber;
+                Thread.Sleep(4000);
+                string phoneNumber = driver.FindElement(By.XPath("//div[@class='row']//div[@class='row']//div[3]//div[1]//div[1]//div[2]//div["+i+"]//div[1]")).GetText(driver);
+                phoneNumberArray[k] = phoneNumber;
                 i++;
-            } while (By.Id("phoneLists[" + i + "].Phone").isPresent(driver));
+            } while (By.XPath("//div[@class='row']//div[@class='row']//div[3]//div[1]//div[1]//div[2]//div[" + i + "]//div[1]").isPresent(driver));
             bool phoneNumberIsCorrect = false;
             int j = 0;
             do
@@ -344,6 +355,35 @@ namespace UnitTestNDBProject.Pages
                 j++;
             } while (phoneNumberArray[j] != null);
             return phoneNumberIsCorrect;
+
+        }
+
+        public bool VerifyCorrectEmailAddress()
+        {
+            WaitUntilPageload();
+            int i = 1, k = 0;
+            String emailAddressOnSearchPage = emailAddressOnSearchPageStaticVariable;
+            string[] emailAddressArray = new string[100];
+            do
+            {
+                Thread.Sleep(4000);
+                string emailAddress = driver.FindElement(By.XPath("//div[@class='row']//div[@class='row']//div[5]//div[1]//div[1]//div[2]//div["+i+"]//div[1]")).GetText(driver);
+                emailAddressArray[k] = emailAddress;
+                i++;
+            } while (By.XPath("//div[@class='row']//div[@class='row']//div[5]//div[1]//div[1]//div[2]//div[" + i + "]//div[1]").isPresent(driver));
+            bool emailAddressIsCorrect = false;
+            int j = 0;
+            do
+            {
+                if (emailAddressOnSearchPage.Contains((emailAddressArray[j])))
+                {
+                    emailAddressIsCorrect = true;
+                    _logger.Info($" Email " + emailAddressOnSearchPage + " exists for the customer");
+                    break;
+                }
+                j++;
+            } while (emailAddressArray[j] != null);
+            return emailAddressIsCorrect;
 
         }
     }

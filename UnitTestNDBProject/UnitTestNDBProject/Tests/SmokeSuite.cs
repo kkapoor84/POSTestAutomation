@@ -481,8 +481,9 @@ namespace UnitTestNDBProject.Tests
         public void D3_VerifySearchCustomer()
         {
             SearchData orderData = SearchPage.SearchOrderData(searchParser);
-            _SearchPage.ClickOnSearchLink().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickOnSearchButton()
-                .ClickOnSearchResultForCustomer();
+            _SearchPage.ClickOnSearchLink().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickOnSearchButton();
+            _SearchPage.ClickOnSearchResultForCustomer();
+            Assert.True(_SearchPage.VerifyCorrectPhoneNumber());
             Assert.True(_SearchPage.VerifyCorrectPhoneNumber());
             _SearchPage.ClickOnSearchLink();
             Assert.True(_SearchPage.VerifySearchLinkOfLastSearch());
