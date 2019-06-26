@@ -321,6 +321,7 @@ namespace UnitTestNDBProject.Pages
         public SearchPage EnterFirstName(String fname)
         {
             FirstName.EnterText(fname);
+            _logger.Info($" Entered first Name Of Customer To be searched.");
             return this;
         }
 
@@ -332,6 +333,7 @@ namespace UnitTestNDBProject.Pages
         public SearchPage EnterLastName(String lname)
         {
             LastName.EnterText(lname);
+            _logger.Info($" Entered last Name Of Customer To be searched.");
             return this;
         }
 
@@ -346,6 +348,7 @@ namespace UnitTestNDBProject.Pages
             emailAddressOnSearchPageStaticVariable = ReadEmail();
             NameOnSearchPageStaticVariable = ReadName();
             ClickOnSearchResult.Clickme(driver);
+            _logger.Info($" Selected Customer from Search result.");
             return this;
         }
 
@@ -370,6 +373,7 @@ namespace UnitTestNDBProject.Pages
         public string ReadName()
         {
             string phone = ReadNameOnSearchPage.GetText(driver);
+            _logger.Info($" Read Name Of the customer.");
             return phone;
         }
 
@@ -380,6 +384,7 @@ namespace UnitTestNDBProject.Pages
         public string ReadPhone()
         {
             string phone = ReadPhoneNumber.GetText(driver);
+            _logger.Info($" Read Phone Of the customer.");
             return phone;
         }
 
@@ -393,6 +398,10 @@ namespace UnitTestNDBProject.Pages
             return email;
         }
 
+        /// <summary>
+        /// Verify First Name and Last name
+        /// </summary>
+        /// <returns></returns>
         public bool VerifyFirstNameLastName()
         {
             bool correctNameIsDisplayed = false;
@@ -401,6 +410,7 @@ namespace UnitTestNDBProject.Pages
             if (nameOnCustomerPage.Contains(nameOnSearchPage))
             {
                 correctNameIsDisplayed = true;
+                _logger.Info($" Name " + nameOnSearchPage + " exists for on customer page.");
             }
             return correctNameIsDisplayed;
         }
@@ -504,6 +514,12 @@ namespace UnitTestNDBProject.Pages
                 Assert.True(VerifyCorrectEmailAddress());
                 Assert.True(VerifyFirstNameLastName());
             }
+        }
+
+        public SearchPage EnterSameSearchCriteria()
+        {
+            recentSearch.Clickme(driver);
+            return this;
         }
     }
 }

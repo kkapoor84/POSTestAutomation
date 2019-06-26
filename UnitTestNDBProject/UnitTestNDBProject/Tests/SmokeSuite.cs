@@ -485,6 +485,7 @@ namespace UnitTestNDBProject.Tests
             _SearchPage.ExecuteSearchFlowIfCustomerExists();
             _SearchPage.ClickOnSearchLink();
             Assert.True(_SearchPage.VerifySearchLinkOfLastSearch());
+            _SearchPage.EnterSameSearchCriteria().ClickOnSearchButton();
         }
 
         [Test, Order(31), Category("Smoke"), Description("Product creation on Quick COnfig Page")]
