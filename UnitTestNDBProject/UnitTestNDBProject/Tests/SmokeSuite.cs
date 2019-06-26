@@ -482,9 +482,7 @@ namespace UnitTestNDBProject.Tests
         {
             SearchData orderData = SearchPage.SearchOrderData(searchParser);
             _SearchPage.ClickOnSearchLink().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickOnSearchButton();
-            _SearchPage.ClickOnSearchResultForCustomer();
-            Assert.True(_SearchPage.VerifyCorrectPhoneNumber());
-            Assert.True(_SearchPage.VerifyCorrectPhoneNumber());
+            _SearchPage.ExecuteSearchFlowIfCustomerExists();
             _SearchPage.ClickOnSearchLink();
             Assert.True(_SearchPage.VerifySearchLinkOfLastSearch());
         }
