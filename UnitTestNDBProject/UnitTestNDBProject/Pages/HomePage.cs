@@ -96,6 +96,7 @@ namespace UnitTestNDBProject.Pages
 
         public HomePage ClickOnQuickConfig()
         {
+            new System.Threading.ManualResetEvent(false).WaitOne(5000);
             driver.WaitForElement(QuickConfigLink);
             QuickConfigLink.Clickme(driver);
             _logger.Info($": Successfully Clicked on QuickConfig link on homepage");

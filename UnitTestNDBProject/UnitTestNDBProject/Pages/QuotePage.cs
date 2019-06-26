@@ -473,6 +473,7 @@ namespace UnitTestNDBProject.Page
             actions.SendKeys(StoreCode, storecode).Build().Perform();
             StoreCode.SendKeys(Keys.Enter);
             _logger.Info($": Successfully Selected Store code Group {storecode}");
+
             return this;
         }
 
@@ -484,6 +485,7 @@ namespace UnitTestNDBProject.Page
         public QuotePage UpdatePrimarySalesPerson(String salesperson)
         {
             driver.WaitForElement(SalesPerson);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             Actions actions = new Actions(driver);
             actions.SendKeys(SalesPerson, salesperson).Build().Perform();
             SalesPerson.SendKeys(Keys.Enter);
@@ -1394,8 +1396,10 @@ namespace UnitTestNDBProject.Page
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("window.scrollBy(0,500)");
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
             ConvertToOrderButton.Clickme(driver);
             _logger.Info($" User clicked on convert to order button");
+            Thread.Sleep(2000);
             driver.WaitForElement(ContinueButton);
             ContinueButton.Clickme(driver);
             _logger.Info($" User clicked on contiue button");
@@ -1534,6 +1538,7 @@ namespace UnitTestNDBProject.Page
             SaveButton.Clickme(driver);
             _logger.Info($" User clicked on save button");
             WaitUntilPageload();
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             return this;
         }
 
