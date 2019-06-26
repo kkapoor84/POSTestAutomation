@@ -506,27 +506,15 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(29), Category("Smoke"), Description("Copy to Quote functionality from order page")]
-        public void D2_CopyQuote()
-        {
-            _QuotePage.CopyQuote().UpdateInternalInfo()
-                .UpdateStoreCode(internalInforData.StoreCode)
-                .UpdatePrimarySalesPerson(internalInforData.SalesPerson)
-                .UpdateSidemark(internalInforData.Sidemark)
-                .ApplyInternalInfoUpdates()
-                .SaveChanges().OkOnErrorMessage();
-
-        }
-
-        [Test, Order(30), Category("Smoke"), Description("Change Delivery Type To Shipping")]
-        public void D3_VerifyUpdateDeliveryTypeToShipping()
+        [Test, Order(29), Category("Smoke"), Description("Change Delivery Type To Shipping")]
+        public void D2_VerifyUpdateDeliveryTypeToShipping()
         {
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
             _OrderPage.UpdateDeliveryTypeToShipping();
         }
 
-        [Test, Order(31), Category("Smoke"), Description("Change Delivery Type To Store Pickup")]
-        public void D4_VerifyUpdateDeliveryTypeToStorePickup()
+        [Test, Order(30), Category("Smoke"), Description("Change Delivery Type To Store Pickup")]
+        public void D3_VerifyUpdateDeliveryTypeToStorePickup()
         {
 
             _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToStorePickup();
@@ -534,8 +522,8 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(32), Category("Smoke"), Description("TransferToProduction")]
-        public void D5_VerifyTransferToProduction()
+        [Test, Order(31), Category("Smoke"), Description("TransferToProduction")]
+        public void D4_VerifyTransferToProduction()
         {
             _QuotePage.ClickOnConvertToQuote();
             _PaymentPage.cashPaymentForFullPayment().CalculateCashPayment().ProcessPaymentButtonClick();
