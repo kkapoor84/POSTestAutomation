@@ -1028,9 +1028,9 @@ namespace UnitTestNDBProject.Pages
         public bool CurrentDatePopupatedVerification()
         {
             bool correctdate = false;
-            DateTime dateTime = DateTime.UtcNow.Date;
-            _logger.Info("Current Data Time Calculated : " + dateTime);
-            String systemDate = dateTime.ToString("MM/dd/yyyy");
+            //DateTime dateTime = DateTime.UtcNow.Date;
+            //_logger.Info("Current Data Time Calculated : " + dateTime);
+            String systemDate = DateTime.Now.ToString("MM/d/yyyy", CultureInfo.InvariantCulture);
             String orderDateOnScreen = OrderTransferDate.GetText(driver);
             _logger.Info("Current Data Time On Screen : " + orderDateOnScreen);
             if (systemDate.Equals(orderDateOnScreen))

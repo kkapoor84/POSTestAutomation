@@ -83,7 +83,7 @@ namespace UnitTestNDBProject.Tests
             GlobalSetup.test = GlobalSetup.extent.CreateTest(TestContext.CurrentContext.Test.Name);
         }
 
-        [Test, Order(1), Category("Smoke"), Ignore(""), Description("Validate that error message populates once user enter invalid credentials")]
+        [Test, Order(1), Category("Smoke"), Description("Validate that error message populates once user enter invalid credentials")]
         public void A1_VerifyLoginWithInValidCredentails()
         {
             LoginData loginData = LoginPage.GetInvalidLoginData(loginFeatureParsedData);
@@ -215,10 +215,11 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"),Ignore(""), Description("Verify Product and Quote Creation by adding 3 product lines.")]
+        [Test, Order(7), Category("Smoke"), Description("Verify Product and Quote Creation by adding 3 product lines.")]
         public void A7_VerifyProductCreation()
         {
-           // _QuotePage.SearchFunction();
+           
+            Thread.Sleep(2000);
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
             Assert.True(_QuotePage.VerifyErrorPopup());
             _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateGroup(internalInforData.Group).UpdateInternalInfo().AddLeadNumber(internalInforData.Leadnumber).UpdateSidemark(internalInforData.Sidemark);
@@ -229,7 +230,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyProductDataAfterAdd(productLineFeatureParsedData.Data));
         }
 
-        [Test, Order(8), Category("Smoke"), Ignore(""), Description("Verify Product Copy")]
+        [Test, Order(8), Category("Smoke"),Description("Verify Product Copy")]
         public void A8_VerifyCopyproductLine()
         {
 
@@ -241,7 +242,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyProductDataAfterAdd(productLineFeatureParsedData.Data));
         }
 
-        [Test, Order(9), Category("Smoke"), Ignore(""), Description("Verify Product Line Edit Functionality")]
+        [Test, Order(9), Category("Smoke"), Description("Verify Product Line Edit Functionality")]
         public void A9_VerifyEditproductLine()
         {
             _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
@@ -251,7 +252,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(10), Category("Smoke"), Ignore(""), Description("Verify Product Deletion")]
+        [Test, Order(10), Category("Smoke"), Description("Verify Product Deletion")]
         public void B1_VerifyDeleteproductLine()
         {
             //_QuotePage.SearchFunction();
@@ -262,7 +263,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(11), Category("Smoke"), Ignore(""), Description("Add Information on Measurement and Installation Page")]
+        [Test, Order(11), Category("Smoke"), Description("Add Information on Measurement and Installation Page")]
         public void B2_VerifyMeasurementAndInstallationSection()
         {
             MeasurementAndInstallationData measurmentAIData = MeasurementAndInstallationPage.GetMeasurementAndInstallationData(measurementAndInstallationParsedData);
@@ -280,7 +281,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(12), Category("Smoke"), Ignore(""), Description("Add Adjustments for Quote")]
+        [Test, Order(12), Category("Smoke"), Description("Add Adjustments for Quote")]
         public void B3_VerifyAddAdjustments()
         {
             AdjustmentData adjustmentData = QuotePage.GetAdjustmentsData(adjustmentParsedData);
@@ -290,7 +291,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(13), Category("Smoke"), Ignore(""),  Description("Apply tax exemption for Quote")]
+        [Test, Order(13), Category("Smoke"), Description("Apply tax exemption for Quote")]
         public void B4_VerifyTaxExemption()
         {
             // Selcted Tax Exemption for different Install / Pickup State
@@ -308,11 +309,12 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(14), Category("Smoke"),Description("Quote Convert to Order")]
         public void B5_VerifyQuoteConvertToOrder()
         {
-            //_QuotePage.SearchFunctionForQuote();
-            _QuotePage.CopyQuote().SaveChanges();
-            //Thread.Sleep(2000);
+            //_SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch("702499").ClickOnSearchButton();
+            //_QuotePage.CopyQuote().SaveChanges();
+
             _QuotePage.WaitUntilPageload();
-           _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();
+            Thread.Sleep(2000);
+            _QuotePage.ClickOnConvertToQuote();
             Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
 
         }
@@ -392,7 +394,7 @@ namespace UnitTestNDBProject.Tests
 
         //}
 
-        [Test, Order(21), Category("Smoke"), Ignore(""), Description("Verify Product Copy")]
+        [Test, Order(21), Category("Smoke"), Description("Verify Product Copy")]
         public void C3_VerifyCopyproductLineForOrder()
         {
             _OrderPage.NavigateToTopOfTheOrderPage();
@@ -406,7 +408,7 @@ namespace UnitTestNDBProject.Tests
 
 
 
-        [Test, Order(22), Category("Smoke"), Ignore(""), Description("Edit Order Productline For Order")]
+        [Test, Order(22), Category("Smoke"), Description("Edit Order Productline For Order")]
         public void C4_VerifyEditProductLineForOrder()
         {
 
@@ -416,7 +418,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(23), Category("Smoke"), Ignore(""), Description("Edit Order Productline For Order")]
+        [Test, Order(23), Category("Smoke"), Description("Edit Order Productline For Order")]
         public void C5_VerifyDeleteproductLineForOrder()
         {
             _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
@@ -428,9 +430,38 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(24), Category("Smoke"), Description("Copy to Quote functionality from order page")]
-        public void C6_VerifyCopyToQuoteFromOrderPage()
+        [Test, Order(24), Category("Smoke"), Description("Cancel Order Verification")]
+        public void C6_VerifyCancelOrder()
         {
+
+            _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
+            Assert.True(_OrderPage.VerifyCancelOrder());
+        }
+
+        [Test, Order(25),Category("Smoke"), Description("Search Quote Verification")]
+        public void C7_VerifySearchQuote()
+        {
+            SearchData quoteData = SearchPage.SearchQuoteData(searchParser);
+            _SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterInvalidQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyNoResultFoundForQuote());
+            _SearchPage.ClearTextOFQuote().EnterQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyUserNavigatedToCorrectQuote(quoteData.QuoteNumber));
+        }
+
+        [Test, Order(26), Category("Smoke"), Description("Search Order Verification")]
+        public void C8_VerifySearchOrder()
+        {
+            SearchData orderData = SearchPage.SearchOrderData(searchParser);
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterInvalidOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyNoResultFoundForOrder());
+            _SearchPage.ClearTextOFOrder().EnterOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
+            Assert.True(_SearchPage.VerifyUserNavigatedToCorrectOrder(orderData.OrderNumber));
+        }
+
+        [Test, Order(27), Category("Smoke"), Description("Copy to Quote functionality from order page")]
+        public void C9_VerifyCopyToQuoteFromOrderPage()
+        {
+         
             _QuotePage.CopyToQuoteFromOrderPage().UpdateInternalInfo()
                 .UpdateStoreCode(internalInforData.StoreCode)
                 .UpdatePrimarySalesPerson(internalInforData.SalesPerson)
@@ -444,55 +475,12 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyPrimarySalesPerson(internalInforData.SalesPerson));
             Assert.True(_QuotePage.VerifyLeadNumberIsNotUpdated());
             Assert.True(_QuotePage.VerifySideMark(internalInforData.Sidemark));
-            Assert.True(_QuotePage.VerifyTotalProductsAfterCopyQuote());
+            //  Assert.True(_QuotePage.VerifyTotalProductsAfterCopyQuote());
         }
 
-        [Test, Order(25), Category("Smoke"), Description("Change Delivery Type To Shipping")]
-        public void C7_VerifyUpdateDeliveryTypeToShipping()
-        {
-            //_OrderPage.SearchFunctionForOrder();
-            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
-            _OrderPage.UpdateDeliveryTypeToShipping();
-        }
 
-        [Test, Order(26), Category("Smoke"), Description("Change Delivery Type To Store Pickup")]
-        public void C7_VerifyUpdateDeliveryTypeToStorePickup()
-        {
-
-            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToStorePickup();
-            _OrderPage.UpdateDeliveryTypeToStorePickup();
-        }
-
-        [Test, Order(27), Category("Smoke"), Description("Cancel Order Verification")]
-        public void C9_VerifyCancelOrder()
-        {
-
-            _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
-            Assert.True(_OrderPage.VerifyCancelOrder());
-        }
-
-        [Test, Order(28), Category("Smoke"), Description("Search Quote Verification")]
-        public void D1_VerifySearchQuote()
-        {
-            SearchData quoteData = SearchPage.SearchQuoteData(searchParser);
-            _SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterInvalidQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
-            Assert.True(_SearchPage.VerifyNoResultFoundForQuote());
-            _SearchPage.ClearTextOFQuote().EnterQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
-            Assert.True(_SearchPage.VerifyUserNavigatedToCorrectQuote(quoteData.QuoteNumber));
-        }
-
-        [Test, Order(29), Category("Smoke"), Description("Search Order Verification")]
-        public void D2_VerifySearchOrder()
-        {
-            SearchData orderData = SearchPage.SearchOrderData(searchParser);
-            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterInvalidOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
-            Assert.True(_SearchPage.VerifyNoResultFoundForOrder());
-            _SearchPage.ClearTextOFOrder().EnterOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
-            Assert.True(_SearchPage.VerifyUserNavigatedToCorrectOrder(orderData.OrderNumber));
-        }
-
-        [Test, Order(30), Category("Smoke"), Description("Product creation on Quick COnfig Page")]
-        public void D3_VerifyQuickConfigScreen()
+        [Test, Order(28), Category("Smoke"), Description("Product creation on Quick COnfig Page")]
+        public void D1_VerifyQuickConfigScreen()
         {
             ProductLineData ProductLineData = QuickConfig.GetProductLine1Data(productLineFeatureParsedData);
             _HomePage.ClickOnQuickConfig();
@@ -517,13 +505,31 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyProductDetailsAreCorrect(ProductLineData));
         }
 
-        [Test, Order(31), Category("Smoke"), Description("TransferToProduction")]
-        public void D3_VerifyTransferToProduction()
+
+        [Test, Order(29), Category("Smoke"), Description("Change Delivery Type To Shipping")]
+        public void D2_VerifyUpdateDeliveryTypeToShipping()
         {
+            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
+            _OrderPage.UpdateDeliveryTypeToShipping();
+        }
+
+        [Test, Order(30), Category("Smoke"), Description("Change Delivery Type To Store Pickup")]
+        public void D3_VerifyUpdateDeliveryTypeToStorePickup()
+        {
+
+            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToStorePickup();
             _OrderPage.UpdateDeliveryTypeToStorePickup();
-            _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();            
+        }
+
+
+        [Test, Order(31), Category("Smoke"), Description("TransferToProduction")]
+        public void D4_VerifyTransferToProduction()
+        {
+            _QuotePage.ClickOnConvertToQuote();
             _PaymentPage.cashPaymentForFullPayment().CalculateCashPayment().ProcessPaymentButtonClick();
             _OrderPage.NavigateToTopOfTheOrderPage().EditInternalInfoButton().UpdateSignature().ApplyChangesToInternalInfoSection().ClickOnSaveOrderButton().TransferToProduction();
+            Assert.True(_OrderPage.VerifyOrderIsCreated());
+            _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.CurrentDatePopupatedVerification());
             Assert.True(_OrderPage.OrderStatusAfterTransferVerification());
         }
