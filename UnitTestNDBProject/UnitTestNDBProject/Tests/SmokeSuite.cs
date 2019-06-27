@@ -83,7 +83,7 @@ namespace UnitTestNDBProject.Tests
             GlobalSetup.test = GlobalSetup.extent.CreateTest(TestContext.CurrentContext.Test.Name);
         }
 
-        [Test, Order(1), Category("Smoke"), Ignore(""), Description("Validate that error message populates once user enter invalid credentials")]
+        [Test, Order(1), Category("Smoke"), Description("Validate that error message populates once user enter invalid credentials")]
         public void A1_VerifyLoginWithInValidCredentails()
         {
             LoginData loginData = LoginPage.GetInvalidLoginData(loginFeatureParsedData);
@@ -104,7 +104,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifyShopAtHomeTabIsClicked());
         }
 
-        [Test, Order(3), Category("Smoke"), Ignore(""), Description("Validate all the Home Page tabs are clickable")]
+        [Test, Order(3), Category("Smoke"), Description("Validate all the Home Page tabs are clickable")]
         public void A3_VerifyHomePageTabs()
         {
             _HomePage.ClickDashBoardTab();
@@ -120,7 +120,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_HomePage.VerifySettingTabIsClicked());
         }
 
-        [Test, Order(4), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer from customer suggestion")]
+        [Test, Order(4), Category("Smoke"), Description("Enter Customer Card Details and create new customer from customer suggestion")]
         public void A4_VerifyCustomerCreationUsingCustomerSuggestion()
         {
             _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName);
@@ -148,7 +148,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyLastName(newCustomerData.LastName));
         }
 
-        [Test, Order(5), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(5), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A5_VerifyCustomerCreation()
         {
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
@@ -164,7 +164,7 @@ namespace UnitTestNDBProject.Tests
             _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
             _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
 
-            _EnterNewCustomerPage.ClickSaveButton().ContinueNewCustomerCreation();
+            _EnterNewCustomerPage.ClickSaveButton();
 
             //commenting this assertion because if somehow CUsotmer suggetion popup is not displayed then it takes time 30 sec to wait for the popup till than greenbar gets disappear and assertion gets failed 
             // Assert.True(_EnterNewCustomerPage.VerifyGreedbarAfterEditIsSuccessful());
@@ -180,7 +180,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(6), Category("Smoke"), Ignore(""), Description("Enter Customer Card Details and create new customer")]
+        [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]
         public void A6_VerifyCustomerUpdate()
         {
             UpdateCustomerData updateCustomerData = EnterNewCustomerPage.GetUpdateCustomerData(updateCustomerFeatureParsedData);
@@ -215,10 +215,11 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(7), Category("Smoke"),Ignore(""), Description("Verify Product and Quote Creation by adding 3 product lines.")]
+        [Test, Order(7), Category("Smoke"), Description("Verify Product and Quote Creation by adding 3 product lines.")]
         public void A7_VerifyProductCreation()
         {
-           // _QuotePage.SearchFunction();
+           
+            Thread.Sleep(2000);
             _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
             Assert.True(_QuotePage.VerifyErrorPopup());
             _QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateGroup(internalInforData.Group).UpdateInternalInfo().AddLeadNumber(internalInforData.Leadnumber).UpdateSidemark(internalInforData.Sidemark);
@@ -229,7 +230,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyProductDataAfterAdd(productLineFeatureParsedData.Data));
         }
 
-        [Test, Order(8), Category("Smoke"), Ignore(""), Description("Verify Product Copy")]
+        [Test, Order(8), Category("Smoke"),Description("Verify Product Copy")]
         public void A8_VerifyCopyproductLine()
         {
 
@@ -241,7 +242,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyProductDataAfterAdd(productLineFeatureParsedData.Data));
         }
 
-        [Test, Order(9), Category("Smoke"), Ignore(""), Description("Verify Product Line Edit Functionality")]
+        [Test, Order(9), Category("Smoke"), Description("Verify Product Line Edit Functionality")]
         public void A9_VerifyEditproductLine()
         {
             _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
@@ -251,7 +252,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(10), Category("Smoke"), Ignore(""), Description("Verify Product Deletion")]
+        [Test, Order(10), Category("Smoke"), Description("Verify Product Deletion")]
         public void B1_VerifyDeleteproductLine()
         {
             //_QuotePage.SearchFunction();
@@ -262,7 +263,7 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(11), Category("Smoke"), Ignore(""), Description("Add Information on Measurement and Installation Page")]
+        [Test, Order(11), Category("Smoke"), Description("Add Information on Measurement and Installation Page")]
         public void B2_VerifyMeasurementAndInstallationSection()
         {
             MeasurementAndInstallationData measurmentAIData = MeasurementAndInstallationPage.GetMeasurementAndInstallationData(measurementAndInstallationParsedData);
@@ -280,7 +281,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(12), Category("Smoke"), Ignore(""), Description("Add Adjustments for Quote")]
+        [Test, Order(12), Category("Smoke"), Description("Add Adjustments for Quote")]
         public void B3_VerifyAddAdjustments()
         {
             AdjustmentData adjustmentData = QuotePage.GetAdjustmentsData(adjustmentParsedData);
@@ -290,7 +291,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(13), Category("Smoke"), Ignore(""),  Description("Apply tax exemption for Quote")]
+        [Test, Order(13), Category("Smoke"), Description("Apply tax exemption for Quote")]
         public void B4_VerifyTaxExemption()
         {
             // Selcted Tax Exemption for different Install / Pickup State
@@ -308,77 +309,92 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(14), Category("Smoke"),Description("Quote Convert to Order")]
         public void B5_VerifyQuoteConvertToOrder()
         {
-            //_QuotePage.SearchFunctionForQuote();
-            _QuotePage.CopyQuote().SaveChanges();
-            //Thread.Sleep(2000);
+            //_SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch("702499").ClickOnSearchButton();
+            //_QuotePage.CopyQuote().SaveChanges();
+
             _QuotePage.WaitUntilPageload();
-           _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();
+            Thread.Sleep(2000);
+            _QuotePage.ClickOnConvertToQuote();
             Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
 
         }
-        [Test, Order(15), Category("Smoke"), Ignore(""), Description("Payment via finance and order is created")]
+        [Test, Order(15), Category("Smoke"), Description("Payment via finance and order is created")]
         public void B6_VerifyOrderIsCreatedWithFinancialPayment()
         {
             PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(paymentParsedData);
+         
+            _OrderPage.ClickOnNewPaymentButton();
             _PaymentPage.MakeFinancePayment(financePaymentData.Amount)
               .CloseExitPaymentPopup()
-                .ClickOnExitPaymentScreenButton(financePaymentData.ExitPaymentReason);
+               .ClickOnExitPayment(financePaymentData.ExitPaymentReason, financePaymentData.ExitReasonDropDownValue, financePaymentData.ReasonDetails);
+            //  .ClickOnExitPaymentScreenButton(financePaymentData.ExitPaymentReason)
+
             Assert.True(_OrderPage.VerifyOrderIsCreated());
             _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyPaymentGridData(financePaymentData));
+
+
         }
 
-        [Test, Order(16),  Category("Smoke"), Ignore(""), Description("Payment via gift card")]
+        [Test, Order(16),  Category("Smoke"), Description("Payment via gift card")]
         public void B7_VerifyGiftCardPayment()
         {
             PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(paymentParsedData);
             _OrderPage.ClickOnNewPaymentButton();
             _PaymentPage.MakeGiftCardPayment(giftCardPaymentData.GiftCardNumber,giftCardPaymentData.Amount)
-                            .EnterDetailInExitPaymentPopup(giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
+                     .ClickOnExitPayment(giftCardPaymentData.ExitPaymentReason, giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
+                         //   .EnterDetailInExitPaymentPopup(giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
+            _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyPaymentGridData(giftCardPaymentData));
         }
        
-        [Test, Order(17), Category("Smoke"), Ignore(""), Description("Payment via Check-Skip Verification")]
+        [Test, Order(17), Category("Smoke"),Description("Payment via Check-Skip Verification")]
         public void B8_VerifyCheckSkipVerificationPayment()
         {
-            PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
+              PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
+
             _OrderPage.ClickOnNewPaymentButton();
             _PaymentPage.MakeCheckPayment(checkPaymentData.AccountName,checkPaymentData.RoutingNumber,checkPaymentData.AccountNumber,checkPaymentData.CheckNumber,checkPaymentData.StateId,checkPaymentData.State,checkPaymentData.Amount)
-                .SelectSkipVerification(checkPaymentData.SkippingReason,checkPaymentData.SkippingReasonDetail) 
-                .EnterDetailInExitPaymentPopup(checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
+                .SelectSkipVerification(checkPaymentData.SkippingReason,checkPaymentData.SkippingReasonDetail)
+                .ClickOnExitPayment(checkPaymentData.ExitPaymentReason, checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
+             //   .EnterDetailInExitPaymentPopup(checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
+            _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyPaymentGridData(checkPaymentData));
         }
 
-        [Test, Order(18), Category("Smoke"), Ignore(""), Description("Payment via Manual Credit Card")]
-        public void B9_VerifyManualCreditCardPayment()
-        {
-            PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(paymentParsedData);
-            _OrderPage.ClickOnNewPaymentButton();
-            _PaymentPage.MakeCreditCardPayment(creditCardPaymentData.CreditCardNumber, creditCardPaymentData.ExpirationMonth, creditCardPaymentData.ExpirationYear, creditCardPaymentData.CVVCode, creditCardPaymentData.CreditCardHolder, creditCardPaymentData.Amount)
-                 .EnterDetailInExitPaymentPopup(creditCardPaymentData.ExitReasonDropDownValue, creditCardPaymentData.ReasonDetails);
-            Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
-        }
+        //[Test, Order(18), Category("Smoke"),  Description("Payment via Manual Credit Card")]
+        //public void B9_VerifyManualCreditCardPayment()
+        //{
+        //    PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(paymentParsedData);
+        //    _OrderPage.ClickOnNewPaymentButton();
+        //    _PaymentPage.MakeCreditCardPayment(creditCardPaymentData.CreditCardNumber, creditCardPaymentData.ExpirationMonth, creditCardPaymentData.ExpirationYear, creditCardPaymentData.CVVCode, creditCardPaymentData.CreditCardHolder, creditCardPaymentData.Amount)
+        //         .EnterDetailInExitPaymentPopup(creditCardPaymentData.ExitReasonDropDownValue, creditCardPaymentData.ReasonDetails);
+        //    Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+        //}
 
-        [Test, Order(19), Category("Smoke"),Description("Payment via Saved Credit Card")]
-        public void C1_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
-        {
+        //[Test, Order(19), Category("Smoke"),Description("Payment via Saved Credit Card")]
+        //public void C1_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
+        //{
 
-            PaymentData savedCreditCardPaymentData = PaymentPage.GetSavedCreditCardPaymentData(paymentParsedData);
-            _OrderPage.ClickOnNewPaymentButton();
-            _PaymentPage.MakeSavedCreditCardPayment(savedCreditCardPaymentData.Amount);
-            Assert.True(_PaymentPage.VerifyMaxTransWarningOnPaymentScreen(savedCreditCardPaymentData.WarningMessageOnPayment));
-            Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_PaymentButton(savedCreditCardPaymentData.WarningMessageOnPayment));
-            Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_RefundLink(savedCreditCardPaymentData.WarningMessageOnRefund));
-            Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
-        }
-        [Test, Category("Smoke"), Ignore(""), Description("Payment grid data verification")]
-        public void C2_VerifyPaymentGridData()
-        {
-             Assert.True(_OrderPage.VerifyGridData(_OrderPage.ExpectedDataForGridVerification()));
+        //    PaymentData savedCreditCardPaymentData = PaymentPage.GetSavedCreditCardPaymentData(paymentParsedData);
+        //    _OrderPage.ClickOnNewPaymentButton();
+        //    _PaymentPage.MakeSavedCreditCardPayment(savedCreditCardPaymentData.Amount);
+        //    Assert.True(_PaymentPage.VerifyMaxTransWarningOnPaymentScreen(savedCreditCardPaymentData.WarningMessageOnPayment));
+        //    Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_PaymentButton(savedCreditCardPaymentData.WarningMessageOnPayment));
+        //    Assert.True(_OrderPage.VerifyMaxTransWarningOnOrderScreen_RefundLink(savedCreditCardPaymentData.WarningMessageOnRefund));
+        //    Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+        //}
+        //[Test, Category("Smoke"), Ignore(""), Description("Payment grid data verification")]
+        //public void C2_VerifyPaymentGridData()
+        //{
+        //     Assert.True(_OrderPage.VerifyGridData(_OrderPage.ExpectedDataForGridVerification()));
 
-        }
+        //}
 
-        [Test, Order(21), Category("Smoke"), Ignore(""), Description("Verify Product Copy")]
+        [Test, Order(21), Category("Smoke"), Description("Verify Product Copy")]
         public void C3_VerifyCopyproductLineForOrder()
         {
             _OrderPage.NavigateToTopOfTheOrderPage();
@@ -392,7 +408,7 @@ namespace UnitTestNDBProject.Tests
 
 
 
-        [Test, Order(22), Category("Smoke"), Ignore(""), Description("Edit Order Productline For Order")]
+        [Test, Order(22), Category("Smoke"), Description("Edit Order Productline For Order")]
         public void C4_VerifyEditProductLineForOrder()
         {
 
@@ -402,7 +418,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(23), Category("Smoke"), Ignore(""), Description("Edit Order Productline For Order")]
+        [Test, Order(23), Category("Smoke"), Description("Edit Order Productline For Order")]
         public void C5_VerifyDeleteproductLineForOrder()
         {
             _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
@@ -414,51 +430,16 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(24), Category("Smoke"), Description("Copy to Quote functionality from order page")]
-        public void C6_VerifyCopyToQuoteFromOrderPage()
-        {
-            _QuotePage.CopyToQuoteFromOrderPage().UpdateInternalInfo()
-                .UpdateStoreCode(internalInforData.StoreCode)
-                .UpdatePrimarySalesPerson(internalInforData.SalesPerson)
-                .UpdateSidemark(internalInforData.Sidemark)
-                .ApplyInternalInfoUpdates()
-                .SaveChanges();
-            Assert.True(_QuotePage.VerifyQuoteGroupIsNotUpdated());
-            Assert.True(_QuotePage.VerifyQuoteStatus());
-            Assert.True(_QuotePage.VerifyQuoteDate());
-            Assert.True(_QuotePage.VerifyStoreCode(internalInforData.StoreCode));
-            Assert.True(_QuotePage.VerifyPrimarySalesPerson(internalInforData.SalesPerson));
-            Assert.True(_QuotePage.VerifyLeadNumberIsNotUpdated());
-            Assert.True(_QuotePage.VerifySideMark(internalInforData.Sidemark));
-            Assert.True(_QuotePage.VerifyTotalProductsAfterCopyQuote());
-        }
-
-        [Test, Order(25), Category("Smoke"), Description("Change Delivery Type To Shipping")]
-        public void C7_VerifyUpdateDeliveryTypeToShipping()
-        {
-            //_OrderPage.SearchFunctionForOrder();
-            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToShipping();
-            _OrderPage.UpdateDeliveryTypeToShipping();
-        }
-
-        [Test, Order(26), Category("Smoke"), Description("Change Delivery Type To Store Pickup")]
-        public void C7_VerifyUpdateDeliveryTypeToStorePickup()
-        {
-
-            _OrderPage.UpdateDeliveryTypeFromDropDown().SetDeliveryTypeToStorePickup();
-            _OrderPage.UpdateDeliveryTypeToStorePickup();
-        }
-
-        [Test, Order(27), Category("Smoke"), Description("Cancel Order Verification")]
-        public void C9_VerifyCancelOrder()
+        [Test, Order(24), Category("Smoke"), Description("Cancel Order Verification")]
+        public void C6_VerifyCancelOrder()
         {
 
             _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
             Assert.True(_OrderPage.VerifyCancelOrder());
         }
 
-        [Test, Order(28), Category("Smoke"), Description("Search Quote Verification")]
-        public void D1_VerifySearchQuote()
+        [Test, Order(25),Category("Smoke"), Description("Search Quote Verification")]
+        public void C7_VerifySearchQuote()
         {
             SearchData quoteData = SearchPage.SearchQuoteData(searchParser);
             _SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterInvalidQuoteToSearch(quoteData.QuoteNumber).ClickOnSearchButton();
@@ -467,8 +448,8 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_SearchPage.VerifyUserNavigatedToCorrectQuote(quoteData.QuoteNumber));
         }
 
-        [Test, Order(29), Category("Smoke"), Description("Search Order Verification")]
-        public void D2_VerifySearchOrder()
+        [Test, Order(26), Category("Smoke"), Description("Search Order Verification")]
+        public void C8_VerifySearchOrder()
         {
             SearchData orderData = SearchPage.SearchOrderData(searchParser);
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterInvalidOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
@@ -517,10 +498,11 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(32), Category("Smoke"), Description("TransferToProduction")]
         public void D4_VerifyTransferToProduction()
         {
-            _OrderPage.UpdateDeliveryTypeToStorePickup();
-            _QuotePage.ClickOnConvertToQuote().SelectConvertToPOS();            
+            _QuotePage.ClickOnConvertToQuote();
             _PaymentPage.cashPaymentForFullPayment().CalculateCashPayment().ProcessPaymentButtonClick();
             _OrderPage.NavigateToTopOfTheOrderPage().EditInternalInfoButton().UpdateSignature().ApplyChangesToInternalInfoSection().ClickOnSaveOrderButton().TransferToProduction();
+            Assert.True(_OrderPage.VerifyOrderIsCreated());
+            _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.CurrentDatePopupatedVerification());
             Assert.True(_OrderPage.OrderStatusAfterTransferVerification());
         }

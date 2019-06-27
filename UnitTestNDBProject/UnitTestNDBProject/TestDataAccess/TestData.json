@@ -89,11 +89,11 @@
 					}
 				],
 				"Addresses": [{
-					"AddressLine1": "30 Lavina Trl",
+					"AddressLine1": "3312 Fessenden St NW",
 					"AddressLine2": "Test",
-					"City": "Oak Ridge",
-					"State": "NJ",
-					"ZipCode": "07438"
+					"City": "Washington",
+					"State": "DC",
+					"ZipCode": "20008-2033"
 				}],
 				"TaxNumbers": [{
 						"TaxIdNumber": "987654321",
@@ -280,12 +280,14 @@
 				"Adjustments": [{
 						"AdjustmentType": "Adjustment",
 						"AdjustmentCode": "CONSIDERATION CHECK",
-						"Amount": "50"
+						"Amount": "50",
+						"AdjustmentReason":"Test"
 					},
 					{
 						"AdjustmentType": "Adjustment",
 						"AdjustmentCode": "CS-ORDER ERROR",
-						"Amount": "50"
+						"Amount": "50",
+						"AdjustmentReason":"Test"
 					}
 				],
 				"AdjustmentTotalAmount": "- $100.00"
@@ -355,6 +357,7 @@
 					"SkippingReasonDetail": "AK - Alaska",
 					"ExitReasonDropDownValue": "Credit card declined",
 					"ReasonDetails": "Credit Card is not working currently",
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
 					"PaymentMethod": "CHECK"
 
 				}
@@ -365,6 +368,7 @@
 				"Value": {
 					"Amount": "1.00",
 					"GiftCardNumber": "91887-1140",
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
 					"ExitReasonDropDownValue": "Credit card declined",
 					"ReasonDetails": "Credit Card is not working currently",
 					"PaymentMethod": "GIFT CARD"
@@ -376,8 +380,9 @@
 				"Value": {
 					"Amount": "10.00",
 					"PaymentMethod": "FINANCE",
-					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future"
-
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently"
 				}
 			}
 		
@@ -412,7 +417,7 @@
 		{
 				"Key": "OrderNumberForSearch",
 				"Value": {
-					"OrderNumber": "2027930"
+					"OrderNumber": "2028054"
 				}
 				},
 				{

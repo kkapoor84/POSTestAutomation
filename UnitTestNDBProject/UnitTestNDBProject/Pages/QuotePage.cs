@@ -473,6 +473,7 @@ namespace UnitTestNDBProject.Page
             actions.SendKeys(StoreCode, storecode).Build().Perform();
             StoreCode.SendKeys(Keys.Enter);
             _logger.Info($": Successfully Selected Store code Group {storecode}");
+
             return this;
         }
 
@@ -484,6 +485,7 @@ namespace UnitTestNDBProject.Page
         public QuotePage UpdatePrimarySalesPerson(String salesperson)
         {
             driver.WaitForElement(SalesPerson);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             Actions actions = new Actions(driver);
             actions.SendKeys(SalesPerson, salesperson).Build().Perform();
             SalesPerson.SendKeys(Keys.Enter);
@@ -1244,8 +1246,9 @@ namespace UnitTestNDBProject.Page
                 string adjustmentType = adjustments[counter].AdjustmentType;
                 string adjustmentCode = adjustments[counter].AdjustmentCode;
                 string amount = adjustments[counter].Amount;
+                string adjutstmentReason = adjustments[counter].AdjustmentReason;
 
-                SelectAdjustmentType(adjustmentType, counter).SelectAdjustmentCode(adjustmentCode, counter).AddAmount(amount, counter);
+                SelectAdjustmentType(adjustmentType, counter).SelectAdjustmentCode(adjustmentCode, counter).AddAmount(amount, counter).AddAdjustmentReason(adjutstmentReason,counter);
 
             }
             AdjustmentsDoneButton.Clickme(driver);
@@ -1311,6 +1314,24 @@ namespace UnitTestNDBProject.Page
             return this;
 
         }
+
+        /// <summary>
+        /// Function to add adjutsment reason on quote page
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public QuotePage AddAdjustmentReason (String adjustmentreason,int i)
+        {
+            int count = i + 2;
+            string myXpath = "//*[@id='btnSection']//div[@class='top-section']//div[" +count+ "]//textarea[@id='text-AdjustmentReason']";
+            driver.WaitForElement(driver.FindElement(By.XPath(myXpath)));
+            driver.FindElement(By.XPath(myXpath)).EnterText(adjustmentreason);
+            _logger.Info($": Successfully Entered Amount {adjustmentreason}");
+            return this;
+
+        }
+
         /// <summary>
         /// Function to Click on Tax Link
         /// </summary>
@@ -1375,8 +1396,10 @@ namespace UnitTestNDBProject.Page
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("window.scrollBy(0,500)");
+            new System.Threading.ManualResetEvent(false).WaitOne(3000);
             ConvertToOrderButton.Clickme(driver);
             _logger.Info($" User clicked on convert to order button");
+            Thread.Sleep(2000);
             driver.WaitForElement(ContinueButton);
             ContinueButton.Clickme(driver);
             _logger.Info($" User clicked on contiue button");
@@ -1464,7 +1487,7 @@ namespace UnitTestNDBProject.Page
         public bool VerifyTaxExemptionIsApplied(String expectedTotalTaxExempt)
         {
 
-            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            new System.Threading.ManualResetEvent(false).WaitOne(4000);
             driver.WaitForElement(TaxView);
             bool isTaxExempt = false;
             String ActualTaxExempt = TaxView.GetText(driver);
@@ -1515,6 +1538,7 @@ namespace UnitTestNDBProject.Page
             SaveButton.Clickme(driver);
             _logger.Info($" User clicked on save button");
             WaitUntilPageload();
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             return this;
         }
 

@@ -173,7 +173,7 @@ namespace UnitTestNDBProject.Pages
         public EnterNewCustomerPage ClickEnterNewCustomerButton()
         {
 
-          //  Thread.Sleep(5000);
+           new System.Threading.ManualResetEvent(false).WaitOne(3000);
             enterNewCustomer.Clickme(driver);
             _logger.Info($": Successfully clicked Enter New Custokmer button");
             return this;
@@ -506,6 +506,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyFirstName(String firstNameOnFile)
         {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
 
             js.ExecuteScript("arguments[0].scrollIntoView();", FirstNameText);
