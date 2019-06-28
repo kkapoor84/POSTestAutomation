@@ -118,7 +118,7 @@ namespace UnitTestNDBProject.Pages
         public SearchPage WaitPolling()
         {
             AutoResetEvent autoEvent = new AutoResetEvent(false);
-            autoEvent.WaitOne(5000);
+            autoEvent.WaitOne(4000);
             return this;
         }
         /// <summary>
@@ -407,7 +407,7 @@ namespace UnitTestNDBProject.Pages
             bool correctNameIsDisplayed = false;
             String nameOnSearchPage = NameOnSearchPageStaticVariable;
             String nameOnCustomerPage = customerWidget.GetText(driver);
-            if (nameOnCustomerPage.Contains(nameOnSearchPage))
+            if (nameOnCustomerPage.Equals(nameOnSearchPage))
             {
                 correctNameIsDisplayed = true;
                 _logger.Info($" Name " + nameOnSearchPage + " exists for on customer page.");
@@ -423,7 +423,7 @@ namespace UnitTestNDBProject.Pages
         {
 
             WaitUntilPageload();
-            int i = 0, k = 0;//,l=3;
+            int counter = 0;
             String phoneNumberOnSearchPage = phoneNumberOnSearchPageStaticVariable;
             WaitPolling();
             string[] phoneNumberArray = new string[100];
@@ -436,10 +436,10 @@ namespace UnitTestNDBProject.Pages
                 do
                 {
                     WaitPolling();
-                    string phoneNumber = driver.FindElement(By.XPath("//div[@id='customer-info-phone-" + i + "']")).GetText(driver);
-                    phoneNumberArray[k] = phoneNumber;
-                    i++; k++;
-                } while (By.XPath("//div[@id='customer-info-phone-" + i + "']").isPresent(driver));
+                    string phoneNumber = driver.FindElement(By.XPath("//div[@id='customer-info-phone-" + counter + "']")).GetText(driver);
+                    phoneNumberArray[counter] = phoneNumber;
+                    counter++;
+                } while (By.XPath("//div[@id='customer-info-phone-" + counter + "']").isPresent(driver));
                 bool phoneNumberIsCorrect = false;
                 int j = 0;
                 do
@@ -465,7 +465,7 @@ namespace UnitTestNDBProject.Pages
         public bool VerifyCorrectEmailAddress()
         {
             WaitUntilPageload();
-            int i = 0, k = 0;
+            int counter = 0;
             String emailAddressOnSearchPage = emailAddressOnSearchPageStaticVariable;
             string[] emailAddressArray = new string[100];
             if (showMoreEmail.Displayed)
@@ -476,10 +476,10 @@ namespace UnitTestNDBProject.Pages
             do
             {
                 WaitPolling();
-                string emailAddress = driver.FindElement(By.XPath("//div[@id='customer-info-email-"+i+"']")).GetText(driver);
-                emailAddressArray[k] = emailAddress;
-                i++;k++;
-            } while (By.XPath("//div[@id='customer-info-email-" + i + "']").isPresent(driver));
+                string emailAddress = driver.FindElement(By.XPath("//div[@id='customer-info-email-"+ counter + "']")).GetText(driver);
+                emailAddressArray[counter] = emailAddress;
+                counter++;
+            } while (By.XPath("//div[@id='customer-info-email-" + counter + "']").isPresent(driver));
             bool emailAddressIsCorrect = false;
             int j = 0;
             do
