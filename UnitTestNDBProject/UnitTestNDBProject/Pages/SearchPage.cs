@@ -117,8 +117,7 @@ namespace UnitTestNDBProject.Pages
 
         public SearchPage WaitPolling()
         {
-            AutoResetEvent autoEvent = new AutoResetEvent(false);
-            autoEvent.WaitOne(4000);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             return this;
         }
         /// <summary>
