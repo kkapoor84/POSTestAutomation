@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
 using UnitTestNDBProject.TestDataAccess;
@@ -24,7 +25,7 @@ namespace UnitTestNDBProject.Pages
             PageFactory.InitElements(driver, this);
         }
 
-
+        public List<Tuple<string, string>> newPhones;
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'SEARCH')]")]
         public IWebElement Search { get; set; }
 
@@ -53,6 +54,44 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//div[@class='no-result-text']")]
         public IWebElement NoResult { get; set; }
 
+        [FindsBy(How = How.Id, Using = "firstName")]
+        public IWebElement FirstName { get; set; }
+
+        [FindsBy(How = How.Id, Using = "lastName")]
+        public IWebElement LastName { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='search-results']/div[1]/div[1]/div[1]/div[1]/div[1]")]
+        public IWebElement ClickOnSearchResult { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='search-results']//div[1]//div[1]//div[1]//li[1]//span[2]")]
+        public IWebElement ReadPhoneNumber { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='search-results']//div[1]//div[1]//div[1]//li[2]//span[2]")]
+        public IWebElement ReadEmailAddress { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='search-results']/div[1]/div[1]/div[1]/div[1]")]
+        public IWebElement ReadNameOnSearchPage { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='no-result-text']")]
+        public IWebElement NoCustomer { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "recent-search-link")]
+        public IWebElement recentSearch { get; set; }
+
+        [FindsBy(How = How.Id, Using = "show-all-phone-numbers")]
+        public IWebElement showMorePhone { get; set; }
+
+        [FindsBy(How = How.Id, Using = "show-all-email-addresses")]
+        public IWebElement showMoreEmail { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[1]/h3[1]")]
+        public IWebElement customerWidget { get; set; }
+
+        public static string phoneNumberOnSearchPageStaticVariable = "";
+        public static string emailAddressOnSearchPageStaticVariable = "";
+        public static string NameOnSearchPageStaticVariable = "";
+
         public static SearchData SearchQuoteData(ParsedTestData featureData)
         {
             object quoteNumber = DataAccess.GetKeyJsonData(featureData, "QuoteNumberForSearch");
@@ -76,6 +115,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        public SearchPage WaitPolling()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            return this;
+        }
         /// <summary>
         /// Click On search link
         /// </summary>
@@ -265,6 +309,215 @@ namespace UnitTestNDBProject.Pages
         {
             WaitUntilPageload();
             EnterQuote.Clear();
+            return this;
+        }
+
+        /// <summary>
+        /// Function to Enter First Name for search
+        /// </summary>
+        /// <param name="fname"></param>
+        /// <returns></returns>
+        public SearchPage EnterFirstName(String fname)
+        {
+            FirstName.EnterText(fname);
+            _logger.Info($" Entered first Name Of Customer To be searched.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to Enter last Name for search
+        /// </summary>
+        /// <param name="lname"></param>
+        /// <returns></returns>
+        public SearchPage EnterLastName(String lname)
+        {
+            LastName.EnterText(lname);
+            _logger.Info($" Entered last Name Of Customer To be searched.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function To Click On required searched customer
+        /// </summary>
+        /// <returns></returns>
+        public SearchPage ClickOnSearchResultForCustomer()
+        {
+            WaitUntilPageload();
+            phoneNumberOnSearchPageStaticVariable =  ReadPhone();
+            emailAddressOnSearchPageStaticVariable = ReadEmail();
+            NameOnSearchPageStaticVariable = ReadName();
+            ClickOnSearchResult.Clickme(driver);
+            _logger.Info($" Selected Customer from Search result.");
+            return this;
+        }
+
+        /// <summary>
+        /// Function to verify last search link exists
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifySearchLinkOfLastSearch()
+        {
+            WaitUntilPageload();
+            bool linkIsAvailable = false;
+            if (recentSearch.Displayed)
+                linkIsAvailable = true;
+            return linkIsAvailable;
+        }
+
+        /// <summary>
+        /// Function to read name on search page
+        /// </summary>
+        /// <returns></returns>
+
+        public string ReadName()
+        {
+            string phone = ReadNameOnSearchPage.GetText(driver);
+            _logger.Info($" Read Name Of the customer.");
+            return phone;
+        }
+
+        /// <summary>
+        /// Function to read phone number on search page
+        /// </summary>
+        /// <returns></returns>
+        public string ReadPhone()
+        {
+            string phone = ReadPhoneNumber.GetText(driver);
+            _logger.Info($" Read Phone Of the customer.");
+            return phone;
+        }
+
+        /// <summary>
+        /// Function to read email address on search page
+        /// </summary>
+        /// <returns></returns>
+        public string ReadEmail()
+        {
+            string email = ReadEmailAddress.GetText(driver);
+            return email;
+        }
+
+        /// <summary>
+        /// Verify First Name and Last name
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyFirstNameLastName()
+        {
+            bool correctNameIsDisplayed = false;
+            String nameOnSearchPage = NameOnSearchPageStaticVariable;
+            String nameOnCustomerPage = customerWidget.GetText(driver);
+            if (nameOnCustomerPage.Equals(nameOnSearchPage))
+            {
+                correctNameIsDisplayed = true;
+                _logger.Info($" Name " + nameOnSearchPage + " exists for on customer page.");
+            }
+            return correctNameIsDisplayed;
+        }
+
+        /// <summary>
+        /// Function to verify correct phone is displayed.
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyCorrectPhoneNumber()
+        {
+
+            WaitUntilPageload();
+            int counter = 0;
+            String phoneNumberOnSearchPage = phoneNumberOnSearchPageStaticVariable;
+            WaitPolling();
+            string[] phoneNumberArray = new string[100];
+            if (showMorePhone.Displayed)
+            {
+                WaitPolling();
+                showMorePhone.Clickme(driver);
+            }
+            
+                do
+                {
+                    WaitPolling();
+                    string phoneNumber = driver.FindElement(By.XPath("//div[@id='customer-info-phone-" + counter + "']")).GetText(driver);
+                    phoneNumberArray[counter] = phoneNumber;
+                    counter++;
+                } while (By.XPath("//div[@id='customer-info-phone-" + counter + "']").isPresent(driver));
+                bool phoneNumberIsCorrect = false;
+                int j = 0;
+                do
+                {
+                    if (phoneNumberOnSearchPage.Contains((phoneNumberArray[j])))
+                    {
+                        phoneNumberIsCorrect = true;
+                        _logger.Info($" Phone " + phoneNumberOnSearchPage + " exists for the customer");
+                        break;
+                    }
+                    j++;
+                } while (phoneNumberArray[j] != null);
+
+                return phoneNumberIsCorrect;
+           
+
+        }
+
+        /// <summary>
+        /// Function to verify correct email is displayed.
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyCorrectEmailAddress()
+        {
+            WaitUntilPageload();
+            int counter = 0;
+            String emailAddressOnSearchPage = emailAddressOnSearchPageStaticVariable;
+            string[] emailAddressArray = new string[100];
+            if (showMoreEmail.Displayed)
+            {
+                WaitPolling();
+                showMoreEmail.Clickme(driver);
+            }
+            do
+            {
+                WaitPolling();
+                string emailAddress = driver.FindElement(By.XPath("//div[@id='customer-info-email-"+ counter + "']")).GetText(driver);
+                emailAddressArray[counter] = emailAddress;
+                counter++;
+            } while (By.XPath("//div[@id='customer-info-email-" + counter + "']").isPresent(driver));
+            bool emailAddressIsCorrect = false;
+            int j = 0;
+            do
+            {
+                if (emailAddressOnSearchPage.Contains((emailAddressArray[j])))
+                {
+                    emailAddressIsCorrect = true;
+                    _logger.Info($" Email " + emailAddressOnSearchPage + " exists for the customer");
+                    break;
+                }
+                j++;
+            } while (emailAddressArray[j] != null);
+            return emailAddressIsCorrect;
+
+        }
+
+        /// <summary>
+        /// Function to verify customer flow executes only if customers are displayed in search result.
+        /// </summary>
+        public void ExecuteSearchFlowIfCustomerExists()
+        {
+            if (By.XPath("//div[@class='no-result-text']").isPresent(driver))
+            {
+                WaitPolling();
+                _logger.Info($"No Customer exists for this search criteria.");
+            }
+            else
+            {
+                WaitPolling();
+                ClickOnSearchResultForCustomer();
+                Assert.True(VerifyCorrectPhoneNumber());
+                Assert.True(VerifyCorrectEmailAddress());
+                Assert.True(VerifyFirstNameLastName());
+            }
+        }
+
+        public SearchPage EnterSameSearchCriteria()
+        {
+            recentSearch.Clickme(driver);
             return this;
         }
     }

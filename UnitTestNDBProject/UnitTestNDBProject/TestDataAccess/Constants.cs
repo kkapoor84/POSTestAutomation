@@ -19,6 +19,7 @@ namespace UnitTestNDBProject.TestDataAccess
         public static String NoOrderMessage = "No order found.";
         public static String AddQuoteToCustomer = "ADD QUOTE TO CUSTOMER";
         public static String OrderStatusAfterTransfer = "TRANSFERRED TO PRODUCTION";
+        public static String NoCustomerMessage = "No customer found. Create new customer?";
 
 
 
