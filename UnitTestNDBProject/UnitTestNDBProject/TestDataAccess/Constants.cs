@@ -28,6 +28,7 @@ namespace UnitTestNDBProject.TestDataAccess
         public static String NoMainSelectdMessageForEmail = "An email address must be selected as Main";
         public static String InvalidPhone = "Please enter a phone number (e.g., (555) 555-1234)";
         public static String InvalidEmail = "Please enter a valid email address (e.g. name@domain.com)";
+        public static String NoCustomerMessage = "No customer found. Create new customer?";
 
         
 
