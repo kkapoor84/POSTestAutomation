@@ -19,7 +19,17 @@ namespace UnitTestNDBProject.TestDataAccess
         public static String NoOrderMessage = "No order found.";
         public static String AddQuoteToCustomer = "ADD QUOTE TO CUSTOMER";
         public static String OrderStatusAfterTransfer = "TRANSFERRED TO PRODUCTION";
+        public static String ExpFirstName = "- First Name";
+        public static String ExpLastName = "- Last Name";
+        public static String ExpPhone = "- Phone";
+        public static String ExpEmail = "- Email";
+        public static String ExpAddress = "- Address";
+        public static String NoMainSelectdMessageForPhone = "A phone number must be selected as Main";
+        public static String NoMainSelectdMessageForEmail = "An email address must be selected as Main";
+        public static String InvalidPhone = "Please enter a phone number (e.g., (555) 555-1234)";
+        public static String InvalidEmail = "Please enter a valid email address (e.g. name@domain.com)";
 
+        
 
 
     }

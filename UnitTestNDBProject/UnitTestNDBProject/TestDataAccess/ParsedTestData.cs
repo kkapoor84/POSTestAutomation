@@ -34,10 +34,13 @@ namespace UnitTestNDBProject.TestDataAccess
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string InvalidPhone { get; set; }
+        public string InvalidEmail { get; set; }    
         public List<Phone> Phones { get; set; }
         public List<Email> Emails { get; set; }
         public List<Address> Addresses { get; set; }
         public List<TaxNumber> TaxNumbers { get; set; }
+
     }
 
 
