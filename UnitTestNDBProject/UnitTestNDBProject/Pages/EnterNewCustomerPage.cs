@@ -1229,7 +1229,7 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
-        ///erify popup is displayed for missing email as main
+        ///Verify popup is displayed for missing email as main
         /// </summary>
         /// <returns></returns>
         public bool VerifyPopupForMainEmail()
@@ -1270,7 +1270,7 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
-        /// Verify invalid emailr
+        /// Verify invalid email
         /// </summary>
         /// <returns></returns>
         public bool VerifyTextForInvalidEmail()
@@ -1288,9 +1288,6 @@ namespace UnitTestNDBProject.Pages
 
             return isMessagePopulate;
         }
-
-        
-
 
         /// <summary>
         /// Function to add tax numbers
