@@ -168,11 +168,14 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_EnterNewCustomerPage.VerifyTextForInvalidPhone());
 
             //Scenario 4
-            _EnterNewCustomerPage.EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).EnterEmailAddress(newCustomerData.InvalidEmail, 0).ClickSaveButton();
-            Assert.True(_EnterNewCustomerPage.VerifyPopupForMainPhone());
+            _EnterNewCustomerPage.EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).EnterPhone(CommonFunctions.AppendMaxRangeRandomString(newCustomerData.Phones[0].PhoneNumber),0).SelectPhoneType(newCustomerData.Phones[0].PhoneType).EnterEmailAddress(newCustomerData.InvalidEmail, 0).ClickSaveButton();
             Assert.True(_EnterNewCustomerPage.VerifyPopupForMainEmail());
             _EnterNewCustomerPage.OkOnErrorMessage();
             Assert.True(_EnterNewCustomerPage.VerifyTextForInvalidEmail());
+
+            _EnterNewCustomerPage.ClickCancelButton();
+
+
         }
 
         [Test, Order(6), Category("Smoke"), Description("Enter Customer Card Details and create new customer")]

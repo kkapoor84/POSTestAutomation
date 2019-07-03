@@ -171,21 +171,19 @@ namespace UnitTestNDBProject.Pages
         public IWebElement OkButton { get; set; }
 
 
-        [FindsBy(How = How.XPath, Using = "(//span[@class='has-error-message'])[1]")]
-        public IWebElement InvalidPhone { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "(//span[@class='has-error-message'])[2]")]
-        public IWebElement InvalidEmail { get; set; }
-
+        [FindsBy(How = How.XPath, Using = "//span[@class='has-error-message']")]
+        public IWebElement InvalidText { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//div[@id='btnSection']//ul/li[2]")]
         public IWebElement PopupFirstName { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//div[@class='modal-space']//ul/li")]
-        public IWebElement PopupMainMessageForPhone { get; set; }
+        public IWebElement PopupMainMessage{ get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='modal-space']//ul/li[2]")]
-        public IWebElement PopupMainMessageForEmail { get; set; }
+        [FindsBy(How = How.Id, Using = "btnCancelUpper")]
+        public IWebElement CancelButton { get; set; }
+        
+
 
 
         /// <summary>
@@ -993,6 +991,19 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
+        /// Click on cancel button on customer page
+        /// </summary>
+        /// <returns></returns>
+        public EnterNewCustomerPage ClickCancelButton()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
+            driver.WaitForElement(CancelButton);
+            CancelButton.Clickme(driver);
+            _logger.Info($": Successfully Clicked On Cancel Button");
+            return this;
+        }
+
+        /// <summary>
         /// Function to enter taxid number
         /// </summary>
         /// <param name="taxid"></param>
@@ -1203,13 +1214,13 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyPopupForMainPhone()
         {
-            driver.WaitForElement(PopupMainMessageForPhone);
+            driver.WaitForElement(PopupMainMessage);
             bool isMessagePopulate = false;
 
             String Expected =Constants.NoMainSelectdMessageForPhone;
-          String Actual = PopupMainMessageForPhone.GetText(driver);
+          String Actual = PopupMainMessage.GetText(driver);
 
-            if  (Actual.Contains(Expected))
+            if  (Actual.Equals(Expected))
                 {
                 isMessagePopulate = true;
             }
@@ -1223,13 +1234,13 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyPopupForMainEmail()
         {
-            driver.WaitForElement(PopupMainMessageForEmail);
+            driver.WaitForElement(PopupMainMessage);
             bool isMessagePopulate = false;
 
             String Expected = Constants.NoMainSelectdMessageForEmail;
-            String Actual = PopupMainMessageForEmail.GetText(driver);
+            String Actual = PopupMainMessage.GetText(driver);
 
-            if (Actual.Contains(Expected))
+            if (Actual.Equals(Expected))
             {
                 isMessagePopulate = true;
             }
@@ -1244,11 +1255,11 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyTextForInvalidPhone()
         {
-            driver.WaitForElement(InvalidPhone);
+            driver.WaitForElement(InvalidText);
             bool isMessagePopulate = false;
 
             String Expected = Constants.InvalidPhone;
-            String Actual = InvalidPhone.GetText(driver);
+            String Actual = InvalidText.GetText(driver);
 
             if (Expected.Equals(Actual))
             {
@@ -1264,11 +1275,11 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyTextForInvalidEmail()
         {
-            driver.WaitForElement(InvalidEmail);
+            driver.WaitForElement(InvalidText);
             bool isMessagePopulate = false;
 
             String Expected = Constants.InvalidEmail;
-            String Actual = InvalidEmail.GetText(driver);
+            String Actual = InvalidText.GetText(driver);
 
             if (Expected.Equals(Actual))
             {
