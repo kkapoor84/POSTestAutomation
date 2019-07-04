@@ -552,7 +552,7 @@ namespace UnitTestNDBProject.Tests
         public void D5_VerifyMiscCreation()
         {
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
             _QuotePage.ClickOnAddNewQuote();
             _QuotePage.AddMiscProduct(miscproductLineFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyMisc(miscproductLineFeatureParsedData.Data));

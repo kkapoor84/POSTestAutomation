@@ -520,7 +520,7 @@ namespace UnitTestNDBProject.Page
         /// <returns></returns>
         public QuotePage ClickOnAddNewQuote()
         {
-            Thread.Sleep(4000);
+            WaitPolling();
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddNewQuote, 10000);
             AddNewQuote.Clickme(driver);
             _logger.Info($": NEW QUOTE button clicked");
@@ -763,8 +763,8 @@ namespace UnitTestNDBProject.Page
         /// <param name="miscData"></param>
         /// <returns></returns>
         public bool VerifyMisc(List<DataDictionary> miscData)
-        {            
-                Thread.Sleep(2000);
+        {
+            WaitPolling();
                 driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
                 WaitUntilPageload();
                 int i = 2;
