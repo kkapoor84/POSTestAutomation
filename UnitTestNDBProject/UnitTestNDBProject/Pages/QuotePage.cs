@@ -727,6 +727,10 @@ namespace UnitTestNDBProject.Page
             }
         }
 
+        /// <summary>
+        /// Function to select Misc product Type
+        /// </summary>
+        /// <returns></returns>
         public QuotePage SelectProductAsMisc()
         {
             WaitUntilPageload();
@@ -736,6 +740,10 @@ namespace UnitTestNDBProject.Page
             return this;
         }
        
+        /// <summary>
+        /// Function to add misc item
+        /// </summary>
+        /// <param name="miscData"></param>
         public void AddMiscProduct (List<DataDictionary> miscData)
         {
             foreach (DataDictionary data in miscData)
@@ -749,6 +757,11 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        /// <summary>
+        /// Function to verify misc item is added.
+        /// </summary>
+        /// <param name="miscData"></param>
+        /// <returns></returns>
         public bool VerifyMisc(List<DataDictionary> miscData)
         {            
                 Thread.Sleep(2000);

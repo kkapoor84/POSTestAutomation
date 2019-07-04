@@ -548,16 +548,13 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(8), Category("Smoke"), Description("Verify Product and Quote Creation by adding 3 product lines.")]
-        public void D5_VerifyAccessoryCreation()
+        [Test, Order(8), Category("Smoke"), Description("Verify user able to create misc item.")]
+        public void D5_VerifyMiscCreation()
         {
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
             Thread.Sleep(2000);
-            _QuotePage.ClickOnAddNewQuote();//.SaveQuoteButton();
-            //Assert.True(_QuotePage.VerifyErrorPopup());
-            //_QuotePage.OkOnErrorMessage().UpdateNickname(internalInforData.Nickname).UpdateGroup(internalInforData.Group).UpdateInternalInfo().AddLeadNumber(internalInforData.Leadnumber).UpdateSidemark(internalInforData.Sidemark);
+            _QuotePage.ClickOnAddNewQuote();
             _QuotePage.AddMiscProduct(miscproductLineFeatureParsedData.Data);
-           // Assert.True(_QuotePage.VerifyProductsEntered(miscproductLineFeatureParsedData.Data));
             Assert.True(_QuotePage.VerifyMisc(miscproductLineFeatureParsedData.Data));
         }
         /// <summary>
