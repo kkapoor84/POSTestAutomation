@@ -166,6 +166,26 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "emailList[0].Email")]
         public IWebElement emailAddress { get; set; }
 
+
+        [FindsBy(How = How.Id, Using = "idBtnOK")]
+        public IWebElement OkButton { get; set; }
+
+
+        [FindsBy(How = How.XPath, Using = "//span[@class='has-error-message']")]
+        public IWebElement InvalidText { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@id='btnSection']//ul/li[2]")]
+        public IWebElement PopupFirstName { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='modal-space']//ul/li")]
+        public IWebElement PopupMainMessage{ get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnCancelUpper")]
+        public IWebElement CancelButton { get; set; }
+        
+
+
+
         /// <summary>
         /// Click On Enter New Customer Buton
         /// </summary>
@@ -179,6 +199,16 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Click on Ok button in popup
+        /// </summary>
+        /// <returns></returns>
+        public EnterNewCustomerPage OkOnErrorMessage()
+        {
+            WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, OkButton, 60);
+            OkButton.Clickme(driver);
+            return this;
+        }
 
         /// <summary>
         /// Functions to Enter First Name
@@ -300,15 +330,13 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
-        /// Click on Save button and handle the smarty street if it populates
+        /// Save functionality for negative Scenario
         /// </summary>
         /// <returns></returns>
-        public EnterNewCustomerPage ClickSaveButton()
+        public EnterNewCustomerPage VerifySmartyStreet()
         {
-            driver.WaitForElementToBecomeVisibleWithinTimeout(saveButton, 10000);
-            saveButton.Clickme(driver);
-            _logger.Info($":Clicked on SAVE button of customer page");
-            try
+
+           try
             {
                 WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
                 customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("btnUseEnteredAddress")));
@@ -332,6 +360,20 @@ namespace UnitTestNDBProject.Pages
             }
 
 
+            return this;
+        }
+
+            
+
+        /// <summary>
+        /// Click on Save button and handle the smarty street if it populates
+        /// </summary>
+        /// <returns></returns>
+        public EnterNewCustomerPage ClickSaveButton()
+        {
+            driver.WaitForElementToBecomeVisibleWithinTimeout(saveButton, 10000);
+            saveButton.Clickme(driver);
+            _logger.Info($":Clicked on SAVE button of customer page");
             return this;
         }
 
@@ -949,6 +991,19 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
+        /// Click on cancel button on customer page
+        /// </summary>
+        /// <returns></returns>
+        public EnterNewCustomerPage ClickCancelButton()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
+            driver.WaitForElement(CancelButton);
+            CancelButton.Clickme(driver);
+            _logger.Info($": Successfully Clicked On Cancel Button");
+            return this;
+        }
+
+        /// <summary>
         /// Function to enter taxid number
         /// </summary>
         /// <param name="taxid"></param>
@@ -1130,6 +1185,108 @@ namespace UnitTestNDBProject.Pages
                 newAddresses.Add(new Tuple<string, string, string, string, string>(custAddLine1, custAddLine2, custCity, custState, custZipCode));
             }
             return newAddresses;
+        }
+
+
+        /// <summary>
+        /// Verify popup is displayed with given values
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyPopupWithValue()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
+             driver.WaitForElement(PopupFirstName);
+            bool isMessagePopulate = false;
+
+           IList<IWebElement> listOfOption= driver.FindElements(By.XPath("//div[@id='btnSection']//ul/li"));
+
+            if ((Constants.ExpFirstName.Contains(listOfOption[0].Text)) && (Constants.ExpLastName.Contains(listOfOption[1].Text)) && (Constants.ExpPhone.Contains(listOfOption[2].Text)) && (Constants.ExpEmail.Contains(listOfOption[3].Text)) && (Constants.ExpAddress.Contains(listOfOption[4].Text)))
+                {
+                isMessagePopulate = true;
+            }
+        
+            return isMessagePopulate;
+        }
+
+        /// <summary>
+        /// Verify popup is displayed for missing phone number as main
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyPopupForMainPhone()
+        {
+            driver.WaitForElement(PopupMainMessage);
+            bool isMessagePopulate = false;
+
+            String Expected =Constants.NoMainSelectdMessageForPhone;
+          String Actual = PopupMainMessage.GetText(driver);
+
+            if  (Actual.Equals(Expected))
+                {
+                isMessagePopulate = true;
+            }
+
+            return isMessagePopulate;
+        }
+
+        /// <summary>
+        ///Verify popup is displayed for missing email as main
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyPopupForMainEmail()
+        {
+            driver.WaitForElement(PopupMainMessage);
+            bool isMessagePopulate = false;
+
+            String Expected = Constants.NoMainSelectdMessageForEmail;
+            String Actual = PopupMainMessage.GetText(driver);
+
+            if (Actual.Equals(Expected))
+            {
+                isMessagePopulate = true;
+            }
+
+            return isMessagePopulate;
+        }
+
+
+        /// <summary>
+        /// Verify invalid phone number
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyTextForInvalidPhone()
+        {
+            driver.WaitForElement(InvalidText);
+            bool isMessagePopulate = false;
+
+            String Expected = Constants.InvalidPhone;
+            String Actual = InvalidText.GetText(driver);
+
+            if (Expected.Equals(Actual))
+            {
+                isMessagePopulate = true;
+            }
+
+            return isMessagePopulate;
+        }
+
+        /// <summary>
+        /// Verify invalid email
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyTextForInvalidEmail()
+        {
+            driver.WaitForElement(InvalidText);
+            bool isMessagePopulate = false;
+
+            String Expected = Constants.InvalidEmail;
+            String Actual = InvalidText.GetText(driver);
+
+            if (Expected.Equals(Actual))
+            {
+                isMessagePopulate = true;
+            }
+
+            return isMessagePopulate;
         }
 
         /// <summary>

@@ -242,7 +242,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage ClickOnAddDetailsButton()
         {
 
-
+            WaitUntilPageload();
             IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
             //This will scroll the page till the element is found		
             ex.ExecuteScript("arguments[0].scrollIntoView();", AddDetailButton);

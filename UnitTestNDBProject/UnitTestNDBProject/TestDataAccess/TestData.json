@@ -30,6 +30,8 @@
 			"Value": {
 				"FirstName": "Pos_fn",
 				"LastName": "Pos_ln",
+				"InvalidPhone" :"567",
+				"InvalidEmail":"posautomation",
 				"Phones": [{
 						"PhoneNumber": "85",
 						"PhoneType": "Home"
