@@ -41,6 +41,7 @@ namespace UnitTestNDBProject.Tests
         //SearchData searchOrderNumber;
         //   EditProductLineData editProductData;
 
+      
 
         [OneTimeSetUp]
         public void BeforeClass()
@@ -151,30 +152,33 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(5),Category("Smoke"), Description("Invalid Scenario of Customer Page")]
         public void A5_VerifyCustomerCreationNegativeScenario()
         {
-            //Scenario 1
-            _EnterNewCustomerPage.ClickEnterNewCustomerButton().ClickSaveButton();
-            Assert.True(_EnterNewCustomerPage.VerifyPopupWithValue());
 
-            //Scenario 2
-            _EnterNewCustomerPage.OkOnErrorMessage();
-            _EnterNewCustomerPage.EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickSaveButton(); ;
-            Assert.True(_EnterNewCustomerPage.VerifyPopupWithValue());
-            _EnterNewCustomerPage.OkOnErrorMessage();
+            Assert.Multiple(() =>
+            {
+                //Scenario 1 
+                _EnterNewCustomerPage.ClickEnterNewCustomerButton().ClickSaveButton();
+                Assert.True(_EnterNewCustomerPage.VerifyPopupWithValue());
 
-            //Scenario 3
-            _EnterNewCustomerPage.EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).EnterPhone(newCustomerData.InvalidPhone, 0).ClickSaveButton();
-            Assert.True(_EnterNewCustomerPage.VerifyPopupForMainPhone());
-            _EnterNewCustomerPage.OkOnErrorMessage();
-            Assert.True(_EnterNewCustomerPage.VerifyTextForInvalidPhone());
+                //Scenario 2
+                _EnterNewCustomerPage.OkOnErrorMessage();
+                _EnterNewCustomerPage.EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickSaveButton(); ;
+                Assert.True(_EnterNewCustomerPage.VerifyPopupWithValue());
+                _EnterNewCustomerPage.OkOnErrorMessage();
 
-            //Scenario 4
-            _EnterNewCustomerPage.EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).EnterPhone(CommonFunctions.AppendMaxRangeRandomString(newCustomerData.Phones[0].PhoneNumber),0).SelectPhoneType(newCustomerData.Phones[0].PhoneType).EnterEmailAddress(newCustomerData.InvalidEmail, 0).ClickSaveButton();
-            Assert.True(_EnterNewCustomerPage.VerifyPopupForMainEmail());
-            _EnterNewCustomerPage.OkOnErrorMessage();
-            Assert.True(_EnterNewCustomerPage.VerifyTextForInvalidEmail());
+                //Scenario 3
+                _EnterNewCustomerPage.EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).EnterPhone(newCustomerData.InvalidPhone, 0).ClickSaveButton();
+                Assert.True(_EnterNewCustomerPage.VerifyPopupForMainPhone());
+                _EnterNewCustomerPage.OkOnErrorMessage();
+                Assert.True(_EnterNewCustomerPage.VerifyTextForInvalidPhone());
 
+                //Scenario 4
+                _EnterNewCustomerPage.EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).EnterPhone(CommonFunctions.AppendMaxRangeRandomString(newCustomerData.Phones[0].PhoneNumber), 0).SelectPhoneType(newCustomerData.Phones[0].PhoneType).EnterEmailAddress(newCustomerData.InvalidEmail, 0).ClickSaveButton();
+                Assert.True(_EnterNewCustomerPage.VerifyPopupForMainEmail());
+                _EnterNewCustomerPage.OkOnErrorMessage();
+                Assert.True(_EnterNewCustomerPage.VerifyTextForInvalidEmail());
+            }
+             );
             _EnterNewCustomerPage.ClickCancelButton();
-
 
         }
 
