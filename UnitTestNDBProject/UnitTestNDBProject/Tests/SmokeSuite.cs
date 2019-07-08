@@ -396,8 +396,8 @@ namespace UnitTestNDBProject.Tests
 
         //}
 
-        [Test, Order(21), Category("Smoke"), Description("Verify Product Copy")]
-        public void C3_VerifyCopyproductLineForOrder()
+        [Test, Order(22), Category("Smoke"), Description("Verify Product Copy")]
+        public void C4_VerifyCopyproductLineForOrder()
         {
             _OrderPage.NavigateToTopOfTheOrderPage();
             _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
@@ -410,18 +410,18 @@ namespace UnitTestNDBProject.Tests
 
 
 
-        [Test, Order(22), Category("Smoke"), Description("Edit Order Productline For Order")]
-        public void C4_VerifyEditProductLineForOrder()
+        [Test, Order(23), Category("Smoke"), Description("Edit Order Productline For Order")]
+        public void C5_VerifyEditProductLineForOrder()
         {
 
-           _OrderPage.ClickOnhamburgerButton2().ClickOnEditButton();
+            _OrderPage.ClickOnhamburgerButton2().ClickOnEditButton();
             _OrderPage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyProductDataAfterEdit(productLineEditFeatureParsedData.Data));
 
         }
 
-        [Test, Order(23), Category("Smoke"), Description("Edit Order Productline For Order")]
-        public void C5_VerifyDeleteproductLineForOrder()
+        [Test, Order(24), Category("Smoke"), Description("Edit Order Productline For Order")]
+        public void C6_VerifyDeleteproductLineForOrder()
         {
             _OrderPage.CalculateNumberOfProductLinesBeforeOperation();
             _OrderPage.ClickOnhamburgerButton2();
@@ -432,23 +432,12 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(24), Category("Smoke"), Description("Cancel Order Verification")]
-        public void C6_VerifyCancelOrder()
+        [Test, Order(25), Category("Smoke"), Description("Cancel Order Verification")]
+        public void C7_VerifyCancelOrder()
         {
 
             _OrderPage.ClickOnCancelOrderButton().EnterCancelOrderReasons(cancelReasonData.CancelReasons).ClickOnCancelOrderPopup();
             Assert.True(_OrderPage.VerifyCancelOrder());
-        }
-
-        [Test, Order(25), Category("Smoke"), Description("Search Customer Verification")]
-        public void C7_VerifySearchCustomer()
-        {
-            SearchData orderData = SearchPage.SearchOrderData(searchParser);
-            _SearchPage.ClickOnSearchLink().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickOnSearchButton();
-            _SearchPage.ExecuteSearchFlowIfCustomerExists();
-            _SearchPage.ClickOnSearchLink();
-            Assert.True(_SearchPage.VerifySearchLinkOfLastSearch());
-            _SearchPage.EnterSameSearchCriteria().ClickOnSearchButton();
         }
 
         [Test, Order(26), Category("Smoke"), Description("Search Customer Verification")]
