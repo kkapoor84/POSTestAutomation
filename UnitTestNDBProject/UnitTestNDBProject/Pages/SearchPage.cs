@@ -124,11 +124,7 @@ namespace UnitTestNDBProject.Pages
         /// wait for polling
         /// </summary>
         /// <returns></returns>
-        public SearchPage WaitPolling()
-        {
-            new System.Threading.ManualResetEvent(false).WaitOne(2000);
-            return this;
-        }
+       
         /// <summary>
         /// Click On search link
         /// </summary>
