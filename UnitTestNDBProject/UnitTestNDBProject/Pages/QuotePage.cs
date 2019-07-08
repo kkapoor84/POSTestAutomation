@@ -186,8 +186,12 @@ namespace UnitTestNDBProject.Page
 
         [FindsBy(How = How.XPath, Using = "//span[@class='total-product']")]
         public IWebElement ProductTotal { get; set; }
+
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'MISC.')]")]
         public IWebElement Misc { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'COMPONENTS')]")]
+        public IWebElement Component { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ACCESSORIES')]")]
         public IWebElement Accessories { get; set; }
@@ -739,7 +743,16 @@ namespace UnitTestNDBProject.Page
             WaitUntilPageload();
             return this;
         }
-       
+
+        public QuotePage SelectProductAsComponent()
+        {
+            WaitUntilPageload();
+            WaitPolling();
+            Component.Clickme(driver);
+            WaitUntilPageload();
+            return this;
+        }
+
         /// <summary>
         /// Function to add misc item
         /// </summary>
@@ -752,6 +765,19 @@ namespace UnitTestNDBProject.Page
                 MiscData productLine = JsonDataParser<MiscData>.ParseData(data.Value);
                 new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
                 ClickOnAddProduct().WaitUntilPageload().SelectProductAsMisc().SelectProduct(productLine.ProductType)
+                    .SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
+            }
+
+        }
+
+        public void AddComponentProduct(List<DataDictionary> miscData)
+        {
+            foreach (DataDictionary data in miscData)
+            {
+                WaitUntilPageload();
+                MiscData productLine = JsonDataParser<MiscData>.ParseData(data.Value);
+                new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
+                ClickOnAddProduct().WaitUntilPageload().SelectProductAsComponent().SelectProduct(productLine.ProductType)
                     .SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
             }
 
@@ -784,7 +810,7 @@ namespace UnitTestNDBProject.Page
 
 
             bool quantity = false;
-                bool color = false;
+                bool productName = false;
 
                 foreach (DataDictionary data in miscData)
                 {
@@ -805,15 +831,15 @@ namespace UnitTestNDBProject.Page
                         if (miscLine.ProductDetails[0].Option.Contains(productLineDataArray[j]))
                         {
 
-                            color = true;
-                            _logger.Info($"Product " + miscLine.ProductDetails[0].Option + " Is Correct.");
+                            productName = true;
+                            _logger.Info($"Product Name " + miscLine.ProductDetails[0].Option + " Is Correct.");
 
                         }
                     j++;
                 } while (productLineDataArray[j] != null);
 
                 }
-                if (quantity == true && color == true)
+                if (quantity == true && productName == true)
                 {
                     return true;
                 }

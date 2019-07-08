@@ -4,21 +4,21 @@
 				"Key": "InValidCredentials",
 				"Value": {
 					"UserName": "POS",
-					"Password": "N0tS3cur3!"
+					"Password": "Pos@ndb19"
 				}
 			},
 			{
 				"Key": "SAHUserValidCredentails",
 				"Value": {
 					"UserName": "Pos-sahtest",
-					"Password": "N0tS3cur3!"
+					"Password": "Pos@ndb19"
 				}
 			},
 			{
 				"Key": "AccountUserValidCredentails",
 				"Value": {
 					"UserName": "Pos-acctrec",
-					"Password": "N0tS3cur3!"
+					"Password": "Pos@ndb19"
 				}
 			}
 		]
@@ -230,6 +230,23 @@
 						{
 							"OptionTypeId": "Price",
 							"Option": "100.10"
+						}
+					]
+				}
+			}
+			]
+			},
+			{
+	"Feature": "ComponentScreen",
+		"Data": [{
+				"Key": "Component1",
+				"Value": {
+					"Quantity": 1,
+					"ProductType": "Faux Wood Blinds",
+					"ProductDetails": 
+                                         [      {
+							"OptionTypeId": "componentCode",
+							"Option": "2'' PREMIUM WOOD"
 						}
 					]
 				}
