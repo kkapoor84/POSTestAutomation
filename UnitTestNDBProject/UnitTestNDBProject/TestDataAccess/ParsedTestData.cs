@@ -95,13 +95,19 @@ namespace UnitTestNDBProject.TestDataAccess
         public List<ProductDetail> ProductDetails { get; set; }
     }
 
+    public class MiscData
+    {
+        public string Quantity { get; set; }
+        public string ProductType { get; set; }
+        public List<ProductDetail> ProductDetails { get; set; }
+    }
+
 
     public class ProductDetail
     {
         public string OptionTypeId { get; set; }
         public string Option { get; set; }
     }
-
 
     public class EditProductLineData
     {

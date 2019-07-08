@@ -216,6 +216,27 @@
 		]
 	},
 	{
+	"Feature": "MiscellaneousScreen",
+		"Data": [{
+				"Key": "Misc1",
+				"Value": {
+					"Quantity": 1,
+					"ProductType": "Faux Wood Blinds",
+					"ProductDetails": 
+                                         [      {
+							"OptionTypeId": "Description",
+							"Option": "Description Of the Item"
+						},
+						{
+							"OptionTypeId": "Price",
+							"Option": "100.10"
+						}
+					]
+				}
+			}
+			]
+			},
+	{
 		"Feature": "InternalInfoScreen",
 		"Data": [{
 			"Key": "InternalInfoSection",

@@ -186,7 +186,11 @@ namespace UnitTestNDBProject.Page
 
         [FindsBy(How = How.XPath, Using = "//span[@class='total-product']")]
         public IWebElement ProductTotal { get; set; }
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'MISC.')]")]
+        public IWebElement Misc { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'ACCESSORIES')]")]
+        public IWebElement Accessories { get; set; }
 
         public List<Tuple<string, string>> editedDataForProductLine;
 
@@ -516,7 +520,7 @@ namespace UnitTestNDBProject.Page
         /// <returns></returns>
         public QuotePage ClickOnAddNewQuote()
         {
-            Thread.Sleep(4000);
+            WaitPolling();
             driver.WaitForElementToBecomeVisibleWithinTimeout(AddNewQuote, 10000);
             AddNewQuote.Clickme(driver);
             _logger.Info($": NEW QUOTE button clicked");
@@ -605,10 +609,16 @@ namespace UnitTestNDBProject.Page
             ProductCode.EnterText(ProductType);
             Thread.Sleep(200);
             ProductCode.SendKeys(Keys.Enter);
+            WaitUntilPageload();
+            WaitPolling();
             _logger.Info($": Successfully selected the product {ProductType}");
             return this;
         }
-
+        public QuotePage WaitPolling()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            return this;
+        }
 
         /// <summary>
         /// Function to select options read from getproductdetails function for configuring product.
@@ -618,7 +628,9 @@ namespace UnitTestNDBProject.Page
         public QuotePage SelectProductOptions(List<ProductDetail> productDetails)
         {
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-            customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
+            WaitUntilPageload();
+            WaitPolling();
+            //customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
 
             foreach (ProductDetail product in productDetails)
             {
@@ -651,7 +663,7 @@ namespace UnitTestNDBProject.Page
         {
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("Mounting")));
-
+            WaitPolling();
             foreach (EditProductDetail editProduct in editProductDetails)
             {
                 driver.FindElement(By.Id(editProduct.OptionTypeId)).EnterText(editProduct.Option);
@@ -714,13 +726,109 @@ namespace UnitTestNDBProject.Page
                     .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
             }
         }
-       
 
         /// <summary>
-        /// Function to verify quote creation.
+        /// Function to select Misc product Type
         /// </summary>
         /// <returns></returns>
-        public bool VerifyQuoteCreation()
+        public QuotePage SelectProductAsMisc()
+        {
+            WaitUntilPageload();
+            WaitPolling();
+            Misc.Clickme(driver);
+            WaitUntilPageload();
+            return this;
+        }
+       
+        /// <summary>
+        /// Function to add misc item
+        /// </summary>
+        /// <param name="miscData"></param>
+        public void AddMiscProduct (List<DataDictionary> miscData)
+        {
+            foreach (DataDictionary data in miscData)
+            {
+                WaitUntilPageload();
+                MiscData productLine = JsonDataParser<MiscData>.ParseData(data.Value);
+                new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
+                ClickOnAddProduct().WaitUntilPageload().SelectProductAsMisc().SelectProduct(productLine.ProductType)
+                    .SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
+            }
+
+        }
+
+        /// <summary>
+        /// Function to verify misc item is added.
+        /// </summary>
+        /// <param name="miscData"></param>
+        /// <returns></returns>
+        public bool VerifyMisc(List<DataDictionary> miscData)
+        {
+            WaitPolling();
+                driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
+                WaitUntilPageload();
+                int i = 2;
+                int count = 0;
+                string[] productLineDataArray = new string[100];
+                for (int j = 2; j < 3; j++)
+                {
+                do
+                {
+                    string productColumn = driver.FindElement(By.XPath("//li[" + j + "]//div[" + i + "]")).GetText(driver);
+                    productLineDataArray[count] = productColumn;
+                    i++; count++;
+                    _logger.Info(productLineDataArray[count]);
+                } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+                i = 2;
+               }
+
+
+            bool quantity = false;
+                bool color = false;
+
+                foreach (DataDictionary data in miscData)
+                {
+                    MiscData miscLine = JsonDataParser<MiscData>.ParseData(data.Value);
+                    String quantityOfProduct = miscLine.Quantity;
+                    List<ProductDetail> addedProductDetails = miscLine.ProductDetails;
+
+                    int j = 0;
+
+                    do
+                    {
+                        if (quantityOfProduct.Contains(productLineDataArray[j]))
+                        {
+                            quantity = true;
+                            _logger.Info($"Quantity " + quantityOfProduct + " Is Correct.");
+                        }
+
+                        if (miscLine.ProductDetails[0].Option.Contains(productLineDataArray[j]))
+                        {
+
+                            color = true;
+                            _logger.Info($"Product " + miscLine.ProductDetails[0].Option + " Is Correct.");
+
+                        }
+                    j++;
+                } while (productLineDataArray[j] != null);
+
+                }
+                if (quantity == true && color == true)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            
+        }
+
+            /// <summary>
+            /// Function to verify quote creation.
+            /// </summary>
+            /// <returns></returns>
+            public bool VerifyQuoteCreation()
         {
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, QuoteActions, 60);
             bool quoteActions = false;

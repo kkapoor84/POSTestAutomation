@@ -22,6 +22,7 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
+        private static ParsedTestData miscproductLineFeatureParsedData;
         private static ParsedTestData productLineEditFeatureParsedData;
         private static ParsedTestData updateCustomerFeatureParsedData;
         private static ParsedTestData internalInfoParsedData;
@@ -54,6 +55,7 @@ namespace UnitTestNDBProject.Tests
             updateCustomerFeatureParsedData = DataAccess.GetFeatureData("UpdateCustomerScreen");
             //Get product line feature data
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
+            miscproductLineFeatureParsedData = DataAccess.GetFeatureData("MiscellaneousScreen");
             //Get product line Edit feature data
             productLineEditFeatureParsedData = DataAccess.GetFeatureData("EditProductScreen");
             //Get data for Internal Infor Section
@@ -580,6 +582,16 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.OrderStatusAfterTransferVerification());
         }
 
+
+        [Test, Order(8), Category("Smoke"), Description("Verify user able to create misc item.")]
+        public void D5_VerifyMiscCreation()
+        {
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
+            //Thread.Sleep(2000);
+            _QuotePage.ClickOnAddNewQuote();
+            _QuotePage.AddMiscProduct(miscproductLineFeatureParsedData.Data);
+            Assert.True(_QuotePage.VerifyMisc(miscproductLineFeatureParsedData.Data));
+        }
         /// <summary>
         /// Tear Down function
         /// </summary>
