@@ -588,22 +588,18 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(34), Category("Smoke"), Description("Verify user able to create misc item.")]
         public void D5_VerifyMiscCreation()
         {
-            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
-            //Thread.Sleep(2000);
             _QuotePage.ClickOnAddNewQuote();
             _QuotePage.AddMiscProduct(miscproductLineFeatureParsedData.Data);
-            Assert.True(_QuotePage.VerifyMisc(miscproductLineFeatureParsedData.Data));
+            Assert.True(_QuotePage.VerifyMiscAndComponents(miscproductLineFeatureParsedData.Data));
         }
 
 
         [Test, Order(34), Category("Smoke"), Description("Verify user able to create misc item.")]
         public void D6_VerifyComponentCreation()
         {
-           // _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
-            //Thread.Sleep(2000);
-           // _QuotePage.ClickOnAddNewQuote();
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
             _QuotePage.AddComponentProduct(componentproductLineFeatureParsedData.Data);
-            Assert.True(_QuotePage.VerifyMisc(componentproductLineFeatureParsedData.Data));
+            Assert.True(_QuotePage.VerifyMiscAndComponents(componentproductLineFeatureParsedData.Data));
         }
         /// <summary>
         /// Tear Down function

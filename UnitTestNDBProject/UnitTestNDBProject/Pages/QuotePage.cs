@@ -539,7 +539,8 @@ namespace UnitTestNDBProject.Page
         {
             //Do not remove below Wait. This is essential to ensure that spinner is gone on Quote/Order page and ADD PRODUCTS button is clickable
             // Thread.Sleep(10000);
-            driver.WaitForElement(AddProductLine, 10000);
+            //driver.WaitForElement(AddProductLine, 10000);
+            WaitPolling();
             AddProductLine.Clickme(driver);
             _logger.Info($": ADD PRODUCTS button clicked");
 
