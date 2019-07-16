@@ -4,21 +4,21 @@
 				"Key": "InValidCredentials",
 				"Value": {
 					"UserName": "POS",
-					"Password": "N0tS3cur3!"
+					"Password": "Pos@ndb19"
 				}
 			},
 			{
 				"Key": "SAHUserValidCredentails",
 				"Value": {
 					"UserName": "Pos-sahtest",
-					"Password": "N0tS3cur3!"
+					"Password": "Pos@ndb19"
 				}
 			},
 			{
 				"Key": "AccountUserValidCredentails",
 				"Value": {
 					"UserName": "Pos-acctrec",
-					"Password": "N0tS3cur3!"
+					"Password": "Pos@ndb19"
 				}
 			}
 		]
@@ -407,6 +407,15 @@
 					"ExitReasonDropDownValue": "Credit card declined",
 					"ReasonDetails": "Credit Card is not working currently"
 				}
+			},
+			{
+				"Key": "NoDeposit",
+				"Value": {
+					"Amount": "0.00",
+					"PaymentMethod": "No Deposit",
+					"NoDepositReason": "Other",
+					"FuturePaymentDetails": "Will Make the payment in future"
+ 			            }
 			}
 		
      ]

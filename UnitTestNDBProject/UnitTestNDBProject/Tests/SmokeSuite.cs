@@ -355,6 +355,8 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
 
         }
+
+
         [Test, Order(16), Category("Smoke"), Description("Payment via finance and order is created")]
         public void B7_VerifyOrderIsCreatedWithFinancialPayment()
         {

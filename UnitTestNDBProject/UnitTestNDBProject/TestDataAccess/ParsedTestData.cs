@@ -223,8 +223,8 @@ namespace UnitTestNDBProject.TestDataAccess
         public string WarningMessageOnRefund { get; set; }
         public string WarningMessageOnPayment { get; set; }
         public string PaymentMethod { get; set; }
-        
-
+        public string NoDepositReason { get; set; }
+        public string FuturePaymentDetails { get; set; }
         public List<GridRecord> GridData { get; set; }
 
 

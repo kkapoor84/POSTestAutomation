@@ -156,6 +156,12 @@ namespace UnitTestNDBProject.Page
             return JsonDataParser<PaymentData>.ParseData(giftCardDataValue);
         }
 
+        public static PaymentData GetNoDepositPaymentData(ParsedTestData featureData)
+        {
+            object financeDataValue = DataAccess.GetKeyJsonData(featureData, "NoDeposit");
+            return JsonDataParser<PaymentData>.ParseData(financeDataValue);
+        }
+
         public static PaymentData GetFinancePaymentData(ParsedTestData featureData)
         {
             object financeDataValue = DataAccess.GetKeyJsonData(featureData, "FinanceKey");
