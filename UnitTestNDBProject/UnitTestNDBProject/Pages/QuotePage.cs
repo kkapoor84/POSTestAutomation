@@ -754,6 +754,15 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
+        public QuotePage SelectProductAsAccessory()
+        {
+            WaitUntilPageload();
+            WaitPolling();
+            Accessories.Clickme(driver);
+            WaitUntilPageload();
+            return this;
+        }
+
         /// <summary>
         /// Function to add misc item
         /// </summary>
@@ -771,6 +780,10 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        /// <summary>
+        /// Function to Add Component
+        /// </summary>
+        /// <param name="miscData"></param>
         public void AddComponentProduct(List<DataDictionary> miscData)
         {
             foreach (DataDictionary data in miscData)
@@ -784,12 +797,26 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        public void AddAccessoryProduct(List<DataDictionary> miscData)
+        {
+            foreach (DataDictionary data in miscData)
+            {
+                WaitUntilPageload();
+                AccessoryDetail productLine = JsonDataParser<AccessoryDetail>.ParseData(data.Value);
+                new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
+                ClickOnAddProduct().WaitUntilPageload().EnterWidth(productLine.Width).EnterRoomLocation(productLine.NDBRoomLocation)
+                    .SelectProductAsAccessory().SelectProduct(productLine.ProductType)
+                    .SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
+            }
+
+        }
+
         /// <summary>
         /// Function to verify misc item is added.
         /// </summary>
         /// <param name="miscData"></param>
         /// <returns></returns>
-        public bool VerifyMisc(List<DataDictionary> miscData)
+        public bool VerifyMiscAndComponents(List<DataDictionary> miscData)
         {
             WaitPolling();
                 driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);

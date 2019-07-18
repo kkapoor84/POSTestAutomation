@@ -24,6 +24,7 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData productLineFeatureParsedData;
         private static ParsedTestData miscproductLineFeatureParsedData;
         private static ParsedTestData componentproductLineFeatureParsedData;
+        private static ParsedTestData accessoryproductLineFeatureParsedData;
         private static ParsedTestData productLineEditFeatureParsedData;
         private static ParsedTestData updateCustomerFeatureParsedData;
         private static ParsedTestData internalInfoParsedData;
@@ -58,6 +59,7 @@ namespace UnitTestNDBProject.Tests
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
             miscproductLineFeatureParsedData = DataAccess.GetFeatureData("MiscellaneousScreen");
             componentproductLineFeatureParsedData = DataAccess.GetFeatureData("ComponentScreen");
+            accessoryproductLineFeatureParsedData = DataAccess.GetFeatureData("AccessoryScreen");
             //Get product line Edit feature data
             productLineEditFeatureParsedData = DataAccess.GetFeatureData("EditProductScreen");
             //Get data for Internal Infor Section
@@ -600,6 +602,14 @@ namespace UnitTestNDBProject.Tests
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
             _QuotePage.AddComponentProduct(componentproductLineFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyMiscAndComponents(componentproductLineFeatureParsedData.Data));
+        }
+
+        [Test, Order(35), Category("Smoke"), Description("Verify user able to create misc item.")]
+        public void D7_VerifyAccessoryCreation()
+        {
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
+            _QuotePage.AddAccessoryProduct(accessoryproductLineFeatureParsedData.Data);
+            //Assert.True(_QuotePage.VerifyMiscAndComponents(accessoryproductLineFeatureParsedData.Data));
         }
         /// <summary>
         /// Tear Down function
