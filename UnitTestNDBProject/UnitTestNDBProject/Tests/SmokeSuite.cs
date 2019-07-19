@@ -346,7 +346,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(15), Category("Smoke"),Description("Quote Convert to Order")]
         public void B6_VerifyQuoteConvertToOrder()
         {
-            _SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch("702499").ClickOnSearchButton();
+            _SearchPage.ClickOnSearchLink().ClickOnQuoteTab().EnterQuoteToSearch("705983").ClickOnSearchButton();
             _QuotePage.CopyQuote().SaveChanges();
 
             _QuotePage.WaitUntilPageload();
@@ -356,56 +356,79 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-
         [Test, Order(16), Category("Smoke"), Description("Payment via finance and order is created")]
-        public void B7_VerifyOrderIsCreatedWithFinancialPayment()
+        public void B7_VerifyOrderIsCreatedWithNoDeposit()
         {
-            PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(paymentParsedData);
-         
+            PaymentData NoDepositPaymentData = PaymentPage.GetNoDepositPaymentData(paymentParsedData);
+
             _OrderPage.ClickOnNewPaymentButton();
-            _PaymentPage.MakeFinancePayment(financePaymentData.Amount)
-              .CloseExitPaymentPopup()
-               .ClickOnExitPayment(financePaymentData.ExitPaymentReason, financePaymentData.ExitReasonDropDownValue, financePaymentData.ReasonDetails);
-            //  .ClickOnExitPaymentScreenButton(financePaymentData.ExitPaymentReason)
+            _PaymentPage.ClickOnNoDeposit();
+
+            _PaymentPage.NoDepositPopup(NoDepositPaymentData.NoDepositReason, NoDepositPaymentData.ReasonDetails);
 
             Assert.True(_OrderPage.VerifyOrderIsCreated());
             _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
-            Assert.True(_OrderPage.VerifyPaymentGridData(financePaymentData));
+            Assert.True(_OrderPage.VerifyPaymentGridData(NoDepositPaymentData));
+            _OrderPage.ClickOnNoteLink();
+            Assert.True(_NotePage.VerifyNoDepositReasonAndDetailOnNotePage(NoDepositPaymentData.NoDepositReason, NoDepositPaymentData.ReasonDetails));
+            _NotePage.ClickOnViewOrderLink();
+        }
 
+
+        [Test, Order(17), Category("Smoke"), Description("Payment via finance and order is created")]
+        public void B8_VerifyOrderIsCreatedWithFinancialAndShortPayment()
+        {
+            PaymentData financeShortPaymentData = PaymentPage.GetFinanceShortDepositPaymentData(paymentParsedData);
+         
+            _OrderPage.ClickOnNewPaymentButton();
+            _PaymentPage.MakeFinancePayment()
+                .ClickOnShortDeposit()
+                .ShortDepositPopup(financeShortPaymentData.ExitPaymentReasonShortDeposit);
+             
+            Assert.True(_OrderPage.VerifyOrderIsCreated());
+            _OrderPage.ClickOnAddDetailsButton();
+            Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
+            Assert.True(_OrderPage.VerifyPaymentGridData(financeShortPaymentData));
+            _OrderPage.ClickOnNoteLink();
+            Assert.True(_NotePage.VerifyShortDepositReasonAndDetailOnNotePage(financeShortPaymentData.ExitPaymentReasonShortDeposit));
+            _NotePage.ClickOnViewOrderLink();
 
         }
 
-        [Test, Order(17),  Category("Smoke"), Description("Payment via gift card")]
-        public void B8_VerifyGiftCardPayment()
+       
+        [Test, Order(18),  Category("Smoke"), Description("Payment via gift card")]
+        public void B9_VerifyGiftCardPayment()
         {
             PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(paymentParsedData);
             _OrderPage.ClickOnNewPaymentButton();
-            _PaymentPage.MakeGiftCardPayment(giftCardPaymentData.GiftCardNumber,giftCardPaymentData.Amount)
-                     .ClickOnExitPayment(giftCardPaymentData.ExitPaymentReason, giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
+            _PaymentPage.MakeGiftCardPayment(giftCardPaymentData.GiftCardNumber, giftCardPaymentData.Amount);
+               _PaymentPage.ClickOnExitPaymentButton();
+              _PaymentPage.FillPopupDetails(giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
                          //   .EnterDetailInExitPaymentPopup(giftCardPaymentData.ExitReasonDropDownValue, giftCardPaymentData.ReasonDetails);
             _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
             Assert.True(_OrderPage.VerifyPaymentGridData(giftCardPaymentData));
         }
        
-        [Test, Order(18), Category("Smoke"),Description("Payment via Check-Skip Verification")]
-        public void B9_VerifyCheckSkipVerificationPayment()
+        [Test, Order(19), Category("Smoke"),Description("Payment via Check-Skip Verification")]
+        public void C1_VerifyCheckSkipVerificationPayment()
         {
               PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
 
             _OrderPage.ClickOnNewPaymentButton();
             _PaymentPage.MakeCheckPayment(checkPaymentData.AccountName,checkPaymentData.RoutingNumber,checkPaymentData.AccountNumber,checkPaymentData.CheckNumber,checkPaymentData.StateId,checkPaymentData.State,checkPaymentData.Amount)
                 .SelectSkipVerification(checkPaymentData.SkippingReason,checkPaymentData.SkippingReasonDetail)
-                .ClickOnExitPayment(checkPaymentData.ExitPaymentReason, checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
+                .ClickOnExitPaymentButton()
+                .FillPopupDetails(checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
              //   .EnterDetailInExitPaymentPopup(checkPaymentData.ExitReasonDropDownValue, checkPaymentData.ReasonDetails);
             _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
             Assert.True(_OrderPage.VerifyPaymentGridData(checkPaymentData));
         }
 
-        //[Test, Order(19), Category("Smoke"),  Description("Payment via Manual Credit Card")]
-        //public void C1_VerifyManualCreditCardPayment()
+        //[Test, Order(20), Category("Smoke"),  Description("Payment via Manual Credit Card")]
+        //public void C2_VerifyManualCreditCardPayment()
         //{
         //    PaymentData creditCardPaymentData = PaymentPage.GetCreditCardPaymentData(paymentParsedData);
         //    _OrderPage.ClickOnNewPaymentButton();
@@ -414,8 +437,8 @@ namespace UnitTestNDBProject.Tests
         //    Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         //}
 
-        //[Test, Order(20), Category("Smoke"),Description("Payment via Saved Credit Card")]
-        //public void C2_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
+        //[Test, Order(21), Category("Smoke"),Description("Payment via Saved Credit Card")]
+        //public void C3_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
         //{
 
         //    PaymentData savedCreditCardPaymentData = PaymentPage.GetSavedCreditCardPaymentData(paymentParsedData);
@@ -499,7 +522,7 @@ namespace UnitTestNDBProject.Tests
         }
 
         [Test, Order(28), Category("Smoke"), Description("Search Order Verification")]
-        public void B1_VerifySearchOrder()
+        public void D1_VerifySearchOrder()
         {
             SearchData orderData = SearchPage.SearchOrderData(searchParser);
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterInvalidOrderToSearch(orderData.OrderNumber).ClickOnSearchButton();
@@ -585,8 +608,8 @@ namespace UnitTestNDBProject.Tests
         }
 
 
-        [Test, Order(8), Category("Smoke"), Description("Verify user able to create misc item.")]
-        public void D5_VerifyMiscCreation()
+        [Test, Order(34), Category("Smoke"), Description("Verify user able to create misc item.")]
+        public void D7_VerifyMiscCreation()
         {
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
             //Thread.Sleep(2000);

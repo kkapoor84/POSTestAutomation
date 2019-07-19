@@ -206,6 +206,9 @@ namespace UnitTestNDBProject.TestDataAccess
       
         public string ExitPaymentReason { get; set; }
         public string ExitReasonDropDownValue { get; set; }
+
+        public string ExitPaymentReasonShortDeposit { get; set; }
+        
         public string ReasonDetails { get; set; }
         public string AccountName { get; set; }
         public string RoutingNumber { get; set; }
@@ -224,7 +227,6 @@ namespace UnitTestNDBProject.TestDataAccess
         public string WarningMessageOnPayment { get; set; }
         public string PaymentMethod { get; set; }
         public string NoDepositReason { get; set; }
-        public string FuturePaymentDetails { get; set; }
         public List<GridRecord> GridData { get; set; }
 
 
