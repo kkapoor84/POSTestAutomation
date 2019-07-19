@@ -236,6 +236,23 @@
 			}
 			]
 			},
+			{
+	"Feature": "ComponentScreen",
+		"Data": [{
+				"Key": "Component1",
+				"Value": {
+					"Quantity": 1,
+					"ProductType": "Faux Wood Blinds",
+					"ProductDetails": 
+                                         [      {
+							"OptionTypeId": "componentCode",
+							"Option": "2'' PREMIUM WOOD"
+						}
+					]
+				}
+			}
+			]
+			},
 	{
 		"Feature": "InternalInfoScreen",
 		"Data": [{

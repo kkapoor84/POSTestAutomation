@@ -102,6 +102,13 @@ namespace UnitTestNDBProject.TestDataAccess
         public List<ProductDetail> ProductDetails { get; set; }
     }
 
+    public class ComponentData
+    {
+        public string Quantity { get; set; }
+        public string ProductType { get; set; }
+        public List<ProductDetail> ProductDetails { get; set; }
+    }
+
 
     public class ProductDetail
     {
