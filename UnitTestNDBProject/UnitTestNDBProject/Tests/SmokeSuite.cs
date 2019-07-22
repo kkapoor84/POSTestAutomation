@@ -590,26 +590,27 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(34), Category("Smoke"), Description("Verify user able to create misc item.")]
         public void D5_VerifyMiscCreation()
         {
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
             _QuotePage.ClickOnAddNewQuote();
             _QuotePage.AddMiscProduct(miscproductLineFeatureParsedData.Data);
-            Assert.True(_QuotePage.VerifyMiscAndComponents(miscproductLineFeatureParsedData.Data));
+            Assert.True(_QuotePage.VerifyMisc(miscproductLineFeatureParsedData.Data));
         }
 
-
-        [Test, Order(34), Category("Smoke"), Description("Verify user able to create misc item.")]
-        public void D6_VerifyComponentCreation()
-        {
-            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
-            _QuotePage.AddComponentProduct(componentproductLineFeatureParsedData.Data);
-            Assert.True(_QuotePage.VerifyMiscAndComponents(componentproductLineFeatureParsedData.Data));
-        }
 
         [Test, Order(35), Category("Smoke"), Description("Verify user able to create misc item.")]
+        public void D6_VerifyComponentCreation()
+        {           
+            _QuotePage.AddComponentProduct(componentproductLineFeatureParsedData.Data);
+            Assert.True(_QuotePage.VerifyComponents(componentproductLineFeatureParsedData.Data));
+        }
+
+        [Test, Order(36), Category("Smoke"), Description("Verify user able to create misc item.")]
         public void D7_VerifyAccessoryCreation()
         {
-            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
+           // _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
+            _QuotePage.ClickOnAddNewQuote();
             _QuotePage.AddAccessoryProduct(accessoryproductLineFeatureParsedData.Data);
-            //Assert.True(_QuotePage.VerifyMiscAndComponents(accessoryproductLineFeatureParsedData.Data));
+            Assert.True(_QuotePage.VerifyAccessory(accessoryproductLineFeatureParsedData.Data));
         }
         /// <summary>
         /// Tear Down function

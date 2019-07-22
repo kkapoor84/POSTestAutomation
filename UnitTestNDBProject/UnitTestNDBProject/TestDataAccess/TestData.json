@@ -259,6 +259,8 @@
 				"Key": "Assessory1",
 				"Value": {
 					"Width": "40",
+					"HeightDisabled" :"True",
+					"WidthDisabled" :"False",
 					"NDBRoomLocation": "Main Room",
 					"Quantity": 1,
 					"ProductType": "Wood Blinds (NW), Faux Wood Blinds - Valance Only",
@@ -283,6 +285,8 @@
 				"Key": "Assessory2",
 				"Value": {
 				    "Width": "40",
+					"HeightDisabled" :"True",
+					"WidthDisabled" : "True",
 					"NDBRoomLocation": "Kitchen",
 					"Quantity": 1,
 					"ProductType": "Wood Blinds (NW), Faux Wood Blinds - Remote Accessories",

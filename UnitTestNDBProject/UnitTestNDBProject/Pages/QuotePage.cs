@@ -816,7 +816,7 @@ namespace UnitTestNDBProject.Page
         /// </summary>
         /// <param name="miscData"></param>
         /// <returns></returns>
-        public bool VerifyMiscAndComponents(List<DataDictionary> miscData)
+        public bool VerifyMisc(List<DataDictionary> miscData)
         {
             WaitPolling();
                 driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
@@ -878,11 +878,137 @@ namespace UnitTestNDBProject.Page
             
         }
 
-            /// <summary>
-            /// Function to verify quote creation.
-            /// </summary>
-            /// <returns></returns>
-            public bool VerifyQuoteCreation()
+        public bool VerifyComponents(List<DataDictionary> compData)
+        {
+            WaitPolling();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
+            WaitUntilPageload();
+            int i = 2;
+            int count = 0;
+            string[] productLineDataArray = new string[100];
+            for (int j = 2; j < 3; j++)
+            {
+                do
+                {
+                    string productColumn = driver.FindElement(By.XPath("//li[" + j + "]//div[" + i + "]")).GetText(driver);
+                    productLineDataArray[count] = productColumn;
+                    i++; count++;
+                    _logger.Info(productLineDataArray[count]);
+                } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+                i = 2;
+            }
+
+
+            bool quantity = false;
+            bool productName = false;
+
+            foreach (DataDictionary data in compData)
+            {
+                MiscData compLine = JsonDataParser<MiscData>.ParseData(data.Value);
+                String quantityOfProduct = compLine.Quantity;
+                List<ProductDetail> addedProductDetails = compLine.ProductDetails;
+
+                int j = 0;
+
+                do
+                {
+                    if (quantityOfProduct.Contains(productLineDataArray[j]))
+                    {
+                        quantity = true;
+                        _logger.Info($"Quantity " + quantityOfProduct + " Is Correct.");
+                    }
+
+                    if (compLine.ProductDetails[0].Option.Contains(productLineDataArray[j]))
+                    {
+
+                        productName = true;
+                        _logger.Info($"Product Name " + compLine.ProductDetails[0].Option + " Is Correct.");
+
+                    }
+                    j++;
+                } while (productLineDataArray[j] != null);
+
+            }
+            if (quantity == true && productName == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public bool VerifyAccessory(List<DataDictionary> accessoryData)
+        {
+            WaitPolling();
+            driver.WaitForElementToBecomeVisibleWithinTimeout(InternalInfo, implicitWait);
+            WaitUntilPageload();
+            int i = 2;
+            int count = 0;
+            string[] productLineDataArray = new string[100];
+            for (int j = 2; j < 4; j++)
+            {
+                do
+                {
+                    string productColumn = driver.FindElement(By.XPath("//li[" + j + "]//div[" + i + "]")).GetText(driver);
+                    productLineDataArray[count] = productColumn;
+                    i++; count++;
+                    _logger.Info(productLineDataArray[count]);
+                } while (By.XPath("//li[2]//div[" + i + "]").isPresent(driver));
+                i = 2;
+            }
+
+            bool productName = false;
+            bool roomLocation = false;
+
+            foreach (DataDictionary data in accessoryData)
+            {
+                AccessoryDetail accessoryLine = JsonDataParser<AccessoryDetail>.ParseData(data.Value);
+                String quantityOfProduct = accessoryLine.Quantity;
+                String productNameInJson = accessoryLine.ProductType;
+                String ndbRoomLocationString = accessoryLine.NDBRoomLocation;
+                List<ProductDetail> addedProductDetails = accessoryLine.ProductDetails;
+
+                int j = 0;
+
+                do
+                {
+                   
+
+                    if (productNameInJson.Contains(productLineDataArray[j]))
+                    {
+                        _logger.Info($"Product Name " + productNameInJson);
+                        productName = true;
+                        break;
+
+                        }
+                    if (ndbRoomLocationString.Contains(productLineDataArray[j]))
+                    {
+                        roomLocation = true;
+                        break;
+                    }
+                    j++;
+                } while (productLineDataArray[j] != null);
+
+            }
+            if (roomLocation == true && productName == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// Function to verify quote creation.
+        /// </summary>
+        /// <returns></returns>
+        public bool VerifyQuoteCreation()
         {
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, QuoteActions, 60);
             bool quoteActions = false;
