@@ -80,6 +80,8 @@ namespace UnitTestNDBProject.Base
         public SearchPage _SearchPage { get; set; }
         public MeasurementAndInstallationPage _MeasurementAndInstallationPage { get; set; }
 
+        public NotePage _NotePage { get; set; }
+
         public QuickConfig _QuickConfig  { get; set; }
 
         /// <summary>
@@ -116,6 +118,7 @@ namespace UnitTestNDBProject.Base
             _OrderPage = new OrderPage(driver);
             _SearchPage = new SearchPage(driver);
             _QuickConfig = new QuickConfig(driver);
+            _NotePage = new NotePage(driver);
             _MeasurementAndInstallationPage = new MeasurementAndInstallationPage(driver);
             _BasePageClass.OpenURL();
             _logger.Info($" :Successfully executed the BeforeClassInitialization() method for {this.GetType().Name}");

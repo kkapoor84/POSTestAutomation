@@ -87,7 +87,7 @@ namespace UnitTestNDBProject.Utils
             try
             {
              
-                (new WebDriverWait(driver, TimeSpan.FromSeconds(30))).Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath(elementXPath)));
+                (new WebDriverWait(driver, TimeSpan.FromSeconds(45))).Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath(elementXPath)));
                 return null;
             }
             catch (TimeoutException e)

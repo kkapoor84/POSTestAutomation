@@ -173,9 +173,10 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//span[@class='form-label text-uppercase remove-form-label']")]
         public IWebElement OrderStatus { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//a[contains(text(),'NOTES')]")]
+        public IWebElement NoteLink { get; set; }
 
-
-
+        
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
@@ -201,6 +202,7 @@ namespace UnitTestNDBProject.Pages
 
         {
            driver.waitForElementNotVisible("//span[@class='search-label']");
+            WaitUntilPageload();
             driver.WaitForElement(OrderPageText);
 
             bool isOrderCreated = false;
@@ -255,13 +257,30 @@ namespace UnitTestNDBProject.Pages
         }
 
         /// <summary>
+        /// CLick on Note Link on order page
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage ClickOnNoteLink()
+        {
+           
+            driver.WaitForElement(NoteLink);
+            NoteLink.Clickme(driver);
+            _logger.Info($" User clicked on note link");
+            WaitUntilPageload();
+            return this;
+
+        }
+
+        
+
+        /// <summary>
         ///Function to click on add new payment button on order page
         /// </summary>
         /// <returns></returns>
 
         public OrderPage ClickOnNewPaymentButton()
         {
-
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             try
             {
                 IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
@@ -269,6 +288,7 @@ namespace UnitTestNDBProject.Pages
                 ex.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
                 NewPaymentButton.Clickme(driver);
                 _logger.Info($" User clicked on new payment button");
+
             }
             catch (Exception e)
             {
@@ -440,6 +460,7 @@ namespace UnitTestNDBProject.Pages
 
         public OrderPage ClickAddProductButton()
         {
+            WaitUntilPageload();
             Thread.Sleep(8000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
@@ -482,6 +503,7 @@ namespace UnitTestNDBProject.Pages
         }
         public void EditProductLineConfiguration(List<DataDictionary> editproductLineData)
         {
+            WaitUntilPageload();
             foreach (DataDictionary data in editproductLineData)
             {
                 EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
@@ -624,6 +646,7 @@ namespace UnitTestNDBProject.Pages
         {
             WaitUntilPageload();
             driver.WaitForElementToBecomeVisibleWithinTimeout(EditShipmentDetails, implicitWait);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
             EditShipmentDetails.Clickme(driver);
             return this;
         }
@@ -790,18 +813,30 @@ namespace UnitTestNDBProject.Pages
                String  amountPosted = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[7]//span")).GetText(driver);
             String date = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[5]//span")).GetText(driver);
 
-            String ExpectedAmountCollected = "$" + record.Amount;
-           String ExpectedAmountPosted  = "$" + record.Amount;
-
-            if (paymentMethod == record.PaymentMethod && amountCollected == ExpectedAmountCollected && amountPosted == ExpectedAmountPosted && date == (DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
+             if (paymentMethod.Equals("FINANCE"))
+            {
+                String ExpectedAmountCollected = "$" + PaymentPage.AmountHalf;
+                String ExpectedAmountPosted = "$" + PaymentPage.AmountHalf;
+                if (paymentMethod == record.PaymentMethod && amountCollected == ExpectedAmountCollected && amountPosted == ExpectedAmountPosted && date == (DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
                 {
-                isGridDataCorrect = true;
+                    isGridDataCorrect = true;
                 }
+            }
+            else
+            {
+                String ExpectedAmountCollected = "$" + record.Amount;
+                String ExpectedAmountPosted = "$" + record.Amount;
+                if (paymentMethod == record.PaymentMethod && amountCollected == ExpectedAmountCollected && amountPosted == ExpectedAmountPosted && date == (DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
+                {
+                    isGridDataCorrect = true;
+                }
+            }
 
             return isGridDataCorrect;
         }
 
-    
+      
+
 
         /// <summary>
         /// Listing All the key data of PaymentScreen
@@ -819,7 +854,7 @@ namespace UnitTestNDBProject.Pages
             ActualFilteredLosit.Add(checkPaymentData);
             PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(SmokeSuite.paymentParsedData);
             ActualFilteredLosit.Add(giftCardPaymentData);
-            PaymentData financePaymentData = PaymentPage.GetFinancePaymentData(SmokeSuite.paymentParsedData);
+            PaymentData financePaymentData = PaymentPage.GetFinanceShortDepositPaymentData(SmokeSuite.paymentParsedData);
             ActualFilteredLosit.Add(financePaymentData);
             return ActualFilteredLosit;
         }

@@ -238,7 +238,7 @@ namespace UnitTestNDBProject.Page
         /// <returns></returns>
         public QuotePage SaveQuoteButton()
         {
-            Thread.Sleep(4000);
+            Thread.Sleep(8000);
             WaitHelpers.WaitForElementToBecomeVisibleWithinTimeout(driver, SaveButton, 120);
             SaveButton.Clickme(driver);
             _logger.Info($": Successfully clicked save quote button.");
@@ -565,7 +565,7 @@ namespace UnitTestNDBProject.Page
     public QuotePage EnterWidth(string WidthEntered)
         {
             //Do not remove below Wait. This is essential to ensure that page has loaded
-            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+            new System.Threading.ManualResetEvent(false).WaitOne(5000);
             
             driver.WaitForElementToBecomeVisibleWithinTimeout(Width, 10000);
             Width.EnterText(WidthEntered);
@@ -685,6 +685,7 @@ namespace UnitTestNDBProject.Page
         /// <returns></returns>
         public QuotePage ClickAddProductButton()
         {
+            WaitUntilPageload();
             Thread.Sleep(5000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
@@ -999,6 +1000,7 @@ namespace UnitTestNDBProject.Page
         /// <param name="editproductLineData"></param>
         public void EditProductLineConfiguration(List<DataDictionary> editproductLineData)
         {
+            WaitUntilPageload();
             foreach (DataDictionary data in editproductLineData)
             {
                 EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
@@ -1659,6 +1661,7 @@ namespace UnitTestNDBProject.Page
         public QuotePage CopyToQuoteFromOrderPage()
         {
             WaitUntilPageload();
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             CopyToQuoteFromOrder.Clickme(driver);
             _logger.Info($" User clicked on copy to quote button");
              return this;
