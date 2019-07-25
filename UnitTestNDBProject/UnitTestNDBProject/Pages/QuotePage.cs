@@ -797,6 +797,10 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        /// <summary>
+        /// Function to add new accessory
+        /// </summary>
+        /// <param name="miscData"></param>
         public void AddAccessoryProduct(List<DataDictionary> miscData)
         {
             foreach (DataDictionary data in miscData)
@@ -878,6 +882,11 @@ namespace UnitTestNDBProject.Page
             
         }
 
+        /// <summary>
+        /// Function to verify components are added
+        /// </summary>
+        /// <param name="compData"></param>
+        /// <returns></returns>
         public bool VerifyComponents(List<DataDictionary> compData)
         {
             WaitPolling();
@@ -940,6 +949,11 @@ namespace UnitTestNDBProject.Page
 
         }
 
+        /// <summary>
+        /// Function to verify accessory creation
+        /// </summary>
+        /// <param name="accessoryData"></param>
+        /// <returns></returns>
         public bool VerifyAccessory(List<DataDictionary> accessoryData)
         {
             WaitPolling();

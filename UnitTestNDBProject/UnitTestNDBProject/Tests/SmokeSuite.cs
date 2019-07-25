@@ -607,7 +607,7 @@ namespace UnitTestNDBProject.Tests
         [Test, Order(36), Category("Smoke"), Description("Verify user able to create misc item.")]
         public void D7_VerifyAccessoryCreation()
         {
-           // _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
             _QuotePage.ClickOnAddNewQuote();
             _QuotePage.AddAccessoryProduct(accessoryproductLineFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyAccessory(accessoryproductLineFeatureParsedData.Data));
