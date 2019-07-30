@@ -588,7 +588,7 @@ namespace UnitTestNDBProject.Tests
 
 
         [Test, Order(34), Category("Smoke"), Description("Verify user able to create misc item.")]
-        public void D5_VerifyMiscCreation()
+        public void D7_VerifyMiscCreation()
         {
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
             _QuotePage.ClickOnAddNewQuote();
@@ -598,14 +598,14 @@ namespace UnitTestNDBProject.Tests
 
 
         [Test, Order(35), Category("Smoke"), Description("Verify user able to create misc item.")]
-        public void D6_VerifyComponentCreation()
+        public void D8_VerifyComponentCreation()
         {           
             _QuotePage.AddComponentProduct(componentproductLineFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyComponents(componentproductLineFeatureParsedData.Data));
         }
 
         [Test, Order(36), Category("Smoke"), Description("Verify user able to create misc item.")]
-        public void D7_VerifyAccessoryCreation()
+        public void D9_VerifyAccessoryCreation()
         {
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
             _QuotePage.ClickOnAddNewQuote();
