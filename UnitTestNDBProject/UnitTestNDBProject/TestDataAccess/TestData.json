@@ -444,7 +444,7 @@
 					"SkippingReason": "Other",
 					"SkippingReasonDetail": "AK - Alaska",
 					"ExitReasonDropDownValue": "Credit card declined",
-					"ReasonDetails": "Credit Card is not working currently",
+					"ReasonDetails": "Credit Card is not working currently-Check",
 					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
 					"PaymentMethod": "CHECK"
 
@@ -458,20 +458,36 @@
 					"GiftCardNumber": "91887-1140",
 					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
 					"ExitReasonDropDownValue": "Credit card declined",
-					"ReasonDetails": "Credit Card is not working currently",
+					"ReasonDetails": "Credit Card is not working currently-Gift Card",
 					"PaymentMethod": "GIFT CARD"
 					
 				}
 			},
 			{
-				"Key": "FinanceKey",
+				"Key": "FinanceShortDepositKey",
 				"Value": {
 					"Amount": "10.00",
 					"PaymentMethod": "FINANCE",
+					"ExitPaymentReasonShortDeposit": "I have made the partial payment, will make the rest payment in future-SHort Deposit",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently- Finance Key"
+				}
+			},
+			{
+				"Key": "NoDeposit",
+				"Value": {
+					"Amount": "0.00",
+					"PaymentMethod": "PENDING ORDER",
+					"NoDepositReason": "Other",
+					"ReasonDetails": "Will Make the payment in future- No Deposit"
+ 			            }
+			},{
+				"Key": "ShortDepositKey",
+				"Value": {
 					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
 					"ExitReasonDropDownValue": "Credit card declined",
-					"ReasonDetails": "Credit Card is not working currently"
-				}
+					"ReasonDetails": "Credit Card is not working currently- Short Deposit",
+ 			            }
 			}
 		
      ]

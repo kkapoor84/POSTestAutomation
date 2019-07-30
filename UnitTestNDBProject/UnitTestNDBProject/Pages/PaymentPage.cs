@@ -17,6 +17,7 @@ namespace UnitTestNDBProject.Page
     public class PaymentPage
     {
         public IWebDriver driver;
+        public static string AmountHalf;
         private Logger _logger = LogManager.GetCurrentClassLogger();
         public PaymentPage(IWebDriver driver)
         {
@@ -112,6 +113,12 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.Id, Using = "getCheckAuthorizationBypassReasonsId")]
         private IWebElement SkippingReason { get; set; }
 
+        [FindsBy(How = How.Id, Using = "depositWaivedReasonsId")]
+        private IWebElement NoDepositReason { get; set; }
+
+        [FindsBy(How = How.Id, Using = "text-paymentDetail")]
+        private IWebElement FutureDetails { get; set; }
+
 
         [FindsBy(How = How.Id, Using = "text-checkAuthorizationBypassComments")]
         private IWebElement SkippingDetails { get; set; }
@@ -147,6 +154,18 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.XPath, Using = "//span[@class='col-sm-6 head text-right pad-left-none text-word-break']")]
         public IWebElement OrderTotal { get; set; }
 
+
+        [FindsBy(How = How.Id, Using = "noDepositId")]
+        public IWebElement NoDepositButton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "shortDepositId")]
+        public IWebElement ShortDepositButton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "text-shortDeposit")]
+        public IWebElement FuturePaymentDetailTB { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnShortDeposit")]
+        public IWebElement ShortDepositCOntinueButton { get; set; }
         
 
 
@@ -156,9 +175,21 @@ namespace UnitTestNDBProject.Page
             return JsonDataParser<PaymentData>.ParseData(giftCardDataValue);
         }
 
-        public static PaymentData GetFinancePaymentData(ParsedTestData featureData)
+        public static PaymentData GetNoDepositPaymentData(ParsedTestData featureData)
         {
-            object financeDataValue = DataAccess.GetKeyJsonData(featureData, "FinanceKey");
+            object financeDataValue = DataAccess.GetKeyJsonData(featureData, "NoDeposit");
+            return JsonDataParser<PaymentData>.ParseData(financeDataValue);
+        }
+
+        public static PaymentData GetFinanceShortDepositPaymentData(ParsedTestData featureData)
+        {
+            object financeDataValue = DataAccess.GetKeyJsonData(featureData, "FinanceShortDepositKey");
+            return JsonDataParser<PaymentData>.ParseData(financeDataValue);
+        }
+
+        public static PaymentData GetShortDepositPaymentData(ParsedTestData featureData)
+        {
+            object financeDataValue = DataAccess.GetKeyJsonData(featureData, "ShortDepositKey");
             return JsonDataParser<PaymentData>.ParseData(financeDataValue);
         }
 
@@ -188,6 +219,31 @@ namespace UnitTestNDBProject.Page
             return JsonDataParser<PaymentData>.ParseData(paymentGridDataValue);
         }
 
+        /// <summary>
+        /// Click on No Deposit Button
+        /// </summary>
+        /// <returns></returns>
+        public PaymentPage ClickOnNoDeposit()
+        {
+            driver.WaitForElement(NoDepositButton);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            NoDepositButton.Clickme(driver);
+            return this;
+        }
+
+        /// <summary>
+        /// Click on Short Deposit button
+        /// </summary>
+        /// <returns></returns>
+        public PaymentPage ClickOnShortDeposit()
+        {
+            driver.WaitForElement(ShortDepositButton);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            ShortDepositButton.Clickme(driver);
+            return this;
+        }
+
+        
 
         /// <summary>
         /// Function to  make payment using gift card
@@ -215,6 +271,7 @@ namespace UnitTestNDBProject.Page
             driver.WaitForElement(OkButton);
             _logger.Info($" User clicked on ok button");
             OkButton.Clickme(driver);
+            new System.Threading.ManualResetEvent(false).WaitOne(4000);
             return this;
 
         }
@@ -223,17 +280,90 @@ namespace UnitTestNDBProject.Page
         /// Function to  to close exit payment popup screen
         /// </summary>
         /// <returns></returns>
-        public PaymentPage CloseExitPaymentPopup()
+        public PaymentPage ClickOnHomeIcon()
         {
             driver.waitForElementNotVisible("//div[@class='msg-container']");
             driver.WaitForElement(HomeIcon);
             new System.Threading.ManualResetEvent(false).WaitOne(1000);
             HomeIcon.Clickme(driver);
             _logger.Info($" User clicked on ome icon");
-            driver.WaitForElement(CancleButton);
-            CancleButton.Clickme(driver);
+            //driver.WaitForElement(CancleButton);
+            //CancleButton.Clickme(driver);
             _logger.Info($" User clicked on cancle button of exit payment popup");
             return this;
+        }
+
+        /// <summary>
+        /// Enter value in No deposit popup
+        /// </summary>
+        /// <param name="noDepositReason"></param>
+        /// <param name="futureDetails"></param>
+        /// <returns></returns>
+        public PaymentPage NoDepositPopup(String noDepositReason, String futureDetails)
+        {
+
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            Actions actions = new Actions(driver);
+            actions.SendKeys(NoDepositReason, noDepositReason).Build().Perform();
+            NoDepositReason.SendKeys(Keys.Enter);
+            _logger.Info($": Successfully Selected No Deposit Reason {noDepositReason}");
+            FutureDetails.EnterText(futureDetails);
+            _logger.Info($": Successfully Entered furure detail");
+            driver.WaitForElement(SkippingPopupButtonContinue);
+            SkippingPopupButtonContinue.Clickme(driver);
+            _logger.Info($": User clicked on continue button");            
+            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            return this;
+        }
+
+        /// <summary>
+        /// Enter value in fields on Short Deposit Popup
+        /// </summary>
+        /// <param name="noDepositReason"></param>
+        /// <param name="futureDetails"></param>
+        /// <returns></returns>
+        public PaymentPage ShortDepositPopup(String futureDetails)
+        {
+
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElement(FuturePaymentDetailTB);
+            FuturePaymentDetailTB.EnterText(futureDetails);
+            _logger.Info($": Successfully Entered furure detail");
+
+            driver.WaitForElement(ShortDepositCOntinueButton);
+            ShortDepositCOntinueButton.Clickme(driver);
+            _logger.Info($": User clicked on continue button");
+            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            return this;
+        }
+
+        /// <summary>
+        /// Wait untill page load
+        /// </summary>
+        /// <returns></returns>
+        public PaymentPage WaitUntilPageload()
+        {
+
+            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            _logger.Info($" Wait until loader is loaded");
+            return this;
+        }
+
+        /// <summary>
+        /// Click on exit payment button
+        /// </summary>
+        /// <returns></returns>
+        public PaymentPage ClickOnExitPaymentButton()
+        {
+
+            // driver.waitForElementNotVisible("//div[@class='msg-container']");
+            driver.WaitForElement(ExitPaymentScreenButton);
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
+            ex.ExecuteScript("arguments[0].click();", ExitPaymentScreenButton);
+            _logger.Info($" User clicked on ExitPaymentScreenButton");
+            WaitUntilPageload();
+            return this;
+
         }
 
         /// <summary>
@@ -243,19 +373,11 @@ namespace UnitTestNDBProject.Page
         /// <param name="exitreasonvalue"></param>
         /// <param name="reasondetail"></param>
         /// <returns></returns>
-        public PaymentPage ClickOnExitPayment(String exitReason,String exitreasonvalue, String reasondetail)
+        public PaymentPage FillPopupDetails(String exitreasonvalue, String reasondetail)
         {
-
-            driver.waitForElementNotVisible("//div[@class='msg-container']");
-
-            driver.WaitForElement(ExitPaymentScreenButton);
-            IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
-            ex.ExecuteScript("arguments[0].click();", ExitPaymentScreenButton);
-            _logger.Info($" User clicked on ExitPaymentScreenButton");
 
             try
             {
-
                 new System.Threading.ManualResetEvent(false).WaitOne(2000);
               //  driver.WaitForElement(ExitReasonDropDown);
                 Actions actions = new Actions(driver);
@@ -277,7 +399,7 @@ namespace UnitTestNDBProject.Page
                 {
                     new System.Threading.ManualResetEvent(false).WaitOne(2000);
                   //  driver.WaitForElement(ExitReasonTextBox);
-                    ExitReasonTextBox.EnterText(exitReason);
+                    ExitReasonTextBox.EnterText(reasondetail);
                     _logger.Info($" User entered text in ExitReasonTextBox");
                     driver.WaitForElement(ExitPopupContiueButton);
                     ExitPopupContiueButton.Clickme(driver);
@@ -353,10 +475,10 @@ namespace UnitTestNDBProject.Page
         /// </summary>
         /// <param name="CashAmount"></param>
         /// <returns></returns>
-        public PaymentPage MakeFinancePayment(String Amount)
+        public PaymentPage MakeFinancePayment()
         {
-
-            driver.WaitForElement(FinanceButton);
+           
+             driver.WaitForElement(FinanceButton);
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
             FinanceButton.Clickme(driver);
             _logger.Info($" User clicked on finance button");
@@ -364,7 +486,11 @@ namespace UnitTestNDBProject.Page
             _logger.Info($" User entered account number");
             AuthorizationCode.EnterText(CommonFunctions.RandomString());
             _logger.Info($" User entered authorization code");
-            AmountTextBox.EnterText(Amount);
+
+            String ActualAmountOnUI = driver.FindElement(By.XPath("//span[@class='col-sm-6 head text-right pad-left-none text-word-break']")).GetText(driver);
+            String Actual = ActualAmountOnUI.Substring(1);
+            AmountHalf = (Convert.ToDouble(Actual) / 2).ToString();
+            AmountTextBox.EnterText(AmountHalf);
             _logger.Info($" User entered amount");
             ProcessPaymentButton.Clickme(driver);
             _logger.Info($" Userclicked on process payment button");
