@@ -254,6 +254,54 @@
 			]
 			},
 	{
+	"Feature": "AccessoryScreen",
+		"Data": [{
+				"Key": "Assessory1",
+				"Value": {
+					"Width": "40",
+					"HeightDisabled" :"True",
+					"WidthDisabled" :"False",
+					"NDBRoomLocation": "Main Room",
+					"Quantity": 1,
+					"ProductType": "Wood Blinds (NW), Faux Wood Blinds - Valance Only",
+					"ProductDetails": 
+                                         [      
+						{
+							"OptionTypeId": "Mounting",
+							"Option": "Inside"
+						},
+						{
+							"OptionTypeId": "Color",
+							"Option": "Granite"
+						},
+						{
+							"OptionTypeId": "Valance",
+							"Option": "Standard"
+						}
+					]
+				}
+			},
+			{
+				"Key": "Assessory2",
+				"Value": {
+				    "Width": "40",
+					"HeightDisabled" :"True",
+					"WidthDisabled" : "True",
+					"NDBRoomLocation": "Kitchen",
+					"Quantity": 1,
+					"ProductType": "Wood Blinds (NW), Faux Wood Blinds - Remote Accessories",
+					"ProductDetails": 
+                                         [
+						{
+							"OptionTypeId": "RemoteAccessory",
+							"Option": "DECOF 4 WALL SWITCH IVORY"
+						}
+					]
+				}
+			}
+			]
+			},
+	{
 		"Feature": "InternalInfoScreen",
 		"Data": [{
 			"Key": "InternalInfoSection",

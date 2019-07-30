@@ -109,6 +109,15 @@ namespace UnitTestNDBProject.TestDataAccess
         public List<ProductDetail> ProductDetails { get; set; }
     }
 
+    public class AccessoryDetail
+    {
+        public string Width { get; set; }
+        public string Height { get; set; }
+        public string NDBRoomLocation { get; set; }
+        public string Quantity { get; set; }
+        public string ProductType { get; set; }
+        public List<ProductDetail> ProductDetails { get; set; }
+    }
 
     public class ProductDetail
     {

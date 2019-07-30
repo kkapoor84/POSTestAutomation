@@ -24,6 +24,7 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData productLineFeatureParsedData;
         private static ParsedTestData miscproductLineFeatureParsedData;
         private static ParsedTestData componentproductLineFeatureParsedData;
+        private static ParsedTestData accessoryproductLineFeatureParsedData;
         private static ParsedTestData productLineEditFeatureParsedData;
         private static ParsedTestData updateCustomerFeatureParsedData;
         private static ParsedTestData internalInfoParsedData;
@@ -58,6 +59,7 @@ namespace UnitTestNDBProject.Tests
             productLineFeatureParsedData = DataAccess.GetFeatureData("ProductLineScreen");
             miscproductLineFeatureParsedData = DataAccess.GetFeatureData("MiscellaneousScreen");
             componentproductLineFeatureParsedData = DataAccess.GetFeatureData("ComponentScreen");
+            accessoryproductLineFeatureParsedData = DataAccess.GetFeatureData("AccessoryScreen");
             //Get product line Edit feature data
             productLineEditFeatureParsedData = DataAccess.GetFeatureData("EditProductScreen");
             //Get data for Internal Infor Section
@@ -609,23 +611,32 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.OrderStatusAfterTransferVerification());
         }
 
-
-        [Test, Order(35), Category("Smoke"), Description("Verify user able to create misc item.")]
-        public void D8_VerifyMiscCreation()
-        {
-            _QuotePage.ClickOnAddNewQuote();
-            _QuotePage.AddMiscProduct(miscproductLineFeatureParsedData.Data);
-            Assert.True(_QuotePage.VerifyMiscAndComponents(miscproductLineFeatureParsedData.Data));
-        }
-
-
         [Test, Order(34), Category("Smoke"), Description("Verify user able to create misc item.")]
-        public void D7_VerifyComponentCreation()
+        public void D7_VerifyMiscCreation()
+
         {
             _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
-            _QuotePage.AddComponentProduct(componentproductLineFeatureParsedData.Data);
-            Assert.True(_QuotePage.VerifyMiscAndComponents(componentproductLineFeatureParsedData.Data));
+            _QuotePage.ClickOnAddNewQuote();
+            _QuotePage.AddMiscProduct(miscproductLineFeatureParsedData.Data);
+            Assert.True(_QuotePage.VerifyMisc(miscproductLineFeatureParsedData.Data));
         }
+
+        [Test, Order(35), Category("Smoke"), Description("Verify user able to create misc item.")]
+        public void D8_VerifyComponentCreation()
+        {           
+            _QuotePage.AddComponentProduct(componentproductLineFeatureParsedData.Data);
+            Assert.True(_QuotePage.VerifyComponents(componentproductLineFeatureParsedData.Data));
+        }
+
+        [Test, Order(36), Category("Smoke"), Description("Verify user able to create misc item.")]
+        public void D9_VerifyAccessoryCreation()
+        {
+            _SearchPage.ClickOnSearchLink().ClickOnOrderTab().EnterOrderToSearch("2028395").ClickOnSearchButton();
+            _QuotePage.ClickOnAddNewQuote();
+            _QuotePage.AddAccessoryProduct(accessoryproductLineFeatureParsedData.Data);
+            Assert.True(_QuotePage.VerifyAccessory(accessoryproductLineFeatureParsedData.Data));
+        }
+        
         /// <summary>
         /// Tear Down function
         /// </summary>
