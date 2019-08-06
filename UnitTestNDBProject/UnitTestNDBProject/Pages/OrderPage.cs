@@ -37,6 +37,7 @@ namespace UnitTestNDBProject.Pages
 
         public static int beforeCount = 0;
         public static int afterCount = 0;
+        public static int k = 0;
         // Constants objectConstant = new Constants();
 
         private static ParsedTestData storeParser;
@@ -176,6 +177,17 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//a[contains(text(),'NOTES')]")]
         public IWebElement NoteLink { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "(//div[@class='row internal-info'])[2]//div[2]/a[contains(text(),'EDIT')]")]
+        public IWebElement POEditButton1 { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='col-sm-4 text-right']//a[contains(@class,'edit-action')][contains(text(),'EDIT')]")]
+        public IWebElement POEditButton { get; set; }
+
+        [FindsBy(How = How.Id, Using = "purchaseOrderAgreementNumberId")]
+        public IWebElement POAgreementNumberEdit { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//button[@class='btn-outline']")]
+        public IWebElement POSaveButton { get; set; }
         
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
@@ -271,7 +283,20 @@ namespace UnitTestNDBProject.Pages
 
         }
 
-        
+        /// <summary>
+        /// Navigate to POEdit button
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage ScrollWebPageTillEnd()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
+                //This will scroll the web page till end.		
+                ex.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+            return this;
+
+        }
+
 
         /// <summary>
         ///Function to click on add new payment button on order page
@@ -748,6 +773,16 @@ namespace UnitTestNDBProject.Pages
             }
             return this;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+    
+
+
+        //span[contains(text(),'Purchase Order Agreement Number*')]
+
         /// <summary>
         /// Function to verifypayment grid data on order page
         /// </summary>
@@ -802,7 +837,80 @@ namespace UnitTestNDBProject.Pages
             return IsDataMatched;
         }
 
+        /// <summary>
+        /// Verify PO payment grid data
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        public Boolean VerifyPOGridData(PaymentData record)
+        {
+            bool isGridDataCorrect = false;
 
+            String Amount = driver.FindElement(By.XPath("//div[@class='gutter-top']//div[@class='row form-group label-inline']/div[2]/span")).GetText(driver);
+            String SalesPerson = driver.FindElement(By.XPath("//div[@class='gutter-top']//div[@class='row form-group label-inline']/div[3]/span")).GetText(driver);
+             String AgreementNumber = driver.FindElement(By.XPath("//div[@class='gutter-top']//div[@class='row form-group label-inline']/div[1]/span")).GetText(driver);
+             String AgrementLabeltext = driver.FindElement(By.XPath("//div[@class='box internal-info-section']//div[1]//label[1]")).GetText(driver);
+
+                if (AgrementLabeltext.Contains('*'))
+                {
+                          if (AgreementNumber == record.AgreementNumber && Amount == PaymentPage.POAmount && SalesPerson == record.SalesPerson)
+                        {
+                            isGridDataCorrect = true;
+                        }
+
+                }
+                else
+                {
+                        if (AgreementNumber == "" && Amount == PaymentPage.POAmount && SalesPerson == record.SalesPerson)
+                        {
+                            isGridDataCorrect = true;
+                        }
+                }
+
+            return isGridDataCorrect;
+        }
+
+        /// <summary>
+        /// Verify PO payment data after edit
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        public Boolean VerifyPOGridDataAfterEdit(PaymentData record)
+        {
+            bool isGridDataCorrect = false;
+
+            String Amount = driver.FindElement(By.XPath("//div[@class='gutter-top']//div[@class='row form-group label-inline']/div[2]/span")).GetText(driver);
+            String SalesPerson = driver.FindElement(By.XPath("//div[@class='gutter-top']//div[@class='row form-group label-inline']/div[3]/span")).GetText(driver);
+            String AgreementNumber = driver.FindElement(By.XPath("//div[@class='gutter-top']//div[@class='row form-group label-inline']/div[1]/span")).GetText(driver);
+            String AgrementLabeltext = driver.FindElement(By.XPath("//div[@class='box internal-info-section']//div[1]//label[1]")).GetText(driver);
+
+                if (AgrementLabeltext.Contains('*'))
+
+                {
+                        if (AgreementNumber == record.AgreementNumber2 && Amount == PaymentPage.POAmount && SalesPerson == record.SalesPerson)
+                        {
+                            isGridDataCorrect = true;
+                        }
+                }
+                else
+                {
+                        if (AgreementNumber == record.AgreementNumber3 && Amount == PaymentPage.POAmount && SalesPerson == record.SalesPerson)
+                        {
+                            isGridDataCorrect = true;
+                        }
+
+                }
+
+            return isGridDataCorrect;
+        }
+
+
+
+        /// <summary>
+        /// Verify Payment Grid Data
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
         public Boolean VerifyPaymentGridData(PaymentData record)
         {
             bool isGridDataCorrect = false;
@@ -1090,5 +1198,32 @@ namespace UnitTestNDBProject.Pages
             _logger.Info(" : Verified Correct Status Of Order is Updated.");
             return correctStatus;
         }
+
+
+
+        public OrderPage EditPOPayment()
+        {
+            driver.WaitForElement(POEditButton);
+            POEditButton.Clickme(driver);
+            return this;
+        }
+
+        public OrderPage EnterAgreementNo(String no)
+        {
+            driver.WaitForElement(POAgreementNumberEdit);
+            POAgreementNumberEdit.EnterText(no);
+            return this;
+        }
+        public OrderPage ClickOnPOSaveButton()
+        {
+            driver.WaitForElement(POSaveButton);
+            POSaveButton.Clickme(driver);
+            WaitUntilPageload();
+            return this;
+        }
+
+
+
+
     }
 }

@@ -18,7 +18,7 @@
 				"Key": "AccountUserValidCredentails",
 				"Value": {
 					"UserName": "Pos-acctrec",
-					"Password": "Pos@ndb19"
+					"Password": "Retail@ndb19"
 				}
 			}
 		]
@@ -63,7 +63,9 @@
 						"TaxIdNumber": "111111111",
 						"TaxState": "CT"
 					}
-				]
+				],
+				"POStatus":"Active",
+				"CreditLimit":"1000"
 			}
 		}]
 	},
@@ -309,6 +311,7 @@
 				"NickName": "AutomationQuote",
 				"Group":"B",
 				"StoreCode": "S7 - SAH #S7-LINDA LAMB",
+				"StoreCodeBP": "BP - Builder Program",
 				"SalesPerson":"NORMAN MEYERS",
 				"Sidemark": [{
 						"SidemarkText": "JSONSidemark"
@@ -487,6 +490,18 @@
 					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
 					"ExitReasonDropDownValue": "Credit card declined",
 					"ReasonDetails": "Credit Card is not working currently- Short Deposit",
+ 			            }
+			},{
+				"Key": "POKey",
+				"Value": {
+					"AgreementNumber": "1234",
+					"AgreementNumber2": "5678",
+					"AgreementNumber3": "8765",
+					"Amount": "100.00",
+					"ExitPaymentReason": "I have made the partial payment, will make the rest payment in future",
+					"ExitReasonDropDownValue": "Credit card declined",
+					"ReasonDetails": "Credit Card is not working currently-Gift Card",
+					"SalesPerson":"KAVITA PATEL ACCOUNTING"
  			            }
 			}
 		

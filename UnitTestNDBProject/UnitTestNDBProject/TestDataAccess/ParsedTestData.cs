@@ -40,6 +40,10 @@ namespace UnitTestNDBProject.TestDataAccess
         public List<Email> Emails { get; set; }
         public List<Address> Addresses { get; set; }
         public List<TaxNumber> TaxNumbers { get; set; }
+        public string POStatus { get; set; }
+        public string CreditLimit { get; set; }
+        
+            
 
     }
 
@@ -143,6 +147,8 @@ namespace UnitTestNDBProject.TestDataAccess
     public class InternalInfoData
     {
         public string StoreCode { get; set; }
+        public string StoreCodeBP { get; set; }
+        
         public List<SideMark> Sidemark { get; set; }
         public string Nickname { get; set; }
         public string Group { get; set; }
@@ -243,6 +249,12 @@ namespace UnitTestNDBProject.TestDataAccess
         public string WarningMessageOnPayment { get; set; }
         public string PaymentMethod { get; set; }
         public string NoDepositReason { get; set; }
+        public string AgreementNumber { get; set; }
+        public string SalesPerson { get; set; }
+
+        public string AgreementNumber2 { get; set; }
+        public string AgreementNumber3 { get; set; }
+
         public List<GridRecord> GridData { get; set; }
 
 

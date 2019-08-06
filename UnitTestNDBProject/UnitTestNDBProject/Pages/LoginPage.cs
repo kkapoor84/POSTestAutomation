@@ -55,6 +55,7 @@ namespace UnitTestNDBProject.Pages
         {
             loginButton.Clickme(driver);
             _logger.Info($": Login button clicked");
+            new System.Threading.ManualResetEvent(false).WaitOne(4000);
             return this;
         }
 
@@ -88,5 +89,10 @@ namespace UnitTestNDBProject.Pages
         {
             return GetLoginDataByKey(loginFeatureParsedData, "SAHUserValidCredentails");
         }
+        public static LoginData GetAccounttantUserLoginData(ParsedTestData loginFeatureParsedData)
+        {
+            return GetLoginDataByKey(loginFeatureParsedData, "AccountUserValidCredentails");
+        }
+
     }
 }

@@ -18,6 +18,7 @@ namespace UnitTestNDBProject.Page
     {
         public IWebDriver driver;
         public static string AmountHalf;
+        public static string POAmount;
         private Logger _logger = LogManager.GetCurrentClassLogger();
         public PaymentPage(IWebDriver driver)
         {
@@ -39,6 +40,11 @@ namespace UnitTestNDBProject.Page
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'CREDIT CARD')]")]
         private IWebElement CreditCardButton { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'PURCHASE ORDER')]")]
+        private IWebElement POButton { get; set; }
+
+        
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'NDB GIFT CARD')]")]
         private IWebElement GiftCardButton { get; set; }
@@ -166,6 +172,10 @@ namespace UnitTestNDBProject.Page
 
         [FindsBy(How = How.Id, Using = "btnShortDeposit")]
         public IWebElement ShortDepositCOntinueButton { get; set; }
+
+
+        [FindsBy(How = How.Id, Using = "purchaseOrderNumberId")]
+        public IWebElement AgreementNumber { get; set; }
         
 
 
@@ -196,6 +206,12 @@ namespace UnitTestNDBProject.Page
         public static PaymentData GetCheckPaymentData(ParsedTestData featureData)
         {
             object checkDataValue = DataAccess.GetKeyJsonData(featureData, "CheckKey");
+            return JsonDataParser<PaymentData>.ParseData(checkDataValue);
+        }
+
+        public static PaymentData GetPOPaymentData(ParsedTestData featureData)
+        {
+            object checkDataValue = DataAccess.GetKeyJsonData(featureData, "POKey");
             return JsonDataParser<PaymentData>.ParseData(checkDataValue);
         }
 
@@ -242,8 +258,21 @@ namespace UnitTestNDBProject.Page
             ShortDepositButton.Clickme(driver);
             return this;
         }
+        /// <summary>
+        /// Agreement number for BP store
+        /// </summary>
+        /// <returns></returns>
+        public Boolean VerifyAgreementNoisNotMandatory()
+        {
+            bool IsNotMandatory = true;
+            WaitUntilPageload();
+            if (By.XPath("//span[contains(text(),'Purchase Order Agreement Number*')]").isPresent(driver))
+            {
+                IsNotMandatory = false;
+            }
 
-        
+            return IsNotMandatory;
+        }
 
         /// <summary>
         /// Function to  make payment using gift card
@@ -655,6 +684,68 @@ namespace UnitTestNDBProject.Page
 
 
         }
+
+        /// <summary>
+        /// Function to click on purchase order button
+        /// </summary>
+        /// <returns></returns>
+        public PaymentPage ClickOnPurchaseOrderButton()
+        {
+
+            driver.WaitForElement(CreditCardButton);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            POButton.Clickme(driver);
+            _logger.Info($": User clicked on purchase order button");
+            driver.waitForElementNotVisible("//div[@class='loader-overlay-section']");
+            return this;
+
+
+        }
+        /// <summary>
+        /// Function to click on EnterAgreementNumber
+        /// </summary>
+        /// <param name="agreementno"></param>
+        /// <returns></returns>
+        public PaymentPage EnterAgreementNumber(String agreementno)
+        {
+            driver.WaitForElement(AgreementNumber);
+            AgreementNumber.EnterText(agreementno);
+            
+            return this;
+
+
+        }
+        /// <summary>
+        /// Function to click on enter amount
+        /// </summary>
+        /// <returns></returns>
+        public PaymentPage EnterAmount()
+        {
+            POAmount = driver.FindElement(By.XPath("//span[@class='col-sm-6 head text-right pad-left-none text-word-break']")).GetText(driver);
+            driver.WaitForElement(AmountTextBox);
+            AmountTextBox.SendKeys(POAmount);
+            _logger.Info($": User entered amount");
+                      return this;
+
+
+        }
+        /// <summary>
+        /// Function to click on process payment
+        /// </summary>
+        /// <returns></returns>
+        public PaymentPage ClickOnProcessPayment()
+        {
+
+             ProcessPaymentButton.Clickme(driver);
+            _logger.Info($": User clicked on process payment button");
+            new System.Threading.ManualResetEvent(false).WaitOne(4000);
+            WaitUntilPageload();
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            return this;
+
+
+        }
+
         /// <summary>
         /// Function to verify the max transaction warning tax popup on payment screen
         /// </summary>
