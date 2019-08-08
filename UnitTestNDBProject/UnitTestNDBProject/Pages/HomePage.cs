@@ -58,6 +58,7 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//a[contains(text(),'Log Out')]")]
         public IWebElement signoutButton { get; set; }
 
+
         [FindsBy(How = How.XPath, Using = "//div[contains(text(),'LEADS')]")]
         public IWebElement SAPLead { get; set; }
 
@@ -78,6 +79,7 @@ namespace UnitTestNDBProject.Pages
 
         public void Signout()
         {
+            new System.Threading.ManualResetEvent(false).WaitOne(4000);
             homeSignoutIcon.Clickme(driver);
             _logger.Info($": Successfully Clicked on Signout button");
             driver.WaitForElement(signoutButton);

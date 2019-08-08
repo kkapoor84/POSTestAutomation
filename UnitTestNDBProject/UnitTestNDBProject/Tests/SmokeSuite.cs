@@ -636,7 +636,88 @@ namespace UnitTestNDBProject.Tests
             _QuotePage.AddAccessoryProduct(accessoryproductLineFeatureParsedData.Data);
             Assert.True(_QuotePage.VerifyAccessory(accessoryproductLineFeatureParsedData.Data));
         }
-        
+
+        [Test, Order(37), Category("Smoke"), Description("Verify user able to create misc item.")]
+        public void E1_VerifyPurchaseOrderFlow()
+        {
+            string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
+            string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
+
+           // _HomePage.Signout();
+
+            //Login via Accountant user
+            LoginData loginData = LoginPage.GetAccounttantUserLoginData(loginFeatureParsedData);
+            _LoginPage.EnterUserName(loginData.Username).EnterPassword(loginData.Password).ClickLoginButton();
+   
+            //Customer created with POlimit
+            _EnterNewCustomerPage.ClickEnterNewCustomerButton().EnterFirstName(firstNameUnique).EnterLastName(lastNameUnique);
+            _EnterNewCustomerPage.AddCustomerPhones(newCustomerData.Phones);
+            _EnterNewCustomerPage.AddCustomerEmails(newCustomerData.Emails);
+             _EnterNewCustomerPage.ClickOnAddressLine1().ContinueNewCustomerCreation();
+            _EnterNewCustomerPage.AddCustomerAddresses(newCustomerData.Addresses);
+            _EnterNewCustomerPage.AddCustomerTaxNumbers(newCustomerData.TaxNumbers);
+            _EnterNewCustomerPage.SelectPOStatus(newCustomerData.POStatus).EnterCreditLimit(newCustomerData.CreditLimit);
+            _EnterNewCustomerPage.ClickSaveButton().VerifySmartyStreet();
+             Assert.True(_EnterNewCustomerPage.VerifyCustomerCreation("Open Activity"));
+
+            //Quote created with product line
+            ProductLineData ProductLineData = QuotePage.GetProductLine1Data(productLineFeatureParsedData);
+            _QuotePage.ClickOnAddNewQuote().SaveQuoteButton();
+            Assert.True(_QuotePage.VerifyErrorPopup());
+            _QuotePage.OkOnErrorMessage().UpdateInternalInfo().UpdateStoreCode(internalInforData.StoreCode).ApplyInternalInfoUpdates().AddProduct(ProductLineData);
+
+            //Add Direction on installation page
+            MeasurementAndInstallationData measurmentAIData = MeasurementAndInstallationPage.GetMeasurementAndInstallationData(measurementAndInstallationParsedData);
+            _QuotePage.ClickOnEditButtonOfMeasurementAndInstallation();
+            _MeasurementAndInstallationPage.AddDirections(measurmentAIData.Directions).ClickOnSaveChangesButton();
+            _QuotePage.ScrollWebPageTillEnd(); 
+
+            //Convert quote to order
+            _QuotePage.WaitUntilPageload();
+            _QuotePage.ClickOnConvertToQuote();
+            Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
+
+            //Make PO payment 1st time
+            PaymentData POPaymentData = PaymentPage.GetPOPaymentData(paymentParsedData);
+            _PaymentPage.ClickOnPurchaseOrderButton().EnterAgreementNumber(POPaymentData.AgreementNumber).EnterAmount().ClickOnProcessPayment();
+             _OrderPage.ScrollWebPageTillEnd();
+
+            //Verify PO Payment row
+            Assert.True(_OrderPage.VerifyPOGridData(POPaymentData));
+
+            //Verify PO Payment row after edit
+            _OrderPage.EditPOPayment().EnterAgreementNo(POPaymentData.AgreementNumber2).ClickOnPOSaveButton().ScrollWebPageTillEnd();
+            Assert.True(_OrderPage.VerifyPOGridDataAfterEdit(POPaymentData));
+
+            //Copy Quote
+            _QuotePage.CopyToQuoteFromOrderPage().UpdateInternalInfo().UpdateStoreCode(internalInforData.StoreCodeBP).ApplyInternalInfoUpdates().SaveChanges().OkOnErrorMessage().WaitUntilPageload();
+
+            //Add Direction on installation page
+            _QuotePage.ClickOnEditButtonOfMeasurementAndInstallation();
+            _MeasurementAndInstallationPage.AddDirections(measurmentAIData.Directions).ClickOnSaveChangesButton();
+
+            //Convert quote to order
+            _QuotePage.WaitUntilPageload();
+            _QuotePage.ScrollWebPageTillEnd();
+            _QuotePage.ClickOnConvertToQuote();
+            Assert.True(_QuotePage.VerifyUserIsNavigatedToPaymentPage());
+
+            //Make PO payment 2nd time
+            _PaymentPage.ClickOnPurchaseOrderButton();
+             Assert.True(_PaymentPage.VerifyAgreementNoisNotMandatory());
+            _PaymentPage.EnterAmount().ClickOnProcessPayment();
+
+            //Verify PO Payment row
+            Assert.True(_OrderPage.VerifyPOGridData(POPaymentData));
+
+            //Verify PO Payment row after edit
+            _OrderPage.EditPOPayment().EnterAgreementNo(POPaymentData.AgreementNumber3).ClickOnPOSaveButton().ScrollWebPageTillEnd();
+            Assert.True(_OrderPage.VerifyPOGridDataAfterEdit(POPaymentData));
+
+
+        }
+
+
         /// <summary>
         /// Tear Down function
         /// </summary>

@@ -182,8 +182,13 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.Id, Using = "btnCancelUpper")]
         public IWebElement CancelButton { get; set; }
-        
 
+        [FindsBy(How = How.Id, Using = "purchaseOrder")]
+        public IWebElement POStatus { get; set; }
+
+        [FindsBy(How = How.Id, Using = "creditLimit")]
+        public IWebElement CreditLimit { get; set; }
+        
 
 
         /// <summary>
@@ -1289,6 +1294,29 @@ namespace UnitTestNDBProject.Pages
             return isMessagePopulate;
         }
 
+        /// <summary>
+        /// Select payment order status
+        /// </summary>
+        /// <param name="taxstatevalue"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public EnterNewCustomerPage SelectPOStatus(String postatus)
+        {
+            Actions actions_ = new Actions(driver);
+            actions_.SendKeys((POStatus), postatus).Build().Perform();
+            POStatus.SendKeys(Keys.Enter);
+            _logger.Info($": Successfully Selected POSttaus {postatus}");
+            return this;
+        }
+
+        public EnterNewCustomerPage EnterCreditLimit(String limit)
+        {
+            CreditLimit.EnterText(limit);
+            _logger.Info($": Successfully Entered CreditLimit POSttaus {limit}");
+            return this;
+        }
+
+        
         /// <summary>
         /// Function to add tax numbers
         /// </summary>

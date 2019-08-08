@@ -231,6 +231,11 @@ namespace UnitTestNDBProject.Page
             return JsonDataParser<TaxExemptionData>.ParseData(validTaxData);
         }
 
+        public static ProductLineData GetProductLine1Data(ParsedTestData featureData)
+        {
+            object ProductLine1Value = DataAccess.GetKeyJsonData(featureData, "Product1");
+            return JsonDataParser<ProductLineData>.ParseData(ProductLine1Value);
+        }
 
         /// <summary>
         /// Function to click save quote button.
@@ -547,7 +552,21 @@ namespace UnitTestNDBProject.Page
             return this;
         }
 
- 
+        /// <summary>
+        /// Scroll down the page
+        /// </summary>
+        /// <returns></returns>
+        public QuotePage ScrollWebPageTillEnd()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
+            //This will scroll the web page till end.		
+            ex.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+            return this;
+
+        }
+
+
         /// <summary>
         /// Wait until page is loaded
         /// </summary>
@@ -726,12 +745,21 @@ namespace UnitTestNDBProject.Page
             {
                 WaitUntilPageload();
                 ProductLineData productLine = JsonDataParser<ProductLineData>.ParseData(data.Value);
-                // Thread.Sleep(4000);
                 new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
                 ClickOnAddProduct().WaitUntilPageload().EnterWidth(productLine.Width).EnterHeight(productLine.Height).EnterRoomLocation(productLine.NDBRoomLocation)
                     .SelectProduct(productLine.ProductType).SelectProductOptions(productLine.ProductDetails).ClickAddProductButton().WaitUntilPageload();
             }
         }
+        public void AddProduct(ProductLineData data)
+        {
+            List<string> newEmails = new List<string>();
+            WaitUntilPageload();
+            new System.Threading.ManualResetEvent(false).WaitOne(implicitWait);
+            ClickOnAddProduct().WaitUntilPageload().EnterWidth(data.Width).EnterHeight(data.Height).EnterRoomLocation(data.NDBRoomLocation)
+                .SelectProduct(data.ProductType).SelectProductOptions(data.ProductDetails).ClickAddProductButton().WaitUntilPageload();
+
+        }
+
 
         /// <summary>
         /// Function to select Misc product Type
@@ -1468,7 +1496,7 @@ namespace UnitTestNDBProject.Page
         /// <returns></returns>
         public QuotePage ClickOnEditButtonOfMeasurementAndInstallation()
         {
-            new System.Threading.ManualResetEvent(false).WaitOne(3000);
+            new System.Threading.ManualResetEvent(false).WaitOne(6000);
             driver.WaitForElement(EditButtonOfAddress);
             EditButtonOfAddress.Clickme(driver);
             return this;
@@ -1698,6 +1726,7 @@ namespace UnitTestNDBProject.Page
         /// <returns></returns>
         public QuotePage ClickOnConvertToQuote()
         {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("window.scrollBy(0,500)");
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
