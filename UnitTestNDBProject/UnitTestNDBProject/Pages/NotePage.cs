@@ -76,8 +76,8 @@ namespace UnitTestNDBProject.Page
         public Boolean VerifyShortDepositReasonAndDetailOnNotePage(String ExpDetail)
         {
             Boolean IsDetailCorrect = false;
-            String ShortDepositHeader = driver.FindElement(By.XPath("//div[@class='notes-right-panel']//span[contains(text(),'Short Deposit Note')]")).GetText(driver);
-            String ActualDetail = driver.FindElement(By.XPath("//span[contains(text(),'Short Deposit Note')]/following-sibling::span")).GetText(driver);
+            String ShortDepositHeader = driver.FindElement(By.XPath("//div[@class='notes-right-panel']//div[contains(text(),'Short Deposit Note')]")).GetText(driver);
+            String ActualDetail = driver.FindElement(By.XPath("//div[contains(text(),'Short Deposit Note')]/following-sibling::span")).GetText(driver);
 
             if (ShortDepositHeader.Contains("Short Deposit Note"))
             {

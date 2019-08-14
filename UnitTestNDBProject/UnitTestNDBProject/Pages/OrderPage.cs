@@ -188,7 +188,10 @@ namespace UnitTestNDBProject.Pages
 
         [FindsBy(How = How.XPath, Using = "//button[@class='btn-outline']")]
         public IWebElement POSaveButton { get; set; }
-        
+        [FindsBy(How = How.Id, Using = "leadNumberInput")]
+        public IWebElement LeadNo { get; set; }
+
+
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
         public static ReasonsData ReadcancelReasonData(ParsedTestData featureData)
@@ -1120,6 +1123,19 @@ namespace UnitTestNDBProject.Pages
             Actions actions = new Actions(driver);
             actions.SendKeys(EditSignatures, "Electronic").SendKeys(Keys.Enter).Build().Perform();
             _logger.Info($": Signature set to signed signature for the order");
+            return this;
+        }
+
+        /// <summary>
+        /// Adding lead number
+        /// </summary>
+        /// <returns></returns>
+        public OrderPage AddLeadNumber(String leadno)
+        {
+
+            driver.WaitForElement(LeadNo);
+            LeadNo.SendKeys(leadno);
+            _logger.Info($": Successfully Entered Lead Number {leadno}");
             return this;
         }
 

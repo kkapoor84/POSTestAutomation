@@ -604,7 +604,7 @@ namespace UnitTestNDBProject.Tests
         {
             _QuotePage.ClickOnConvertToQuote();
             _PaymentPage.cashPaymentForFullPayment().CalculateCashPayment().ProcessPaymentButtonClick();
-            _OrderPage.NavigateToTopOfTheOrderPage().EditInternalInfoButton().UpdateSignature().ApplyChangesToInternalInfoSection().ClickOnSaveOrderButton().TransferToProduction();
+            _OrderPage.NavigateToTopOfTheOrderPage().EditInternalInfoButton().UpdateSignature().ApplyChangesToInternalInfoSection().AddLeadNumber(internalInforData.Leadnumber).ClickOnSaveOrderButton().TransferToProduction();
             Assert.True(_OrderPage.VerifyOrderIsCreated());
             _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.CurrentDatePopupatedVerification());
@@ -643,7 +643,7 @@ namespace UnitTestNDBProject.Tests
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
             string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
 
-           // _HomePage.Signout();
+          //  _HomePage.Signout();
 
             //Login via Accountant user
             LoginData loginData = LoginPage.GetAccounttantUserLoginData(loginFeatureParsedData);
@@ -711,6 +711,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyPOGridData(POPaymentData));
 
             //Verify PO Payment row after edit
+            _QuotePage.ScrollWebPageTillEnd();
             _OrderPage.EditPOPayment().EnterAgreementNo(POPaymentData.AgreementNumber3).ClickOnPOSaveButton().ScrollWebPageTillEnd();
             Assert.True(_OrderPage.VerifyPOGridDataAfterEdit(POPaymentData));
 
