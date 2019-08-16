@@ -32,6 +32,7 @@ namespace UnitTestNDBProject.Tests
         private static ParsedTestData adjustmentParsedData;
         private static ParsedTestData taxParsedData;
         public static ParsedTestData paymentParsedData;
+        public static ParsedTestData refundParsedData;
         private static ParsedTestData reasonsParser;
         private static ParsedTestData storeParser;
         private static ParsedTestData searchParser;
@@ -69,6 +70,7 @@ namespace UnitTestNDBProject.Tests
             adjustmentParsedData = DataAccess.GetFeatureData("AddAdjustmentsPopup");
             taxParsedData = DataAccess.GetFeatureData("TaxExemptionPopup");
             paymentParsedData = DataAccess.GetFeatureData("PaymentScreen");
+            refundParsedData = DataAccess.GetFeatureData("RefundScreen");
             reasonsParser = DataAccess.GetFeatureData("Reasons");
             storeParser = DataAccess.GetFeatureData("StoreCode");
             searchParser = DataAccess.GetFeatureData("Search");
@@ -459,6 +461,28 @@ namespace UnitTestNDBProject.Tests
         //     Assert.True(_OrderPage.VerifyGridData(_OrderPage.ExpectedDataForGridVerification()));
 
         //}
+
+        [Test, Order(20), Category("Smoke"), Description("Refund for Check-Skip Verification")]
+        public void C1_VerifyRefundForCheckPayment()
+        {
+            PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
+            RefundData refundData = PaymentPage.GetRefundData(refundParsedData);
+
+            //Making refund for Cash/Check Payment Method and Entering Half Amount for refund
+            _OrderPage.ClickOnHambergerForCheck().ClickOnRefund();
+            _OrderPage.SelectRefundMethod(refundData.RefundMethod,refundData.RefundMethod2).EnterRefundAmount(checkPaymentData.Amount).SelectRefundReason(refundData.RefundReason).EnterReasonDetails(refundData.RefundDetails).ClickOnProcessPaymentButton().ClickOnContinueButton();
+            _QuotePage.ScrollWebPageTillEnd();
+
+            Assert.True(_OrderPage.VerifyRefundGridData(refundData, checkPaymentData));
+            
+            //Making refund for Mail Check Payment Method and Entering Rest Amount for refund
+            _OrderPage.ClickOnHambergerForCheck().ClickOnRefund();
+            _OrderPage.SelectRefundMethod(refundData.RefundMethod, refundData.RefundMethod2).EnterRefundAmount(checkPaymentData.Amount).SelectRefundReason(refundData.RefundReason).EnterReasonDetails(refundData.RefundDetails).ClickOnProcessPaymentButton().ClickOnContinueButton();
+            _QuotePage.ScrollWebPageTillEnd();
+
+            Assert.True(_OrderPage.VerifyRefundGridData(refundData, checkPaymentData));
+        }
+
 
         [Test, Order(22), Category("Smoke"), Description("Verify Product Copy")]
         public void C4_VerifyCopyproductLineForOrder()

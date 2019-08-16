@@ -28,6 +28,7 @@ namespace UnitTestNDBProject.Pages
         public IWebDriver driver;
         private Logger _logger = LogManager.GetCurrentClassLogger();
         public int precount = 1;
+        public static string Half;
         public OrderPage(IWebDriver driver)
         {
             this.driver = driver;
@@ -38,6 +39,8 @@ namespace UnitTestNDBProject.Pages
         public static int beforeCount = 0;
         public static int afterCount = 0;
         public static int k = 0;
+        public static int i = 0;
+        public static int r = 0;
         // Constants objectConstant = new Constants();
 
         private static ParsedTestData storeParser;
@@ -191,6 +194,30 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.Id, Using = "leadNumberInput")]
         public IWebElement LeadNo { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//span[text()='CHECK']/ancestor::li//div[@class='dot-btn']/span")]
+        public IWebElement HambergerOFCheckPayment { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//li[@class='data-holder  active-action-btn']/div[1]//span[text()='PAYMENT']/parent::div/parent::div//following-sibling::div[8]//span[text()='Refund']")]
+        public IWebElement RefundforCheck { get; set; }
+        ////span[text()='PAYMENT']/ancestor::div[@class='holder-col col-desc']/following-sibling::div//span[text()='CHECK']/ancestor::li//ul[@class='action-popup']//span[text()='Refund']
+        
+
+        [FindsBy(How = How.Id, Using = "text-refundAmount")]
+        public IWebElement RefundAmount { get; set; }
+
+        [FindsBy(How = How.Id, Using = "ddlCancelPaymentReasons")]
+        public IWebElement RefundReason { get; set; }
+
+        [FindsBy(How = How.Id, Using = "text-comments")]
+        public IWebElement ReasonDetails { get; set; }
+
+        [FindsBy(How = How.Id, Using = "refundMethodId")]
+        public IWebElement RefundMethod { get; set; }
+
+        [FindsBy(How = How.Id, Using = "btnRemovePayment")]
+        public IWebElement ProcessPaymentButton { get; set; }
+
+        
 
 
         public int implicitWait = Convert.ToInt32(ConfigurationManager.AppSettings["ImplicitWait"]);
@@ -342,8 +369,9 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public OrderPage ClickOnRefund()
         {
-            driver.WaitForElement(Refund);
-            Refund.Clickme(driver);
+            Thread.Sleep(2000);
+            driver.WaitForElement(RefundforCheck);
+            RefundforCheck.Clickme(driver);
             return this;
 
         }
@@ -917,14 +945,14 @@ namespace UnitTestNDBProject.Pages
         public Boolean VerifyPaymentGridData(PaymentData record)
         {
             bool isGridDataCorrect = false;
-
-
-               String paymentMethod= driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[2]//span")).GetText(driver);
+          
+            String paymentMethod= driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[2]//span")).GetText(driver);
                String amountCollected = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[6]//span")).GetText(driver);
                String  amountPosted = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[7]//span")).GetText(driver);
             String date = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[5]//span")).GetText(driver);
 
-             if (paymentMethod.Equals("FINANCE"))
+           
+            if (paymentMethod.Equals("FINANCE"))
             {
                 String ExpectedAmountCollected = "$" + PaymentPage.AmountHalf;
                 String ExpectedAmountPosted = "$" + PaymentPage.AmountHalf;
@@ -946,7 +974,40 @@ namespace UnitTestNDBProject.Pages
             return isGridDataCorrect;
         }
 
-      
+        public Boolean VerifyRefundGridData(RefundData record, PaymentData data)
+        {
+            bool isGridDataCorrect = false;
+            String paymenttype = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[1]//div[1]/span[1]")).GetText(driver);
+            String paymentMethod = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[2]//span")).GetText(driver);
+            String amountCollected = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[6]//span")).GetText(driver);
+            String amountPosted = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[7]//span")).GetText(driver);
+            String date = driver.FindElement(By.XPath("//div[contains(@class,'table-grid accordion-panel')]/ul/li[2]/div[5]//span")).GetText(driver);
+
+            if (paymenttype.Equals("REFUND"))
+            {
+                String ExpectedAmountCollected = "-" + "$" + Half+ ".00";
+                String ExpectedAmountPosted = "-" + "$" + Half+ ".00";
+
+                if (r == 0)
+                {
+                    if (paymentMethod == data.PaymentMethod && amountCollected == ExpectedAmountCollected && amountPosted == ExpectedAmountPosted && date == (DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
+                    {
+                        isGridDataCorrect = true;
+                        r++;
+                    }
+                }
+                else
+                {
+                    if (paymentMethod == record.RefundMethod2 && amountCollected == ExpectedAmountCollected && amountPosted == ExpectedAmountPosted && date == (DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
+                    {
+                        isGridDataCorrect = true;
+                    }
+
+                }
+            }
+            
+            return isGridDataCorrect;
+        }
 
 
         /// <summary>
@@ -1238,7 +1299,102 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        public OrderPage ClickOnHambergerForCheck()
+        {
+            Thread.Sleep(4000);
+            driver.WaitForElement(HambergerOFCheckPayment);
+            HambergerOFCheckPayment.Clickme(driver);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            return this;
+        }
+        public OrderPage ClickOnRefundB()
+        {
+            driver.WaitForElement(HambergerOFCheckPayment);
+            HambergerOFCheckPayment.Clickme(driver);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            return this;
+        }
 
+        public OrderPage SelectRefundMethod(String refundmth,String refundmthod)
+        {
+             if (i == 0)
+            {
+                new System.Threading.ManualResetEvent(false).WaitOne(4000);
+                Actions actions_ = new Actions(driver);
+                actions_.SendKeys(this.RefundMethod, refundmth).Build().Perform();
+                RefundMethod.SendKeys(Keys.Enter);
+                i++;
+            } else
+            {
+                new System.Threading.ManualResetEvent(false).WaitOne(4000);
+                Actions actions_ = new Actions(driver);
+                actions_.SendKeys(this.RefundMethod, refundmthod).Build().Perform();
+                RefundMethod.SendKeys(Keys.Enter);
+
+            }
+            return this;
+        }
+
+        public OrderPage SelectRefundReason(String refundrsn)
+        {
+            Actions actions_ = new Actions(driver);
+            actions_.SendKeys(this.RefundReason, refundrsn).Build().Perform();
+            RefundReason.SendKeys(Keys.Enter);
+            return this;
+        }
+
+        public OrderPage EnterRefundAmount(String amount)
+        {
+            if ((By.XPath("//span[contains(text(),'CASH/CHECK')]")).isPresent(driver))
+            {
+                new System.Threading.ManualResetEvent(false).WaitOne(2000);
+                Half = (Convert.ToDouble(amount) / 2).ToString();
+                driver.WaitForElement(RefundAmount);
+                // RefundAmount.EnterText(amount);
+                Actions ob = new Actions(driver);
+                ob.MoveToElement(RefundAmount).DoubleClick().SendKeys(Half).Build().Perform();
+            }
+            else
+            {
+                new System.Threading.ManualResetEvent(false).WaitOne(2000);
+                driver.WaitForElement(RefundAmount);
+                // RefundAmount.EnterText(amount);
+                Actions ob = new Actions(driver);
+                ob.MoveToElement(RefundAmount).DoubleClick().SendKeys(Half).Build().Perform();
+
+            }
+            return this;
+        }
+
+        public OrderPage EnterRefundAmountForMailCheck(String amount)
+        {
+            
+            return this;
+        }
+        public OrderPage EnterReasonDetails(String detail)
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElement(ReasonDetails);
+            ReasonDetails.EnterText(detail);
+            return this;
+        }
+
+        public OrderPage ClickOnProcessPaymentButton()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElement(ProcessPaymentButton);
+            ProcessPaymentButton.Clickme(driver);
+            return this;
+        }
+        public OrderPage ClickOnContinueButton()
+        {
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
+            driver.WaitForElement(OkButton);
+            OkButton.Clickme(driver);
+            return this;
+        }
+
+        
 
 
     }

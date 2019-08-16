@@ -507,7 +507,20 @@
 		
      ]
 	},
-
+	{
+		"Feature": "RefundScreen",
+		"Data": [{
+				"Key": "RefunKey",
+				"Value": {
+				"RefundType":"REFUND",
+				"RefundMethod": "CASH/CHECK",
+				"RefundMethod2":"MAIL CHECK",
+				"RefundReason": "Poor customer experience",
+				"RefundDetails": "Reason is to refund the amount"			
+				}
+			}
+		]
+},
 	{
 		"Feature": "Reasons",
 		"Data": [{
