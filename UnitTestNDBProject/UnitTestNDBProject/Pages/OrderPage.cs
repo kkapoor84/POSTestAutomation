@@ -974,6 +974,13 @@ namespace UnitTestNDBProject.Pages
             return isGridDataCorrect;
         }
 
+
+        /// <summary>
+        /// Function to verify the data for refund 
+        /// </summary>
+        /// <param name="record"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public Boolean VerifyRefundGridData(RefundData record, PaymentData data)
         {
             bool isGridDataCorrect = false;
@@ -1299,6 +1306,10 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to click on hambeger of check row
+        /// </summary>
+        /// <returns></returns>
         public OrderPage ClickOnHambergerForCheck()
         {
             Thread.Sleep(4000);
@@ -1315,6 +1326,12 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to Select Refund Method on refund popup
+        /// </summary>
+        /// <param name="refundmth"></param>
+        /// <param name="refundmthod"></param>
+        /// <returns></returns>
         public OrderPage SelectRefundMethod(String refundmth,String refundmthod)
         {
              if (i == 0)
@@ -1335,6 +1352,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to Select Refund reason on refund popup
+        /// </summary>
+        /// <param name="refundrsn"></param>
+        /// <returns></returns>
         public OrderPage SelectRefundReason(String refundrsn)
         {
             Actions actions_ = new Actions(driver);
@@ -1343,6 +1365,11 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to enter Refund amount on refund popup
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public OrderPage EnterRefundAmount(String amount)
         {
             if ((By.XPath("//span[contains(text(),'CASH/CHECK')]")).isPresent(driver))
@@ -1371,6 +1398,12 @@ namespace UnitTestNDBProject.Pages
             
             return this;
         }
+
+        /// <summary>
+        /// Function to enter reason detail on refund popup
+        /// </summary>
+        /// <param name="detail"></param>
+        /// <returns></returns>
         public OrderPage EnterReasonDetails(String detail)
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -1379,6 +1412,10 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
+        /// <summary>
+        /// Function to click on process payment button
+        /// </summary>
+        /// <returns></returns>
         public OrderPage ClickOnProcessPaymentButton()
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -1386,6 +1423,10 @@ namespace UnitTestNDBProject.Pages
             ProcessPaymentButton.Clickme(driver);
             return this;
         }
+        /// <summary>
+        /// Function to click on continue button
+        /// </summary>
+        /// <returns></returns>
         public OrderPage ClickOnContinueButton()
         {
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
