@@ -38,9 +38,9 @@ namespace UnitTestNDBProject.Pages
 
         public static int beforeCount = 0;
         public static int afterCount = 0;
-        public static int k = 0;
-        public static int i = 0;
-        public static int r = 0;
+        //public static int k = 0;
+        public static int refundm = 0;
+        public static int paymentm = 0;
         // Constants objectConstant = new Constants();
 
         private static ParsedTestData storeParser;
@@ -369,7 +369,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public OrderPage ClickOnRefund()
         {
-            Thread.Sleep(2000);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             driver.WaitForElement(RefundforCheck);
             RefundforCheck.Clickme(driver);
             return this;
@@ -460,7 +460,7 @@ namespace UnitTestNDBProject.Pages
             //int count = CalculateNumberOfProductLinesBeforeCopy();
             driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 60);
             WaitUntilPageload();
-            Thread.Sleep(8000);
+            new System.Threading.ManualResetEvent(false).WaitOne(8000);
             HamburgerClick.Clickme(driver);
             _logger.Info($" Click on hamburger.");
             return this;
@@ -471,7 +471,7 @@ namespace UnitTestNDBProject.Pages
             //int count = CalculateNumberOfProductLinesBeforeCopy();
             driver.WaitForElementToBecomeVisibleWithinTimeout(HamburgerClick, 60);
             WaitUntilPageload();
-            Thread.Sleep(8000);
+            new System.Threading.ManualResetEvent(false).WaitOne(8000);
             HamburgerClick2.Clickme(driver);
             _logger.Info($" Click on hamburger.");
             return this;
@@ -517,7 +517,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage ClickAddProductButton()
         {
             WaitUntilPageload();
-            Thread.Sleep(8000);
+            new System.Threading.ManualResetEvent(false).WaitOne(8000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
             AddProductLineButton.Clickme(driver);
@@ -553,7 +553,7 @@ namespace UnitTestNDBProject.Pages
                 driver.FindElement(By.Id(editProduct.OptionTypeId)).EnterText(editProduct.Option);
                 driver.FindElement(By.Id(editProduct.OptionTypeId)).SendKeys(Keys.Enter);
                 _logger.Info($": Successfully updated Option {editProduct.Option} for Option Type {editProduct.OptionTypeId}");
-                Thread.Sleep(500);
+                new System.Threading.ManualResetEvent(false).WaitOne(500);
             }
             return this;
         }
@@ -563,7 +563,7 @@ namespace UnitTestNDBProject.Pages
             foreach (DataDictionary data in editproductLineData)
             {
                 EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
-                Thread.Sleep(4000);
+                new System.Threading.ManualResetEvent(false).WaitOne(4000);
                 EnterRoomLocation(editProductLine.NDBRoomLocation)
                     .SelectProductOptionsEdit(editProductLine.EditProductDetails).ClickAddProductButton();
             }
@@ -974,13 +974,13 @@ namespace UnitTestNDBProject.Pages
             return isGridDataCorrect;
         }
 
-
         /// <summary>
-        /// Function to verify the data for refund 
+        /// Function to verify the refund grid data
         /// </summary>
         /// <param name="record"></param>
         /// <param name="data"></param>
         /// <returns></returns>
+
         public Boolean VerifyRefundGridData(RefundData record, PaymentData data)
         {
             bool isGridDataCorrect = false;
@@ -995,12 +995,12 @@ namespace UnitTestNDBProject.Pages
                 String ExpectedAmountCollected = "-" + "$" + Half+ ".00";
                 String ExpectedAmountPosted = "-" + "$" + Half+ ".00";
 
-                if (r == 0)
+                if (paymentm == 0)
                 {
                     if (paymentMethod == data.PaymentMethod && amountCollected == ExpectedAmountCollected && amountPosted == ExpectedAmountPosted && date == (DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture)))
                     {
                         isGridDataCorrect = true;
-                        r++;
+                        paymentm++;
                     }
                 }
                 else
@@ -1312,7 +1312,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public OrderPage ClickOnHambergerForCheck()
         {
-            Thread.Sleep(4000);
+            new System.Threading.ManualResetEvent(false).WaitOne(4000);
             driver.WaitForElement(HambergerOFCheckPayment);
             HambergerOFCheckPayment.Clickme(driver);
             new System.Threading.ManualResetEvent(false).WaitOne(2000);
@@ -1334,13 +1334,13 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public OrderPage SelectRefundMethod(String refundmth,String refundmthod)
         {
-             if (i == 0)
+             if (refundm == 0)
             {
                 new System.Threading.ManualResetEvent(false).WaitOne(4000);
                 Actions actions_ = new Actions(driver);
                 actions_.SendKeys(this.RefundMethod, refundmth).Build().Perform();
                 RefundMethod.SendKeys(Keys.Enter);
-                i++;
+                refundm++;
             } else
             {
                 new System.Threading.ManualResetEvent(false).WaitOne(4000);
