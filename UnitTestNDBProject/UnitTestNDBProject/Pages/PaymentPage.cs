@@ -209,6 +209,12 @@ namespace UnitTestNDBProject.Page
             return JsonDataParser<PaymentData>.ParseData(checkDataValue);
         }
 
+        public static RefundData GetRefundData(ParsedTestData featureData)
+        {
+            object refundDataValue = DataAccess.GetKeyJsonData(featureData, "RefunKey");
+            return JsonDataParser<RefundData>.ParseData(refundDataValue);
+        }
+
         public static PaymentData GetPOPaymentData(ParsedTestData featureData)
         {
             object checkDataValue = DataAccess.GetKeyJsonData(featureData, "POKey");

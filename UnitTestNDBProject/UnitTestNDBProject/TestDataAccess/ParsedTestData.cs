@@ -259,7 +259,24 @@ namespace UnitTestNDBProject.TestDataAccess
 
 
     }
+    #endregion
 
+    #region Refund data specific classes
+
+    public class RefundData
+    {
+        public string RefundType { get; set; }
+        public string RefundMethod { get; set; }
+        public string RefundMethod2 { get; set; }
+        public string Amount { get; set; }
+
+        public string RefundReason { get; set; }
+        public string RefundDetails { get; set; }
+
+    }
+    #endregion
+
+    #region Grid specific classes
     public class GridRecord
     {
         public string Payment { get; set; }
