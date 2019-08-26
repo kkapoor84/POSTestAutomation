@@ -18,7 +18,6 @@ namespace UnitTestNDBProject.Tests
 
     public class SmokeSuite : BaseTestClass
     {
-
         private static ParsedTestData loginFeatureParsedData;
         private static ParsedTestData newCustomerFeatureParsedData;
         private static ParsedTestData productLineFeatureParsedData;
@@ -80,10 +79,11 @@ namespace UnitTestNDBProject.Tests
         [SetUp]
         public void Setup()
         {
-            GlobalSetup.test = GlobalSetup.extent.CreateTest(TestContext.CurrentContext.Test.Name);
+              GlobalSetUp.test = GlobalSetUp.extent.CreateTest(TestContext.CurrentContext.Test.Name);
+
         }
 
-        [Test, Order(1), Category("Smoke"), Ignore(""), Description("Validate that error message populates once user enter invalid credentials")]
+        [Test, Order(1), Category("Smoke"), Description("Validate that error message populates once user enter invalid credentials")]
         public void A1_VerifyLoginWithInValidCredentails()
         {
             LoginData loginData = LoginPage.GetInvalidLoginData(loginFeatureParsedData);
@@ -93,7 +93,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_LoginPage.VerifyInvalidCredentialsAreDisplayed("User ID or Password are incorrect. Please try again or contact the NDB helpdesk"));
         }
 
-        [Test, Order(2), Category("Smoke"), Description("Validate that user is able to navigate to Home page using valid credentials")]
+        [Test, Order(2), Category("Smoke"), Ignore(""), Description("Validate that user is able to navigate to Home page using valid credentials")]
         public void A2_VerifyLoginWithValidCrdentails()
         {
             LoginData loginData = LoginPage.GetSAHUserLoginData(loginFeatureParsedData);
@@ -305,7 +305,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(14), Category("Smoke"),Description("Quote Convert to Order")]
+        [Test, Order(14), Category("Smoke"), Ignore(""),Description("Quote Convert to Order")]
         public void B5_VerifyQuoteConvertToOrder()
         {
             //_QuotePage.SearchFunctionForQuote();
@@ -359,7 +359,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCorrectNumberOfRowAddedInPaymentSection());
         }
 
-        [Test, Order(19), Category("Smoke"),Description("Payment via Saved Credit Card")]
+        [Test, Order(19), Category("Smoke"), Ignore(""),Description("Payment via Saved Credit Card")]
         public void C1_VerifySavedCreditCardPaymentAndMaximumTransactionReached()
         {
 
@@ -414,7 +414,7 @@ namespace UnitTestNDBProject.Tests
 
         }
 
-        [Test, Order(24), Category("Smoke"), Description("Copy to Quote functionality from order page")]
+        [Test, Order(24), Category("Smoke"), Ignore(""),Description("Copy to Quote functionality from order page")]
         public void C6_VerifyCopyToQuoteFromOrderPage()
         {
             _QuotePage.CopyToQuoteFromOrderPage().UpdateInternalInfo()
@@ -433,7 +433,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_QuotePage.VerifyTotalProductsAfterCopyQuote());
         }
 
-        [Test, Order(25), Category("Smoke"), Description("Change Delivery Type To Shipping")]
+        [Test, Order(25), Category("Smoke"), Ignore(""), Description("Change Delivery Type To Shipping")]
         public void C7_VerifyUpdateDeliveryTypeToShipping()
         {
             //_OrderPage.SearchFunctionForOrder();
@@ -441,7 +441,7 @@ namespace UnitTestNDBProject.Tests
             _OrderPage.UpdateDeliveryTypeToShipping();
         }
 
-        [Test, Order(26), Category("Smoke"), Description("Change Delivery Type To Store Pickup")]
+        [Test, Order(26), Category("Smoke"), Ignore(""), Description("Change Delivery Type To Store Pickup")]
         public void C7_VerifyUpdateDeliveryTypeToStorePickup()
         {
 
@@ -449,7 +449,7 @@ namespace UnitTestNDBProject.Tests
             _OrderPage.UpdateDeliveryTypeToStorePickup();
         }
 
-        [Test, Order(27), Category("Smoke"), Description("Cancel Order Verification")]
+        [Test, Order(27), Category("Smoke"), Ignore(""), Description("Cancel Order Verification")]
         public void C9_VerifyCancelOrder()
         {
 
@@ -457,7 +457,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_OrderPage.VerifyCancelOrder());
         }
 
-        [Test, Order(28), Category("Smoke"), Description("Search Quote Verification")]
+        [Test, Order(28), Category("Smoke"), Ignore(""), Description("Search Quote Verification")]
         public void D1_VerifySearchQuote()
         {
             SearchData quoteData = SearchPage.SearchQuoteData(searchParser);
@@ -467,7 +467,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_SearchPage.VerifyUserNavigatedToCorrectQuote(quoteData.QuoteNumber));
         }
 
-        [Test, Order(29), Category("Smoke"), Description("Search Order Verification")]
+        [Test, Order(29), Category("Smoke"), Ignore(""), Description("Search Order Verification")]
         public void D2_VerifySearchOrder()
         {
             SearchData orderData = SearchPage.SearchOrderData(searchParser);
@@ -477,7 +477,7 @@ namespace UnitTestNDBProject.Tests
             Assert.True(_SearchPage.VerifyUserNavigatedToCorrectOrder(orderData.OrderNumber));
         }
 
-        [Test, Order(30), Category("Smoke"), Description("Product creation on Quick COnfig Page")]
+        [Test, Order(30), Category("Smoke"), Ignore(""), Description("Product creation on Quick COnfig Page")]
         public void D3_VerifyQuickConfigScreen()
         {
             ProductLineData ProductLineData = QuickConfig.GetProductLine1Data(productLineFeatureParsedData);
@@ -527,7 +527,7 @@ namespace UnitTestNDBProject.Tests
                     driver.Navigate().Refresh();
                     Thread.Sleep(5000);
                     logstatus = Status.Fail;
-                    GlobalSetup.test.Log(Status.Info, stacktrace + errorMessage);
+                    GlobalSetUp.test.Log(Status.Info, stacktrace + errorMessage);
                     break;
                 case TestStatus.Inconclusive:
                     logstatus = Status.Warning;
@@ -542,7 +542,7 @@ namespace UnitTestNDBProject.Tests
                     break;
             }
 
-            GlobalSetup.test.Log(logstatus, "Test ended with " + logstatus + stacktrace);
+            GlobalSetUp.test.Log(logstatus, "Test ended with " + logstatus + stacktrace);
         }
 
         /// <summary>
