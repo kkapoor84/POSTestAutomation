@@ -403,7 +403,7 @@ namespace UnitTestNDBProject.Tests
         }
 
        
-        [Test, Order(18),  Category("Smoke"), Description("Payment via gift card")]
+        [Test, Order(18),Ignore(""),  Category("Smoke"), Description("Payment via gift card")]
         public void B9_VerifyGiftCardPayment()
         {
             PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(paymentParsedData);
@@ -463,7 +463,7 @@ namespace UnitTestNDBProject.Tests
         //}
 
         [Test, Order(20), Category("Smoke"), Description("Refund for Check-Skip Verification")]
-        public void C1_VerifyRefundForCheckPayment()
+        public void C3_VerifyRefundForCheckPayment()
         {
             PaymentData checkPaymentData = PaymentPage.GetCheckPaymentData(paymentParsedData);
             RefundData refundData = PaymentPage.GetRefundData(refundParsedData);
