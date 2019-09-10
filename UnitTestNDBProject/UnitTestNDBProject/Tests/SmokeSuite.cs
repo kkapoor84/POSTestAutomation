@@ -403,7 +403,7 @@ namespace UnitTestNDBProject.Tests
         }
 
        
-        [Test, Order(18),  Category("Smoke"), Description("Payment via gift card")]
+        [Test, Order(18), Ignore(""), Category("Smoke"), Description("Payment via gift card")]
         public void B9_VerifyGiftCardPayment()
         {
             PaymentData giftCardPaymentData = PaymentPage.GetGiftCardPaymentData(paymentParsedData);
