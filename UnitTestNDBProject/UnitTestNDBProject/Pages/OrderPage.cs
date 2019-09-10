@@ -1289,12 +1289,20 @@ namespace UnitTestNDBProject.Pages
         {
             driver.WaitForElement(POEditButton);
             POEditButton.Clickme(driver);
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(2000);
+
             return this;
         }
 
         public OrderPage EnterAgreementNo(String no)
         {
             driver.WaitForElement(POAgreementNumberEdit);
+            POAgreementNumberEdit.SendKeys(Keys.Delete);
+            POAgreementNumberEdit.SendKeys(Keys.Delete);
+            POAgreementNumberEdit.SendKeys(Keys.Delete);
+            POAgreementNumberEdit.SendKeys(Keys.Delete);
+
             POAgreementNumberEdit.EnterText(no);
             return this;
         }
