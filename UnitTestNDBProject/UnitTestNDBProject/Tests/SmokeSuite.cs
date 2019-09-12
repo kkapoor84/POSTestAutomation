@@ -89,7 +89,7 @@ namespace UnitTestNDBProject.Tests
         [SetUp]
         public void Setup()
         {
-            GlobalSetup.test = GlobalSetup.extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            GlobalSetUp.test = GlobalSetUp.extent.CreateTest(TestContext.CurrentContext.Test.Name);
         }
 
         [Test, Order(1), Category("Smoke"), Description("Validate that error message populates once user enter invalid credentials")]
@@ -762,7 +762,7 @@ namespace UnitTestNDBProject.Tests
                     driver.Navigate().Refresh();
                     Thread.Sleep(5000);
                     logstatus = Status.Fail;
-                    GlobalSetup.test.Log(Status.Info, stacktrace + errorMessage);
+                    GlobalSetUp.test.Log(Status.Info, stacktrace + errorMessage);
                     break;
                 case TestStatus.Inconclusive:
                     logstatus = Status.Warning;
@@ -777,7 +777,7 @@ namespace UnitTestNDBProject.Tests
                     break;
             }
 
-            GlobalSetup.test.Log(logstatus, "Test ended with " + logstatus + stacktrace);
+            GlobalSetUp.test.Log(logstatus, "Test ended with " + logstatus + stacktrace);
         }
 
         /// <summary>
