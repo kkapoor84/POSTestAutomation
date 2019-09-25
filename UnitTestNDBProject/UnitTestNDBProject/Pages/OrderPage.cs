@@ -1295,6 +1295,7 @@ namespace UnitTestNDBProject.Pages
         public OrderPage EnterAgreementNo(String no)
         {
             driver.WaitForElement(POAgreementNumberEdit);
+            new System.Threading.ManualResetEvent(false).WaitOne(2000);
             POAgreementNumberEdit.SendKeys(Keys.Delete);
             POAgreementNumberEdit.SendKeys(Keys.Delete);
             POAgreementNumberEdit.SendKeys(Keys.Delete);

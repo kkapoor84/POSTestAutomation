@@ -667,7 +667,7 @@ namespace UnitTestNDBProject.Tests
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
             string lastNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.LastName);
 
-          //  _HomePage.Signout();
+            _HomePage.Signout();
 
             //Login via Accountant user
             LoginData loginData = LoginPage.GetAccounttantUserLoginData(loginFeatureParsedData);

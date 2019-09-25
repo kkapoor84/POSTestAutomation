@@ -846,7 +846,7 @@ namespace UnitTestNDBProject.Pages
         /// <returns></returns>
         public bool VerifyExistingPhoneNumber(string EnteredPhone)
         {
-            new System.Threading.ManualResetEvent(false).WaitOne(1000);
+            new System.Threading.ManualResetEvent(false).WaitOne(5000);
             int i = 0;
             string[] phoneNumberArray = new string[100];
 
