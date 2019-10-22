@@ -45,12 +45,12 @@ namespace UnitTestNDBProject.Pages
             return this;
         }
 
-        public void AddProduct(ProductLineData data,QuotePage _QuotePage)
+        public void AddProduct(ProductLineData data,QuotePage _QuotePage, OrderPage _OrderPage)
         {
-            List<string> newEmails = new List<string>();
-
             _QuotePage.EnterWidth(data.Width).EnterHeight(data.Height).EnterRoomLocation(data.NDBRoomLocation)
-                .SelectProduct(data.ProductType).SelectProductOptions(data.ProductDetails).ClickAddProductButton().WaitUntilPageload();
+                .SelectProduct(data.ProductType).SelectProductOptions(data.ProductDetails);
+                
+                _OrderPage.ClickAddProductButton().WaitUntilPageload();
 
         }
 

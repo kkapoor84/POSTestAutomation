@@ -279,7 +279,7 @@ namespace UnitTestNDBProject.Tests
 
             _QuotePage.ClickOnhamburgerButton().ClickOnCopyButton();
 
-            _QuotePage.ClickAddProductButton();
+            _OrderPage.ClickAddProductButton();
 
             Assert.True(_QuotePage.VerifyTotalProductsAfterCopy(productLineFeatureParsedData.Data));
             Assert.True(_QuotePage.VerifyProductDataAfterAdd(productLineFeatureParsedData.Data));
@@ -289,7 +289,7 @@ namespace UnitTestNDBProject.Tests
         public void B1_VerifyEditproductLine()
         {
             _QuotePage.ClickOnhamburgerButton().ClickOnEditButton();
-            _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data);
+            _QuotePage.EditProductLineConfiguration(productLineEditFeatureParsedData.Data, _OrderPage);
             Assert.True(_QuotePage.VerifyProductDataAfterEdit(productLineEditFeatureParsedData.Data));
 
 
@@ -532,7 +532,7 @@ namespace UnitTestNDBProject.Tests
         public void C8_VerifySearchCustomer()
         {
             SearchData orderData = SearchPage.SearchOrderData(searchParser);
-            _SearchPage.ClickOnSearchLink().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickOnSearchButton();
+            _SearchPage.ClickOnSearchLink().MovetoCustomerTab().EnterFirstName(newCustomerData.FirstName).EnterLastName(newCustomerData.LastName).ClickOnSearchButton();
             _SearchPage.ExecuteSearchFlowIfCustomerExists();
             _SearchPage.ClickOnSearchLink();
             Assert.True(_SearchPage.VerifySearchLinkOfLastSearch());
@@ -585,7 +585,7 @@ namespace UnitTestNDBProject.Tests
         {
             ProductLineData ProductLineData = QuickConfig.GetProductLine1Data(productLineFeatureParsedData);
             _HomePage.ClickOnQuickConfig();
-            _QuickConfig.AddProduct(ProductLineData, _QuotePage);
+            _QuickConfig.AddProduct(ProductLineData, _QuotePage,_OrderPage);
             Assert.True(_QuickConfig.VerifyUserNavigatedToCustomerPage());
 
             string firstNameUnique = CommonFunctions.AppendInRangeRandomString(newCustomerData.FirstName);
@@ -628,7 +628,7 @@ namespace UnitTestNDBProject.Tests
         {
             _QuotePage.ClickOnConvertToQuote();
             _PaymentPage.cashPaymentForFullPayment().CalculateCashPayment().ProcessPaymentButtonClick();
-            _OrderPage.NavigateToTopOfTheOrderPage().EditInternalInfoButton().UpdateSignature().ApplyChangesToInternalInfoSection().AddLeadNumber(internalInforData.Leadnumber).ClickOnSaveOrderButton().TransferToProduction();
+            _OrderPage.NavigateToTopOfTheOrderPage().EditInternalInfoButton().UpdateSignature().AddLeadNumber(internalInforData.Leadnumber).ApplyChangesToInternalInfoSection().ClickOnSaveOrderButton().TransferToProduction();
             Assert.True(_OrderPage.VerifyOrderIsCreated());
             _OrderPage.ClickOnAddDetailsButton();
             Assert.True(_OrderPage.CurrentDatePopupatedVerification());

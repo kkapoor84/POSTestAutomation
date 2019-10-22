@@ -11,6 +11,7 @@ using UnitTestNDBProject.Utils;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 using OpenQA.Selenium.Interactions;
 using System.Globalization;
+using UnitTestNDBProject.Pages;
 
 namespace UnitTestNDBProject.Page
 {
@@ -58,7 +59,7 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.Id, Using = "ProductCode")]
         public IWebElement ProductCode { get; set; }
 
-        [FindsBy(How = How.Id, Using = "doneProductLine")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='form-group row active-btns']//button[@id='btn-pick-list-action-lg']")]
         public IWebElement AddProductLineButton { get; set; }
 
         [FindsBy(How = How.Id, Using = "idBtnOK")]
@@ -707,7 +708,7 @@ namespace UnitTestNDBProject.Page
             WaitUntilPageload();
             Thread.Sleep(5000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
-            customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='form-group row active-btns']//button[@id='btn-pick-list-action-lg']")));
             AddProductLineButton.Clickme(driver);
             _logger.Info($": ADD LINE button clicked");
             return this;
@@ -1193,7 +1194,7 @@ namespace UnitTestNDBProject.Page
         /// Function to edit product line configurations.
         /// </summary>
         /// <param name="editproductLineData"></param>
-        public void EditProductLineConfiguration(List<DataDictionary> editproductLineData)
+        public void EditProductLineConfiguration(List<DataDictionary> editproductLineData, OrderPage _OrderPage)
         {
             WaitUntilPageload();
             foreach (DataDictionary data in editproductLineData)
@@ -1201,7 +1202,8 @@ namespace UnitTestNDBProject.Page
                 EditProductLineData editProductLine = JsonDataParser<EditProductLineData>.ParseData(data.Value);
                 Thread.Sleep(4000);
                 EnterRoomLocation(editProductLine.NDBRoomLocation)
-                    .SelectProductOptionsEdit(editProductLine.EditProductDetails).ClickAddProductButton();
+                    .SelectProductOptionsEdit(editProductLine.EditProductDetails);
+                    _OrderPage.ClickAddProductButton();
             }
         }
 
@@ -1496,7 +1498,7 @@ namespace UnitTestNDBProject.Page
         /// <returns></returns>
         public QuotePage ClickOnEditButtonOfMeasurementAndInstallation()
         {
-            new System.Threading.ManualResetEvent(false).WaitOne(6000);
+            new System.Threading.ManualResetEvent(false).WaitOne(10000);
             driver.WaitForElement(EditButtonOfAddress);
             EditButtonOfAddress.Clickme(driver);
             return this;

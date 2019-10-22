@@ -88,6 +88,12 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//div[1]/h3[1]")]
         public IWebElement customerWidget { get; set; }
 
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'CUSTOMER')]")]
+        public IWebElement customerTab { get; set; }
+
+        
+
         public static string phoneNumberOnSearchPageStaticVariable = "";
         public static string emailAddressOnSearchPageStaticVariable = "";
         public static string NameOnSearchPageStaticVariable = "";
@@ -139,6 +145,18 @@ namespace UnitTestNDBProject.Pages
             _logger.Info($" User clicked on search button on top navigation panel");
             return this;
         }
+
+        public SearchPage MovetoCustomerTab()
+        {
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+            autoEvent.WaitOne(4000);
+            WaitUntilPageload();
+            customerTab.Clickme(driver);
+            _logger.Info($" User clicked on customer tab");
+            return this;
+        }
+
+        
 
         /// <summary>
         /// Click On Quote Tab of search page

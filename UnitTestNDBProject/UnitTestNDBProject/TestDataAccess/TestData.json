@@ -11,14 +11,14 @@
 				"Key": "SAHUserValidCredentails",
 				"Value": {
 					"UserName": "Pos-sahtest",
-					"Password": "Pos@ndb19"
+					"Password": "P0$T3sting"
 				}
 			},
 			{
 				"Key": "AccountUserValidCredentails",
 				"Value": {
 					"UserName": "Pos-acctrec",
-					"Password": "Retail@ndb19"
+					"Password": "P0$T3sting"
 				}
 			}
 		]
