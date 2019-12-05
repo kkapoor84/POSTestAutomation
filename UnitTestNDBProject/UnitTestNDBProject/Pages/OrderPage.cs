@@ -289,9 +289,12 @@ namespace UnitTestNDBProject.Pages
         {
 
             WaitUntilPageload();
+            Thread.Sleep(5000);
             IJavaScriptExecutor ex = (IJavaScriptExecutor)driver;
-            //This will scroll the page till the element is found		
-            ex.ExecuteScript("arguments[0].scrollIntoView();", AddDetailButton);
+            //This will scroll the page till the element is found	
+            ex.ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+            //  ex.ExecuteScript("arguments[0].scrollIntoView();", AddDetailButton);
+            Thread.Sleep(5000);
             AddDetailButton.Clickme(driver);
             _logger.Info($" User clicked on add detail button");
             return this;
@@ -1241,9 +1244,9 @@ namespace UnitTestNDBProject.Pages
         {
             AutoResetEvent autoEvent = new AutoResetEvent(false);
             WaitUntilPageload();
-            autoEvent.WaitOne(4000);
+            autoEvent.WaitOne(8000);
             TransferToProductionButton.Clickme(driver);
-            autoEvent.WaitOne(4000);
+            autoEvent.WaitOne(8000);
             OkButton.Clickme(driver);
             WaitUntilPageload();
             _logger.Info($": Order Successfully Transferred To Production.");
@@ -1259,7 +1262,7 @@ namespace UnitTestNDBProject.Pages
             bool correctdate = false;
             //DateTime dateTime = DateTime.UtcNow.Date;
             //_logger.Info("Current Data Time Calculated : " + dateTime);
-            String systemDate = DateTime.Now.ToString("MM/d/yyyy", CultureInfo.InvariantCulture);
+            String systemDate = DateTime.Now.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             String orderDateOnScreen = OrderTransferDate.GetText(driver);
             _logger.Info("Current Data Time On Screen : " + orderDateOnScreen);
             if (systemDate.Equals(orderDateOnScreen))

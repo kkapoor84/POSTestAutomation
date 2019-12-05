@@ -37,7 +37,7 @@ namespace UnitTestNDBProject.Pages
         [FindsBy(How = How.XPath, Using = "//button[@id='settingsTab']")]
         public IWebElement Settings { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'QUOTES')]")]
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'REVENUE DATA')]")]
         public IWebElement DashBoardTabText { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//h2[contains(text(),'DEPOSIT SUMMARY')]")]
@@ -137,7 +137,7 @@ namespace UnitTestNDBProject.Pages
         {
             bool IsTextPresent = false;
 
-            String Expected = "QUOTES";
+            String Expected = "REVENUE DATA";
             String Actual = DashBoardTabText.GetText(driver);
 
             if (Actual.Contains(Expected))

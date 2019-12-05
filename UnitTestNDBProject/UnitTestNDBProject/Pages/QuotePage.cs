@@ -59,7 +59,7 @@ namespace UnitTestNDBProject.Page
         [FindsBy(How = How.Id, Using = "ProductCode")]
         public IWebElement ProductCode { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='form-group row active-btns']//button[@id='btn-pick-list-action-lg']")]
+        [FindsBy(How = How.Id, Using = "doneProductLine")]
         public IWebElement AddProductLineButton { get; set; }
 
         [FindsBy(How = How.Id, Using = "idBtnOK")]
@@ -708,7 +708,7 @@ namespace UnitTestNDBProject.Page
             WaitUntilPageload();
             Thread.Sleep(5000);
             WebDriverWait customWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
-            customWait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='form-group row active-btns']//button[@id='btn-pick-list-action-lg']")));
+            customWait.Until(ExpectedConditions.ElementIsVisible(By.Id("doneProductLine")));
             AddProductLineButton.Clickme(driver);
             _logger.Info($": ADD LINE button clicked");
             return this;
@@ -1734,10 +1734,23 @@ namespace UnitTestNDBProject.Page
             new System.Threading.ManualResetEvent(false).WaitOne(3000);
             ConvertToOrderButton.Clickme(driver);
             _logger.Info($" User clicked on convert to order button");
+         
+            return this;
+        }
+
+        public QuotePage ClickOnContinue()
+        {
             Thread.Sleep(2000);
             driver.WaitForElement(ContinueButton);
             ContinueButton.Clickme(driver);
             _logger.Info($" User clicked on contiue button");
+            return this;
+        }
+
+        public QuotePage AddLeadno(QuotePage _QuotePage, InternalInfoData internalInforData, OrderPage _OrderPage)
+        {
+            _OrderPage.NavigateToTopOfTheOrderPage();
+            _QuotePage.UpdateInternalInfo().AddLeadNumber(internalInforData.Leadnumber).ApplyInternalInfoUpdates();
             return this;
         }
 
